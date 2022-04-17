@@ -1,39 +1,45 @@
 import React from "react";
 import Link from "next/link";
+import header from "../styles/header.module.css";
+import global from "../styles/global.module.css";
 function Header() {
   return (
-    <header className="header">
-      <div className="header__container container">
+    <header className={header.header}>
+      <div className={`${header.header__container} ${global.container}`}>
         <Link href="/">
-          <a className="logo">PoolWars</a>
+          <a className={header.logo}>PoolWars</a>
         </Link>
-        <div className="panel">
-          <div className="nav">
-            <ul className="nav__list">
-              <li className="nav__item">
+        <div className={header.panel}>
+          <div className={header.nav}>
+            <ul className={header.nav__list}>
+              <li className={header.nav__item}>
                 <Link href="/airdrop">
-                  <a className="nav__link">AirDroap</a>
+                  <a className={header.nav__link}>AirDroap</a>
                 </Link>
               </li>
-              <li className="nav__item">
+              <li className={header.nav__item}>
                 <Link href="/#roadMap">
-                  <a className="nav__link">RoadMap</a>
+                  <a className={header.nav__link}>RoadMap</a>
                 </Link>
               </li>
-              <li className="nav__item">
+              <li className={header.nav__item}>
                 <Link href="/profile">
-                  <a className="nav__link">Profile</a>
+                  <a className={header.nav__link}>Profile</a>
                 </Link>
               </li>
-              <li className="nav__item">
+              <li className={header.nav__item}>
                 <Link href="/#faq">
-                  <a className="nav__link">FAQ</a>
+                  <a className={header.nav__link}>FAQ</a>
                 </Link>
               </li>
             </ul>
           </div>
-          <div className="socials">socials</div>
-          <div className="metamask">metamask</div>
+          <div className={header.socials}>socials</div>
+          <div className={header.metamask}>
+            <button className={header.metamask__button}>
+              <span>metamask</span>
+            </button>
+          </div>
         </div>
       </div>
     </header>

@@ -1,12 +1,12 @@
 import React from "react";
 import Footer from "./Footer";
 import Header from "./Header";
-
+import main from "../styles/main.module.css";
 function PageContainer({ children }) {
   return (
     <>
       <Header />
-      <>{children}</>
+      <div className={main.main}>{children}</div>
       <Footer />
     </>
   );
