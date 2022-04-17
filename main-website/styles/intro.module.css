@@ -2,15 +2,15 @@
   padding-top: 80px;
   position: relative;
 }
-.intro__container {
+.container {
   position: relative;
   padding-bottom: 122px;
 }
-.intro__wrapper {
+.wrapper {
   display: flex;
   margin-bottom: 60px;
 }
-.intro__info {
+.info {
   width: 54%;
   flex: none;
   padding-right: 30px;
@@ -20,12 +20,12 @@
   align-items: center;
   justify-content: space-around;
 }
-.intro__title {
+.title {
   margin-bottom: 44px;
   font-size: 50px;
   line-height: 60px;
 }
-.intro__calc {
+.calc {
   flex: auto;
   display: flex;
   flex-direction: column;

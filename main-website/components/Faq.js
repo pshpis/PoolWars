@@ -1,17 +1,39 @@
+import React from "react";
+import faq from "../styles/faq.module.css";
+import global from "../styles/global.module.css";
+
 function Faq() {
   return (
-    <section className="section" id="faq">
-      <div className="section__container container">
-        <div className="seaction__header">FAQ</div>
-        <div className="faq__wrapper">
-          <div className="faq__quest quest">
-            <ul className="quest__list">
-              <li className="quest__item">quest 1</li>
-              <li className="quest__item">quest 2</li>
-              <li className="quest__item">quest 3</li>
-              <li className="quest__item">quest 4</li>
-            </ul>
-          </div>
+    <section className={global.section} id="faq">
+      <div className={`${global.section__container} ${global.container}`}>
+        <div className={global.section__header}>FAQ</div>
+        <div className={faq.wrapper}>
+          <ul className={faq.list}>
+            <li className={faq.item}>
+              <div className={faq.item__header}>
+                <div className={faq.item__title}>quest 1</div>
+                <div className={faq.control}></div>
+              </div>
+            </li>
+            <li className={faq.item}>
+              <div className={faq.item__header}>
+                <div className={faq.item__title}>quest 1</div>
+                <div className={faq.control}></div>
+              </div>
+            </li>
+            <li className={faq.item}>
+              <div className={faq.item__header}>
+                <div className={faq.item__title}>quest 1</div>
+                <div className={faq.control}></div>
+              </div>
+            </li>
+            <li className={faq.item}>
+              <div className={faq.item__header}>
+                <div className={faq.item__title}>quest 1</div>
+                <div className={faq.control}></div>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </section>
