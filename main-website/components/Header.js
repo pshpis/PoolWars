@@ -14,7 +14,7 @@ function Header() {
             <ul className={header.nav__list}>
               <li className={header.nav__item}>
                 <Link href="/airdrop">
-                  <a className={header.nav__link}>AirDroap</a>
+                  <a className={header.nav__link}>AirDrop</a>
                 </Link>
               </li>
               <li className={header.nav__item}>
@@ -37,7 +37,7 @@ function Header() {
           <div className={header.socials}>socials</div>
           <div className={header.metamask}>
             <button className={header.metamask__button}>
-              <span>metamask</span>
+              <span>metamask fox</span>
             </button>
           </div>
         </div>

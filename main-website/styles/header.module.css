@@ -44,6 +44,7 @@
 .socials {
   display: flex;
   align-items: center;
+  margin-right: 10px;
 }
 .metamask__button {
   border-color: #fcef9a;
