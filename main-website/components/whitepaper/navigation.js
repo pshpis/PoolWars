@@ -1,17 +1,17 @@
 import {General} from "./content-blocks/General";
-import {GameFi} from "./content-blocks/GameFi";
 import {Roadmap} from "./content-blocks/Roadmap";
 import {Governance} from "./content-blocks/Governance";
 import {Links} from "./content-blocks/Links";
+import {PoolWars} from "./content-blocks/PoolWars";
 
-export const sections = ["General", "GameFi", "Roadmap", "Governance", "Links"];
+export const sections = ["General", "Pool Wars", "Roadmap", "Governance", "Links"];
 
 export const getContent = (section) => {
     switch (section){
         case "General":
             return <General/>
-        case "GameFi":
-            return <GameFi/>
+        case "Pool Wars":
+            return <PoolWars/>
         case "Roadmap":
             return <Roadmap/>
         case "Governance":

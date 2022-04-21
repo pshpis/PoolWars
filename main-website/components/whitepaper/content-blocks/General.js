@@ -1,7 +1,7 @@
 import {Box, Heading, Text} from "@chakra-ui/react";
 
 export const General = () => {
-    return <Box paddingLeft="80px" paddingRight="80px" paddingTop="24px" maxWidth="910px" paddingBottom="8px">
+    return <>
         <Heading color="rgba(59,69,78,1.00)" fontSize="48px" lineHeight="54px">General</Heading>
         <Text fontSize="16px" color="rgba(136,153,168,1.00)" marginTop="16px">General information about Pool Wars project</Text>
         <hr style={{marginTop: "20px",marginBottom:"20px", marginRight: "80px"}}/>
@@ -34,5 +34,5 @@ export const General = () => {
             in, thereby realizing <b>Play To Earn</b> strategy.
         </Text>
 
-    </Box>
+    </>
 }
