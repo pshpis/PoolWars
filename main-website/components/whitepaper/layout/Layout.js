@@ -36,7 +36,7 @@ export const Layout = ({children, currentSection, setCurrentSection}) => {
                     <DrawerContent>
                         <Box boxShadow="0px 1px 2px rgb(0 0 0 / 12%)" borderBottom="solid 1px rgba(211,220,228,1.00)"
                              height="69px" width="100%"
-                             backgroundColor="white"><DrawerCloseButton marginTop="100px"/></Box>
+                             backgroundColor="white"><DrawerCloseButton marginTop="8px"/></Box>
                         <Menu onMenuClose={onClose} currentSection={currentSection} setCurrentSection={setCurrentSection}/>
                     </DrawerContent>
                 </Drawer>
