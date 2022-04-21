@@ -1,4 +1,4 @@
-import {Box, Heading, Text} from "@chakra-ui/react";
+import {Heading, Text} from "@chakra-ui/react";
 
 export const General = () => {
     return <>
@@ -7,7 +7,7 @@ export const General = () => {
         <hr style={{marginTop: "20px",marginBottom:"20px", marginRight: "80px"}}/>
 
         <Text fontWeight="700" fontSize="16px">
-            “Pool Wars” team released an exclusive Play-To-Earn NFT collection built on Polygon, including 20,000 Warlords which are the main part of the "Battle of Conquerors" metaverse. Warlords NFT will soon be available for minting from our “Pool Wars” website.
+            “Pool Wars” team released an exclusive Play-To-Earn NFT collection built on Polygon, including 20,000 Warlords which are the main part of the &quot;Battle of Conquerors&quot; metaverse. Warlords NFT will soon be available for minting from our “Pool Wars” website.
         </Text>
         <hr style={{marginTop: "20px", marginBottom: "20px", marginRight: "80px"}}/>
 
