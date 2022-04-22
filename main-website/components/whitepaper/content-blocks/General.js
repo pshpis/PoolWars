@@ -2,7 +2,7 @@ import {Heading, Text} from "@chakra-ui/react";
 
 export const General = () => {
     return <>
-        <Heading color="rgba(59,69,78,1.00)" fontSize="48px" lineHeight="54px">General</Heading>
+        <Heading fontSize="48px" lineHeight="54px">General</Heading>
         <Text fontSize="16px" color="rgba(136,153,168,1.00)" marginTop="16px">General information about Pool Wars project</Text>
         <hr style={{marginTop: "20px",marginBottom:"20px"}}/>
 
