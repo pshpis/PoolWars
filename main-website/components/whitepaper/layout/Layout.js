@@ -46,7 +46,7 @@ export const Layout = ({children, currentSection, setCurrentSection}) => {
             }
 
             <GridItem colSpan={size.width > 800 ? 1 : 2} overflowY="scroll">
-                <Box paddingLeft={size.width > 800 ? "80px" : "16px"} paddingRight={size.width > 800 ? "80px" : "16px"} paddingTop="24px" maxWidth="910px" paddingBottom="8px">
+                <Box paddingLeft={size.width > 800 ? "80px" : "16px"} paddingRight={size.width > 800 ? "80px" : "16px"} paddingTop="24px" maxWidth="910px" paddingBottom="8px" color="rgba(59,69,78,1.00)">
                     {children}
                 </Box>
             </GridItem>
