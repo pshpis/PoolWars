@@ -1,4 +1,4 @@
-import {Box, Grid, GridItem, useDisclosure} from '@chakra-ui/react'
+import {Box, Grid, GridItem, useDisclosure, VStack} from '@chakra-ui/react'
 import {Header} from "./Header";
 import {Menu} from "./Menu";
 import {useState} from "react";
@@ -34,10 +34,13 @@ export const Layout = ({children, currentSection, setCurrentSection}) => {
                 <Drawer placement="left" isOpen={isOpen} onClose={onClose}>
                     <DrawerOverlay />
                     <DrawerContent>
-                        <Box boxShadow="0px 1px 2px rgb(0 0 0 / 12%)" borderBottom="solid 1px rgba(211,220,228,1.00)"
-                             height="69px" width="100%"
-                             backgroundColor="white"><DrawerCloseButton marginTop="8px"/></Box>
-                        <Menu onMenuClose={onClose} currentSection={currentSection} setCurrentSection={setCurrentSection}/>
+                        <VStack height="100%" width="100%" spacing="0">
+                            <Box boxShadow="0px 1px 2px rgb(0 0 0 / 12%)" borderBottom="solid 1px rgba(211,220,228,1.00)"
+                                                                height="64px" width="100%" minHeight="64px"
+                                                                backgroundColor="white"><DrawerCloseButton marginTop="8px"/></Box>
+                            <Menu onMenuClose={onClose} currentSection={currentSection} setCurrentSection={setCurrentSection}/>
+                        </VStack>
+
                     </DrawerContent>
                 </Drawer>
             }
