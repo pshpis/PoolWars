@@ -1,8 +1,8 @@
 import {Box, Center, Flex, HStack, Spacer, Stack, Text, VStack} from "@chakra-ui/react";
-import {sections} from "./navigation";
+import {getSectionPathName, sections} from "./navigation";
 import {useWindowSize} from "../../hooks/useWindowSize";
-import {AiOutlineArrowLeft} from "react-icons/ai";
 import {ArrowBackIcon, ArrowForwardIcon} from '@chakra-ui/icons';
+import {useRouter} from "next/router";
 
 function getSectionId(section){
     return sections.indexOf(section);
@@ -19,18 +19,18 @@ function getNextSection(section){
 export const NavigationPanel = ({currentSection, setCurrentSection}) => {
     const size = useWindowSize();
     let miniSize = size.width != null && size.width <= 910;
-    console.log(sections);
-    console.log(currentSection);
-    console.log(getSectionId(currentSection));
+    const router = useRouter();
 
     const goNextSection = () => {
         let sectionId = getSectionId(currentSection);
         setCurrentSection(sections[sectionId + 1]);
+        router.push("/whitepaper/" + getSectionPathName(sections[sectionId + 1]))
     }
 
     const goPreviousSection = () => {
         let sectionId = getSectionId(currentSection);
         setCurrentSection(sections[sectionId - 1]);
+        router.push("/whitepaper/" + getSectionPathName(sections[sectionId - 1]))
     }
 
     let isFirstButton = getSectionId(currentSection) < sections.length - 1;
@@ -39,7 +39,7 @@ export const NavigationPanel = ({currentSection, setCurrentSection}) => {
     let firstButton = isFirstButton ?
     <Box flexGrow="1" height="74px" minWidth="74px" boxShadow="0px 1px 2px rgb(0 0 0 / 12%)"
          border="1px solid rgba(227,232,237,1.00)" borderRadius="4px" onClick={goNextSection}
-         margin={isSecondButton ? !miniSize ? "0 16px 0 0" : "0 0 16px 0"  : ""} padding="16px">
+         padding="16px">
         <Center height="100%">
             <Flex width="100%" justifyContent="space-between" direction="row-reverse">
                 <Center><ArrowForwardIcon color="rgba(136,153,168,1.00)" w="24px" h="24px"/></Center>
