@@ -29,7 +29,7 @@ export const Layout = ({children, currentSection, setCurrentSection}) => {
             {
                 size.width > 800 ?
                 <GridItem colSpan={1} borderRight={borderStyle}>
-                    <Menu currentSection={currentSection} setCurrentSection={setCurrentSection}/>
+                    <Menu currentSection={currentSection} setCurrentSection={setCurrentSection} onMenuClose={onClose}/>
                 </GridItem> :
                 <Drawer placement="left" isOpen={isOpen} onClose={onClose}>
                     <DrawerOverlay />
