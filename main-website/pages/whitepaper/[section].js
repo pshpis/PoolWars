@@ -5,5 +5,5 @@ import {getSectionBySectionPathName, sections} from "../../components/whitepaper
 export default function Home(){
 
 
-    return <WhitePaper/>
+    return <WhitePaper defaultSection={sections[0]}/>
 }

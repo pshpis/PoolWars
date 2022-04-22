@@ -3,6 +3,7 @@ import {getSectionPathName, sections} from "./navigation";
 import {useWindowSize} from "../../hooks/useWindowSize";
 import {ArrowBackIcon, ArrowForwardIcon} from '@chakra-ui/icons';
 import {useRouter} from "next/router";
+import {useState} from "react";
 
 function getSectionId(section){
     return sections.indexOf(section);
@@ -21,6 +22,9 @@ export const NavigationPanel = ({currentSection, setCurrentSection}) => {
     let miniSize = size.width != null && size.width <= 910;
     const router = useRouter();
 
+    const [isFirstHover, setFirstHover] = useState(false);
+    const [isSecondHover, setSecondHover] = useState(false);
+
     const goNextSection = () => {
         let sectionId = getSectionId(currentSection);
         setCurrentSection(sections[sectionId + 1]);
@@ -38,15 +42,16 @@ export const NavigationPanel = ({currentSection, setCurrentSection}) => {
 
     let firstButton = isFirstButton ?
     <Box flexGrow="1" height="74px" minWidth="74px" boxShadow="0px 1px 2px rgb(0 0 0 / 12%)"
-         border="1px solid rgba(227,232,237,1.00)" borderRadius="4px" onClick={goNextSection}
-         padding="16px">
+         border={isFirstHover ? "1px solid rgb(52, 109, 219)" : "1px solid rgba(227,232,237,1.00)"} borderRadius="4px" onClick={goNextSection}
+         onMouseEnter={() => setFirstHover(true)}
+         onMouseLeave={() => setFirstHover(false)} padding="16px">
         <Center height="100%">
             <Flex width="100%" justifyContent="space-between" direction="row-reverse">
-                <Center><ArrowForwardIcon color="rgba(136,153,168,1.00)" w="24px" h="24px"/></Center>
+                <Center><ArrowForwardIcon color={isFirstHover ? "rgb(52, 109, 219)" : "rgba(136,153,168,1.00)"} w="24px" h="24px"/></Center>
 
                 <VStack height="42px" spacing="0">
                     <Text width="100%" fontSize="12px" lineHeight="18px" color="rgba(136,153,168,1.00)" textAlign="left">Next</Text>
-                    <Text width="100%" fontSize="16px" lineHeight="24px" marginTop="0" textAlign="left">{getNextSection(currentSection)}</Text>
+                    <Text width="100%" fontSize="16px" lineHeight="24px" marginTop="0" textAlign="left" color={isFirstHover ? "rgb(52, 109, 219)" : "inherit"}>{getNextSection(currentSection)}</Text>
                 </VStack>
             </Flex>
         </Center>
@@ -54,15 +59,16 @@ export const NavigationPanel = ({currentSection, setCurrentSection}) => {
 
     let secondButton = isSecondButton ?
     <Box flexGrow="1" height="74px" minWidth="74px" boxShadow="0px 1px 2px rgb(0 0 0 / 12%)"
-         border="1px solid rgba(227,232,237,1.00)" borderRadius="4px" padding="16px"
-         onClick={goPreviousSection}>
+         border={isSecondHover ? "1px solid rgb(52, 109, 219)" : "1px solid rgba(227,232,237,1.00)"}borderRadius="4px" padding="16px"
+         onClick={goPreviousSection} onMouseEnter={() => setSecondHover(true)}
+         onMouseLeave={() => setSecondHover(false)}>
         <Center height="100%">
             <Flex width="100%" justifyContent="space-between">
-                <Center><ArrowBackIcon color="rgba(136,153,168,1.00)" w="24px" h="24px"/></Center>
+                <Center><ArrowBackIcon color={isSecondHover ? "rgb(52, 109, 219)" : "rgba(136,153,168,1.00)"} w="24px" h="24px"/></Center>
 
                 <VStack height="42px" spacing="0">
                     <Text width="100%" fontSize="12px" lineHeight="18px" color="rgba(136,153,168,1.00)" textAlign="right"> Previous</Text>
-                    <Text width="100%" fontSize="16px" lineHeight="24px" marginTop="0" textAlign="right">{getPreviousSection(currentSection)}</Text>
+                    <Text width="100%" fontSize="16px" lineHeight="24px" marginTop="0" textAlign="right" color={isSecondHover ? "rgb(52, 109, 219)" : "inherit"}>{getPreviousSection(currentSection)}</Text>
                 </VStack>
             </Flex>
         </Center>

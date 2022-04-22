@@ -4,7 +4,7 @@ import {Layout} from "./layout/Layout";
 import {NavigationPanel} from "./NavigationPanel";
 
 export const WhitePaper = ({defaultSection}) => {
-    let [currentSection, setCurrentSection] = useState(sections[0]);
+    let [currentSection, setCurrentSection] = useState(defaultSection);
 
     let content = getContent(currentSection);
 
