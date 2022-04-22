@@ -41,7 +41,7 @@ export const NavigationPanel = ({currentSection, setCurrentSection}) => {
     let isSecondButton = getSectionId(currentSection) > 0;
 
     let firstButton = isFirstButton ?
-    <Box flexGrow="1" height="74px" minWidth="74px" boxShadow="0px 1px 2px rgb(0 0 0 / 12%)"
+    <Box flex="1 1 0px" height="74px" minWidth="74px" boxShadow="0px 1px 2px rgb(0 0 0 / 12%)"
          border={isFirstHover ? "1px solid rgb(52, 109, 219)" : "1px solid rgba(227,232,237,1.00)"} borderRadius="4px" onClick={goNextSection}
          onMouseEnter={() => setFirstHover(true)}
          onMouseLeave={() => setFirstHover(false)} padding="16px">
@@ -58,7 +58,7 @@ export const NavigationPanel = ({currentSection, setCurrentSection}) => {
     </Box> : "";
 
     let secondButton = isSecondButton ?
-    <Box flexGrow="1" height="74px" minWidth="74px" boxShadow="0px 1px 2px rgb(0 0 0 / 12%)"
+    <Box flex="1 1 0px" height="74px" minWidth="74px" boxShadow="0px 1px 2px rgb(0 0 0 / 12%)"
          border={isSecondHover ? "1px solid rgb(52, 109, 219)" : "1px solid rgba(227,232,237,1.00)"}borderRadius="4px" padding="16px"
          onClick={goPreviousSection} onMouseEnter={() => setSecondHover(true)}
          onMouseLeave={() => setSecondHover(false)}>
