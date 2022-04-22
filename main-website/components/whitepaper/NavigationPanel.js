@@ -28,12 +28,16 @@ export const NavigationPanel = ({currentSection, setCurrentSection}) => {
     const goNextSection = () => {
         let sectionId = getSectionId(currentSection);
         setCurrentSection(sections[sectionId + 1]);
+        setSecondHover(false);
+        setFirstHover(false);
         router.push("/whitepaper/" + getSectionPathName(sections[sectionId + 1]))
     }
 
     const goPreviousSection = () => {
         let sectionId = getSectionId(currentSection);
         setCurrentSection(sections[sectionId - 1]);
+        setSecondHover(false);
+        setFirstHover(false);
         router.push("/whitepaper/" + getSectionPathName(sections[sectionId - 1]))
     }
 
