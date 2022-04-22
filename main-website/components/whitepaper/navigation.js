@@ -3,8 +3,9 @@ import {Roadmap} from "./content-blocks/Roadmap";
 import {Governance} from "./content-blocks/Governance";
 import {Links} from "./content-blocks/Links";
 import {PoolWars} from "./content-blocks/PoolWars";
+import {BattleOfConquerors} from "./content-blocks/BattleOfConquerors";
 
-export const sections = ["General", "Pool Wars", "Roadmap", "Governance", "Links"];
+export const sections = ["General", "Pool Wars", "Battle of the Conquerors", "Governance", "Roadmap",  "Links"];
 
 export const getContent = (section) => {
     if (section === "") return <></>;
@@ -13,6 +14,8 @@ export const getContent = (section) => {
             return <General/>
         case "Pool Wars":
             return <PoolWars/>
+        case "Battle of the Conquerors":
+            return <BattleOfConquerors/>
         case "Roadmap":
             return <Roadmap/>
         case "Governance":
@@ -35,6 +38,8 @@ export const getSectionPathName = (section) => {
             return "governance"
         case "Links":
             return "links"
+        case "Battle of the Conquerors":
+            return "battle"
     }
 }
 
@@ -51,6 +56,8 @@ export const getSectionBySectionPathName = (sectionPathName) => {
             return "Governance"
         case "links":
             return "Links"
+        case "battle":
+            return "Battle of the Conquerors";
     }
     return undefined;
 }
