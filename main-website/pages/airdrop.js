@@ -1,27 +1,18 @@
-import { useAddress, useNFTDrop } from "@thirdweb-dev/react";
 import React from "react";
+import Airdrop from "../components/Airdrop";
 import PageContainer from "../components/PageContainer";
-
-function Airdrop() {
-  const nftDrop = useNFTDrop("0xF643591DC6b5c3516a0B748500aCe87ea57558aF");
-  const address = useAddress();
-  const MintNft = () => {
-    if (!nftDrop || !address) return;
-    nftDrop
-      .claimTo(address, 1)
-      .then(async (tx) => {
-        console.log(tx);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+import airdrop from "../styles/airdrop.module.css";
+import global from "../styles/global.module.css";
+function AirdropPage() {
   return (
     <PageContainer>
-      <div>Airdrop</div>
-      <button onClick={MintNft}>mint</button>
+      <section className={airdrop.airdrop}>
+        <div className={`${airdrop.container} ${global.container}`}>
+          <Airdrop />
+        </div>
+      </section>
     </PageContainer>
   );
 }
 
-export default Airdrop;
+export default AirdropPage;

@@ -2,7 +2,7 @@ import React from "react";
 
 import intro from "../styles/intro.module.css";
 import global from "../styles/global.module.css";
-
+import meta from "../styles/meta.module.css";
 function Intro() {
   return (
     <section className={intro.intro}>
@@ -25,7 +25,11 @@ function Intro() {
               info Lorem, ipsum dolor sit amet consectetur adipisicing elit.
               Fugit vel excepturi iure minima amet dolores optio
             </div>
-            <button className={intro.calc__button}>Get warlord’s shield</button>
+            <button
+              className={`${intro.calc__button} ${meta.button} ${meta.button_primary}  ${meta.button_medium} `}
+            >
+              Get warlord’s shield
+            </button>
           </div>
         </div>
       </div>
