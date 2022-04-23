@@ -8,7 +8,7 @@ const codes = ["a", "b", "c"];
 function Airdrop() {
   const [input, setInput] = useState("");
   const [check, setCheck] = useState(false);
-  const [freezeInput, setFreezeInput] = useState(false);
+  const [freeze, setFreeze] = useState(false);
   const nftDrop = useNFTDrop("0xF643591DC6b5c3516a0B748500aCe87ea57558aF");
   const address = useAddress();
   const MintNft = () => {
@@ -39,34 +39,33 @@ function Airdrop() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setFreezeInput(true);
+    setFreeze(true);
     const serverAnswer = await checkCode(input);
     if (!serverAnswer) {
-      setFreezeInput(false);
+      setFreeze(false);
     }
     await setCheck(serverAnswer);
   };
   const handleInputChange = (e) => {
-    if (!freezeInput) {
+    if (!freeze) {
       setInput(e.target.value);
     }
   };
   return (
     <div className={airdrop.wrapper}>
       <div className={airdrop.title}>Airdrop Title</div>
-      <div className={airdrop.desc}>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa quasi
-        maiores nisi molestiae hic alias provident maxime error
-      </div>
+      <div className={airdrop.desc}>right codes : a, b, c</div>
 
       <form onSubmit={handleSubmit} className={airdrop.form}>
         <input
+          disabled={freeze}
           type="text"
           placeholder="Write your code..."
           className={airdrop.input}
           value={input}
           onChange={handleInputChange}
         />
+        {check && <span>Checked!!</span>}
         {check ? (
           <button
             className={`${airdrop.mint_button} ${meta.button} ${meta.button_primary}  ${meta.button_medium} `}
