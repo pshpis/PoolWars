@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import header from "../styles/header.module.css";
 import global from "../styles/global.module.css";
+import { MetaMaskButton } from "./MetaMaskButton";
 function Header() {
   return (
     <header className={header.header}>
@@ -36,9 +37,7 @@ function Header() {
           </div>
           <div className={header.socials}>socials</div>
           <div className={header.metamask}>
-            <button className={header.metamask__button}>
-              <span>metamask fox</span>
-            </button>
+            <MetaMaskButton></MetaMaskButton>
           </div>
         </div>
       </div>
