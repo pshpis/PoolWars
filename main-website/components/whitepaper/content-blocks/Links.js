@@ -1,6 +1,6 @@
 import {Button, Image, Heading, Text, Table, Box, Flex, Center, VStack, HStack} from "@chakra-ui/react";
 import {useState} from "react";
-import {FaTwitter} from "react-icons/all";
+import {FaTwitter} from "react-icons/fa";
 
 export const Links = () => {
     const [isFirstHover, setFirstHover] = useState(false);
