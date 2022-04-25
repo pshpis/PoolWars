@@ -2,6 +2,7 @@ import {Box, VStack} from "@chakra-ui/react";
 import {sections, getSectionPathName, getContent} from "../navigation";
 import {useState} from "react";
 import {useRouter} from "next/router";
+import {useWindowSize} from "../../../hooks/useWindowSize";
 
 
 const MenuElement = ({currentSection, setCurrentSection, onMenuClose, section}) => {
@@ -35,9 +36,14 @@ const MenuElement = ({currentSection, setCurrentSection, onMenuClose, section}) 
 
 export const Menu = ({currentSection, setCurrentSection, onMenuClose}) => {
 
+    const size = useWindowSize();
+    let paddingLeft = "24px";
+    if (size.width > 1550){
+        paddingLeft = (size.width - 910) / 2 - 300 + "px";
+    }
     let menuElements = sections.map((section) => <MenuElement currentSection={currentSection} setCurrentSection={setCurrentSection} onMenuClose={onMenuClose} key={section} section={section}/>);
     return (
-        <VStack paddingTop="16px" paddingLeft="24px" width="100%" height="100%" backgroundColor="rgba(245,247,249,1.00)" spacing="0">
+        <VStack paddingTop="16px" paddingLeft={paddingLeft} width="100%" height="100%" backgroundColor="rgba(245,247,249,1.00)" spacing="0">
             {menuElements}
         </VStack>
     )

@@ -20,8 +20,13 @@ export const Layout = ({children, currentSection, setCurrentSection}) => {
 
     const size = useWindowSize();
     const {isOpen, onOpen, onClose} = useDisclosure();
+
+    let templateColumns = "300px auto";
+    if (size.width > 1500){
+        templateColumns = (size.width - 910) / 2 + "px auto";
+    }
     return(
-        <Grid overflow="hidden" width="100%" height="100%" templateColumns="300px auto"
+        <Grid overflow="hidden" width="100%" height="100%" templateColumns={templateColumns}
               templateRows={size.width > 800 ? "80px auto" : "64px auto"}>
             <GridItem colSpan={2} borderBottom={borderStyle} boxShadow={headerShadow}>
                 <Header onMenuOpen={onOpen}/>
