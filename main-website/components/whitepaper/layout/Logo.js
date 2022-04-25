@@ -18,8 +18,12 @@ const BorderRight = () => {
 
 export const Logo = () => {
     const size = useWindowSize();
+    let marginLeft = "0px";
+    if (size.width > 1500){
+        marginLeft = (size.width - 910) / 2 - 300;
+    }
     return (
-      <Center  width={size.width > 800 ? "100%" : "229px"} height="100%" position="relative">
+      <Center marginLeft={marginLeft} width={size.width > 800 ? "100%" : "229px"} height="100%" position="relative">
           <HStack spacing="16px">
               <Image style={{marginRight:"16px"}} src={logoPic} height={size.width > 800 ? "40px" : "30px"} width={size.width > 800 ? "40px" : "30px"} />
               <Text color="rgb(59, 69, 78)" fontSize="1.15em"><b>Pool Wars #Warlords</b></Text>
