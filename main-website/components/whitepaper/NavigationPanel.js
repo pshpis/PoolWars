@@ -1,8 +1,9 @@
 import {Box, Center, Flex, HStack, Spacer, Stack, Text, VStack} from "@chakra-ui/react";
-import {sections} from "./navigation";
+import {getSectionPathName, sections} from "./navigation";
 import {useWindowSize} from "../../hooks/useWindowSize";
-import {AiOutlineArrowLeft} from "react-icons/ai";
 import {ArrowBackIcon, ArrowForwardIcon} from '@chakra-ui/icons';
+import {useRouter} from "next/router";
+import {useState} from "react";
 
 function getSectionId(section){
     return sections.indexOf(section);
@@ -19,50 +20,59 @@ function getNextSection(section){
 export const NavigationPanel = ({currentSection, setCurrentSection}) => {
     const size = useWindowSize();
     let miniSize = size.width != null && size.width <= 910;
-    console.log(sections);
-    console.log(currentSection);
-    console.log(getSectionId(currentSection));
+    const router = useRouter();
+
+    const [isFirstHover, setFirstHover] = useState(false);
+    const [isSecondHover, setSecondHover] = useState(false);
 
     const goNextSection = () => {
         let sectionId = getSectionId(currentSection);
         setCurrentSection(sections[sectionId + 1]);
+        setSecondHover(false);
+        setFirstHover(false);
+        router.push("/whitepaper/" + getSectionPathName(sections[sectionId + 1]))
     }
 
     const goPreviousSection = () => {
         let sectionId = getSectionId(currentSection);
         setCurrentSection(sections[sectionId - 1]);
+        setSecondHover(false);
+        setFirstHover(false);
+        router.push("/whitepaper/" + getSectionPathName(sections[sectionId - 1]))
     }
 
     let isFirstButton = getSectionId(currentSection) < sections.length - 1;
     let isSecondButton = getSectionId(currentSection) > 0;
 
     let firstButton = isFirstButton ?
-    <Box flexGrow="1" height="74px" minWidth="74px" boxShadow="0px 1px 2px rgb(0 0 0 / 12%)"
-         border="1px solid rgba(227,232,237,1.00)" borderRadius="4px" onClick={goNextSection}
-         margin={isSecondButton ? !miniSize ? "0 16px 0 0" : "0 0 16px 0"  : ""} padding="16px">
+    <Box flex="1 1 0px" height="74px" minWidth="74px" boxShadow="0px 1px 2px rgb(0 0 0 / 12%)"
+         border={isFirstHover ? "1px solid rgb(52, 109, 219)" : "1px solid rgba(227,232,237,1.00)"} borderRadius="4px" onClick={goNextSection}
+         onMouseEnter={() => setFirstHover(true)}
+         onMouseLeave={() => setFirstHover(false)} padding="16px">
         <Center height="100%">
             <Flex width="100%" justifyContent="space-between" direction="row-reverse">
-                <Center><ArrowForwardIcon color="rgba(136,153,168,1.00)" w="24px" h="24px"/></Center>
+                <Center><ArrowForwardIcon color={isFirstHover ? "rgb(52, 109, 219)" : "rgba(136,153,168,1.00)"} w="24px" h="24px"/></Center>
 
                 <VStack height="42px" spacing="0">
                     <Text width="100%" fontSize="12px" lineHeight="18px" color="rgba(136,153,168,1.00)" textAlign="left">Next</Text>
-                    <Text width="100%" fontSize="16px" lineHeight="24px" marginTop="0" textAlign="left">{getNextSection(currentSection)}</Text>
+                    <Text width="100%" fontSize="16px" lineHeight="24px" marginTop="0" textAlign="left" color={isFirstHover ? "rgb(52, 109, 219)" : "inherit"}>{getNextSection(currentSection)}</Text>
                 </VStack>
             </Flex>
         </Center>
     </Box> : "";
 
     let secondButton = isSecondButton ?
-    <Box flexGrow="1" height="74px" minWidth="74px" boxShadow="0px 1px 2px rgb(0 0 0 / 12%)"
-         border="1px solid rgba(227,232,237,1.00)" borderRadius="4px" padding="16px"
-         onClick={goPreviousSection}>
+    <Box flex="1 1 0px" height="74px" minWidth="74px" boxShadow="0px 1px 2px rgb(0 0 0 / 12%)"
+         border={isSecondHover ? "1px solid rgb(52, 109, 219)" : "1px solid rgba(227,232,237,1.00)"}borderRadius="4px" padding="16px"
+         onClick={goPreviousSection} onMouseEnter={() => setSecondHover(true)}
+         onMouseLeave={() => setSecondHover(false)}>
         <Center height="100%">
             <Flex width="100%" justifyContent="space-between">
-                <Center><ArrowBackIcon color="rgba(136,153,168,1.00)" w="24px" h="24px"/></Center>
+                <Center><ArrowBackIcon color={isSecondHover ? "rgb(52, 109, 219)" : "rgba(136,153,168,1.00)"} w="24px" h="24px"/></Center>
 
                 <VStack height="42px" spacing="0">
                     <Text width="100%" fontSize="12px" lineHeight="18px" color="rgba(136,153,168,1.00)" textAlign="right"> Previous</Text>
-                    <Text width="100%" fontSize="16px" lineHeight="24px" marginTop="0" textAlign="right">{getPreviousSection(currentSection)}</Text>
+                    <Text width="100%" fontSize="16px" lineHeight="24px" marginTop="0" textAlign="right" color={isSecondHover ? "rgb(52, 109, 219)" : "inherit"}>{getPreviousSection(currentSection)}</Text>
                 </VStack>
             </Flex>
         </Center>

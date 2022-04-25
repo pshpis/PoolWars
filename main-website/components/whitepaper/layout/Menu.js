@@ -1,15 +1,20 @@
 import {Box, VStack} from "@chakra-ui/react";
-import {sections} from "../navigation";
+import {sections, getSectionPathName, getContent} from "../navigation";
 import {useState} from "react";
+import {useRouter} from "next/router";
+import {useWindowSize} from "../../../hooks/useWindowSize";
 
 
-const MenuElement = ({children, currentSection, setCurrentSection, onMenuClose}) => {
-    if (!sections.includes(children)) throw new Error("Child is not a string");
+const MenuElement = ({currentSection, setCurrentSection, onMenuClose, section}) => {
+    if (!sections.includes(section)) throw new Error("Section is not a string");
 
     const [isHover, setHover] = useState(false);
-    const isActive = () => currentSection === children;
+    const isActive = () => currentSection === section;
+    const router = useRouter();
+
     const onClick = () => {
-      setCurrentSection(children);
+      setCurrentSection(section);
+      router.push("/whitepaper/" + getSectionPathName(section));
       onMenuClose();
     }
 
@@ -24,16 +29,21 @@ const MenuElement = ({children, currentSection, setCurrentSection, onMenuClose})
             borderRightWidth="0px" backgroundColor={backgroundColor}
             onClick={onClick} onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}>
-                {children}
+                {section}
         </Box>
     );
 }
 
 export const Menu = ({currentSection, setCurrentSection, onMenuClose}) => {
 
-    let menuElements = sections.map((section) => <MenuElement currentSection={currentSection} setCurrentSection={setCurrentSection} onMenuClose={onMenuClose} key={section}>{section}</MenuElement>);
+    const size = useWindowSize();
+    let paddingLeft = "24px";
+    if (size.width > 1550){
+        paddingLeft = (size.width - 910) / 2 - 300 + "px";
+    }
+    let menuElements = sections.map((section) => <MenuElement currentSection={currentSection} setCurrentSection={setCurrentSection} onMenuClose={onMenuClose} key={section} section={section}/>);
     return (
-        <VStack paddingTop="16px" paddingLeft="24px" width="100%" height="100%" backgroundColor="rgba(245,247,249,1.00)" spacing="0">
+        <VStack paddingTop="16px" paddingLeft={paddingLeft} width="100%" height="100%" backgroundColor="rgba(245,247,249,1.00)" spacing="0">
             {menuElements}
         </VStack>
     )
