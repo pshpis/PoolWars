@@ -4,10 +4,16 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: '/whitepaper',
+        source: '/',
         destination: '/whitepaper/general',
         permanent: true,
       },
+      {
+        source: '/whitepaper',
+        destination: '/whitepaper/general',
+        permanent: true,
+      }
+
     ]
   }
 }
