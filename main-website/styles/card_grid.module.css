@@ -1,0 +1,9 @@
+.wrapper {
+}
+.card_grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+.item {
+  padding: 0 25px;
+}

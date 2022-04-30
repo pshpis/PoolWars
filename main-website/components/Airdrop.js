@@ -3,7 +3,7 @@ import { React, useState } from "react";
 import airdrop from "../styles/airdrop.module.css";
 import meta from "../styles/meta.module.css";
 //database
-const codes = ["a", "b", "c"];
+const codes = ["Petr.off"];
 
 function Airdrop() {
   const [input, setInput] = useState("");
@@ -54,7 +54,7 @@ function Airdrop() {
   return (
     <div className={airdrop.wrapper}>
       <div className={airdrop.title}>Airdrop Title</div>
-      <div className={airdrop.desc}>right codes : a, b, c</div>
+      <div className={airdrop.desc}>right code: Petr.off</div>
 
       <form onSubmit={handleSubmit} className={airdrop.form}>
         <input
