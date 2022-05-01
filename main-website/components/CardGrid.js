@@ -7,7 +7,7 @@ function CardGrid({ cards }) {
     <div className={card_grid.wrapper}>
       <div className={card_grid.card_grid}>
         {cards.map((card) => (
-          <div className={card_grid.item}>
+          <div className={card_grid.item} key={card.metadata.id._hex}>
             <Card data={card} />
           </div>
         ))}

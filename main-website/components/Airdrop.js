@@ -4,6 +4,19 @@ import airdrop from "../styles/airdrop.module.css";
 import meta from "../styles/meta.module.css";
 //database
 const codes = ["Petr.off"];
+async function updateCode(id) {
+  await fetch(`/api/update/${id}`, {
+    method: "PUT",
+  });
+  await Router.push("/");
+}
+async function checkCode(id) {
+  const res = await fetch(`/api/check/${id}`, {
+    method: "GET",
+  });
+  const data = await res.json();
+  return data.value;
+}
 
 function Airdrop() {
   const [input, setInput] = useState("");
@@ -17,30 +30,18 @@ function Airdrop() {
       .claimTo(address, 1)
       .then(async (tx) => {
         console.log(tx);
+        updateCode(input);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  const checkCode = async (code) => {
-    //some backend stuff...
-    const result = await new Promise((resolve) =>
-      setTimeout(() => {
-        if (codes.includes(code)) {
-          return resolve(true);
-        } else {
-          return resolve(false);
-        }
-      }, 1000)
-    );
-    return result;
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     setFreeze(true);
     const serverAnswer = await checkCode(input);
+    console.log(serverAnswer);
     if (!serverAnswer) {
       setFreeze(false);
     }
