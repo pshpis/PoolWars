@@ -8,7 +8,6 @@ async function updateCode(id) {
   await fetch(`/api/update/${id}`, {
     method: "PUT",
   });
-  await Router.push("/");
 }
 async function checkCode(id) {
   const res = await fetch(`/api/check/${id}`, {
