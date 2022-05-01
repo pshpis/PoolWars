@@ -1,6 +1,6 @@
 import PageContainer from "../components/PageContainer";
 import { useAddress, useNFTDrop } from "@thirdweb-dev/react";
-import { React, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import card from "../styles/card.module.css";
 import profile from "../styles/profile.module.css";
 import global from "../styles/global.module.css";

@@ -3,6 +3,9 @@ import Airdrop from "../components/Airdrop";
 import PageContainer from "../components/PageContainer";
 import airdrop from "../styles/airdrop.module.css";
 import global from "../styles/global.module.css";
+
+import prisma from "../lib/prisma";
+
 function AirdropPage() {
   return (
     <PageContainer>
