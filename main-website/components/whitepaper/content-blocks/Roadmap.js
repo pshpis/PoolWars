@@ -25,5 +25,10 @@ export const Roadmap = () => {
         <Text padding="24px 0px 8px" fontWeight="700" fontSize="24px" lineHeight="36px">Launching the “Battle of the Conquerors”</Text>
         <Text padding="8px 0px">It will realize <b><i>GameFi</i></b> and the <b><i>Play-to-Earn</i></b> concept and will give you an opportunity to use the uniqueness of each warlord. Using special traits of your <b>Warlord</b> and increasing your <b>NFTs</b>, you will be able to win a <b>$300,000 Prize Pool</b>.</Text>
 
+        <hr style={{marginTop: "24px", padding: "16px 0px 0px"}}/>
+        <Text padding="24px 0px 8px" fontWeight="700" fontSize="32px" lineHeight="40px">Stage 4</Text>
+        <Text padding="24px 0px 8px" fontWeight="700" fontSize="24px" lineHeight="36px">Launching token on Polygon Mainnet</Text>
+        <Text padding="8px 0px">Launching our token on <b><i>Dex</i></b> and <b><i>Cex</i></b>. It will be needed to purchase our warlords in the future and purchases in our Metaverse. All commissions will be taken by our token. Every week we will burn part of our income to create a <b>deflation model</b>.</Text>
+
     </>
 }
