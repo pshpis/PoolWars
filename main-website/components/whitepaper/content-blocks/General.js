@@ -7,7 +7,7 @@ export const General = () => {
         <hr style={{marginTop: "20px",marginBottom:"20px"}}/>
 
         <Text fontWeight="700" fontSize="16px">
-            “Pool Wars” team released an exclusive Play-To-Earn NFT collection built on Polygon, including 20,000 Warlords which are the main part of the &quot;Battle of Conquerors&quot; Metaverse. Warlords NFT's will soon be available for minting from our “Pool Wars” website.
+            “Pool Wars” team released an exclusive Play-To-Earn NFT collection built on Polygon, including 20,000 Warlords which are the main part of the &quot;Battle of Conquerors&quot; Metaverse. Warlords NFT&apos;s will soon be available for minting from our “Pool Wars” website.
         </Text>
         <hr style={{marginTop: "20px", marginBottom: "20px"}}/>
 
