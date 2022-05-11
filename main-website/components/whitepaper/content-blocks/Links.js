@@ -72,17 +72,18 @@ export const Links = () => {
         <Text fontSize="16px" color="rgba(136,153,168,1.00)" marginTop="16px">Links that are related to the “Pool Wars“</Text>
         <hr style={{marginTop: "20px",marginBottom:"20px"}}/>
 
-        <Text padding="24px 0px 8px" fontSize="32px" fontWeight="700" lineHeight="40px">Twitter</Text>
+        <Text margin="24px 0px 8px" fontSize="32px" fontWeight="700" lineHeight="40px">Twitter</Text>
         <TwitterButton />
 
         <hr style={{marginTop: "24px", padding: "16px 0px 0px"}}/>
-        <Text padding="24px 0px 8px" fontSize="32px" fontWeight="700" lineHeight="40px">Telegram</Text>
+        <Text margin="24px 0px 8px" fontSize="32px" fontWeight="700" lineHeight="40px">Telegram</Text>
 
         <TelegramButton />
         <hr style={{marginTop: "24px", padding: "16px 0px 0px"}}/>
 
-        <Text padding="24px 0px 8px" fontSize="32px" fontWeight="700" lineHeight="40px">Discord</Text>
+        <Text margin="24px 0px 8px" fontSize="32px" fontWeight="700" lineHeight="40px">Discord</Text>
 
         <DiscordButton />
+        <Box height="24px"/>
     </>;
 }
