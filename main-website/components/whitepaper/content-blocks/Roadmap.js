@@ -13,17 +13,22 @@ export const Roadmap = () => {
         <hr style={{marginTop: "24px", padding: "16px 0px 0px"}}/>
         <Text padding="24px 0px 8px" fontWeight="700" fontSize="32px" lineHeight="40px">Stage 1</Text>
         <Text padding="24px 0px 8px" fontWeight="700" fontSize="24px" lineHeight="36px">Launching Warlord’s NFT Collection</Text>
-        <Text padding="8px 0px">Launching <b>Warlord’s NFT Collection</b> and <b>airdrop 500 Warlords NFT</b> for first members of our community. At this stage our collection will also be presented at the <b>biggest marketplaces</b>, including <b>OpenSea</b>.</Text>
+        <Text padding="8px 0px">Launching <b>Warlord’s NFT Collection</b> and <b>airdrop 500 Warlords NFTs</b> for the first members of our community. At this stage our collection will also be presented at the <b>biggest marketplaces</b>, including <b>OpenSea</b>.</Text>
 
         <hr style={{marginTop: "24px", padding: "16px 0px 0px"}}/>
         <Text padding="24px 0px 8px" fontWeight="700" fontSize="32px" lineHeight="40px">Stage 2</Text>
         <Text padding="24px 0px 8px" fontWeight="700" fontSize="24px" lineHeight="36px">Launching “Pool Wars“</Text>
-        <Text padding="8px 0px">Launching <b>“Pool Wars”</b>. <b>Warlord’s NFT</b> owners will receive <b>30%</b> of all commissions on our <b>Metaverse</b>. Invite your friends and win together.</Text>
+        <Text padding="8px 0px">Launching <b>“Pool Wars”</b>. <b>Warlord’s NFT</b> owners will receive <b>30%</b> of all commissions in our <b>Metaverse</b>. Invite your friends and win together.</Text>
 
         <hr style={{marginTop: "24px", padding: "16px 0px 0px"}}/>
         <Text padding="24px 0px 8px" fontWeight="700" fontSize="32px" lineHeight="40px">Stage 3</Text>
         <Text padding="24px 0px 8px" fontWeight="700" fontSize="24px" lineHeight="36px">Launching the “Battle of the Conquerors”</Text>
-        <Text padding="8px 0px">Launching the <b>“Battle of the Conquerors” Metaverse</b>. It will realize <b><i>GameFi</i></b> and the <b><i>Play-to-Earn</i></b> concept and will give you an opportunity to use the uniqueness of each warlord. Using special traits of your <b>Warlord</b> and increasing your <b>NFT</b>, you will be able to win a <b>$300,000 Prize Pool</b>.</Text>
+        <Text padding="8px 0px">It will realize <b><i>GameFi</i></b> and the <b><i>Play-to-Earn</i></b> concept and will give you an opportunity to use the uniqueness of each warlord. Using special traits of your <b>Warlord</b> and increasing your <b>NFTs</b>, you will be able to win a <b>$300,000 Prize Pool</b>.</Text>
+
+        <hr style={{marginTop: "24px", padding: "16px 0px 0px"}}/>
+        <Text padding="24px 0px 8px" fontWeight="700" fontSize="32px" lineHeight="40px">Stage 4</Text>
+        <Text padding="24px 0px 8px" fontWeight="700" fontSize="24px" lineHeight="36px">Launching token on Polygon Mainnet</Text>
+        <Text padding="8px 0px">Launching our token on <b><i>Dex</i></b> and <b><i>Cex</i></b>. It will be needed to purchase our warlords in the future and purchases in our Metaverse. All commissions will be taken by our token. Every week we will burn part of our income to create a <b>deflation model</b>.</Text>
 
     </>
 }
