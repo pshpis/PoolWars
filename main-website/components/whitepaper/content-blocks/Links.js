@@ -84,6 +84,5 @@ export const Links = () => {
         <Text padding="24px 0px 8px" fontSize="32px" fontWeight="700" lineHeight="40px">Discord</Text>
 
         <DiscordButton />
-        <hr style={{marginTop: "24px", padding: "16px 0px 0px"}}/>
     </>;
 }
