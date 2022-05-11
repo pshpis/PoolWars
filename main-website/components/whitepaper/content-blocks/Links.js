@@ -17,7 +17,7 @@ const TwitterButton = () => {
                 </Center>
                 <VStack height="48px" spacing="0">
                     <Text fontWeight="500" lineHeight="24px" fontSize="16px" w="100%" color={isHover ? "rgb(52, 109, 219)" : "inherit"}>Pool Wars</Text>
-                    <Text fontWeight="500" lineHeight="24px" fontSize="16px" w="100%" color="rgba(136,153,168,1.00)">Telegram</Text>
+                    <Text fontWeight="500" lineHeight="24px" fontSize="16px" w="100%" color="rgba(136,153,168,1.00)">Twitter</Text>
                 </VStack>
             </Flex>
         </Center>

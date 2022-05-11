@@ -18,9 +18,9 @@ export const General = () => {
 
         <br/>
         <Text fontSize="16px">
-            Each Warlord has <b>unique design</b>.
-            A team of designers worked on every detail and with the use of <b>Artificial intelligence</b> we constructed exclusive collection of 20000 warlords.
-            Moreover, <b>30% fees from our Metaverse</b> will be distributed between Warlords owners
+            Each Warlord has a <b>unique design</b>.
+            A team of designers worked on every detail and with the use of <b>Artificial Intelligence</b> we constructed an exclusive collection of 20000 warlords.
+            Moreover, <b>30% of fees from our Metaverse</b> will be distributed between Warlords owners
         </Text>
         <br/>
         <Text>
