@@ -1,4 +1,4 @@
-import {Box, Center, Flex, HStack, Text} from "@chakra-ui/react";
+import {Center, HStack, Text} from "@chakra-ui/react";
 import Image from "next/image";
 import logoPic from "../../../public/logo.png";
 import {useWindowSize} from "../../../hooks/useWindowSize";
@@ -25,7 +25,7 @@ export const Logo = () => {
     return (
       <Center marginLeft={marginLeft} width={size.width > 800 ? "100%" : "229px"} height="100%" position="relative">
           <HStack spacing="16px">
-              <Image style={{marginRight:"16px"}} src={logoPic} height={size.width > 800 ? "40px" : "30px"} width={size.width > 800 ? "40px" : "30px"} />
+              <Image alt="Logo" style={{marginRight:"16px"}} src={logoPic} height={size.width > 800 ? "40px" : "30px"} width={size.width > 800 ? "40px" : "30px"} />
               <Text color="rgb(59, 69, 78)" fontSize="1.15em"><b>Pool Wars #Warlords</b></Text>
           </HStack>
 

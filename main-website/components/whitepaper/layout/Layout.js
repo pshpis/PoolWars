@@ -1,13 +1,9 @@
 import {Box, Grid, GridItem, useDisclosure, VStack} from '@chakra-ui/react'
 import {Header} from "./Header";
 import {Menu} from "./Menu";
-import {useState} from "react";
-import {sections} from "../navigation";
+
 import {
     Drawer,
-    DrawerBody,
-    DrawerFooter,
-    DrawerHeader,
     DrawerOverlay,
     DrawerContent,
     DrawerCloseButton,

@@ -1,4 +1,4 @@
-import {Box, Button, Center, Grid, GridItem, HStack, Stack} from "@chakra-ui/react";
+import {Center, Grid, GridItem, Stack} from "@chakra-ui/react";
 import {Logo} from "./Logo";
 import {useWindowSize} from "../../../hooks/useWindowSize";
 import {HamburgerIcon} from "@chakra-ui/icons";

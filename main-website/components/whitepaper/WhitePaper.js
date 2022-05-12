@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {getContent, getSectionBySectionPathName, sections} from "./navigation";
+import {getContent, getSectionBySectionPathName} from "./navigation";
 import {Layout} from "./layout/Layout";
 import {NavigationPanel} from "./NavigationPanel";
 import {useRouter} from "next/router";

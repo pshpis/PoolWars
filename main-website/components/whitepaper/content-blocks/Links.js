@@ -1,4 +1,4 @@
-import {Button, Image, Heading, Text, Table, Box, Flex, Center, VStack, HStack, Icon, Link} from "@chakra-ui/react";
+import {Heading, Text, Box, Flex, Center, VStack, Icon} from "@chakra-ui/react";
 import {useState} from "react";
 import {FaTwitterSquare} from "react-icons/fa";
 import {BsTelegram, BsDiscord} from "react-icons/bs";
