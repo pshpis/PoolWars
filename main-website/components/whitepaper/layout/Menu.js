@@ -1,5 +1,5 @@
 import {Box, VStack} from "@chakra-ui/react";
-import {sections, getSectionPathName, getContent} from "../navigation";
+import {sections, getSectionPathName} from "../navigation";
 import {useState} from "react";
 import {useRouter} from "next/router";
 import {useWindowSize} from "../../../hooks/useWindowSize";

@@ -1,4 +1,4 @@
-import {Box, Center, Flex, HStack, Spacer, Stack, Text, VStack} from "@chakra-ui/react";
+import {Box, Center, Flex, Text, VStack} from "@chakra-ui/react";
 import {getSectionPathName, sections} from "./navigation";
 import {useWindowSize} from "../../hooks/useWindowSize";
 import {ArrowBackIcon, ArrowForwardIcon} from '@chakra-ui/icons';
