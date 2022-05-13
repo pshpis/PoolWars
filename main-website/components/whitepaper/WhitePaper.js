@@ -7,14 +7,14 @@ import {useRouter} from "next/router";
 export const WhitePaper = () => {
     let [currentSection, setCurrentSection] = useState("");
 
-    const router = useRouter();
+    const {query, isReady} = useRouter();
     useEffect(() => {
-        if (router.isReady){
-            const {section} = router.query;
+        if (isReady){
+            const {section} = query;
             let sectionName = getSectionBySectionPathName(section);
             setCurrentSection(sectionName);
         }
-    }, [router.isReady])
+    }, [isReady]);
 
 
     let content = getContent(currentSection);
