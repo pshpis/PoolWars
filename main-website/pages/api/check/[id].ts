@@ -6,8 +6,8 @@ import prisma from "../../../lib/prisma";
 export default async function handle(req, res) {
   const codeId = req.query.id;
   let check = false;
-  const code = await prisma.code.findMany({
-    where: { id: codeId, used: false },
+  const code = await prisma.users.findMany({
+    where: { nft_card_code: codeId, received_nft: false },
   });
   console.log(code);
 

@@ -10,8 +10,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Code {
-  id        String     @default(cuid()) @id
-  used Boolean @default(false)
+
+model nft_card_codes {
+  nft_card_code        String     @default(cuid()) @id
+  received_nft    Boolean @default(false)
+ 
+
+}
+model users {
+  tg_nickname     String    
+  received_nft    Boolean @default(false)
+  twitter_nickname String
+  nft_card_code        String     @default(cuid()) @id
 
 }

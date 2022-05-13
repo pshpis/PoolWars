@@ -5,9 +5,9 @@ import prisma from "../../../lib/prisma";
 // PUT /api/update/:id
 export default async function handle(req, res) {
   const codeId = req.query.id;
-  const code = await prisma.code.update({
-    where: { id: codeId },
-    data: { used: true },
+  const code = await prisma.users.update({
+    where: { nft_card_code: codeId },
+    data: { received_nft: true },
   });
   res.json(code);
 }
