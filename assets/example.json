@@ -1,47 +1,74 @@
 [
   {
     "name": "attack gray",
-    "description": "Remember to replace this description",
     "image": "/1.png"
   },
   {
+    "name": "attack gray",
+    "image": "/1 copy.png"
+  },
+  {
+    "name": "attack gray",
+    "image": "/1 copy 2.png"
+  },
+  {
     "name": "attack blue",
-    "description": "Remember to replace this description",
     "image": "/2.png"
   },
   {
-    "name": "attack violent",
-    "description": "Remember to replace this description",
-    "image": "/3.png"
-  },
-  {
-    "name": "defence violent",
-    "description": "Remember to replace this description",
-    "image": "/4.png"
+    "name": "attack blue",
+    "image": "/2 copy 2.png"
   },
   {
     "name": "defence blue",
-    "description": "Remember to replace this description",
     "image": "/5.png"
   },
   {
+    "name": "defence blue",
+    "image": "/5 copy.png"
+  },
+  {
+    "name": "int violent",
+    "image": "/9.png"
+  },
+  {
+    "name": "defence violent",
+    "image": "/4.png"
+  },
+  {
     "name": "defence gray",
-    "description": "Remember to replace this description",
     "image": "/6.png"
   },
   {
-    "name": "int gray",
-    "description": "Remember to replace this description",
-    "image": "/7.png"
+    "name": "defence gray",
+    "image": "/6 copy.png"
+  },
+  {
+    "name": "defence gray",
+    "image": "/6 copy 2.png"
   },
   {
     "name": "int blue",
-    "description": "Remember to replace this description",
     "image": "/8.png"
   },
   {
-    "name": "int violent 9=",
-    "description": "Remember to replace this description",
-    "image": "/9.png"
+    "name": "int blue",
+    "image": "/8 copy.png"
+  },
+  {
+    "name": "attack violent",
+    "image": "/3.png"
+  },
+  {
+    "name": "int gray",
+    "image": "/7.png"
+  },
+  {
+    "name": "int gray",
+    "image": "/7 copy.png"
+  },
+  {
+    "name": "int gray",
+    "image": "/7 copy 2.png"
   }
 ]
