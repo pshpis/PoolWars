@@ -6,11 +6,9 @@ function MyApp({ Component, pageProps }) {
   const desiredChainId = 80001;
 
   return (
-      <ThirdwebProvider desiredChainId={desiredChainId}>
           <ChakraProvider>
               <Component {...pageProps} />
           </ChakraProvider>
-      </ThirdwebProvider>
   );
 
 }
