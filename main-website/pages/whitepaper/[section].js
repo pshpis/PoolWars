@@ -1,7 +1,7 @@
 import {WhitePaper} from "../../components/whitepaper/WhitePaper";
 import {getSectionBySectionPathName, getSectionPathName, sections} from "../../components/whitepaper/navigation";
 
-function Home({section}){
+export default function Home({section}){
     return <>
         {WhitepaperStyles}
         <WhitePaper defaultSection={section}/>
@@ -36,5 +36,3 @@ export async function getStaticPaths(context){
 
 Home.needChakra = true;
 Home.needThirdweb = false;
-
-export default Home;
