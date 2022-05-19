@@ -1,5 +1,6 @@
 import {WhitePaper} from "../../components/whitepaper/WhitePaper";
 import {getSectionBySectionPathName, getSectionPathName, sections} from "../../components/whitepaper/navigation";
+import {WhitepaperStyles} from "../../styles/SectionsGlobalStyles";
 
 export default function Home({section}){
     return <>
