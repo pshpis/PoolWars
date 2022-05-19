@@ -2,6 +2,7 @@ import {WhitePaper} from "../../components/whitepaper/WhitePaper";
 import {getSectionBySectionPathName, getSectionPathName, sections} from "../../components/whitepaper/navigation";
 
 function Home({section}){
+    {WhitePaperStyles}
     return <WhitePaper defaultSection={section}/>
 }
 

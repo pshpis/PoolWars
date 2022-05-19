@@ -1,3 +1,9 @@
+import {MainPage} from "../components/landing/MainPage";
+import {LandingStyles} from "../styles/SectionsGlobalStyles";
+
 export default function Home () {
-    return <>Hello</>
+    return <>
+        {LandingStyles}
+        <MainPage/>
+    </>
 }
