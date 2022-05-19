@@ -2,8 +2,10 @@ import {WhitePaper} from "../../components/whitepaper/WhitePaper";
 import {getSectionBySectionPathName, getSectionPathName, sections} from "../../components/whitepaper/navigation";
 
 function Home({section}){
-    {WhitePaperStyles}
-    return <WhitePaper defaultSection={section}/>
+    return <>
+        {WhitepaperStyles}
+        <WhitePaper defaultSection={section}/>
+    </>
 }
 
 export async function getStaticProps(context){
