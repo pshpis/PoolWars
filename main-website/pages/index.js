@@ -7,3 +7,6 @@ export default function Home () {
         <MainPage/>
     </>
 }
+
+Home.needChakra = true;
+Home.needThirdweb = true;

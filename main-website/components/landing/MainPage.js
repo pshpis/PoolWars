@@ -1,14 +1,29 @@
-import {Box} from "@chakra-ui/react";
+import {Box, Center, Flex, HStack, ListItem, Text, UnorderedList} from "@chakra-ui/react";
+import {Header} from "./Header";
+import {Welcome} from "./Welcome";
+import {TakeNow} from "./TakeNow";
 
 export const MainPage = () => {
-    return <>
-        <Box fontFamily="Trap" fontWeight="900" fontSize="60px" w="640px" lineHeight="63px">
-            Welcome to the  #Warlord’s P2E  Metaverse
-        </Box>
-        <Box fontFamily="Onest" fontWeight="300" fontSize="20px" w="630px">
-            We are creating a unique NFT portrait collection of the most powerful warlords in history. Our community will have access  to the “Battle of the Conquerors” game with a prize pool of $300,000. To participate, you should mint at least one of  20,000 Warlords NFT. <br/>
-            To have advantage over the rest players you can upgrade  your warlord by special NFT cards. Each card can improve one  of three parameters such as attack, defense and intellect. Moreover, cards will give access to
-            At stage 0 you can participate in Airdrop of these cards.
-        </Box>
-    </>
+    return <Box paddingTop="77px">
+        <Box position="absolute" width="1040px" height="975px" right="-200px" top="250px"
+             backgroundColor="rgba(51, 60, 237, 0.48);" filter="blur(482px)"/>
+        <Header/>
+        <HStack mt="70px" paddingLeft="5.5%">
+            <Welcome/>
+            <TakeNow/>
+        </HStack>
+        <Flex w="100%" mt="100px" maxW="100%" overflowY="hidden" overflowX="auto"
+              flexWrap="nowrap" justifyContent="spaceBetween" whiteSpace="nowrap" mb="100px" paddingLeft="14px">
+            <Box w="365px" h="450px" borderRadius="43px" backgroundColor="rgba(211, 205, 198, 0.1);" mr="28px" flex="0 0 365px"/>
+            <Box w="365px" h="450px" borderRadius="43px" backgroundColor="rgba(211, 205, 198, 0.1);" mr="28px" flex="0 0 365px"/>
+            <Box w="365px" h="450px" borderRadius="43px" backgroundColor="rgba(211, 205, 198, 0.1);" mr="28px" flex="0 0 365px"/>
+            <Box w="365px" h="450px" borderRadius="43px" backgroundColor="rgba(211, 205, 198, 0.1);" mr="28px" flex="0 0 365px"/>
+            <Box w="365px" h="450px" borderRadius="43px" backgroundColor="rgba(211, 205, 198, 0.1);" mr="28px" flex="0 0 365px"/>
+            <Box w="365px" h="450px" borderRadius="43px" backgroundColor="rgba(211, 205, 198, 0.1);" mr="28px" flex="0 0 365px"/>
+            <Box w="365px" h="450px" borderRadius="43px" backgroundColor="rgba(211, 205, 198, 0.1);" mr="28px" flex="0 0 365px"/>
+            <Box w="365px" h="450px" borderRadius="43px" backgroundColor="rgba(211, 205, 198, 0.1);" mr="28px" flex="0 0 365px"/>
+            <Box w="365px" h="450px" borderRadius="43px" backgroundColor="rgba(211, 205, 198, 0.1);" mr="28px" flex="0 0 365px"/>
+        </Flex>
+
+    </Box>
 }

@@ -7,28 +7,28 @@ export const LandingStyles =
         
         @font-face {
           font-family: "Trap";
-          src: url("/fonts/trap/Trap-ExtraBold.otf") format("opentype");
+          src: url("/fonts/trap/Trap-Black.otf") format("opentype");
           font-style: normal; 
           font-weight: 900; 
         }
         
         @font-face {
           font-family: "Trap";
-          src: url("/fonts/trap/Trap-Bold.otf") format("opentype");
+          src: url("/fonts/trap/Trap-ExtraBold.otf") format("opentype");
           font-style: normal; 
           font-weight: 800; 
         }
         
         @font-face {
           font-family: "Trap";
-          src: url("/fonts/trap/Trap-SemiBold.otf") format("opentype");
+          src: url("/fonts/trap/Trap-Bold.otf") format("opentype");
           font-style: normal; 
           font-weight: 700; 
         }
         
         @font-face {
           font-family: "Trap";
-          src: url("/fonts/trap/Trap-Black.otf") format("opentype");
+          src: url("/fonts/trap/Trap-SemiBold.otf") format("opentype");
           font-style: normal; 
           font-weight: 600; 
         }
@@ -49,7 +49,7 @@ export const LandingStyles =
         
         @font-face {
           font-family: "Onest";
-          src: url("/fonts/onest/OnestSemiBold1602-hint.woff");        
+          src: url("/fonts/onest/OnestBold1602-hint.woff");        
           font-style: normal; 
           font-weight: 700; 
         }
