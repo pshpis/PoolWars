@@ -11,9 +11,7 @@ datasource db {
 }
 
 
-model nft_card_codes {
-  nft_card_code        String     @default(cuid()) @id
-}
+
 model users {
   tg_nickname     String    
   received_nft    Boolean @default(false)
