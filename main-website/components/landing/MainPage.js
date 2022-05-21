@@ -1,14 +1,23 @@
-import {Box} from "@chakra-ui/react";
+import {Box, Center, Flex, HStack, ListItem, Stack, Text, UnorderedList} from "@chakra-ui/react";
+import {Header} from "./Header";
+import {Welcome} from "./Welcome";
+import {TakeNow} from "./TakeNow";
+import {useWindowSize} from "../../hooks/useWindowSize";
+import {PicPreview} from "./PicPreview";
 
 export const MainPage = () => {
-    return <>
-        <Box fontFamily="Trap" fontWeight="900" fontSize="60px" w="640px" lineHeight="63px">
-            Welcome to the  #Warlord’s P2E  Metaverse
-        </Box>
-        <Box fontFamily="Onest" fontWeight="300" fontSize="20px" w="630px">
-            We are creating a unique NFT portrait collection of the most powerful warlords in history. Our community will have access  to the “Battle of the Conquerors” game with a prize pool of $300,000. To participate, you should mint at least one of  20,000 Warlords NFT. <br/>
-            To have advantage over the rest players you can upgrade  your warlord by special NFT cards. Each card can improve one  of three parameters such as attack, defense and intellect. Moreover, cards will give access to
-            At stage 0 you can participate in Airdrop of these cards.
-        </Box>
-    </>
+    const size = useWindowSize();
+    let defaultSidePadding = "20px";
+    if (size.width < 500) defaultSidePadding = "10px"
+    return <Box paddingTop="77px">
+        <Box position="absolute" width="1040px" height="975px" right="-200px" top="250px"
+             backgroundColor="rgba(51, 60, 237, 0.48);" filter="blur(482px)"/>
+        <Header/>
+        <Stack mt={size.width > 500? "70px" : "20px"} paddingLeft={size.width > 1100 ? "5.5%" : defaultSidePadding}
+               direction={size.width > 1100 ? "row" : "column"} paddingRight={defaultSidePadding}>
+            <Welcome/>
+            <TakeNow/>
+        </Stack>
+        <PicPreview/>
+    </Box>
 }
