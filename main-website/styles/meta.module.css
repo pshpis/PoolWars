@@ -1,49 +1,57 @@
 .button {
-  cursor: pointer;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  vertical-align: middle;
-  text-align: center;
-  white-space: nowrap;
-  flex: none;
-  border: 2px solid transparent;
-  transition: background-color 0.3s ease, border 0.3s ease, color 0.3s ease;
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: middle;
+    text-align: center;
+    white-space: nowrap;
+    flex: none;
+    border: 2px solid transparent;
+    transition: background-color 0.3s ease, border 0.3s ease, color 0.3s ease;
+
+    height: 40px;
+    width: 252px;
+
+    font-family: Trap;
+    font-weight: 800;
+    font-size: 20px;
+    line-height: 20px;
+}
+
+.button span{
+    margin-top: 2px;
 }
 
 .button_primary {
-  background-color: #fcef9a;
-  border-color: #fcef9a;
-  color: #000;
+    background-color:  #C4F57C;
+    border-color:  #C4F57C;
+    color: #C4F57C;
 }
 
 .button_medium {
-  border-radius: 16px;
-  height: 60px;
-  font-size: 18px;
-  font-weight: 500;
-  padding: 0 20px;
-  min-width: 199px;
+    border-radius: 20px;
+    padding: 0 20px;
+    min-width: 199px;
 }
 .button_outline {
-  background-color: transparent;
-  color: #fcef9a;
+    background-color: transparent;
+    color:  #C4F57C;
 }
 .button_primary.button_outline:hover {
-  background-color: #fcef9a;
-  border-color: #fcef9a;
-  color: #000;
+    background-color: #3A523A;
+    border-color: #C4F57C;
 }
 .button__user_name {
-  max-width: 143px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  color: #fcef9a;
+    max-width: 143px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: #C4F57C;
 }
 #MetamaskLogin:hover span {
-  display: none;
+    display: none;
 }
 #MetamaskLogin:hover:before {
-  content: "Logout MetaMask";
+    content: "Logout MetaMask";
 }
