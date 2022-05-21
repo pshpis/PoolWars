@@ -35,7 +35,7 @@ export const TakeNow = () =>
             </Box>
 
 
-            <a target="_blank" href="https://t.me/WarlordCardsAirdropBot">
+            <a target="_blank" href="https://t.me/WarlordCardsAirdropBot" rel="noreferrer">
                 <Box width="100%" height="65px" lineHeight="70px" borderRadius="33px"
                      fontFamily="Trap" fontWeight="800" textAlign="center" color="#333CED"
                      backgroundColor="#B8C3E6" fontSize="34px" mt="48px" transition="0.3s ease"
