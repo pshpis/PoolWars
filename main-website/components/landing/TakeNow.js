@@ -1,12 +1,16 @@
 import {Box, Center, ListItem, Text, UnorderedList} from "@chakra-ui/react";
 import Link from 'next/link'
+import {useWindowSize} from "../../hooks/useWindowSize";
 
 export const TakeNow = () =>
 {
+    const size = useWindowSize();
+    let sidePadding = "37px";
+    if (size.width < 500) sidePadding="15px";
     return <Center w="100%">
-        <Box width={520} borderRadius={60} background="rgba(232, 227, 221, 0.09);"
+        <Box maxWidth={size.width > 1100 ? "520px" : "100%"} borderRadius={size.width >= 500? 60: 40} background="rgba(232, 227, 221, 0.09);"
              boxShadow="inset 4.51333px -4.51333px 4.51333px rgba(195, 191, 186, 0.464), inset -4.51333px 4.51333px 4.51333px rgba(255, 255, 255, 0.464);"
-             backdropFilter="blur(29.788px)" padding="44px 37px 34px">
+             backdropFilter="blur(29.788px)" padding={"44px " + sidePadding + " 34px"}>
 
             <Box fontFamily="Trap" fontWeight="800" textAlign="center" fontSize="36px" mb="25px">
                 Card&#39;s Airdrop now Live
