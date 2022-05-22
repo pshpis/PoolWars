@@ -7,22 +7,25 @@ import {
     Input,
     InputGroup,
     InputRightElement,
-    SimpleGrid,
+    SimpleGrid, Stack,
     Text
 } from "@chakra-ui/react";
 import {FirstSpot} from "../Layout/BackgroundSpots/FirstSpot";
 import {PicPreview} from "../MainPage/PicPreview";
 import {PoolWarsDivide} from "../Layout/PoolWarsDivide";
+import {useWindowSize} from "../../../hooks/useWindowSize";
 
 export const Profile = () => {
+    const size = useWindowSize();
     return <Box paddingTop="77px">
         <FirstSpot/>
         <Header/>
-        <Box padding="0 80px" w="100%" mt="52px" mb="86px">
-            <Text fontWeight="900" fontFamily="Trap" fontSize="86px" mb="43px">
+        <Box padding="0 5.5%" w="100%" mt="52px" mb="86px">
+            <Text fontWeight="900" fontFamily="Trap" fontSize={size.width >= 768? "86px" : "46px"} mb="43px">
                 Your profile
             </Text>
-            <HStack w="100%" spacing="20px" fontFamily="Trap" fontWeight="800">
+            <Stack w="100%" spacing="20px" fontFamily="Trap" fontWeight="800"
+                   direction={size.width >= 768 ? "row": "column"}>
                 <Box backgroundColor="rgba(232, 227, 221, 0.09)" backdropFilter="blur(29.788px)" borderRadius="60px"
                      boxShadow="inset 4.51333px -4.51333px 4.51333px rgba(195, 191, 186, 0.464), inset -4.51333px 4.51333px 4.51333px rgba(255, 255, 255, 0.464)"
                      height="357px" w='100%'>
@@ -44,10 +47,10 @@ export const Profile = () => {
                         1
                     </Text>
                 </Box>
-            </HStack>
+            </Stack>
         </Box>
         <PoolWarsDivide/>
-        <SimpleGrid mt="50px" pb="50px" minChildWidth='365px' spacing="50px 10px">
+        <SimpleGrid mt="50px" pb="50px" minChildWidth='365px' spacing="50px 10px" pl="10px" pr="10px">
             <Center h="450px">
                 <Box w="365px" h="450px" borderRadius="43px" backgroundColor="rgba(211, 205, 198, 0.1);"/>
             </Center>
