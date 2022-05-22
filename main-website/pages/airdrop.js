@@ -1,10 +1,10 @@
-import {MainPage} from "../components/landing/MainPage/MainPage";
 import {LandingStyles} from "../styles/SectionsGlobalStyles";
+import {Airdrop} from "../components/landing/Airdrop/Airdrop";
 
 export default function Home () {
     return <>
         {LandingStyles}
-        <MainPage/>
+        <Airdrop/>
     </>
 }
 
