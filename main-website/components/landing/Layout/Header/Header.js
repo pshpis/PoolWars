@@ -13,7 +13,6 @@ import {
 import {ConnectWalletButton} from "../../../ConnectWalletButton";
 import {Logo} from "./Logo";
 import {MetaMaskButton} from "../../../MetaMaskButton";
-import headerStyle from "../../../../styles/header.module.css";
 import {useWindowSize} from "../../../../hooks/useWindowSize";
 import {HamburgerIcon} from "@chakra-ui/icons";
 import Link from "next/link";

@@ -5,7 +5,7 @@ import {Profile} from "../components/landing/Profile/Profile";
 
 function Home() {
   const [collection, setCollection] = useState([]);
-  const nftDrop = useNFTDrop("0xF643591DC6b5c3516a0B748500aCe87ea57558aF");
+  const nftDrop = useNFTDrop("0x60D8e84b75A0965CBB6DA91bAB98800fC8B57969");
   const address = useAddress();
   useEffect(() => {
     if (!nftDrop || !address) return;

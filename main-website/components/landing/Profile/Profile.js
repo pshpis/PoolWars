@@ -14,8 +14,6 @@ import {FirstSpot} from "../Layout/BackgroundSpots/FirstSpot";
 import {PicPreview} from "../MainPage/PicPreview";
 import {PoolWarsDivide} from "../Layout/PoolWarsDivide";
 import {useWindowSize} from "../../../hooks/useWindowSize";
-import card_grid from "../../../styles/card_grid.module.css";
-import Card from "../../Card";
 import React from "react";
 import {ProfileCard} from "./ProfileCard";
 
