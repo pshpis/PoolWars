@@ -72,4 +72,3 @@ export const WhitepaperStyles =
           height: 100%;
         }
     `}</style>;
-

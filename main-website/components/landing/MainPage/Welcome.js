@@ -1,5 +1,5 @@
 import {Box} from "@chakra-ui/react";
-import {useWindowSize} from "../../hooks/useWindowSize";
+import {useWindowSize} from "../../../hooks/useWindowSize";
 
 export const Welcome = () => {
     const size = useWindowSize();

@@ -1,4 +1,4 @@
-import {MainPage} from "../components/landing/MainPage";
+import {MainPage} from "../components/landing/MainPage/MainPage";
 import {LandingStyles} from "../styles/SectionsGlobalStyles";
 
 export default function Home () {

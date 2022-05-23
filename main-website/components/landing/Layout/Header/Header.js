@@ -10,11 +10,10 @@ import {
     Stack,
     useDisclosure, VStack
 } from "@chakra-ui/react";
-import {ConnectWalletButton} from "../ConnectWalletButton";
+import {ConnectWalletButton} from "../../../ConnectWalletButton";
 import {Logo} from "./Logo";
-import {MetaMaskButton} from "../MetaMaskButton";
-import headerStyle from "../../styles/header.module.css";
-import {useWindowSize} from "../../hooks/useWindowSize";
+import {MetaMaskButton} from "../../../MetaMaskButton";
+import {useWindowSize} from "../../../../hooks/useWindowSize";
 import {HamburgerIcon} from "@chakra-ui/icons";
 import Link from "next/link";
 import {AiOutlineClose} from "react-icons/ai";
@@ -38,9 +37,9 @@ const HeaderNavElModile = ({children}) => {
 
 const HeaderNav = () => {
     return <HStack fontFamily="Onest" fontWeight="300" spacing={0}>
-        <HeaderNavEl>airdrop</HeaderNavEl>
+        <HeaderNavEl><Link href="/airdrop">airdrop</Link></HeaderNavEl>
         <HeaderNavSpacer/>
-        <HeaderNavEl>profile</HeaderNavEl>
+        <HeaderNavEl><Link href="/profile">profile</Link></HeaderNavEl>
         <HeaderNavSpacer/>
         <HeaderNavEl><Link href="/whitepaper/">whitepaper</Link></HeaderNavEl>
     </HStack>
@@ -48,9 +47,9 @@ const HeaderNav = () => {
 
 const HeaderNavMobile = () => {
     return <VStack fontFamily="Onest" fontWeight="300" spacing={0} fontSize="24px" height="100%" pb="20px">
-        <HeaderNavElModile>airdrop</HeaderNavElModile>
+        <HeaderNavElModile><Link href="/airdrop">airdrop</Link></HeaderNavElModile>
         <HeaderNavSpacerMobile/>
-        <HeaderNavElModile>profile</HeaderNavElModile>
+        <HeaderNavElModile><Link href="/profile">profile</Link></HeaderNavElModile>
         <HeaderNavSpacerMobile/>
         <HeaderNavElModile><Link href="/whitepaper/">whitepaper</Link></HeaderNavElModile>
         <Spacer/>
@@ -89,7 +88,7 @@ export const Header = () => {
                 </DrawerContent>
             </Drawer> : ""
         }
-        <HStack direction="row" padding={"0 " + sidePadding} w="100%" height="77px" zIndex={2} spacing={0}
+        <HStack direction="row" padding={"0 " + sidePadding} w="100%" height="77px" zIndex={999} spacing={0}
                 position="fixed" top="0" left="0" backgroundColor="#010201">
             {
                 size.width >= 768?
