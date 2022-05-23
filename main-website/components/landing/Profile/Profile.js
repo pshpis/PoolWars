@@ -14,8 +14,12 @@ import {FirstSpot} from "../Layout/BackgroundSpots/FirstSpot";
 import {PicPreview} from "../MainPage/PicPreview";
 import {PoolWarsDivide} from "../Layout/PoolWarsDivide";
 import {useWindowSize} from "../../../hooks/useWindowSize";
+import card_grid from "../../../styles/card_grid.module.css";
+import Card from "../../Card";
+import React from "react";
+import {ProfileCard} from "./ProfileCard";
 
-export const Profile = () => {
+export const Profile = ({cards}) => {
     const size = useWindowSize();
     return <Box paddingTop="77px">
         <FirstSpot/>
@@ -51,22 +55,27 @@ export const Profile = () => {
         </Box>
         <PoolWarsDivide/>
         <SimpleGrid mt="50px" pb="50px" minChildWidth='365px' spacing="50px 10px" pl="10px" pr="10px">
-            <Center h="450px">
-                <Box w="365px" h="450px" borderRadius="43px" backgroundColor="rgba(211, 205, 198, 0.1);"/>
-            </Center>
+            {cards.map((card) => (
+                <Center h="450px">
+                    <ProfileCard data={card} />
+                </Center>
+            ))}
+            {/*<Center h="450px">*/}
+            {/*    <Box w="365px" h="450px" borderRadius="43px" backgroundColor="rgba(211, 205, 198, 0.1);"/>*/}
+            {/*</Center>*/}
 
-            <Center h="450px">
-                <Box w="365px" h="450px" borderRadius="43px" backgroundColor="rgba(211, 205, 198, 0.1);"/>
-            </Center>
-            <Center h="450px">
-                <Box w="365px" h="450px" borderRadius="43px" backgroundColor="rgba(211, 205, 198, 0.1);"/>
-            </Center>
-            <Center h="450px">
-                <Box w="365px" h="450px" borderRadius="43px" backgroundColor="rgba(211, 205, 198, 0.1);"/>
-            </Center>
-            <Center h="450px">
-                <Box w="365px" h="450px" borderRadius="43px" backgroundColor="rgba(211, 205, 198, 0.1);"/>
-            </Center>
+            {/*<Center h="450px">*/}
+            {/*    <Box w="365px" h="450px" borderRadius="43px" backgroundColor="rgba(211, 205, 198, 0.1);"/>*/}
+            {/*</Center>*/}
+            {/*<Center h="450px">*/}
+            {/*    <Box w="365px" h="450px" borderRadius="43px" backgroundColor="rgba(211, 205, 198, 0.1);"/>*/}
+            {/*</Center>*/}
+            {/*<Center h="450px">*/}
+            {/*    <Box w="365px" h="450px" borderRadius="43px" backgroundColor="rgba(211, 205, 198, 0.1);"/>*/}
+            {/*</Center>*/}
+            {/*<Center h="450px">*/}
+            {/*    <Box w="365px" h="450px" borderRadius="43px" backgroundColor="rgba(211, 205, 198, 0.1);"/>*/}
+            {/*</Center>*/}
         </SimpleGrid>
     </Box>
 }
