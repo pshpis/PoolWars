@@ -24,15 +24,19 @@ export const AirdropForm = () => {
     const [freeze, setFreeze] = useState(false);
     const nftDrop = useNFTDrop("0x60D8e84b75A0965CBB6DA91bAB98800fC8B57969");
     const address = useAddress();
+
+    let wasMinted = true;
     const MintNft = () => {
         console.log(address);
         console.log(nftDrop);
         if (!nftDrop || !address) return;
+        if (wasMinted) return;
         nftDrop
             .claimTo(address, 1)
             .then(async (tx) => {
                 console.log(tx);
                 updateCode(input);
+                wasMinted = true;
             })
             .catch((err) => {
                 console.log(err);
