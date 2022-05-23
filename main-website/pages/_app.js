@@ -1,16 +1,15 @@
 import '../styles/globals.css'
-import {ThirdwebProvider} from "@thirdweb-dev/react";
+import {ChainId, ThirdwebProvider} from "@thirdweb-dev/react";
 import { ChakraProvider } from '@chakra-ui/react'
 
 function MyApp({ Component, pageProps }) {
-    const desiredChainId = 137;
     let result = <Component {...pageProps} />;
 
     if (Component.needChakra)
         result = <ChakraProvider>{result}</ChakraProvider>
 
     if (Component.needThirdweb)
-        result = <ThirdwebProvider desiredChainId={desiredChainId}>{result}</ThirdwebProvider>
+        result = <ThirdwebProvider desiredChainId={ChainId.Polygon}>{result}</ThirdwebProvider>
 
     return result;
 }
