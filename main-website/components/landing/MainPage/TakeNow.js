@@ -1,6 +1,6 @@
 import {Box, Center, ListItem, Text, UnorderedList} from "@chakra-ui/react";
 import Link from 'next/link'
-import {useWindowSize} from "../../hooks/useWindowSize";
+import {useWindowSize} from "../../../hooks/useWindowSize";
 
 export const TakeNow = () =>
 {

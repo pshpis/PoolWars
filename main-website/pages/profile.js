@@ -1,10 +1,10 @@
-import {MainPage} from "../components/landing/MainPage/MainPage";
 import {LandingStyles} from "../styles/SectionsGlobalStyles";
+import {Profile} from "../components/landing/Profile/Profile";
 
 export default function Home () {
     return <>
         {LandingStyles}
-        <MainPage/>
+        <Profile/>
     </>
 }
 
