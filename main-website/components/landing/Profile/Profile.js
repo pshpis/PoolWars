@@ -48,7 +48,7 @@ export const Profile = ({cards}) => {
                         Increase cards
                     </Text>
                     <Text fontSize="180px" width="100%" pr="55px" textAlign="right" lineHeight="180px" color="#7951F5">
-                        1
+                        {cards.length}
                     </Text>
                 </Box>
             </Stack>
@@ -56,7 +56,7 @@ export const Profile = ({cards}) => {
         <PoolWarsDivide/>
         <SimpleGrid mt="50px" pb="50px" minChildWidth='365px' spacing="50px 10px" pl="10px" pr="10px">
             {cards.map((card) => (
-                <Center h="450px">
+                <Center h="450px" key={card.metadata.id._hex}>
                     <ProfileCard data={card} />
                 </Center>
             ))}
