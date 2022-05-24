@@ -1,7 +1,7 @@
-import {Button, FormControl, Input, InputGroup, InputRightElement, Text} from "@chakra-ui/react";
+import {Button, FormControl, Input, InputGroup, InputRightElement, Text, useToast} from "@chakra-ui/react";
 import {useWindowSize} from "../../../hooks/useWindowSize";
 import {useState} from "react";
-import {useAddress, useNFTDrop} from "@thirdweb-dev/react";
+import {useAddress, useChainId, useNetwork, useNFTDrop} from "@thirdweb-dev/react";
 
 async function updateCode(id) {
     await fetch(`/api/update/${id}`, {
@@ -24,6 +24,10 @@ export const AirdropForm = () => {
     const [freeze, setFreeze] = useState(false);
     const nftDrop = useNFTDrop("0x60D8e84b75A0965CBB6DA91bAB98800fC8B57969");
     const address = useAddress();
+    const chainId = useChainId();
+    const toast = useToast();
+
+    const PolygonChainId = 137;
 
     let wasMinted = false;
     const MintNft = () => {
@@ -32,6 +36,7 @@ export const AirdropForm = () => {
         if (!nftDrop || !address) return;
         if (wasMinted) return;
         wasMinted = true;
+        if (chainId === PolygonChainId)
         nftDrop
             .claimTo(address, 1)
             .then(async (tx) => {
@@ -51,7 +56,18 @@ export const AirdropForm = () => {
         if (!serverAnswer) {
             setFreeze(false);
         }
-        await setCheck(serverAnswer);
+        setCheck(serverAnswer);
+        const id = "wrongChainErrorToast";
+        if (!toast.isActive(id))
+            toast({
+                id,
+                title: "Your code was checked",
+                discription: "Now you can mint your nft and see it at your profile",
+                status: "success",
+                isClosable: "true",
+                position: "top",
+            });
+
     };
     const handleInputChange = (e) => {
         if (!freeze) {
