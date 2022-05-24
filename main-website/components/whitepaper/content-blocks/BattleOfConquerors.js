@@ -16,6 +16,6 @@ export const BattleOfConquerors = () => {
         </b></UnorderedList>
 
         <Text padding="8px 0px" fontSize="16px" lineHeight="24px">Moreover, each warlord has unique skills. Use it to defeat the rest!</Text>
-        <Text padding="8px 0px" fontSize="16px" lineHeight="24px">The “Battle of the Conquerors” has a <b>ladder</b>, according to the results of which, at the end of the first month after the release of the game a <b>Prize Pool of 300,000$</b> will be drawn between the best players</Text>
+        <Text padding="8px 0px" fontSize="16px" lineHeight="24px">The “Battle of the Conquerors” has a <b>ladder</b>, according to the results of which, at the end of the first month after the release of the game a <b>Prize Pool of 100,000$</b> will be drawn between the best players</Text>
     </>
 }

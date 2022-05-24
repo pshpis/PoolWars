@@ -7,7 +7,7 @@ export const General = () => {
         <hr style={{marginTop: "20px",marginBottom:"20px"}}/>
 
         <Text fontWeight="700" fontSize="16px">
-            “Pool Wars” team released an exclusive Play-To-Earn NFT collection built on Polygon, including 20,000 Warlords which are the main part of the &quot;Battle of Conquerors&quot; Metaverse. Warlords NFT&apos;s will soon be available for minting from our “Pool Wars” website.
+            “Pool Wars” team released an exclusive Play-To-Earn NFT collection built on Polygon, including 50,000 Warlords which are the main part of the &quot;Battle of Conquerors&quot; Metaverse. Warlords NFT&apos;s will soon be available for minting from our “Pool Wars” website.
         </Text>
         <hr style={{marginTop: "20px", marginBottom: "20px"}}/>
 
@@ -19,17 +19,17 @@ export const General = () => {
         <br/>
         <Text fontSize="16px">
             Each Warlord has a <b>unique design</b>.
-            A team of designers worked on every detail and with the use of <b>Artificial Intelligence</b> we constructed an exclusive collection of 20000 warlords.
+            A team of designers worked on every detail and with the use of <b>Artificial Intelligence</b> we constructed an exclusive collection of 50000 warlords.
             Moreover, <b>30% of fees from our Metaverse</b> will be distributed between Warlords owners
         </Text>
         <br/>
         <Text>
-            <b>Soon</b> it will be possible to get a <b>Warlord NFT</b> on our “Pool Wars” website for <b>50 MATIC</b>.
+            <b>Soon</b> it will be possible to get a <b>Warlord NFT</b> on our “Pool Wars” website for <b>15 MATIC</b>.
             <br/>
             After minting 80% of collection we will launch The Warlord’s <b>marketplace</b>. You will be able to <b>buy</b>, <b>sell</b> and <b>exchange</b> commanders with other users. Marketplace will open on the <b>Stage 2</b>.
             <br/>
             <br/>
-            After launching <b>“Battle of the Conquerors”</b> Metaverse game you can try to win a <b>Prize Pool of $300,000</b>.
+            After launching <b>“Battle of the Conquerors”</b> Metaverse game you can try to win a <b>Prize Pool of $100,000</b>.
              The prize pool will be drawn within <b>the first month</b> after the launch. The <b>top 10 players</b> will be able to get their winnings. In the following months, we will implement a strategy that allows players to win NFTs and coins of our ecosystem from other players
             in, thereby realizing <b><i>Play To Earn</i></b> strategy.
         </Text>
