@@ -1,4 +1,4 @@
-import { useAddress, useNFTDrop } from "@thirdweb-dev/react";
+import {useAddress, useNetwork, useNFTDrop} from "@thirdweb-dev/react";
 import { useState, useEffect } from "react";
 import {LandingStyles} from "../styles/SectionsGlobalStyles";
 import {Profile} from "../components/landing/Profile/Profile";
@@ -7,6 +7,8 @@ function Home() {
   const [collection, setCollection] = useState([]);
   const nftDrop = useNFTDrop("0x60D8e84b75A0965CBB6DA91bAB98800fC8B57969");
   const address = useAddress();
+  const network = useNetwork();
+
   useEffect(() => {
     if (!nftDrop || !address) return;
     nftDrop
@@ -18,7 +20,7 @@ function Home() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, network);
 
   return (
     <>
