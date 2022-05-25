@@ -2,6 +2,7 @@ import {Button, FormControl, Input, InputGroup, InputRightElement, Text, useToas
 import {useWindowSize} from "../../../hooks/useWindowSize";
 import {useState} from "react";
 import {useAddress, useChainId, useNFTDrop} from "@thirdweb-dev/react";
+import airdrop from "../../../pages/airdrop";
 
 async function updateCode(id) {
     await fetch(`/api/update/${id}`, {
@@ -50,23 +51,51 @@ export const AirdropForm = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        if (input === "") return;
+        if (!address){
+            let id = "NotMetamaskConnect";
+            if (!toast.isActive(id))
+                toast({
+                    id,
+                    title: "At first connect you metamask wallet",
+                    status: "warning",
+                    isClosable: "true",
+                    position: "top",
+                });
+            return;
+        }
         setFreeze(true);
         const serverAnswer = await checkCode(input);
         console.log(serverAnswer);
         if (!serverAnswer) {
             setFreeze(false);
         }
-        setCheck(serverAnswer);
-        const id = "wrongChainErrorToast";
-        if (!toast.isActive(id))
+        await setCheck(serverAnswer);
+        let id1 = "successChecking";
+        const id2 = "notSuccessChecking";
+        let id;
+        if (!toast.isActive(id1) && serverAnswer){
+            let id = id1;
             toast({
                 id,
                 title: "Your code was checked",
-                discription: "Now you can mint your nft and see it at your profile",
+                description: "Now you can mint your nft and see it at your profile",
                 status: "success",
                 isClosable: "true",
                 position: "top",
             });
+        }
+        else if (!toast.isActive(id2)){
+            id = id2;
+            toast({
+                id,
+                title: "Your code is wrong" ,
+                status: "error",
+                isClosable: "true",
+                position: "top",
+            });
+        }
+
 
     };
     const handleInputChange = (e) => {
