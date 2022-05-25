@@ -2,6 +2,7 @@ import {useAddress, useNetwork, useNFTDrop} from "@thirdweb-dev/react";
 import { useState, useEffect } from "react";
 import {LandingStyles} from "../styles/SectionsGlobalStyles";
 import {Profile} from "../components/landing/Profile/Profile";
+import {Box} from "@chakra-ui/react";
 
 function Home() {
   const [collection, setCollection] = useState([]);
@@ -14,7 +15,6 @@ function Home() {
     nftDrop
       .getOwned(address)
       .then(async (tx) => {
-        console.log(tx);
         setCollection(tx);
       })
       .catch((err) => {
@@ -23,10 +23,10 @@ function Home() {
   }, network);
 
   return (
-    <>
+    <Box overflow="hidden">
       {LandingStyles}
       <Profile cards={collection}/>
-    </>
+    </Box>
   );
 }
 

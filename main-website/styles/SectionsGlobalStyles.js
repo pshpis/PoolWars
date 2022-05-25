@@ -3,6 +3,12 @@ export const LandingStyles =
         body{
           background: #010201;
           color: #E8E3DD;
+          overflow: hidden;
+        }
+        
+        
+        #__next{
+          overflow: hidden;
         }
         
         @font-face {

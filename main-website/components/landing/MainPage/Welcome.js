@@ -20,7 +20,7 @@ export const Welcome = () => {
             <Box mb={4}>
                 To have advantage over the rest players you can upgrade your warlord by special NFT cards. Each card can improve one of three parameters such as attack, defense and intellect. Moreover, cards will give access to
                 <Box as="span" borderRadius="14px" backgroundColor="#C4F57C" w="151px" color="black" padding="6px 10px 3px" ml={3}
-                     fontWeight={900} fontFamily="Trap" fontSize="20px" letterSpacing="0.12em">
+                     fontWeight={900} fontFamily="Trap" fontSize="20px" letterSpacing="0.12em" cursor="pointer">
                     POOL<Box as="span" fontWeight={600}>WARS</Box>
                 </Box>
             </Box>

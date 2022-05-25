@@ -1,17 +1,11 @@
 import {Header} from "../Layout/Header/Header";
 import {
     Box,
-    Button, Center,
-    FormControl,
-    HStack,
-    Input,
-    InputGroup,
-    InputRightElement,
+    Center,
     SimpleGrid, Stack,
     Text
 } from "@chakra-ui/react";
 import {FirstSpot} from "../Layout/BackgroundSpots/FirstSpot";
-import {PicPreview} from "../MainPage/PicPreview";
 import {PoolWarsDivide} from "../Layout/PoolWarsDivide";
 import {useWindowSize} from "../../../hooks/useWindowSize";
 import React from "react";
@@ -19,7 +13,7 @@ import {ProfileCard} from "./ProfileCard";
 
 export const Profile = ({cards}) => {
     const size = useWindowSize();
-    return <Box paddingTop="77px">
+    return <Box paddingTop="77px" overflow="hidden">
         <FirstSpot/>
         <Header/>
         <Box padding="0 5.5%" w="100%" mt="52px" mb="86px">
@@ -52,7 +46,7 @@ export const Profile = ({cards}) => {
             </Stack>
         </Box>
         <PoolWarsDivide/>
-        <SimpleGrid mt="50px" pb="50px" minChildWidth='365px' spacing="50px 10px" pl="10px" pr="10px">
+        <SimpleGrid mt="50px" pb="50px" minChildWidth='320px' spacing="50px 10px" pl="10px" pr="10px">
             {cards.map((card) => (
                 <Center h="450px" key={card.metadata.id._hex}>
                     <ProfileCard data={card} />

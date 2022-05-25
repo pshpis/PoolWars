@@ -1,5 +1,4 @@
 import {Box, Center, ListItem, Text, UnorderedList} from "@chakra-ui/react";
-import Link from 'next/link'
 import {useWindowSize} from "../../../hooks/useWindowSize";
 
 export const TakeNow = () =>
@@ -8,7 +7,7 @@ export const TakeNow = () =>
     let sidePadding = "37px";
     if (size.width < 500) sidePadding="15px";
     return <Center w="100%">
-        <Box maxWidth={size.width > 1100 ? "520px" : "100%"} borderRadius={size.width >= 500? 60: 40} background="rgba(232, 227, 221, 0.09);"
+        <Box maxWidth={size.width > 1100 ? "520px" : "100%"} borderRadius={size.width >= 500? 60: 40} backgroundColor="rgba(232, 227, 221, 0.09)"
              boxShadow="inset 4.51333px -4.51333px 4.51333px rgba(195, 191, 186, 0.464), inset -4.51333px 4.51333px 4.51333px rgba(255, 255, 255, 0.464);"
              backdropFilter="blur(29.788px)" padding={"44px " + sidePadding + " 34px"}>
 
@@ -26,8 +25,12 @@ export const TakeNow = () =>
             <Box fontSize="20px" fontFamily="Onest">
                 <Text fontWeight="700" mb="13px">To take your exclusive card you should:</Text>
                 <UnorderedList fontWeight="300" pl="5px" mb="26px">
-                    <ListItem>subscribe to our telegram</ListItem>
-                    <ListItem>subscribe to our twitter</ListItem>
+                    <ListItem>subscribe to our&nbsp;
+                        <a href="https://t.me/PoolWarsAnnouncements"><Box as="span" color="#7951F5">telegram</Box></a>
+                    </ListItem>
+                    <ListItem>subscribe to our&nbsp;
+                        <a href="https://twitter.com/PoolWars_NFT"><Box as="span" color="#7951F5" >twitter</Box></a>
+                    </ListItem>
                 </UnorderedList>
                 <Text fontWeight="300" >
                     Write our bot to take your personal code which lets you take your NFT
