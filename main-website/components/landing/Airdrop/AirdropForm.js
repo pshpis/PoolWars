@@ -64,6 +64,8 @@ export const AirdropForm = () => {
                 });
             return;
         }
+
+
         setFreeze(true);
         const serverAnswer = await checkCode(input);
         console.log(serverAnswer);
@@ -71,6 +73,8 @@ export const AirdropForm = () => {
             setFreeze(false);
         }
         await setCheck(serverAnswer);
+
+
         let id1 = "successChecking";
         const id2 = "notSuccessChecking";
         let id;
