@@ -15,16 +15,16 @@ export const Welcome = () => {
             <Box mb={4}>
                 We are creating a unique NFT portrait collection of the most powerful warlords <Box as="span" color="#B8C3E6" fontWeight={500}>in history</Box>. Our community will have access
                 to the “Battle of the Conquerors” game with a prize pool of <Box as="span" color="#B8C3E6" fontWeight={500}>$100,000</Box>. To participate, you should mint at least one of
-                <Box as="span" color="#B8C3E6" fontWeight={500} whiteSpace="nowrap">&nbsp;50,000 Warlords NFT.</Box>
+                <Box as="span" color="#B8C3E6" fontWeight={500} whiteSpace="nowrap">&nbsp;50,000 Warlords.</Box>
             </Box>
             <Box mb={4}>
-                To have advantage over the rest players you can upgrade your warlord by special NFT cards. Each card can improve one of three parameters such as attack, defense and intellect. Moreover, cards will give access to
+                To have advantage over other players you can upgrade your warlord by using special NFT cards. Each card can improve one of three parameters such as attack, defense and intellect. Moreover, cards will give access to
                 <Box as="span" borderRadius="14px" backgroundColor="#C4F57C" w="151px" color="black" padding="6px 10px 3px" ml={3}
                      fontWeight={900} fontFamily="Trap" fontSize="20px" letterSpacing="0.12em" cursor="pointer">
                     POOL<Box as="span" fontWeight={600}>WARS</Box>
                 </Box>
             </Box>
-            <Box>At stage 0 you can participate in Airdrop of these cards.</Box>
+            <Box>At stage 0 you can participate in the Airdrop of these cards.</Box>
         </Box>
     </Box>
 }
