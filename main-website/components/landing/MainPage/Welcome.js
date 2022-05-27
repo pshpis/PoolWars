@@ -7,7 +7,7 @@ export const Welcome = () => {
     if (size.width < 500) welcomeTextSize = 40;
     return <Box width={size.width > 1100 ? "50%" : "100%"} mb={size.width>1100? "0" : "20px"}>
         <Box fontFamily="Trap" fontWeight="900" fontSize={welcomeTextSize+"px"}  lineHeight="64px" mb={13}>
-            Welcome to the <Box fontSize={welcomeTextSize*1.33 + "px"} as='span' color="#7951F5" lineHeight={welcomeTextSize*1.33 + 2 + "px"}>#Warlord&#39;s&nbsp;</Box>
+            Welcome to the <Box fontSize={welcomeTextSize*1.33 + "px"} as='span' color="#7951F5" lineHeight={welcomeTextSize*1.33 + 2 + "px"}>#Warlords&#39;&nbsp;</Box>
             <Box as='span' fontSize={welcomeTextSize*1.43 + "px"} color="#C4F57C" lineHeight={welcomeTextSize*1.43 + 2 + "px"} whiteSpace="nowrap">P2E&nbsp;</Box>
             <Box as='span' fontSize={welcomeTextSize*1.33 + "px"} lineHeight={welcomeTextSize*1.33 + 2 + "px"} whiteSpace="nowrap">Metaverse</Box>
         </Box>
