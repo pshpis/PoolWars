@@ -11,7 +11,12 @@ const nextConfig = {
         source: '/whitepaper',
         destination: '/whitepaper/general',
         permanent: true,
-      }
+      },
+      {
+        source: '/advert_link',
+        destination: 'https://t.me/PoolWarsAnnouncements',
+        permanent: true,
+      },
 
     ]
   }
