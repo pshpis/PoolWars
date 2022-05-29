@@ -6,10 +6,12 @@ import {useEffect} from "react";
 const PolygonChainId = 137;
 export const MetaMaskButton = () => {
     const connectWithMetamask = useMetamask();
-    const disconnectWithMetamask = useDisconnect();
+    const disconnectWallet = useDisconnect();
     const address = useAddress();
     const chainId = useChainId();
     const toast = useToast();
+
+
 
     useEffect(() => {
         if (chainId && chainId !== PolygonChainId)
@@ -33,7 +35,7 @@ export const MetaMaskButton = () => {
                 <button
                     id={meta.MetamaskLogin}
                     className={`${meta.button} ${meta.button_primary}  ${meta.button_medium} ${meta.button_outline}`}
-                    onClick={disconnectWithMetamask}
+                    onClick={disconnectWallet}
                 >
                     <span className={meta.button__user_name}>{address} </span>
                 </button>
