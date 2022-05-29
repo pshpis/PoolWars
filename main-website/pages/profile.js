@@ -1,4 +1,4 @@
-import {useAddress, useNetwork, useNFTDrop} from "@thirdweb-dev/react";
+import {useAddress, useChainId, useNFTDrop} from "@thirdweb-dev/react";
 import { useState, useEffect } from "react";
 import {LandingStyles} from "../styles/SectionsGlobalStyles";
 import {Profile} from "../components/landing/Profile/Profile";
@@ -8,7 +8,7 @@ function Home() {
   const [collection, setCollection] = useState([]);
   const nftDrop = useNFTDrop("0x81D2AD8ba7185b19247a7D7D72EA8f0152eafc65");
   const address = useAddress();
-  const network = useNetwork();
+  const chainId = useChainId();
 
   useEffect(() => {
     if (!nftDrop || !address) return;
@@ -20,7 +20,7 @@ function Home() {
       .catch((err) => {
         console.log(err);
       });
-  }, network);
+  }, [chainId, address]);
 
   return (
     <Box overflow="hidden">
