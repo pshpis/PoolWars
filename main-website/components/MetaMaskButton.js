@@ -1,7 +1,8 @@
-import {useAddress, useChainId, useDisconnect, useMetamask, useNetwork} from "@thirdweb-dev/react";
+import {useAddress, useChainId, useDisconnect, useMetamask, useWalletConnect} from "@thirdweb-dev/react";
 import meta from "../styles/meta.module.css";
 import {useToast} from "@chakra-ui/react";
 import {useEffect} from "react";
+import {isMobile} from 'react-device-detect';
 
 const PolygonChainId = 137;
 export const MetaMaskButton = () => {
@@ -10,7 +11,7 @@ export const MetaMaskButton = () => {
     const address = useAddress();
     const chainId = useChainId();
     const toast = useToast();
-
+    const connectWithWalletConnect = useWalletConnect();
 
 
     useEffect(() => {
@@ -43,7 +44,7 @@ export const MetaMaskButton = () => {
                 <button
                     id={meta.MetamaskConnect}
                     className={`${meta.button} ${meta.button_primary}  ${meta.button_medium} ${meta.button_outline}`}
-                    onClick={connectWithMetamask}
+                    onClick={isMobile ? connectWithWalletConnect : connectWithMetamask}
                 >
                     <span>Connect MetaMask</span>
                 </button>

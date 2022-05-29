@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "next-ym": "^2.3.5"
+    "next-ym": "^2.3.5",
+    "react-device-detect": "^2.2.2"
   }
 }
