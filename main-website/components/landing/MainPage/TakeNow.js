@@ -1,5 +1,6 @@
 import {Box, Center, ListItem, Text, UnorderedList} from "@chakra-ui/react";
 import {useWindowSize} from "../../../hooks/useWindowSize";
+import Link from "next/link";
 
 export const TakeNow = () =>
 {
@@ -38,7 +39,7 @@ export const TakeNow = () =>
             </Box>
 
 
-            <a target="_blank" href="https://t.me/WarlordCardsAirdropBot" rel="noreferrer">
+            <Link href="/airdrop-auth">
                 <Box width="100%" height="65px" lineHeight="70px" borderRadius="33px"
                      fontFamily="Trap" fontWeight="800" textAlign="center" color="#333CED"
                      backgroundColor="#B8C3E6" fontSize="34px" mt="48px" transition="0.3s ease"
@@ -46,7 +47,7 @@ export const TakeNow = () =>
                 >
                     TAKE NOW
                 </Box>
-            </a>
+            </Link>
 
 
         </Box>
