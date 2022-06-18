@@ -3,19 +3,22 @@ import {Roadmap} from "./content-blocks/Roadmap";
 import {Governance} from "./content-blocks/Governance";
 import {Links} from "./content-blocks/Links";
 import {PoolWars} from "./content-blocks/PoolWars";
-import {BattleOfConquerors} from "./content-blocks/BattleOfConquerors";
+import {Stacking} from "./content-blocks/Stacking";
+import {WarlordsCards} from "./content-blocks/Warlords cards and NFT Swaps";
 
-export const sections = ["General", "Pool Wars", "Battle of the Conquerors", "Governance", "Roadmap",  "Links"];
+export const sections = ["General", "Stacking", "Pool Wars", "Warlords cards and NFT Swaps", "Governance", "Roadmap",  "Links"];
 
 export const getContent = (section) => {
     if (section === "") return <></>;
     switch (section){
         case "General":
             return <General/>
+        case "Stacking":
+            return <Stacking/>
         case "Pool Wars":
             return <PoolWars/>
-        case "Battle of the Conquerors":
-            return <BattleOfConquerors/>
+        case "Warlords cards and NFT Swaps":
+            return <WarlordsCards/>
         case "Roadmap":
             return <Roadmap/>
         case "Governance":
@@ -30,16 +33,18 @@ export const getSectionPathName = (section) => {
     switch (section){
         case "General":
             return "general"
+        case "Stacking":
+            return "stacking"
         case "Pool Wars":
             return "pool-wars"
+        case "Warlords cards and NFT Swaps":
+            return "warlords-cards"
         case "Roadmap":
             return "roadmap"
         case "Governance":
             return "governance"
         case "Links":
             return "links"
-        case "Battle of the Conquerors":
-            return "battle"
     }
 }
 
@@ -48,16 +53,18 @@ export const getSectionBySectionPathName = (sectionPathName) => {
     switch (sectionPathName){
         case "general":
             return "General"
+        case "stacking":
+            return "Stacking"
         case "pool-wars":
             return "Pool Wars"
+        case "warlords-cards":
+            return "Warlords cards and NFT Swaps"
         case "roadmap":
             return "Roadmap"
         case "governance":
             return "Governance"
         case "links":
             return "Links"
-        case "battle":
-            return "Battle of the Conquerors";
     }
     return undefined;
 }
