@@ -3,7 +3,7 @@ import {
     Drawer, DrawerContent,
     DrawerOverlay,
     HStack, Icon,
-    Spacer,
+    Spacer, useDisclosure,
     VStack
 } from "@chakra-ui/react";
 import {Logo} from "./Logo";
