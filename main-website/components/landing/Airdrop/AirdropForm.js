@@ -1,8 +1,7 @@
 import {Button, FormControl, Input, InputGroup, InputRightElement, Text, useToast} from "@chakra-ui/react";
 import {useWindowSize} from "../../../hooks/useWindowSize";
 import {useState} from "react";
-import {useAddress, useChainId, useNFTDrop} from "@thirdweb-dev/react";
-import airdrop from "../../../pages/airdrop";
+import {useWallet} from "@solana/wallet-adapter-react";
 
 async function updateCode(id) {
     await fetch(`/api/update/${id}`, {
@@ -23,30 +22,10 @@ export const AirdropForm = () => {
     const [input, setInput] = useState("");
     const [check, setCheck] = useState(false);
     const [freeze, setFreeze] = useState(false);
-    const nftDrop = useNFTDrop("0x81D2AD8ba7185b19247a7D7D72EA8f0152eafc65");
-    const address = useAddress();
-    const chainId = useChainId();
+    const {publicKey, connected} = useWallet();
     const toast = useToast();
 
-    const PolygonChainId = 137;
-
-    let wasMinted = false;
     const MintNft = () => {
-        console.log(address);
-        console.log(nftDrop);
-        if (!nftDrop || !address) return;
-        if (wasMinted) return;
-        wasMinted = true;
-        if (chainId === PolygonChainId)
-        nftDrop
-            .claimTo(address, 1)
-            .then(async (tx) => {
-                console.log(tx);
-                updateCode(input);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
     };
 
     const handleSubmit = async (event) => {

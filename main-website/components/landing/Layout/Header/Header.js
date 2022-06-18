@@ -1,22 +1,17 @@
 import {
-    Box, Button,
-    Center,
-    Divider,
-    Drawer, DrawerCloseButton,
-    DrawerContent,
+    Box, Center,
+    Drawer, DrawerContent,
     DrawerOverlay,
     HStack, Icon,
     Spacer,
-    Stack,
-    useDisclosure, VStack
+    VStack
 } from "@chakra-ui/react";
-import {ConnectWalletButton} from "../../../ConnectWalletButton";
 import {Logo} from "./Logo";
-import {MetaMaskButton} from "../../../MetaMaskButton";
 import {useWindowSize} from "../../../../hooks/useWindowSize";
 import {HamburgerIcon} from "@chakra-ui/icons";
 import Link from "next/link";
 import {AiOutlineClose} from "react-icons/ai";
+import {WalletMultiButton} from "@solana/wallet-adapter-react-ui";
 
 
 const HeaderNavSpacer = () => {
@@ -53,7 +48,7 @@ const HeaderNavMobile = () => {
         <HeaderNavSpacerMobile/>
         <HeaderNavElModile><Link href="/whitepaper/">whitepaper</Link></HeaderNavElModile>
         <Spacer/>
-        <MetaMaskButton/>
+        <WalletMultiButton/>
     </VStack>
 }
 
@@ -92,7 +87,7 @@ export const Header = () => {
                 position="fixed" top="0" left="0" backgroundColor="#010201">
             {
                 size.width >= 768?
-                    <><Logo/> <HeaderNav/> <Spacer/> <MetaMaskButton/></> :
+                    <><Logo/> <HeaderNav/> <Spacer/> <WalletMultiButton/></> :
                     <><Center width="46px" height="100%" padding="0 10px" mr="20px" onClick={onOpen}>
                     <HamburgerIcon height="40px" width="40px"/>
                     </Center> <Logo/></>
