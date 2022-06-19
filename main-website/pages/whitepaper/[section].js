@@ -36,4 +36,4 @@ export async function getStaticPaths(context){
 }
 
 Home.needChakra = true;
-Home.needThirdweb = false;
+Home.needWeb3 = false;

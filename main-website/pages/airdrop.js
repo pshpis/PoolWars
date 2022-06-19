@@ -11,6 +11,6 @@ function Home () {
 }
 
 Home.needChakra = true;
-Home.needThirdweb = true;
+Home.needWeb3 = true;
 
 export default Home;
