@@ -7,7 +7,7 @@ export const WarlordsCards = () => {
         <hr style={{marginTop: "20px",marginBottom:"20px"}}/>
 
         <Text padding="8px 0px" fontSize="16px" lineHeight="24px">At <b>stage 0</b> we will launch the Warlords card collection. It will be completely <b>free</b>, moreover verified users by our bot can take this card once <b>every 6 hours</b>.
-            The main goal of these cards is to increase warlords to bring in more income from stacking. But, also, it will give access to Pool Wars v0 and v1.
+            The main goal of these cards is to increase warlords to bring in more income from staking. But, also, it will give access to Pool Wars v0 and v1.
         </Text>
         <Text padding="8px 0px" fontSize="16px" lineHeight="24px">
             From the <b>airdrop</b> you can take one of nine cards. So each card can improve a warlord’s <b>attack</b>, <b>defense</b> or <b>intelligence</b> and can be <b>common</b>, <b>rare</b>, or <b>epic</b>.
