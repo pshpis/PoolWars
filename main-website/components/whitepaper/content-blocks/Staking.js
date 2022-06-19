@@ -1,6 +1,6 @@
 import {Heading, Text} from "@chakra-ui/react";
 
-export const Stacking = () => {
+export const Staking = () => {
     return <>
         <Heading fontSize="48px" lineHeight="54px">Stacking</Heading>
         <Text fontSize="16px" color="rgba(136,153,168,1.00)" marginTop="16px">Information about stacking and our token</Text>
