@@ -31,12 +31,12 @@ export const AirdropForm = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (input === "") return;
-        if (!address){
+        if (!connected){
             let id = "NotMetamaskConnect";
             if (!toast.isActive(id))
                 toast({
                     id,
-                    title: "At first connect you metamask wallet",
+                    title: "At first connect your wallet",
                     status: "warning",
                     isClosable: "true",
                     position: "top",
