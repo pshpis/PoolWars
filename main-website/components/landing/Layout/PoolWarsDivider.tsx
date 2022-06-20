@@ -1,6 +1,7 @@
 import {Box, HStack} from "@chakra-ui/react";
+import {Carousel, CarouselSettings} from "../Carousel";
 
-export const PoolWarsDivide = () => {
+export const PoolWarsDivider = () => {
     let secondColors = ["#7951F5", "#333CED", "#B8C3E6", "#C4F57C"]
     let phrasesFirst = [];
     let id = 0;
@@ -10,7 +11,7 @@ export const PoolWarsDivide = () => {
             id ++;
             let key2 = "DivideWord" + id;
             id ++;
-            let phrase = <HStack textOverflow="clip" spacing="0.08em" key={"LocalStack" + id}>
+            let phrase = <HStack textOverflow="clip" spacing="0" key={"LocalStack" + id} fontSize="42px" height="48px">
                <Box color="#E8E3DD" textOverflow="clip" key={key1}>POOL</Box>
                <Box color={color} textOverflow="clip" fontWeight="600" key={key2}>WARS</Box>
            </HStack>;
@@ -25,23 +26,34 @@ export const PoolWarsDivide = () => {
             id ++;
             let key2 = "DivideWord" + id;
             id ++;
-            let phrase = <HStack textOverflow="clip" spacing="0.08em" key={"LocalStack" + id}>
+            let phrase = <HStack textOverflow="clip" spacing="0" key={"LocalStack" + id} fontSize="42px" height="48px">
                 <Box color={color} textOverflow="clip" fontWeight="600" key={key1}>WARS</Box>
                 <Box color="#E8E3DD" textOverflow="clip" key={key2}>POOL</Box>
             </HStack>;
             phrasesSecond.push(phrase);
         });
     }
+
+    const settings1 : CarouselSettings = {
+        animationDuration: 2,
+        delta: 0,
+        elementHeight: 48,
+        elementWidth: 228,
+        toLeft: true,
+    }
+    const settings2 : CarouselSettings = {
+        animationDuration: 2,
+        delta: 0,
+        elementHeight: 48,
+        elementWidth: 228,
+        toLeft: true,
+    }
     return <Box zIndex="999">
-        <HStack width="100%" height="48px" overflow="hidden" key="GlobalStack1"
-            fontFamily="Trap" fontWeight="900" fontSize="42px" textOverflow="clip"
-            spacing={"0.08em"} letterSpacing="0.08em">
-        {phrasesFirst}
-        </HStack>
-        <HStack width="100%" height="48px" overflow="hidden" key="GlobalStack2"
-                fontFamily="Trap" fontWeight="900" fontSize="42px" textOverflow="clip"
-                spacing={"0.08em"} letterSpacing="0.08em">
+        <Carousel settings={settings1}>
+            {phrasesFirst}
+        </Carousel>
+        <Carousel settings={settings2}>
             {phrasesSecond}
-        </HStack>
+        </Carousel>
     </Box>
 }
