@@ -10,6 +10,7 @@ import {PoolWarsDivider} from "../Layout/PoolWarsDivider";
 import {useWindowSize} from "../../../hooks/useWindowSize";
 import React from "react";
 import {ProfileCard} from "./ProfileCard";
+import {PoolWarsBox} from "../Layout/PoolWarsBox";
 
 export const Profile = ({cards}) => {
     const size = useWindowSize();
@@ -22,9 +23,7 @@ export const Profile = ({cards}) => {
             </Text>
             <Stack w="100%" spacing="20px" fontFamily="Trap" fontWeight="800"
                    direction={size.width >= 768 ? "row": "column"}>
-                <Box backgroundColor="rgba(232, 227, 221, 0.09)" backdropFilter="blur(29.788px)" borderRadius="60px"
-                     boxShadow="inset 4.51333px -4.51333px 4.51333px rgba(195, 191, 186, 0.464), inset -4.51333px 4.51333px 4.51333px rgba(255, 255, 255, 0.464)"
-                     height="357px" w='100%'>
+                <PoolWarsBox height="357px" w='100%'>
                     <Text mt="53px" ml="46px" fontSize="36px" mb="58px">
                         Warlords
                     </Text>
@@ -32,17 +31,15 @@ export const Profile = ({cards}) => {
                         0
                     </Text>
 
-                </Box>
-                <Box backgroundColor="rgba(232, 227, 221, 0.09)" backdropFilter="blur(29.788px)" borderRadius="60px"
-                     boxShadow="inset 4.51333px -4.51333px 4.51333px rgba(195, 191, 186, 0.464), inset -4.51333px 4.51333px 4.51333px rgba(255, 255, 255, 0.464)"
-                     height="357px" w='100%'>
+                </PoolWarsBox>
+                <PoolWarsBox height="357px" w='100%'>
                     <Text mt="53px" ml="46px" fontSize="36px" mb="58px">
                         Increase cards
                     </Text>
                     <Text fontSize="180px" width="100%" pr="55px" textAlign="right" lineHeight="180px" color="#7951F5">
                         {cards.length}
                     </Text>
-                </Box>
+                </PoolWarsBox>
             </Stack>
         </Box>
         <PoolWarsDivider/>

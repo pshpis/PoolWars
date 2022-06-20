@@ -1,5 +1,6 @@
 import {Box, HStack} from "@chakra-ui/react";
 import {Carousel, CarouselSettings} from "../Carousel";
+import {SimpleSlider} from "./SimpleSlider";
 
 export const PoolWarsDivider = () => {
     let secondColors = ["#7951F5", "#333CED", "#B8C3E6", "#C4F57C"]
