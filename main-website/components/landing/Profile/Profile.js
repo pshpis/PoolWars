@@ -6,7 +6,7 @@ import {
     Text
 } from "@chakra-ui/react";
 import {FirstSpot} from "../Layout/BackgroundSpots/FirstSpot";
-import {PoolWarsDivide} from "../Layout/PoolWarsDivide";
+import {PoolWarsDivider} from "../Layout/PoolWarsDivider";
 import {useWindowSize} from "../../../hooks/useWindowSize";
 import React from "react";
 import {ProfileCard} from "./ProfileCard";
@@ -45,7 +45,7 @@ export const Profile = ({cards}) => {
                 </Box>
             </Stack>
         </Box>
-        <PoolWarsDivide/>
+        <PoolWarsDivider/>
         <SimpleGrid mt="50px" pb="50px" minChildWidth='320px' spacing="50px 10px" pl="10px" pr="10px">
             {cards.map((card) => (
                 <Center h="450px" key={card.metadata.id._hex}>
