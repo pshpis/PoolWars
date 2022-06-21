@@ -39,17 +39,17 @@ export const PoolWarsDivider = () => {
         animationDuration: 2,
         delta: 0,
         elementHeight: 48,
-        elementWidth: 228,
+        elementWidth: 233,
         toLeft: true,
     }
     const settings2 : CarouselSettings = {
         animationDuration: 2,
         delta: 0,
         elementHeight: 48,
-        elementWidth: 228,
+        elementWidth: 233,
         toLeft: true,
     }
-    return <Box zIndex="999">
+    return <Box zIndex="999" fontFamily="Trap">
         <Carousel settings={settings1}>
             {phrasesFirst}
         </Carousel>

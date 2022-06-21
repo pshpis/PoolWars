@@ -11,11 +11,12 @@ import {useWindowSize} from "../../../hooks/useWindowSize";
 import React from "react";
 import {ProfileCard} from "./ProfileCard";
 import {PoolWarsBox} from "../Layout/PoolWarsBox";
+import {AllSpots} from "../Layout/BackgroundSpots/AllSpots";
 
 export const Profile = ({cards}) => {
     const size = useWindowSize();
     return <Box paddingTop="77px" overflow="hidden">
-        <FirstSpot/>
+        <AllSpots/>
         <Header/>
         <Box padding="0 5.5%" w="100%" mt="52px" mb="86px">
             <Text fontWeight="900" fontFamily="Trap" fontSize={size.width >= 768? "86px" : "46px"} mb="43px">
