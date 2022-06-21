@@ -2,9 +2,16 @@ import {Box, Button, Center, Grid, Heading, SimpleGrid, Spacer, Stack, Text, VSt
 import {PoolWarsBox} from "../Layout/PoolWarsBox";
 import {useWindowSize} from "../../../hooks/useWindowSize";
 
-export const NftSwapsStats = ({totalPoints}) => {
+export const NftSwapsStats = ({totalPoints, chooseRef}) => {
     const needPointsPerSwap = 12;
     const size = useWindowSize();
+
+    const onClick = () => {
+        if (totalPoints === 0){
+            window.scrollTo(0, chooseRef.current.offsetTop - 97);
+        }
+    }
+
     return <Stack direction="column" minHeight="448px" borderRadius="30px" margin={size.width > 400 ? "0 20px" : "0 5px"}
                   spacing={0} padding="20px" fontSize="20px" as={PoolWarsBox}>
 
@@ -32,7 +39,7 @@ export const NftSwapsStats = ({totalPoints}) => {
                 <Button backgroundColor="#7951F5" width="220px" borderRadius="20px"
                         fontSize="30px" height="50px"
                         _hover={{backgroundColor: "#5331cb"}}
-                        isDisabled={totalPoints < needPointsPerSwap}>Swap!</Button>
+                        onClick={onClick}>Swap!</Button>
             </Center>
 
     </Stack>

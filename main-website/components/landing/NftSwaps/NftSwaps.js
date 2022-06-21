@@ -1,21 +1,25 @@
-import {Box, Center, Grid, GridItem, Img} from "@chakra-ui/react";
+import {Box, Center, Grid, GridItem, Heading, Img} from "@chakra-ui/react";
 import {Header} from "../Layout/Header/Header";
 import {NftSwapsStats} from "./NftSwapsStats";
-import {NftSwapsChoose} from "./NftSwapsChoose";
+import {WarlordsCardsChoose} from "./WarlordsCardsChoose";
 import {PoolWarsDivider} from "../Layout/PoolWarsDivider";
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useWindowSize} from "../../../hooks/useWindowSize";
 import {AllSpots} from "../Layout/BackgroundSpots/AllSpots";
+import {useWarlordsCardsChoose} from "../../../hooks/useWarlordsCardsChoose";
+import {Footer} from "../Layout/Footer/Footer";
 
 export const NftSwaps = () => {
-    const [totalPoints, setTotalPoints] = useState(0);
+    const [chooseArr, setChooseArr, getSumPoints] = useWarlordsCardsChoose();
+
+    const chooseRef = useRef(null);
     const size = useWindowSize();
     return <Box paddingTop="77px">
         <AllSpots/>
         <Header/>
         <Grid templateColumns="repeat(2, 1fr)" mt="77px" fontFamily="Onest" padding="0" mb="77px" rowGap="50px">
             <GridItem colSpan={size.width > 768 ? 1 : 2}>
-                <NftSwapsStats totalPoints={totalPoints}/>
+                <NftSwapsStats totalPoints={getSumPoints()} chooseRef={chooseRef}/>
             </GridItem>
             <GridItem colSpan={size.width > 768 ? 1 : 2}>
                 <Center>
@@ -24,7 +28,10 @@ export const NftSwaps = () => {
             </GridItem>
         </Grid>
         <PoolWarsDivider/>
-        <Box height="77px"></Box>
-        <NftSwapsChoose setTotalPoints={setTotalPoints}/>
+        <Box mt="77px" ref={chooseRef}>
+            <Heading fontSize="40px" fontFamily="Trap" textAlign="center" mb="20px">Choose nfts</Heading>
+            <WarlordsCardsChoose chooseArr={chooseArr} setChooseArr={setChooseArr}/>
+        </Box>
+        <Footer marginTop="100px"/>
     </Box>
 }

@@ -1,8 +1,8 @@
-import {Box, HStack} from "@chakra-ui/react";
+import {Box, BoxProps, HStack} from "@chakra-ui/react";
 import {Carousel, CarouselSettings} from "../Carousel";
 import {SimpleSlider} from "./SimpleSlider";
 
-export const PoolWarsDivider = () => {
+export const PoolWarsDivider = (props: BoxProps) => {
     let secondColors = ["#7951F5", "#333CED", "#B8C3E6", "#C4F57C"]
     let phrasesFirst = [];
     let id = 0;
@@ -49,7 +49,7 @@ export const PoolWarsDivider = () => {
         elementWidth: 233,
         toLeft: true,
     }
-    return <Box zIndex="999" fontFamily="Trap">
+    return <Box zIndex="999" fontFamily="Trap" {...props}>
         <Carousel settings={settings1}>
             {phrasesFirst}
         </Carousel>

@@ -5,13 +5,13 @@ import {
     SimpleGrid, Stack,
     Text
 } from "@chakra-ui/react";
-import {FirstSpot} from "../Layout/BackgroundSpots/FirstSpot";
 import {PoolWarsDivider} from "../Layout/PoolWarsDivider";
 import {useWindowSize} from "../../../hooks/useWindowSize";
 import React from "react";
 import {ProfileCard} from "./ProfileCard";
 import {PoolWarsBox} from "../Layout/PoolWarsBox";
 import {AllSpots} from "../Layout/BackgroundSpots/AllSpots";
+import {Footer} from "../Layout/Footer/Footer";
 
 export const Profile = ({cards}) => {
     const size = useWindowSize();
@@ -67,5 +67,6 @@ export const Profile = ({cards}) => {
             {/*    <Box w="365px" h="450px" borderRadius="43px" backgroundColor="rgba(211, 205, 198, 0.1);"/>*/}
             {/*</Center>*/}
         </SimpleGrid>
+        <Footer marginTop="100px"/>
     </Box>
 }

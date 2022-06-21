@@ -1,7 +1,7 @@
 import {Box} from "@chakra-ui/react";
 
 export const FourthSpot = ({top}) => {
-    return <Box css={{
+    return <Box zIndex={-100} css={{
         position: "absolute",
         width: "1440px",
         height: "1093.14px",
