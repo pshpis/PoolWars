@@ -1,6 +1,7 @@
 import {Box, Center, ListItem, Text, UnorderedList} from "@chakra-ui/react";
 import {useWindowSize} from "../../../hooks/useWindowSize";
 import Link from "next/link";
+import {PoolWarsBox} from "../Layout/PoolWarsBox";
 
 export const TakeNow = () =>
 {
@@ -8,9 +9,8 @@ export const TakeNow = () =>
     let sidePadding = "37px";
     if (size.width < 500) sidePadding="15px";
     return <Center w="100%">
-        <Box maxWidth={size.width > 1100 ? "520px" : "100%"} borderRadius={size.width >= 500? 60: 40} backgroundColor="rgba(232, 227, 221, 0.09)"
-             boxShadow="inset 4.51333px -4.51333px 4.51333px rgba(195, 191, 186, 0.464), inset -4.51333px 4.51333px 4.51333px rgba(255, 255, 255, 0.464);"
-             backdropFilter="blur(29.788px)" padding={"44px " + sidePadding + " 34px"}>
+        <PoolWarsBox maxWidth={size.width > 1100 ? "520px" : "100%"} borderRadius={size.width >= 500? 60: 40}
+             padding={"44px " + sidePadding + " 34px"}>
 
             <Box fontFamily="Trap" fontWeight="800" textAlign="center" fontSize="36px" mb="25px">
                 Card&#39;s Airdrop now Live
@@ -50,6 +50,6 @@ export const TakeNow = () =>
             </Link>
 
 
-        </Box>
+        </PoolWarsBox>
     </Center>;
 }

@@ -15,11 +15,11 @@ import {WalletMultiButton} from "@solana/wallet-adapter-react-ui";
 
 
 const HeaderNavSpacer = () => {
-    return <Box width="4.86vw"/>
+    return <Box width="3vw"/>
 }
 
 const HeaderNavSpacerMobile = () => {
-    return <Box height="4.86vh"/>
+    return <Box height="4vh"/>
 }
 
 const HeaderNavEl = ({children}) => {
@@ -36,6 +36,10 @@ const HeaderNav = () => {
         <HeaderNavSpacer/>
         <HeaderNavEl><Link href="/profile">profile</Link></HeaderNavEl>
         <HeaderNavSpacer/>
+        <HeaderNavEl><Link href="/nft-swaps">swaps</Link></HeaderNavEl>
+        <HeaderNavSpacer/>
+        <HeaderNavEl><Link href="/pool-wars-v0">events</Link></HeaderNavEl>
+        <HeaderNavSpacer/>
         <HeaderNavEl><Link href="/whitepaper/">whitepaper</Link></HeaderNavEl>
     </HStack>
 }
@@ -45,6 +49,10 @@ const HeaderNavMobile = () => {
         <HeaderNavElModile><Link href="/airdrop">airdrop</Link></HeaderNavElModile>
         <HeaderNavSpacerMobile/>
         <HeaderNavElModile><Link href="/profile">profile</Link></HeaderNavElModile>
+        <HeaderNavSpacerMobile/>
+        <HeaderNavElModile><Link href="/nft-swaps">swaps</Link></HeaderNavElModile>
+        <HeaderNavSpacerMobile/>
+        <HeaderNavElModile><Link href="/pool-wars-v0">events</Link></HeaderNavElModile>
         <HeaderNavSpacerMobile/>
         <HeaderNavElModile><Link href="/whitepaper/">whitepaper</Link></HeaderNavElModile>
         <Spacer/>
