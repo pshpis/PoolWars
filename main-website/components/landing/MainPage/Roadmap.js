@@ -1,17 +1,18 @@
 import {useWindowSize} from "../../../hooks/useWindowSize";
 import {Box, Divider, Flex, HStack, Text, VStack} from "@chakra-ui/react";
 import {useEffect, useRef, useState} from "react";
-import {HiSave} from "react-icons/all";
+import {PoolWarsBox} from "../Layout/PoolWarsBox";
 
 const RoadmapStage = ({title, children}) => {
-    return <VStack>
-
-        <Box padding="10px 10px 10px 50px">
-            <Box color="#7951F5" padding="0px 0px 10px" fontWeight="700" fontSize="34px" lineHeight="51px">{title}</Box>
-            <Box color="#E8E3DD" fontWeight="300" fontSize="20px" lineHeight="30px">{children}</Box>
+    return <HStack width="100%" justifyContent="space-after" padding="50px 0px 50px 0px">
+        <PoolWarsBox margin="10px 10px 10px 10px" fontWidth="0%">
+            <Box height="4.5833vw" width="4.5833vw" />
+        </PoolWarsBox>
+        <Box paddingLeft="50px" paddingRight="150px">
+            <Box color="#7951F5" padding="0px 0px 10px" fontWeight="700" fontSize="3.501vh" lineHeight="5.252vh">{title}</Box>
+            <Box color="#E8E3DD" fontWeight="300" fontSize="2.059vh" lineHeight="3.089vh">{children}</Box>
         </Box>
-    </VStack>
-
+    </HStack>
 }
 
 export const Roadmap = () => {
@@ -32,9 +33,11 @@ export const Roadmap = () => {
 
         <Divider border="2px color=#D3CDC6" filter="blur(3px)" />
 
-        <Divider marginLeft={roadmapTitleRef.current.offsetWidth/2-size.width*0.475+"px"} transform="rotate(90deg)" border="2px color=#D3CDC6" filter="blur(3px)" />
+        {/*<Divider weidth="10" marginLeft={roadmapTitleRef.current === null ? "0px" : roadmapTitleRef.current.offsetWidth/2-*/}
+        {/*    size.width*0.475+"px"} transform="rotate(90deg)" border="2px color=#D3CDC6" filter="blur(3px)" />*/}
 
-        <HStack marginLeft="208px" fontFamily="Onest">
+        <VStack marginTop="50px" marginLeft={roadmapTitleRef.current === null ? "0px" :
+            roadmapTitleRef.current.offsetWidth/2-10-size.width*0.05583/2+"px"} fontFamily="Onest">
             <RoadmapStage title={"Stage 0"}>Airdrop of Warlords Card NFT collection.
                 Launch Nft Swaps and Pool Wars Events V0. Also, there will be collaborations with other collections
                 and ruffles for whitelist. At this step we are creating a strong community.
@@ -53,6 +56,6 @@ export const Roadmap = () => {
             <RoadmapStage title={"Stage 3"}>Launch a DAO. By DAO we will make next decisions
                 and realize the coolest ideas of our community.
             </RoadmapStage>
-        </HStack>
+        </VStack>
     </Box>
 }

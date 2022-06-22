@@ -5,6 +5,7 @@ import {TakeNow} from "./TakeNow";
 import {useWindowSize} from "../../../hooks/useWindowSize";
 import {PicPreview} from "./PicPreview";
 import {FirstSpot} from "../Layout/BackgroundSpots/FirstSpot";
+import {Roadmap} from "./Roadmap";
 
 export const MainPage = () => {
     const size = useWindowSize();
@@ -19,5 +20,6 @@ export const MainPage = () => {
             <TakeNow/>
         </Stack>
         <PicPreview/>
+        <Roadmap/>
     </Box>
 }
