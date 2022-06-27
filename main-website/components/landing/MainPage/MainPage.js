@@ -8,6 +8,7 @@ import {FirstSpot} from "../Layout/BackgroundSpots/FirstSpot";
 import {Roadmap} from "./Roadmap";
 import {AllSpots} from "../Layout/BackgroundSpots/AllSpots";
 import {Footer} from "../Layout/Footer/Footer";
+import {PoolWars} from "./PoolWars";
 
 export const MainPage = () => {
     const size = useWindowSize();
@@ -23,6 +24,7 @@ export const MainPage = () => {
         </Stack>
         <PicPreview/>
         <Roadmap/>
+        {/*<PoolWars/>*/}
         <Footer/>
     </Box>
 }
