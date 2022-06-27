@@ -12,20 +12,20 @@ import {
     VStack,
     Center
 } from "@chakra-ui/react";
-import {useEffect, useRef, useState, ReactNode, MutableRefObject, RefObject} from "react";
+import {useEffect, useRef, useState, ReactNode} from "react";
 import {PoolWarsBox} from "../Layout/PoolWarsBox";
+import useElementSize from "../../../hooks/useElementSize";
 
 type RoadmapStageProps  = {
     title: string,
-    children?: ReactNode,
-    ref?:  RefObject<any>
+    children?: ReactNode
 } & StackProps;
 
-const RoadmapStage = ({ref, title, children, ...stackProps} : RoadmapStageProps) => {
+const RoadmapStage = ({title, children, ...stackProps} : RoadmapStageProps) => {
     const size = useWindowSize();
-    return <Stack ref={ref} spacing="0px" width="100%" justifyContent="space-after" direction="row" {...stackProps}>
+    return <Stack spacing="0px" width="100%" justifyContent="space-after" direction="row" {...stackProps}>
         <Center>
-            <PoolWarsBox height="66px" width="66px" margin="10px" fontSize="0%"/>
+            <PoolWarsBox height="66px" width="66px" fontSize="0%"/>
         </Center>
         <Box paddingLeft={size.width <= 425 ? "10px" :"50px"} paddingRight="10px" maxWidth="946px">
             <Box color="#7951F5" marginBottom="10px" fontWeight="700" fontSize="34px" lineHeight="51px">{title}</Box>
@@ -43,15 +43,15 @@ export const Roadmap = (props: BoxProps) => {
     }, [roadmapTitleRef.current]);
 
     const roadmapStagesRef = useRef(null);
-    const roadmapStagesDimensions = useDimensions(roadmapStagesRef);
+    const roadmapStagesSize = useElementSize(roadmapStagesRef);
 
     const [mainDividerStagesHeight, setMainDividerStagesHeight] = useState(0);
     useEffect(() => {
-        setMainDividerStagesHeight(roadmapStagesDimensions !== null ? roadmapStagesDimensions.contentBox.height + 25 : 0);
-    }, [roadmapStagesDimensions])
+        let delta = 20;
+        if (size.width <= 680) delta = -40;
+        setMainDividerStagesHeight (roadmapStagesSize.height + delta);
+    }, [roadmapStagesSize.height]);
 
-    const lastStageRef = useRef(null);
-    const lastStageDimensions = useDimensions(lastStageRef);
 
     return <Box marginTop="131px" marginBottom="50px"
                 marginLeft={size.width <= 768 ? size.width <= 425 ? "10px" : "50px" : "5.5%"} position="relative"
@@ -62,23 +62,23 @@ export const Roadmap = (props: BoxProps) => {
             </Flex>
         </Box>
 
-        <Divider width="100vw" marginLeft={size.width <= 768 ? size.width <= 425 ? "-10px" : "-50px" : "0px"} border="2px color=#D3CDC6" filter="blur(3px)" />
+        <Divider width="100vw" marginLeft={size.width <= 768 ? size.width <= 425 ? "-10px" : "-50px" : "0px"} border="2px solid #D3CDC6" filter="blur(1px)" />
 
         <Divider position="absolute" zIndex={-100}
                  width={mainDividerStagesHeight+"px"}
-                 top={mainDividerStagesHeight/2+69+"px"}
-                 left={roadmapStagesRef.current === null || roadmapTitleRef.current === null ? "0px" :
-                     size.width <= 768 ? -mainDividerStagesHeight/2 + 43 +"px" :
+                 top={mainDividerStagesHeight/2+75+"px"}
+                 left={ roadmapTitleRef.current === null ? "0px" :
+                     size.width <= 768 ? -mainDividerStagesHeight/2 + 33 +"px" :
                      -mainDividerStagesHeight/2 + mainDividerMarginLeft/2+"px"}
                  transform="rotate(90deg)"
-                 border="2px color=#D3CDC6" filter="blur(3px)"/>
+                 border="2px solid #D3CDC6" filter="blur(1px)"/>
 
         <VStack zIndex={1}
                 ref={roadmapStagesRef}
                 marginTop="50px"
                 marginLeft={roadmapTitleRef.current === null ? "0px" : size.width <= 768 ?
                     "0" :
-                    mainDividerMarginLeft/2-33-10+"px"}
+                    mainDividerMarginLeft/2-33+"px"}
                 spacing="93px"
                 fontFamily="Onest">
             <RoadmapStage title={"Stage 0"}>Airdrop of Warlords Card NFT collection.
@@ -96,7 +96,7 @@ export const Roadmap = (props: BoxProps) => {
                 of royalty.
             </RoadmapStage>
 
-            <RoadmapStage ref={lastStageRef} title={"Stage 3"}>Launch a DAO. By DAO we will make next decisions
+            <RoadmapStage title={"Stage 3"}>Launch a DAO. By DAO we will make next decisions
                 and realize the coolest ideas of our community.
             </RoadmapStage>
         </VStack>
