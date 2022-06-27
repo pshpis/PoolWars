@@ -47,28 +47,28 @@ export const Roadmap = (props: BoxProps) => {
 
     const [mainDividerStagesHeight, setMainDividerStagesHeight] = useState(0);
     useEffect(() => {
-        setMainDividerStagesHeight(roadmapStagesDimensions !== null ? roadmapStagesDimensions.contentBox.height - 50 : 0);
+        setMainDividerStagesHeight(roadmapStagesDimensions !== null ? roadmapStagesDimensions.contentBox.height + 25 : 0);
     }, [roadmapStagesDimensions])
 
     const lastStageRef = useRef(null);
     const lastStageDimensions = useDimensions(lastStageRef);
 
     return <Box marginTop="131px" marginBottom="50px"
-                marginLeft={size.width <= 768 ? "50px" : "5.5%"} position="relative"
+                marginLeft={size.width <= 768 ? size.width <= 425 ? "10px" : "50px" : "5.5%"} position="relative"
                 {...props}>
         <Box marginBottom="10px" fontFamily="Trap" fontWeight="900" fontSize="60px" lineHeight="63px">
-            <Flex justifyContent="space-after" marginLeft={size.width <= 425 ? "-40px" : "0px"}>
+            <Flex justifyContent="space-after">
                 <Text ref={roadmapTitleRef}>Roadmap</Text>
             </Flex>
         </Box>
 
-        <Divider width="100vw" marginLeft={size.width <= 768 ? "-50px" : "0px"} border="2px color=#D3CDC6" filter="blur(3px)" />
+        <Divider width="100vw" marginLeft={size.width <= 768 ? size.width <= 425 ? "-10px" : "-50px" : "0px"} border="2px color=#D3CDC6" filter="blur(3px)" />
 
         <Divider position="absolute" zIndex={-100}
-                 width={roadmapStagesRef.current === null ? "0px" : mainDividerStagesHeight+"px"}
-                 top={roadmapStagesRef.current === null ? "0px" : mainDividerStagesHeight/2+69+"px"}
+                 width={mainDividerStagesHeight+"px"}
+                 top={mainDividerStagesHeight/2+69+"px"}
                  left={roadmapStagesRef.current === null || roadmapTitleRef.current === null ? "0px" :
-                     size.width <= 768 ? -mainDividerStagesHeight/2+"px" :
+                     size.width <= 768 ? -mainDividerStagesHeight/2 + 43 +"px" :
                      -mainDividerStagesHeight/2 + mainDividerMarginLeft/2+"px"}
                  transform="rotate(90deg)"
                  border="2px color=#D3CDC6" filter="blur(3px)"/>
@@ -77,7 +77,7 @@ export const Roadmap = (props: BoxProps) => {
                 ref={roadmapStagesRef}
                 marginTop="50px"
                 marginLeft={roadmapTitleRef.current === null ? "0px" : size.width <= 768 ?
-                    "-43px" :
+                    "0" :
                     mainDividerMarginLeft/2-33-10+"px"}
                 spacing="93px"
                 fontFamily="Onest">
