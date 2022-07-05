@@ -4,7 +4,8 @@ import {
     GlowWalletAdapter,
     PhantomWalletAdapter,
     SlopeWalletAdapter,
-    SolflareWalletAdapter, TorusWalletAdapter
+    SolflareWalletAdapter, TorusWalletAdapter,
+    SolletWalletAdapter
 } from "@solana/wallet-adapter-wallets";
 import { clusterApiUrl } from '@solana/web3.js';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
@@ -31,6 +32,7 @@ function MyApp({ Component, pageProps }) {
             new SlopeWalletAdapter(),
             new SolflareWalletAdapter({ network }),
             new TorusWalletAdapter(),
+            new SolletWalletAdapter(),
         ],
         [network]
     );

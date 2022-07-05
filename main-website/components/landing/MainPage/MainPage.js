@@ -1,10 +1,9 @@
-import {Box, Center, Flex, HStack, ListItem, Stack, Text, UnorderedList} from "@chakra-ui/react";
+import {Box, Stack} from "@chakra-ui/react";
 import {Header} from "../Layout/Header/Header";
 import {Welcome} from "./Welcome";
 import {TakeNow} from "./TakeNow";
 import {useWindowSize} from "../../../hooks/useWindowSize";
 import {PicPreview} from "./PicPreview";
-import {FirstSpot} from "../Layout/BackgroundSpots/FirstSpot";
 import {Roadmap} from "./Roadmap";
 import {AllSpots} from "../Layout/BackgroundSpots/AllSpots";
 import {Footer} from "../Layout/Footer/Footer";
