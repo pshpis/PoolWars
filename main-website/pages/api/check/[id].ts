@@ -1,6 +1,6 @@
 // pages/api/publish/[id].ts
 
-import prisma from "../../../lib/prisma";
+import prisma from "../../../backend/prisma";
 
 // PUT /api/check/:id
 export default async function handle(req, res) {

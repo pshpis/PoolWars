@@ -12,6 +12,8 @@ import {HamburgerIcon} from "@chakra-ui/icons";
 import Link from "next/link";
 import {AiOutlineClose} from "react-icons/ai";
 import {WalletMultiButton} from "@solana/wallet-adapter-react-ui";
+import {useConnection, useWallet} from "@solana/wallet-adapter-react";
+import {useEffect} from "react";
 
 
 const HeaderNavSpacer = () => {
