@@ -1,6 +1,6 @@
 import {Center, HStack, Text} from "@chakra-ui/react";
 import Image from "next/image";
-import logoPic from "../../../public/logo-bright.svg";
+import logoPic from "../../../public/logo.svg";
 import {useWindowSize} from "../../../hooks/useWindowSize";
 
 const BorderRight = () => {
@@ -26,7 +26,7 @@ export const Logo = () => {
       <Center marginLeft={marginLeft} width={size.width > 800 ? "100%" : "229px"} height="100%" position="relative">
           <HStack spacing="16px">
               <Image alt="Logo" style={{marginRight:"16px"}} src={logoPic} height={size.width > 800 ? "40px" : "30px"} width={size.width > 800 ? "40px" : "30px"} />
-              <Text color="rgb(59, 69, 78)" fontSize="1.15em"><b>Pool Wars #Warlords</b></Text>
+              <Text color="rgb(59, 69, 78)" fontSize="1.15em"><b>The Elder Katts</b></Text>
           </HStack>
 
           {size.width > 800 ? <BorderRight/> : ""}

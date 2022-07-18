@@ -6,7 +6,7 @@ export const WarlordsCards = () => {
         <Text fontSize="16px" color="rgba(136,153,168,1.00)" marginTop="16px">Information about Warlords cards and NFT Swaps</Text>
         <hr style={{marginTop: "20px",marginBottom:"20px"}}/>
 
-        <Text padding="8px 0px" fontSize="16px" lineHeight="24px">At <b>stage 0</b> we will launch the Warlords card collection. It will be completely <b>free</b>, moreover verified users by our bot can take this card once <b>every 6 hours</b>.
+        <Text padding="8px 0px" fontSize="16px" lineHeight="24px">At <b>stage 0</b> we will launch the Warlords card collection. It will be completely <b>free</b>, moreover verified users by our bot can take this card once <b>every day</b>.
             The main goal of these cards is to increase warlords to bring in more income from staking. But, also, it will give access to Pool Wars v0 and v1.
         </Text>
         <Text padding="8px 0px" fontSize="16px" lineHeight="24px">
