@@ -15,8 +15,8 @@ datasource db {
 model User {
   id Int @id @default(autoincrement())
   wallet_address String @unique
+  auth_token String @unique
   twitter_nickname String @unique @default("")
   discord_id String @unique @default("")
   auth_code String
-  auth_token String @default("")
 }

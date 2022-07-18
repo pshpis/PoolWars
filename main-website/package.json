@@ -24,6 +24,7 @@
     "@thirdweb-dev/react": "^2.0.5",
     "@thirdweb-dev/sdk": "^2.0.34",
     "array-includes": "^3.1.4",
+    "bs58": "^5.0.0",
     "components": "^0.1.0",
     "ethers": "^5.6.4",
     "framer-motion": "^6.3.0",
@@ -37,7 +38,8 @@
     "react-dom": "18.0.0",
     "react-icons": "^4.3.1",
     "react-slick": "^0.29.0",
-    "slick-carousel": "^1.8.1"
+    "slick-carousel": "^1.8.1",
+    "tweetnacl": "^1.0.3"
   },
   "devDependencies": {
     "@types/jest": "^27.4.1",
