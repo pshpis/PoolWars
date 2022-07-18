@@ -9,7 +9,7 @@ export const Footer = (props: BoxProps) => {
 
     return <Stack fontFamily="Roboto Flex" direction={size.width >= 768? "row": "column"} backgroundColor="#202020" width="100%"
                   pl={size.width > 800 ? "96px" : "30px"} pt="44px" pb="96px"
-                  boxShadow="0px -17px 24px 0px rgba(211,205,198,0.2)" spacing={size.width >= 768? "30%": "30px"}
+                  boxShadow="0px -4px 4px rgba(232, 232, 232, 0.15)" spacing={size.width >= 768? "30%": "30px"}
                   {...props}>
         <Box>
             <Box mb="48px">
@@ -17,7 +17,7 @@ export const Footer = (props: BoxProps) => {
             </Box>
 
             <Box lineHeight="19px" color="#B8C3E6">
-                <Text>pool.official@gmail.com</Text>
+                <Text>poolwars.official@gmail.com</Text>
                 <br/>
                 <Link href="/whitepaper"><Text>White paper</Text></Link>
                 <br/>

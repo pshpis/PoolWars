@@ -7,8 +7,8 @@ export const Welcome = () => {
     let welcomeTextSize = 48;
     if (size.width < 500) welcomeTextSize = 40;
     return <Box width={size.width > 1100 ? "100%" : "100%"} mb={size.width>1100? "0" : "20px"}>
-        <Box fontWeigh="400" height="114px" fontFamily="Njord" color="#E8E3DD" mb="40px">
-            <Text fontSize="48px" lineHeight="40px">welcome to the</Text>
+        <Box fontWeight="400" fontFamily="Njord" color="#E8E3DD" mb="40px">
+            <Text fontSize="48px" lineHeight="48px">welcome to the</Text>
             <Text fontSize="88px" lineHeight="88px" color="#71CFC3">Elder Katts</Text>
         </Box>
 

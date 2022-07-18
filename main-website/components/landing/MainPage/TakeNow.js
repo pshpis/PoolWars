@@ -1,4 +1,4 @@
-import {Box, Center, Flex, ListItem, Text, UnorderedList} from "@chakra-ui/react";
+import {Box, Center, Flex, ListItem, Text, UnorderedList, useToast} from "@chakra-ui/react";
 import {useWindowSize} from "../../../hooks/useWindowSize";
 import Link from "next/link";
 import {ElderKattsBox} from "../Layout/ElderKattsBox";
@@ -8,9 +8,21 @@ export const TakeNow = () =>
     const size = useWindowSize();
     let sidePadding = "37px";
     if (size.width < 500) sidePadding="15px";
-    return <Box w="100%">
-        <ElderKattsBox maxWidth={size.width > 1100 ? "520px" : "100%"}
-             padding={"32px " + sidePadding + " 32px"} marginLeft="auto">
+    const toast = useToast();
+    let toastId = '';
+    const takeNowOnClick = () => {
+        if (!toast.isActive(toastId)){
+            toast({
+                id: toastId,
+                title: 'Airdrop will be available soon',
+                status: 'info',
+                position: 'top',
+                isClosable: 'true',
+            });
+        }
+    }
+    return <ElderKattsBox maxWidth={size.width > 1100 ? "520px" : "100%"}
+             padding={"32px " + sidePadding + " 32px"}>
 
             <Box color="#71CFC3;" fontFamily="Njord" fontWeight="400" textAlign="center" fontSize="32px" mb="40px">
                 CARD&#39;S AIRDROP NOW LIVE
@@ -33,20 +45,19 @@ export const TakeNow = () =>
                     </ListItem>
                 </UnorderedList>
                 <Text fontWeight="300" fontStyle="Light">
-                    Write our bot to take your personal code which lets you take your NFT!
+                    Connect your twitter and discord to your account to get card!
                 </Text>
             </Box>
 
-            <Link href="/airdrop-auth">
-                <Box width="100%" height="48px" lineHeight="28px" borderRadius="24px"
-                     fontFamily="Roboto Flex" fontWeight="600" textAlign="center" color="#202020"
-                     backgroundColor="#B8C3E6" fontSize="24px" transition="0.3s ease"
-                     _hover={{boxShadow: "7px 7px 14px 3px rgba(255, 255, 255, 0.19);"}}>
-                    <Text pt="10px" pb="14px">TAKE NOW</Text>
-                </Box>
-            </Link>
+            <Box width="100%" height="48px" lineHeight="28px" borderRadius="24px"
+                 fontFamily="Roboto Flex" fontWeight="600" textAlign="center" color="#202020"
+                 backgroundColor="#B8C3E6" fontSize="24px" transition="0.3s ease"
+                 _hover={{boxShadow: "7px 7px 14px 3px rgba(255, 255, 255, 0.19);"}}
+                 onClick={takeNowOnClick}
+            >
+                <Text pt="10px" pb="14px">TAKE NOW</Text>
+            </Box>
 
 
-        </ElderKattsBox>
-    </Box>;
+        </ElderKattsBox>;
 }
