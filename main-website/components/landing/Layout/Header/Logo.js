@@ -2,7 +2,7 @@ import {Box, Center, Flex, HStack, Stack} from "@chakra-ui/react";
 import {useWindowSize} from "../../../../hooks/useWindowSize";
 import Link from "next/link";
 import Image from "next/image";
-import logoPic from "../../../../public/logo.svg";
+import logoPic from "../../../../public/logo-bright.svg";
 import logoTxtPic from "../../../../public/logo-txt.svg";
 
 export const Logo = ({height, width}) => {
