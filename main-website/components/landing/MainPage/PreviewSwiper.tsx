@@ -28,7 +28,7 @@ function cardsDataFactory(types: Array<string>, points: Array<number>) : Array<C
     return res;
 }
 
-function PreviewCard({data}: {data: CardData}){
+function PreviewCard({data, index}: {data: CardData, index: number}){
     const [isInfoOpen, setInfoOpen] = useState(false);
     const switchInfo = () => {
         setInfoOpen(!isInfoOpen);
@@ -45,7 +45,7 @@ function PreviewCard({data}: {data: CardData}){
         <Img src={"/increaseNft/" + getCardImgName(data)} w="294px" h="294px" borderRadius="24px 24px 0 0"/>
         <HStack borderRadius="0 0 24px 24px" w="100%" h="54px"
                 backgroundColor="#E8E8E8" color="#949494" padding="0 15px">
-            <Box fontWeight="600" fontSize="24px">Elder Katts #1</Box>
+            <Box fontWeight="600" fontSize="24px">Combat card #{index+1}</Box>
             <Spacer/>
             <Img src="/plus.svg" onClick={switchInfo} transition="all 0.5s"
                  transform={isInfoOpen? "rotate(45deg)" : "rotate(0)"}/>
@@ -57,7 +57,7 @@ const PreviewSwiper = (props: BoxProps) => {
     const points : number[] = [1, 3, 6];
     const types : string[] = ["attack", "defence", "intelligence"];
     const cardsData : CardData[] = cardsDataFactory(types, points);
-    const cardsJsx = cardsData.map(data => <PreviewCard key={data.type+data.points} data={data}/>);
+    const cardsJsx = cardsData.map((data, i) => <PreviewCard key={data.type+data.points} index={i} data={data}/>);
 
     return <Box {...props}><Swiper
         slidesPerView={4}
