@@ -1,0 +1,8 @@
+.walletMultiButton {
+    height: 40px;
+    width: 188px;
+    padding: 0;
+}
+.walletMultiButton:hover {
+    background: inherit!important;
+}

@@ -1,6 +1,6 @@
 import {Center, HStack, Text} from "@chakra-ui/react";
 import Image from "next/image";
-import logoPic from "../../../public/logo.png";
+import logoPic from "../../../public/logo-bright.svg";
 import {useWindowSize} from "../../../hooks/useWindowSize";
 
 const BorderRight = () => {

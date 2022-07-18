@@ -12,15 +12,15 @@ export const MainPage = () => {
     const size = useWindowSize();
     let defaultSidePadding = "20px";
     if (size.width < 500) defaultSidePadding = "10px"
-    return <Box paddingTop="77px">
+    return <Box paddingTop="77px" >
         <AllSpots/>
         <Header/>
-        <Stack mt={size.width > 500? "70px" : "20px"} paddingLeft={size.width > 1100 ? "5.5%" : defaultSidePadding}
-               direction={size.width > 1100 ? "row" : "column"} paddingRight={defaultSidePadding}>
+        <Stack mt={size.width > 500? "80px" : "20px"} paddingLeft={size.width > 1100 ? "5.5%" : defaultSidePadding}
+               direction={size.width > 1100 ? "row" : "column"} paddingRight={size.width > 1100 ? "5.5%" : defaultSidePadding}>
             <Welcome/>
-            <TakeNow/>
+            <TakeNow />
         </Stack>
-        <PicPreview/>
+        {/*<PicPreview/>*/}
         <Roadmap/>
         {/*<PoolWars/>*/}
         <Footer/>

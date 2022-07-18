@@ -1,13 +1,12 @@
 import {Box} from "@chakra-ui/react";
 
-export const SecondSpot = ({top}) => {
+export const Background = ({top}) => {
     return <Box zIndex={-100} css={{
         position: "absolute",
-        width: "1440px",
-        height: "353px",
+        width: "100vw",
+        height: "2568px",
         left: "0px",
         top: top,
-        background: "#2B504B",
-        filter: "blur(295px)"
+        background: "#202020",
     }}/>;
 }

@@ -2,39 +2,51 @@ import {Box, BoxProps, Center, HStack, Icon, Stack, Text} from "@chakra-ui/react
 import {FaDiscord, FaTelegram, FaTwitter} from "react-icons/fa";
 import Link from "next/link";
 import {useWindowSize} from "../../../../hooks/useWindowSize";
+import {Logo} from "../Header/Logo";
 
 export const Footer = (props: BoxProps) => {
     const size = useWindowSize();
 
-    return <Stack direction={size.width >= 768? "row": "column"} as={Center} backgroundColor="#010201" width="100%" padding="50px 10px"
-                boxShadow="0px -17px 24px 0px rgba(211,205,198,0.2)" spacing={size.width >= 768? "20%": "30px"}
-                {...props}
-    >
+    return <Stack fontFamily="Roboto Flex" direction={size.width >= 768? "row": "column"} backgroundColor="#202020" width="100%"
+                  pl={size.width > 800 ? "96px" : "30px"} pt="44px" pb="96px"
+                  boxShadow="0px -17px 24px 0px rgba(211,205,198,0.2)" spacing={size.width >= 768? "30%": "30px"}
+                  {...props}>
         <Box>
-            <Box mb="20px">
-                <Text fontSize="48px" lineHeight="60px" fontFamily="Trap" fontWeight="bold" textAlign="center">
-                    Pool <Box as="span" color="#C4F57C">Wars</Box>
-                </Text>
-                <Text fontSize="24px" lineHeight="40px" fontFamily="onest" textAlign="center"
-                      fontWeight={300}>Warlords NFT</Text>
+            <Box mb="48px">
+                <Logo height="67px" width="205px"/>
             </Box>
 
-            <Text color="#7951F5" textAlign="center">
-                &copy;2022 Pool Wars <br/> All rights reserved
-            </Text>
+            <Box lineHeight="19px" color="#B8C3E6">
+                <Text>pool.official@gmail.com</Text>
+                <br/>
+                <Link href="/whitepaper"><Text>White paper</Text></Link>
+                <br/>
+                <Link href="/"><Text>Home Page</Text></Link>
+                <br/>
+                <Text mt="16px" color="#E8E8E8">pool-wars-git-main-website-pshpis.vercel.app &copy;</Text>
+            </Box>
         </Box>
         <Box>
-            <HStack as={Center} spacing="20px">
-                <a href="https://discord.gg/rzd8ckvmpj"><Icon w="40px" h="40px" as={FaDiscord}/></a>
-                <a href="https://t.me/PoolWarsAnnouncements"><Icon w="40px" h="40px" as={FaTelegram}/></a>
-                <a href="https://twitter.com/PoolWars_NFT"><Icon w="40px" h="40px" as={FaTwitter}/></a>
+            <HStack lineHeight="19px" spacing={size.width > 1000 ? "115px" : "40px"} color="#E8E8E8">
+                <a href="https://discord.gg/rzd8ckvmpj">
+                    <HStack as={Center} spacing="16px">
+                        <Icon w="28px" h="27px" as={FaDiscord}/><Text>Discord</Text>
+                    </HStack>
+                </a>
+                <a href="https://twitter.com/PoolWars_NFT">
+                    <HStack as={Center} spacing="16px">
+                        <Icon w="31px" h="30px" as={FaTwitter}/><Text>Twitter</Text>
+                    </HStack>
+                </a>
             </HStack>
-            <Center mt="40px">
-                <Box>
-                    <Text><Link href="/">Home Page</Link></Text>
-                    <Text><Link href="/whitepaper">Whitepaper</Link></Text>
-                </Box>
-            </Center>
+
+            <Box mt="80px">
+                <Text color="#B2B2B2" lineHeight="24px" mb="80px">
+                    We are creating a unique NFT portrait collection of the most powerful and strongest nordic warriors in history.
+                </Text>
+                <Text>2022 Elder Katts all rights reserved</Text>
+            </Box>
+
         </Box>
     </Stack>
 }

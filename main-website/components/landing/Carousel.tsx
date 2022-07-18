@@ -19,7 +19,7 @@ export const Carousel = ({children, settings} : CarouselProps) => {
     const [marginLeft, setMarginLeft] = useState(settings.toLeft ? 0 : -(settings.elementWidth + settings.delta)*2);
     const [fakeWidth, setFakeWidth] = useState(0);
     const fakeElement = <Box width={fakeWidth + "px"} height={settings.elementHeight + "px"}
-                         flex={"0 0 " + fakeWidth + "px"}/>
+                             flex={"0 0 " + fakeWidth + "px"}/>
 
     const [elements, setElements] = useState(children);
 
