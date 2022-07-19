@@ -4,7 +4,7 @@ import {
     Text, VStack
 } from "@chakra-ui/react";
 import {useWindowSize} from "../../../hooks/useWindowSize";
-import React, {useMemo} from "react";
+import React, {useCallback, useMemo} from "react";
 import {ElderKattsBox} from "../Layout/ElderKattsBox";
 import Image from "next/image";
 import userPic from "../../../public/User.svg";
@@ -13,14 +13,17 @@ import {useWallet} from "@solana/wallet-adapter-react";
 import styles from "../../../styles/profile.module.scss";
 import Layout from "../Layout/Layout";
 
-export const Profile = ({cards}) => {
+export const Profile = () => {
     const size = useWindowSize();
-    const {publicKey, connected, connecting, disconnect,} = useWallet();
+    const {publicKey, connected, connecting, disconnect, signMessage} = useWallet();
     const base58 = useMemo(() => publicKey?.toBase58(), [publicKey]);
     const walletAddressView = useMemo(() => {
         return base58?.slice(0, 5) + '...' + base58?.slice(-5);
     }, [base58]);
 
+    const onSignIn = useCallback(async () => {
+
+    }, []);
     return <Layout>
         {!connected ?
 
@@ -37,15 +40,15 @@ export const Profile = ({cards}) => {
                         <Center>
                             <Box mb="8px" pt="9px" pb="9px" h="40px" w="200px" backgroundColor="#313131" color="#71CFC3"
                                  borderRadius="16px"
-                                 fontWeight={300} fontSize="20px" lineHeight="24px" align="center">
+                                 fontWeight={300} fontSize="20px" lineHeight="24px" textAlign="center">
                                 {walletAddressView}
                             </Box>
                         </Center>
                         <Center>
                             <Button pt="9px" pb="9px" h="40px" w="200px" backgroundColor="#B8C3E6" color="#202020"
                                     borderRadius="16px"
-                                    fontFamily="Roboto Flex" fontWeight="600" fontSize="20px" lineHeight="24px" align="center"
-                                    transition="0.3s ease"
+                                    fontFamily="Roboto Flex" fontWeight="600" fontSize="20px" lineHeight="24px" textAlign="center"
+                                    transition="0.3s ease" onClick={onSignIn}
                                     _hover={{
                                         boxShadow: "0px 4px 8px 0px #B8C3E680",
                                         color: "#202020",
@@ -58,7 +61,7 @@ export const Profile = ({cards}) => {
 
                     <Divider borderColor="#E8E8E826" border="0.5px" hidden={size.width > 1000 ? false : size.width > 630 ? true : false}/>
                     <Box marginLeft="auto">
-                        <Text mb="32px" fontFamily="Njord" weight="400" fontSize="24px" lineHeight="28px"
+                        <Text mb="32px" fontFamily="Njord" fontWeight="400" fontSize="24px" lineHeight="28px"
                               textAlign="center">
                             Connected <br/>Accounts
                         </Text>
