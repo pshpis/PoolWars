@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
 import {Box, BoxProps} from "@chakra-ui/react";
-import {array} from "zod";
 
 type TimerDownProps = {
     needDate: Date
