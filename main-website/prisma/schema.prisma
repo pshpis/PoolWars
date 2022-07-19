@@ -19,4 +19,5 @@ model User {
   twitter_nickname String @unique @default("")
   discord_id String @unique @default("")
   auth_code String
+  auth_token_created DateTime @default(now())
 }

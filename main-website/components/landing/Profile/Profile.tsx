@@ -12,6 +12,8 @@ import noItemsPic from "../../../public/No-items-icon.svg";
 import {useWallet} from "@solana/wallet-adapter-react";
 import styles from "../../../styles/profile.module.scss";
 import Layout from "../Layout/Layout";
+import {sign} from "tweetnacl";
+import bs58 from 'bs58';
 
 export const Profile = () => {
     const size = useWindowSize();
@@ -21,9 +23,25 @@ export const Profile = () => {
         return base58?.slice(0, 5) + '...' + base58?.slice(-5);
     }, [base58]);
 
-    const onSignIn = useCallback(async () => {
 
-    }, []);
+
+    const onSignIn = useCallback(async () => {
+        const messageTextReq = await fetch("/api/auth/getMessage?wallet_address="+base58);
+        const messageTextRes = await messageTextReq.json();
+        const messageText = messageTextRes.text;
+
+        const message = new TextEncoder().encode(messageText);
+        const signature = bs58.encode(await signMessage(message));
+
+        const authTokenReq = await fetch(`/api/auth/getToken?wallet_address=${base58}&signature=${signature}`);
+        const authTokenRes = await authTokenReq.json();
+        const authToken = authTokenRes.token;
+        console.log(authToken);
+
+        localStorage.setItem('auth_token', authToken);
+    }, [publicKey, signMessage]);
+
+
     return <Layout>
         {!connected ?
 

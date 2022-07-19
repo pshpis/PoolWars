@@ -2,13 +2,24 @@ import prisma from "../prisma"
 import { PrismaClient, Prisma } from "@prisma/client";
 import {User} from "@prisma/client"
 import {getRandomStringWithSmallLetters} from "../modules/random";
-import {AuthService} from "./authService";
+import {AuthService} from "./AuthService";
+import { PublicKey } from '@solana/web3.js'
 
+const validateSolanaAddress = async (addr: string) : Promise<boolean> => {
+    let publicKey: PublicKey;
+    try {
+        publicKey = new PublicKey(addr);
+        return PublicKey.isOnCurve(publicKey.toBytes());
+    } catch (err) {
+        return false;
+    }
+};
 
 export class UserService {
 
 
     public static async createEmptyUser(wallet_address: string) : Promise<User> {
+        if (!await validateSolanaAddress(wallet_address)) throw new Error("Wrong wallet address");
         const auth_info = AuthService.createAuthInfo(wallet_address);
         return await prisma.user.create({
             data: {
