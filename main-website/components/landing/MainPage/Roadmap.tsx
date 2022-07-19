@@ -4,17 +4,11 @@ import {
     BoxProps,
     Divider,
     Flex,
-    Stack,
     HStack,
     StackProps,
     Text,
-    useDimensions,
-    VStack,
-    Center
 } from "@chakra-ui/react";
 import React, {useEffect, useRef, useState, ReactNode} from "react";
-import {PoolWarsBox} from "../Layout/PoolWarsBox";
-import useElementSize from "../../../hooks/useElementSize";
 
 type RoadmapStageProps  = {
     title: string,
@@ -46,19 +40,10 @@ const RoadmapStageTitle = ({title, location}) => {
 
 export const Roadmap = (props: BoxProps) => {
     const size = useWindowSize();
-    // const roadmapStagesRef = useRef(null);
-    // const roadmapStagesSize = useElementSize(roadmapStagesRef);
-    //
-    // const [mainDividerStagesHeight, setMainDividerStagesHeight] = useState(0);
-    // useEffect(() => {
-    //     let delta = 20;
-    //     if (size.width <= 680) delta = -40;
-    //     setMainDividerStagesHeight (roadmapStagesSize.height + delta);
-    // }, [roadmapStagesSize.height]);
 
     const borderWidth = size.width/2;
     const defaultPadding = 96;
-    return <Box mt="160px" mb="160px" pl="96px" pr="96px">
+    return <Box pl="96px" pr="96px" {...props}>
         <Divider mb="80px" borderColor="#E8E8E826" border="0.5px"/>
         <Text fontFamily="Njord" fontWeight="400" fontSize="64px" lineHeight="52px">Roadmap</Text>
 

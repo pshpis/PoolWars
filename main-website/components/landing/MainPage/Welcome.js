@@ -1,6 +1,5 @@
 import {Box, Text} from "@chakra-ui/react";
 import {useWindowSize} from "../../../hooks/useWindowSize";
-import Link from "next/link";
 
 export const Welcome = () => {
     const size = useWindowSize();
@@ -14,13 +13,13 @@ export const Welcome = () => {
 
         <Box whiteSpace="16px" lineHeight="30px" paragraph="16px" fontStyle="Light" fontWeight="300" fontSize="20px">
             <Text>We are creating a unique NFT portrait collection of the most powerful and strongest nordic warriors
-                in history. Our community will gain access to the "Pool Wars Events" v0 and v1, staking and raffles.
+                in history. Our community will gain access to the &quot;Pool Wars Events&quot; v0 and v1, staking and raffles.
                 To participate, you should mint or own at least one of Elder Katts.</Text>
             <br/>
             <Text>To have advantage over other brave warriors you can upgrade abilities of your Katt by using special
                 combat cards. Each card can improve one of three parameters such as attack, defense or intellect. After
                 the mint, it will allow you to earn more on Ketts staking. Moreover, combat cards will give you early
-                access to "Pool Wars Events" v0.</Text>
+                access to &quot;Pool Wars Events&quot; v0.</Text>
             <br/>
             At the initial stage you can participate in the Airdrop of the cards.
         </Box>

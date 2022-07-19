@@ -1,5 +1,4 @@
 import {FirstSpot} from "./FirstSpot";
-import {useEffect, useState} from "react";
 import {useWindowSize} from "../../../../hooks/useWindowSize";
 
 const AllSpots = () => {

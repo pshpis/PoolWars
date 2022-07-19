@@ -1,4 +1,4 @@
-import {Box, Center, Flex, HStack, Stack} from "@chakra-ui/react";
+import {Center, HStack} from "@chakra-ui/react";
 import {useWindowSize} from "../../../../hooks/useWindowSize";
 import Link from "next/link";
 import Image from "next/image";

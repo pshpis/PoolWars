@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {Box, Flex} from "@chakra-ui/react";
-import {element} from "prop-types";
 
 export type CarouselSettings = {
     delta: number, // in px

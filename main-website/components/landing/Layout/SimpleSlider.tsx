@@ -1,7 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import Slider from "react-slick";
-import Head from "next/head";
-import {Box, HStack} from "@chakra-ui/react";
+import {Box} from "@chakra-ui/react";
 
 export const SimpleSlider = () =>  {
     const settings = {

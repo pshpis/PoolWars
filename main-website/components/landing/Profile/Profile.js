@@ -1,4 +1,3 @@
-import {Header} from "../Layout/Header/Header";
 import {
     Box, Button,
     Center, Divider, Flex, HStack, Icon, Stack,
@@ -7,7 +6,6 @@ import {
 import {useWindowSize} from "../../../hooks/useWindowSize";
 import React, {useMemo} from "react";
 import {ElderKattsBox} from "../Layout/ElderKattsBox";
-import {FaDiscord, FaTwitter} from "react-icons/fa";
 import Image from "next/image";
 import userPic from "../../../public/User.svg";
 import noItemsPic from "../../../public/No-items-icon.svg";

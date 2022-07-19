@@ -1,5 +1,5 @@
 import {Box, BoxProps, Center, HStack, Icon, Stack, Text} from "@chakra-ui/react";
-import {FaDiscord, FaTelegram, FaTwitter} from "react-icons/fa";
+import {FaDiscord, FaTwitter} from "react-icons/fa";
 import Link from "next/link";
 import {useWindowSize} from "../../../../hooks/useWindowSize";
 import {Logo} from "../Header/Logo";

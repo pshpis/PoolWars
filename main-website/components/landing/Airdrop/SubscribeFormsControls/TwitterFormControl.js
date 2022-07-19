@@ -1,5 +1,4 @@
 import {Field, Form, Formik} from "formik";
-import {}
 
 function validateUsername(value) {
     let error;

@@ -11,10 +11,7 @@ import {useWindowSize} from "../../../../hooks/useWindowSize";
 import {HamburgerIcon} from "@chakra-ui/icons";
 import Link from "next/link";
 import {AiOutlineClose} from "react-icons/ai";
-import {WalletMultiButton} from "@solana/wallet-adapter-react-ui";
 
-import {useEffect, useMemo, useState} from "react";
-import {useWallet} from "@solana/wallet-adapter-react";
 import ConnectButton from "../ConnectButton";
 
 const FakeLink = ({children}) => {

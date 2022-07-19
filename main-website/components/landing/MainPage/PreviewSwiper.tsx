@@ -38,14 +38,14 @@ function PreviewCard({data, index}: {data: CardData, index: number}){
              top={0} left={0} zIndex={30} borderRadius="24px 24px 0 0" transition="all 0.5s"
              backgroundColor="rgba(232, 232, 232, 75%)" opacity={isInfoOpen? "100%": "0"}>
             <b>Description:</b> <br/>
-            This card will increase your Katt's {data.type} on {data.points} points. <br/>
+            This card will increase your Katt&apos;s {data.type} on {data.points} points. <br/>
             It will increase your stacking rewards on stage 2. <br/>
             Also, you can use it in Pool Wars v0 and Nft Swaps on Stage 1.
         </Box>
         <Img src={"/increaseNft/" + getCardImgName(data)} w="294px" h="294px" borderRadius="24px 24px 0 0"/>
         <HStack borderRadius="0 0 24px 24px" w="100%" h="54px"
-                backgroundColor="#E8E8E8" color="#949494" padding="0 15px">
-            <Box fontWeight="600" fontSize="24px">Combat card #{index+1}</Box>
+                backgroundColor="#E8E8E8"  padding="0 15px 0 24px">
+            <Box fontWeight="600" fontSize="24px" color="#949494">Combat card #{index+1}</Box>
             <Spacer/>
             <Img src="/plus.svg" onClick={switchInfo} transition="all 0.5s"
                  transform={isInfoOpen? "rotate(45deg)" : "rotate(0)"}/>

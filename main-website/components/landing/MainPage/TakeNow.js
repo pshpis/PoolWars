@@ -1,6 +1,5 @@
 import {Box, Center, Flex, ListItem, Text, UnorderedList, useToast} from "@chakra-ui/react";
 import {useWindowSize} from "../../../hooks/useWindowSize";
-import Link from "next/link";
 import {ElderKattsBox} from "../Layout/ElderKattsBox";
 
 export const TakeNow = () =>
