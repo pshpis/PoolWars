@@ -12,7 +12,7 @@ export const LandingStyles =
       }
 
       @font-face {
-        font-family: "Njord";
+        font-family: "Njord Alternate";
         src: url("/fonts/njord/NjordAlternate.otf");
         font-style: normal;
         font-weight: 600;
