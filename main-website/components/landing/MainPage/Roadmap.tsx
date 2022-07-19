@@ -1,7 +1,7 @@
 import {useWindowSize} from "../../../hooks/useWindowSize";
 
 import {
-    Box,
+    Box, BoxProps,
 
 
     Divider,
@@ -44,7 +44,7 @@ const RoadmapStageTitle = ({marginTop, title, children, location}) => {
     </Box>
 }
 
-export const Roadmap = () => {
+export const Roadmap = (props: BoxProps) => {
     const size = useWindowSize();
 
     const roadmapStagesRef = useRef(null);
@@ -63,7 +63,7 @@ export const Roadmap = () => {
         return (size.width - defaultPadding)/2;
     }, [size]);
 
-    return <Box mt="160px" mb="160px" pl={defaultPadding+"px"} pr={defaultPadding+"px"}>
+    return <Box pl={defaultPadding+"px"} pr={defaultPadding+"px"} {...props}>
         <Divider mb="80px" borderColor="#E8E8E826" border="0.5px"/>
         <Text fontFamily="Njord" fontWeight="400" fontSize="64px" lineHeight="52px">Roadmap</Text>
 
