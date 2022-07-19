@@ -1,6 +1,6 @@
 import prisma from "../prisma";
 import {User} from "@prisma/client";
-import {getRandomSmallLetter, getRandomStringWithSmallLetters} from "../modules/random";
+import {getRandomStringWithSmallLetters} from "../modules/random";
 import {UserService} from "./userService";
 import {sign} from "tweetnacl";
 import base58 from "bs58";
