@@ -10,7 +10,7 @@ import Image from "next/image";
 import userPic from "../../../public/User.svg";
 import noItemsPic from "../../../public/No-items-icon.svg";
 import {useWallet} from "@solana/wallet-adapter-react";
-import styles from "../../../styles/profile.module.css";
+import styles from "../../../styles/profile.module.scss";
 import Layout from "../Layout/Layout";
 
 export const Profile = ({cards}) => {

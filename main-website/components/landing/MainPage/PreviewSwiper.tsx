@@ -6,7 +6,7 @@ import 'swiper/css';
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-import styles from "../../../styles/swiper.module.css";
+import styles from "../../../styles/swiper.module.scss";
 import {useState} from "react";
 
 type CardData = {
