@@ -28,13 +28,17 @@ export const useWalletAuth = () => {
                 await setUser(null);
             }
             else {
-                await setUser(userRes as User);
+                setUser(userRes);
             }
-            console.log(user);
+
         }
 
         updateData();
     }, [authToken, authTokenExpireAt]);
+
+    useEffect(() => {
+        console.log(user);
+    }, [user]);
 
     const onSignIn = useCallback(async () => {
         const messageTextReq = await fetch("/api/auth/getMessage?wallet_address="+walletAddress);
