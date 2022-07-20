@@ -17,7 +17,7 @@ model User {
   wallet_address String @unique
   auth_token String @unique
   twitter_nickname String @unique @default("")
-  discord_id String @unique @default("")
+  discord_auth_token String @unique @default("")
   auth_code String
   auth_token_created DateTime @default(now())
 }
