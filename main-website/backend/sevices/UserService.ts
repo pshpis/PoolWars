@@ -56,6 +56,4 @@ export class UserService {
         });
     }
 
-    public static addTwitter(user : User, twitter_nickname: string){}
-
 }

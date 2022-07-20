@@ -4,42 +4,31 @@ import {
     Text, VStack
 } from "@chakra-ui/react";
 import {useWindowSize} from "../../../hooks/useWindowSize";
-import React, {useCallback, useMemo} from "react";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {ElderKattsBox} from "../Layout/ElderKattsBox";
 import Image from "next/image";
 import userPic from "../../../public/User.svg";
 import noItemsPic from "../../../public/No-items-icon.svg";
-import {useWallet} from "@solana/wallet-adapter-react";
+import {useLocalStorage, useWallet} from "@solana/wallet-adapter-react";
 import styles from "../../../styles/profile.module.scss";
 import Layout from "../Layout/Layout";
 import {sign} from "tweetnacl";
 import bs58 from 'bs58';
+import useLocalStorageState from "use-local-storage-state";
+import {User} from "@prisma/client";
+import {useWalletAuth} from "../../../hooks/useWalletAuth";
 
 export const Profile = () => {
     const size = useWindowSize();
-    const {publicKey, connected, connecting, disconnect, signMessage} = useWallet();
-    const base58 = useMemo(() => publicKey?.toBase58(), [publicKey]);
+
+    const {publicKey, connected} = useWallet();
+    const walletAddress = useMemo(() => publicKey?.toBase58(), [publicKey]);
     const walletAddressView = useMemo(() => {
-        return base58?.slice(0, 5) + '...' + base58?.slice(-5);
-    }, [base58]);
+        return walletAddress?.slice(0, 5) + '...' + walletAddress?.slice(-5);
+    }, [walletAddress]);
 
+    const {user, onSignToggle, isSigned} = useWalletAuth();
 
-
-    const onSignIn = useCallback(async () => {
-        const messageTextReq = await fetch("/api/auth/getMessage?wallet_address="+base58);
-        const messageTextRes = await messageTextReq.json();
-        const messageText = messageTextRes.text;
-
-        const message = new TextEncoder().encode(messageText);
-        const signature = bs58.encode(await signMessage(message));
-
-        const authTokenReq = await fetch(`/api/auth/getToken?wallet_address=${base58}&signature=${signature}`);
-        const authTokenRes = await authTokenReq.json();
-        const authToken = authTokenRes.token;
-        console.log(authToken);
-
-        localStorage.setItem('auth_token', authToken);
-    }, [publicKey, signMessage]);
 
 
     return <Layout>
@@ -66,13 +55,13 @@ export const Profile = () => {
                             <Button pt="9px" pb="9px" h="40px" w="200px" backgroundColor="#B8C3E6" color="#202020"
                                     borderRadius="16px"
                                     fontFamily="Roboto Flex" fontWeight="600" fontSize="20px" lineHeight="24px" textAlign="center"
-                                    transition="0.3s ease" onClick={onSignIn}
+                                    transition="0.3s ease" onClick={onSignToggle}
                                     _hover={{
                                         boxShadow: "0px 4px 8px 0px #B8C3E680",
                                         color: "#202020",
                                         background: "#B8C3E6",
                                     }}>
-                                <Text>Sign in</Text>
+                                {isSigned? "Sign out" : "Sign in"}
                             </Button>
                         </Center>
                     </Box>
