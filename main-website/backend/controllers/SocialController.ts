@@ -12,7 +12,7 @@ export default class SocialController {
         if (typeof discord_auth_token !== 'string') discord_auth_token = discord_auth_token[0];
 
         await SocialService.updateDiscordAuthToken(auth_token, discord_auth_token);
-        return res.status(200).json(discord_auth_token);
+        return res.status(200).json({discord_auth_token: discord_auth_token});
     }
 
     public static async catchError(func: controllerMethod, req: NextApiRequest, res: NextApiResponse) : Promise<void>{

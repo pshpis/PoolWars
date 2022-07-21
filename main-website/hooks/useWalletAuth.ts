@@ -37,7 +37,7 @@ export const useWalletAuth = () => {
 
 
     useEffect(() => {
-        updateUser().then(async () => await setUserLoaded(true));
+        updateUser().then(() => setUserLoaded(true));
     }, [authToken, authTokenExpireAt, updateUser]);
 
     useEffect(() => {

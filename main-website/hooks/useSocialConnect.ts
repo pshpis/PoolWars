@@ -20,7 +20,7 @@ export const useSocialConnect = (walletAuthObj) => {
             window.location.href = "https://discord.com/api/oauth2/authorize?client_id=994958393188028496&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fprofile&response_type=token&scope=identify%20guilds%20guilds.members.read";
         }
         else {
-            checkedFetch(`/api/social/discord/updateAuthToken?authToken=${authToken}&discord_auth_token=`, {method: "POST"}).then(updateUser);
+            checkedFetch(`/api/social/discord/updateAuthToken?auth_token=${authToken}&discord_auth_token=`, {method: "POST"}).then(updateUser);
         }
     }, [isSigned, user?.discord_auth_token, toast, user, checkedFetch, authToken]);
 
@@ -54,6 +54,18 @@ export const useSocialConnect = (walletAuthObj) => {
         updateDiscordButtonText();
     }, [isSigned, user, user?.discord_auth_token]);
 
+    const [discordButtonBuffer, setDiscordButtonBuffer] = useState("");
+    const onDiscordButtonEnter = useCallback(() => {
+        if (discordButtonText === 'Connect') return;
+        setDiscordButtonBuffer(discordButtonText);
+        setDiscordButtonText('Disconnect');
+    }, [discordButtonText]);
+
+    const onDiscordButtonLeave = useCallback(() => {
+        if (discordButtonText !== 'Disconnect') return;
+        setDiscordButtonText(discordButtonBuffer);
+    }, [discordButtonBuffer, discordButtonText])
+
     const fetchDiscordData = useCallback(async (accessToken, tokenType) => {
         await checkedFetch(`/api/social/discord/updateAuthToken?auth_token=${authToken}&discord_auth_token=${accessToken}`, {method: "POST"});
         await updateUser();
@@ -76,5 +88,7 @@ export const useSocialConnect = (walletAuthObj) => {
     return {
         discordButtonText,
         onDiscordButtonClick,
+        onDiscordButtonEnter,
+        onDiscordButtonLeave,
     }
 }

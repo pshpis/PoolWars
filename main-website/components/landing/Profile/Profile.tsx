@@ -21,7 +21,7 @@ export const Profile = () => {
 
     const walletAuthObj = useWalletAuth();
     const {walletAddressView, onSignToggle, isSigned, connected} = walletAuthObj;
-    const {discordButtonText, onDiscordButtonClick} = useSocialConnect(walletAuthObj);
+    const {discordButtonText, onDiscordButtonClick, onDiscordButtonLeave, onDiscordButtonEnter} = useSocialConnect(walletAuthObj);
 
     return <Layout>
         {!connected ?
@@ -67,7 +67,10 @@ export const Profile = () => {
                             Connected <br/>Accounts
                         </Text>
                         <VStack>
-                            <Box className={styles.socialButton} onClick={onDiscordButtonClick}>
+                            <Box className={styles.socialButton}
+                                 onClick={onDiscordButtonClick}
+                                 onMouseEnter={onDiscordButtonEnter}
+                                 onMouseLeave={onDiscordButtonLeave}>
                                 <Flex p="0" alignItems="center" w="100%">
                                     <Box className={styles.socialButton_iconplace}>
                                         <svg stroke="currentColor" fill="currentColor" strokeWidth="0"

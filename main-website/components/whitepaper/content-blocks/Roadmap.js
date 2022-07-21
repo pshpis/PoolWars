@@ -18,7 +18,7 @@ export const Roadmap = () => {
         <hr style={{marginTop: "24px", padding: "16px 0px 0px"}}/>
         <Text padding="24px 0px 8px" fontWeight="700" fontSize="32px" lineHeight="40px">Stage 2</Text>
         <Text padding="24px 0px 8px" fontWeight="700" fontSize="24px" lineHeight="36px">Announcing Staking and implementing Tokenomics.</Text>
-        <Text padding="8px 0px">Launch of <b>&quot;Pool Wars Events&quot; v1</b>, that will be available for everyone. We will be announcing <b>Staking</b> and implementing Tokenomics. Also, there will be <b>weekly raffles</b> for part of the royalties for Katt owners only.</Text>
+        <Text padding="8px 0px">Launch of <b>&quot;Pool Wars Events&quot; v1</b>, that will be available for our community. We will be announcing <b>Staking</b> and implementing Tokenomics. Also, there will be <b>weekly raffles</b> for part of the royalties for Katt owners only.</Text>
 
         <hr style={{marginTop: "24px", padding: "16px 0px 0px"}}/>
         <Text padding="24px 0px 8px" fontWeight="700" fontSize="32px" lineHeight="40px">Stage 3</Text>
