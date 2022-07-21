@@ -6,6 +6,7 @@ import {AllSpots} from "../Layout/BackgroundSpots/AllSpots";
 import Layout from "../Layout/Layout";
 import PreviewSwiper from "./PreviewSwiper";
 import {Roadmap} from "./Roadmap";
+import {Team} from "./Team";
 
 export const MainPage = () => {
     const size = useWindowSize();
@@ -18,6 +19,7 @@ export const MainPage = () => {
             <Center w="100%"><TakeNow /></Center>
         </Stack>
         <PreviewSwiper margin="100px 0"/>
-        <Roadmap margin="60px 0 160px"/>
+        <Roadmap margin="60px 0 80px"/>
+        <Team marginBottom="160px"/>
     </Layout>
 }
