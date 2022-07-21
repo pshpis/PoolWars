@@ -66,7 +66,7 @@ export const useSocialConnect = (walletAuthObj) => {
         console.log(accessToken);
         console.log(tokenType);
 
-        await fetch(`/api/social/discord/updateAuthToken?authToken=${authToken}&discord_auth_token=${accessToken}`, {method: "POST"});
+        await fetch(`/api/social/discord/updateAuthToken?auth_token=${authToken}&discord_auth_token=${accessToken}`, {method: "POST"});
         await updateUser();
     }, [authToken, updateUser, user]);
 
