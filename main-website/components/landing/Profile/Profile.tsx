@@ -4,7 +4,7 @@ import {
     Text, useToast, VStack
 } from "@chakra-ui/react";
 import {useWindowSize} from "../../../hooks/useWindowSize";
-import React, {useCallback, useLayoutEffect, useMemo} from "react";
+import React, {useCallback, useEffect, useLayoutEffect, useMemo, useState} from "react";
 import {ElderKattsBox} from "../Layout/ElderKattsBox";
 import Image from "next/image";
 import userPic from "../../../public/User.svg";
@@ -36,8 +36,10 @@ export const Profile = () => {
             });
             return;
         }
-        if (user.discord_auth_token === "") window.location.href = "https://discord.com/api/oauth2/authorize?client_id=994958393188028496&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fprofile&response_type=token&scope=identify%20guilds%20guilds.members.read";
+        if (user.discord_auth_token === "" || user.discord_auth_token === "null") window.location.href = "https://discord.com/api/oauth2/authorize?client_id=994958393188028496&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fprofile&response_type=token&scope=identify%20guilds%20guilds.members.read";
     }, [user, isSigned]);
+
+    const [discordButtonText, setDiscordButtonText] = useState("Connect");
 
     useLayoutEffect(() => {
         const fragment = new URLSearchParams(window.location.hash.slice(1));
@@ -50,12 +52,15 @@ export const Profile = () => {
                 }
             });
             const userRes = await userReq.json().then(response => {
-                const { username, discriminator } = response;
+                let { username, discriminator } = response;
                 console.log(`${username}#${discriminator}`);
+                if (username.length > 7)
+                    username = username.slice(0, 2) + '...' + username.slice(-2);
+                setDiscordButtonText(`${username}#${discriminator}`);
             });
         }
 
-        fetchData();
+        if (accessToken !== undefined && tokenType !== undefined) fetchData();
     }, []);
 
     return <Layout>
@@ -110,7 +115,7 @@ export const Profile = () => {
                                         </svg>
                                     </Box>
                                     <Box className={styles.socialButton_main}>
-                                        Connect
+                                        {discordButtonText}
                                     </Box>
                                 </Flex>
                             </Box>
