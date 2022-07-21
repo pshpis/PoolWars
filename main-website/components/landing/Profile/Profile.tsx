@@ -1,10 +1,10 @@
 import {
     Box, Button,
     Center, Divider, Flex, HStack, Icon, Stack,
-    Text, VStack
+    Text, useToast, VStack
 } from "@chakra-ui/react";
 import {useWindowSize} from "../../../hooks/useWindowSize";
-import React, {useMemo} from "react";
+import React, {useCallback, useLayoutEffect, useMemo} from "react";
 import {ElderKattsBox} from "../Layout/ElderKattsBox";
 import Image from "next/image";
 import userPic from "../../../public/User.svg";
@@ -23,7 +23,41 @@ export const Profile = () => {
         return walletAddress?.slice(0, 5) + '...' + walletAddress?.slice(-5);
     }, [walletAddress]);
 
-    const {user, onSignToggle, isSigned} = useWalletAuth();
+    const {user, onSignToggle, isSigned, authToken, checkedFetch} = useWalletAuth();
+
+    const toast = useToast();
+    const onDiscordButtonClick = useCallback(() => {
+        if (!isSigned) {
+            toast({
+                title: 'Please sign in before connecting discord',
+                status: 'info',
+                position: 'top',
+                isClosable: true,
+            });
+            return;
+        }
+        if (user.discord_auth_token === "") window.location.href = "https://discord.com/api/oauth2/authorize?client_id=994958393188028496&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fprofile&response_type=token&scope=identify%20guilds%20guilds.members.read";
+    }, [user, isSigned]);
+
+    useLayoutEffect(() => {
+        const fragment = new URLSearchParams(window.location.hash.slice(1));
+        const [accessToken, tokenType] = [fragment.get('access_token'), fragment.get('token_type')];
+        const fetchData = async () => {
+            await checkedFetch(`/api/social/discord/updateAuthToken?authToken=${authToken}&discord_auth_token=${accessToken}`, {method: "POST"});
+            const userReq = await fetch("https://discord.com/api/users/@me", {
+                headers: {
+                    authorization: `${tokenType} ${accessToken}`,
+                }
+            });
+            const userRes = await userReq.json().then(response => {
+                const { username, discriminator } = response;
+                console.log(`${username}#${discriminator}`);
+            });
+        }
+
+        fetchData();
+    }, []);
+
     return <Layout>
         {!connected ?
 
@@ -66,7 +100,7 @@ export const Profile = () => {
                             Connected <br/>Accounts
                         </Text>
                         <VStack>
-                            <Box className={styles.socialButton}>
+                            <Box className={styles.socialButton} onClick={onDiscordButtonClick}>
                                 <Flex p="0" alignItems="center" w="100%">
                                     <Box className={styles.socialButton_iconplace}>
                                         <svg stroke="currentColor" fill="currentColor" strokeWidth="0"
