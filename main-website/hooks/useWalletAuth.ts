@@ -12,11 +12,13 @@ export const useWalletAuth = () => {
         return walletAddress?.slice(0, 5) + '...' + walletAddress?.slice(-5);
     }, [walletAddress]);
 
-    const [authToken, setAuthToken] = useLocalStorageState<string>("auth_token", {defaultValue: null});
-    const [authTokenExpireAt, setAuthTokenExpireAt] = useLocalStorageState<number>("auth_token_expire_at", {defaultValue: -1});
+    const [authToken, setAuthToken] = useLocalStorageState("auth_token", {defaultValue: ""});
+    const [authTokenExpireAt, setAuthTokenExpireAt] = useLocalStorageState("auth_token_expire_at", {defaultValue: -1});
 
     const [user, setUser] = useState<User | null>(null);
     const isSigned = useMemo<boolean>(() => user !== null, [user]);
+
+    const [isUserLoaded, setUserLoaded] = useState<boolean>(false);
 
     const updateUser = useCallback(async () => {
         if (authToken === "" || authTokenExpireAt < Date.now()){
@@ -35,8 +37,8 @@ export const useWalletAuth = () => {
 
 
     useEffect(() => {
-        updateUser();
-    }, [authToken, authTokenExpireAt]);
+        updateUser().then(async () => await setUserLoaded(true));
+    }, [authToken, authTokenExpireAt, updateUser]);
 
     useEffect(() => {
         console.log(user);
@@ -101,6 +103,7 @@ export const useWalletAuth = () => {
         onSignToggle,
         isSigned,
         checkedFetch,
+        isUserLoaded,
         ...walletContextState
     }
 }

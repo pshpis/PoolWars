@@ -16,8 +16,6 @@ const validateSolanaAddress = async (addr: string) : Promise<boolean> => {
 };
 
 export class UserService {
-
-
     public static async createEmptyUser(wallet_address: string) : Promise<User> {
         if (!await validateSolanaAddress(wallet_address)) throw new Error("Wrong wallet address");
         const auth_info = AuthService.createAuthInfo(wallet_address);

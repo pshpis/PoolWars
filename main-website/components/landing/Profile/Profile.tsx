@@ -19,9 +19,9 @@ export const Profile = () => {
     const size = useWindowSize();
 
 
-    const {walletAddressView, onSignToggle, isSigned, connected} = useWalletAuth();
-
-    const {discordButtonText, onDiscordButtonClick} = useSocialConnect();
+    const walletAuthObj = useWalletAuth();
+    const {walletAddressView, onSignToggle, isSigned, connected} = walletAuthObj;
+    const {discordButtonText, onDiscordButtonClick} = useSocialConnect(walletAuthObj);
 
     return <Layout>
         {!connected ?
