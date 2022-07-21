@@ -4,9 +4,9 @@ import {Governance} from "./content-blocks/Governance";
 import {Links} from "./content-blocks/Links";
 import {PoolWars} from "./content-blocks/PoolWars";
 import {Staking} from "./content-blocks/Staking";
-import {WarlordsCards} from "./content-blocks/Warlords cards and NFT Swaps";
+import {CombatCards} from "./content-blocks/CombatCardsAndSwaps";
 
-export const sections = ["General", "Staking", "Pool Wars", "Warlords cards and NFT Swaps", "Governance", "Roadmap",  "Links"];
+export const sections = ["General", "Staking", "Pool Wars", "Combat cards and Swaps", "Governance", "Roadmap",  "Links"];
 
 export const getContent = (section) => {
     if (section === "") return <></>;
@@ -17,8 +17,8 @@ export const getContent = (section) => {
             return <Staking/>
         case "Pool Wars":
             return <PoolWars/>
-        case "Warlords cards and NFT Swaps":
-            return <WarlordsCards/>
+        case "Combat cards and Swaps":
+            return <CombatCards/>
         case "Roadmap":
             return <Roadmap/>
         case "Governance":
@@ -37,8 +37,8 @@ export const getSectionPathName = (section) => {
             return "staking"
         case "Pool Wars":
             return "pool-wars"
-        case "Warlords cards and NFT Swaps":
-            return "warlords-cards"
+        case "Combat cards and Swaps":
+            return "combat-cards-swaps"
         case "Roadmap":
             return "roadmap"
         case "Governance":
@@ -57,8 +57,8 @@ export const getSectionBySectionPathName = (sectionPathName) => {
             return "Staking"
         case "pool-wars":
             return "Pool Wars"
-        case "warlords-cards":
-            return "Warlords cards and NFT Swaps"
+        case "combat-cards-swaps":
+            return "Combat cards and Swaps"
         case "roadmap":
             return "Roadmap"
         case "governance":
