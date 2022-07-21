@@ -1,10 +1,10 @@
 import {
     Box, Button,
-    Center, Divider, Flex, HStack, Icon, Stack,
+    Center, Divider, Flex, HStack, Stack,
     Text, useToast, VStack
 } from "@chakra-ui/react";
 import {useWindowSize} from "../../../hooks/useWindowSize";
-import React, {useCallback, useEffect, useLayoutEffect, useMemo, useState} from "react";
+import React, {useCallback, useLayoutEffect, useMemo, useState} from "react";
 import {ElderKattsBox} from "../Layout/ElderKattsBox";
 import Image from "next/image";
 import userPic from "../../../public/User.svg";
