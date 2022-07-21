@@ -5,41 +5,46 @@ import bs58 from "bs58";
 import {useWallet} from "@solana/wallet-adapter-react";
 
 export const useWalletAuth = () => {
-    const {publicKey, signMessage} = useWallet();
+    const walletContextState = useWallet();
+    const {publicKey, signMessage} = walletContextState;
     const walletAddress = useMemo<string>(() => publicKey?.toBase58(), [publicKey]);
     const walletAddressView = useMemo<string>(() => {
         return walletAddress?.slice(0, 5) + '...' + walletAddress?.slice(-5);
     }, [walletAddress]);
 
-    const [authToken, setAuthToken] = useLocalStorageState<string>("auth_token", {defaultValue: ""});
+    const [authToken, setAuthToken] = useLocalStorageState<string>("auth_token", {defaultValue: null});
     const [authTokenExpireAt, setAuthTokenExpireAt] = useLocalStorageState<number>("auth_token_expire_at", {defaultValue: -1});
 
     const [user, setUser] = useState<User | null>(null);
     const isSigned = useMemo<boolean>(() => user !== null, [user]);
 
-    useEffect(() => {
-        const updateData = async () => {
-            if (authToken === "" || authTokenExpireAt < Date.now()){
-                await setUser(null);
-                return;
-            }
-            const userReq = await fetch("/api/auth/getUser?auth_token=" + authToken);
-            const userRes = await userReq.json();
-            if (userRes.error !== undefined){
-                await setUser(null);
-            }
-            else {
-                setUser(userRes);
-            }
-
+    const updateUser = useCallback(async () => {
+        if (authToken === "" || authTokenExpireAt < Date.now()){
+            await setUser(null);
+            return;
         }
+        const userReq = await fetch("/api/auth/getUser?auth_token=" + authToken);
+        const userRes = await userReq.json();
+        if (userRes.error !== undefined){
+            await setUser(null);
+        }
+        else {
+            setUser(userRes);
+        }
+    }, [authToken, authTokenExpireAt])
 
-        updateData();
+
+    useEffect(() => {
+        updateUser();
     }, [authToken, authTokenExpireAt]);
 
     useEffect(() => {
         console.log(user);
     }, [user]);
+
+    useEffect(() => {
+        console.log(authToken);
+    }, [authToken])
 
     const onSignIn = useCallback(async () => {
         const messageTextReq = await fetch("/api/auth/getMessage?wallet_address="+walletAddress);
@@ -59,7 +64,6 @@ export const useWalletAuth = () => {
             await setAuthToken(authTokenRes.token)
             await setAuthTokenExpireAt(authTokenRes.time + Date.now());
             console.log(authTokenRes);
-            console.log(authToken);
         }
         catch (err) {
             console.log(err.message);
@@ -91,10 +95,12 @@ export const useWalletAuth = () => {
         walletAddress,
         walletAddressView,
         user,
+        updateUser,
         onSignIn,
         onSignOut,
         onSignToggle,
         isSigned,
         checkedFetch,
+        ...walletContextState
     }
 }
