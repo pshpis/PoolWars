@@ -4,18 +4,14 @@ import {
     Text, VStack
 } from "@chakra-ui/react";
 import {useWindowSize} from "../../../hooks/useWindowSize";
-import React, {useCallback, useEffect, useMemo, useState} from "react";
+import React, {useMemo} from "react";
 import {ElderKattsBox} from "../Layout/ElderKattsBox";
 import Image from "next/image";
 import userPic from "../../../public/User.svg";
 import noItemsPic from "../../../public/No-items-icon.svg";
-import {useLocalStorage, useWallet} from "@solana/wallet-adapter-react";
+import {useWallet} from "@solana/wallet-adapter-react";
 import styles from "../../../styles/profile.module.scss";
 import Layout from "../Layout/Layout";
-import {sign} from "tweetnacl";
-import bs58 from 'bs58';
-import useLocalStorageState from "use-local-storage-state";
-import {User} from "@prisma/client";
 import {useWalletAuth} from "../../../hooks/useWalletAuth";
 
 export const Profile = () => {
@@ -28,9 +24,6 @@ export const Profile = () => {
     }, [walletAddress]);
 
     const {user, onSignToggle, isSigned} = useWalletAuth();
-
-
-
     return <Layout>
         {!connected ?
 

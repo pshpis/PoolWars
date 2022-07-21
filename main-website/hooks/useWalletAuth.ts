@@ -6,16 +6,17 @@ import {useWallet} from "@solana/wallet-adapter-react";
 
 export const useWalletAuth = () => {
     const {publicKey, signMessage} = useWallet();
-    const walletAddress = useMemo(() => publicKey?.toBase58(), [publicKey]);
-    const walletAddressView = useMemo(() => {
+    const walletAddress = useMemo<string>(() => publicKey?.toBase58(), [publicKey]);
+    const walletAddressView = useMemo<string>(() => {
         return walletAddress?.slice(0, 5) + '...' + walletAddress?.slice(-5);
     }, [walletAddress]);
 
-    const [authToken, setAuthToken] = useLocalStorageState("auth_token", {defaultValue: ""});
-    const [authTokenExpireAt, setAuthTokenExpireAt] = useLocalStorageState("auth_token_expire_at", {defaultValue: -1});
+    const [authToken, setAuthToken] = useLocalStorageState<string>("auth_token", {defaultValue: ""});
+    const [authTokenExpireAt, setAuthTokenExpireAt] = useLocalStorageState<number>("auth_token_expire_at", {defaultValue: -1});
 
     const [user, setUser] = useState<User | null>(null);
-    const isSigned = useMemo(() => user !== null, [user]);
+    const isSigned = useMemo<boolean>(() => user !== null, [user]);
+
     useEffect(() => {
         const updateData = async () => {
             if (authToken === "" || authTokenExpireAt < Date.now()){
@@ -75,7 +76,18 @@ export const useWalletAuth = () => {
         else await onSignIn();
     }, [isSigned, onSignIn, onSignOut]);
 
+    const checkedFetch = useCallback(async (url : string, options) => {
+        const request = await fetch(url, options);
+        const response = await request.json();
+        if (response.error === 'Wrong auth token') {
+            await onSignOut();
+            return null;
+        }
+        return response;
+    }, [onSignOut]);
+
     return {
+        authToken,
         walletAddress,
         walletAddressView,
         user,
@@ -83,5 +95,6 @@ export const useWalletAuth = () => {
         onSignOut,
         onSignToggle,
         isSigned,
+        checkedFetch,
     }
 }
