@@ -17,7 +17,19 @@ import {useSocialConnect} from "../../../hooks/useSocialConnect";
 
 export const Profile = () => {
     const size = useWindowSize();
-
+    const toast = useToast();
+    let toastId = '';
+    const onFakeClick = () => {
+        if (!toast.isActive(toastId)){
+            toast({
+                id: toastId,
+                title: 'This feature will be available soon',
+                status: 'info',
+                position: 'top',
+                isClosable: true,
+            });
+        }
+    }
 
     const walletAuthObj = useWalletAuth();
     const {walletAddressView, onSignToggle, isSigned, connected} = walletAuthObj;
@@ -85,7 +97,7 @@ export const Profile = () => {
                                     </Box>
                                 </Flex>
                             </Box>
-                            <Box className={styles.socialButton}>
+                            <Box className={styles.socialButton} onClick={onFakeClick}>
                                 <Flex p="0px" alignItems="center" w="100%">
                                     <Box className={styles.socialButton_iconplace}>
                                         <svg stroke="currentColor" fill="currentColor" strokeWidth="0"
@@ -114,7 +126,8 @@ export const Profile = () => {
                         <Button w="140px" h="40px" border="2px" borderColor="#B2B2B2" background="#202020"
                                 color="#B2B2B2" borderRadius="16px"
                                 fontFamily="Roboto FLex" fontWeight="600" fontSize="20px" lineHeight="24px"
-                                _hover={{boxShadow: "0 0 8px rgba(178, 178, 178, 0.75)"}}>
+                                _hover={{boxShadow: "0 0 8px rgba(178, 178, 178, 0.75)"}} onClick={onFakeClick}>
+
                             Activities
                         </Button>
                     </HStack>

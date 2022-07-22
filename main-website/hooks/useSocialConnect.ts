@@ -6,6 +6,12 @@ export const useSocialConnect = (walletAuthObj) => {
     const {user, updateUser, isSigned, authToken, checkedFetch, isUserLoaded} = walletAuthObj;
 
     const toast = useToast();
+    const generateDiscordConnectionUri = useCallback(() => {
+        let redirectUri = window.location.href;
+        redirectUri.replace(':', '%3A')
+        redirectUri.replace('/', '%2F');
+        return `https://discord.com/api/oauth2/authorize?client_id=994958393188028496&redirect_uri=${redirectUri}&response_type=token&scope=identify%20guilds%20guilds.members.read`;
+    }, []);
     const onDiscordButtonClick = useCallback(() => {
         if (!isSigned) {
             toast({
@@ -17,7 +23,7 @@ export const useSocialConnect = (walletAuthObj) => {
             return;
         }
         if (user.discord_auth_token === "" || user.discord_auth_token === "null") {
-            window.location.href = "https://discord.com/api/oauth2/authorize?client_id=994958393188028496&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fprofile&response_type=token&scope=identify%20guilds%20guilds.members.read";
+            window.location.href = generateDiscordConnectionUri();
         }
         else {
             checkedFetch(`/api/social/discord/updateAuthToken?auth_token=${authToken}&discord_auth_token=`, {method: "POST"}).then(updateUser);

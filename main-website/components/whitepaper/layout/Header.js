@@ -1,4 +1,4 @@
-import {Center, Grid, GridItem, Stack} from "@chakra-ui/react";
+import {Center, Grid, GridItem, Link, Stack} from "@chakra-ui/react";
 import {Logo} from "./Logo";
 import {useWindowSize} from "../../../hooks/useWindowSize";
 import {HamburgerIcon} from "@chakra-ui/icons";
@@ -15,12 +15,17 @@ export const Header = ({onMenuOpen}) => {
                 <Stack height="100%" spacing="0" direction="row">
                     {
                         size.width < 800 ?
-                        <Center width="46px" height="100%" onClick={onMenuOpen}>
-                            <HamburgerIcon height="28px" width="28px"/>
-                        </Center> : ""
+                            <Center width="46px" height="100%" onClick={onMenuOpen}>
+                                <HamburgerIcon height="28px" width="28px"/>
+                            </Center> : ""
                     }
-                    <Logo />
+                    <Link href="/">
+                        <Logo />
+                    </Link>
+
                 </Stack>
+
+
             </GridItem>
         </Grid>
     );

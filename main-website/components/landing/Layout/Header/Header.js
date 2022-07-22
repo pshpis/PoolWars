@@ -24,7 +24,7 @@ const FakeLink = ({children}) => {
                 title: 'This page will be available soon',
                 status: 'info',
                 position: 'top',
-                isClosable: 'true',
+                isClosable: true,
             });
         }
     }
@@ -63,9 +63,9 @@ const HeaderNavMobile = ({onClose}) => {
     return <VStack fontStyle="light" color="#B2B2B2" fontFamily="Roboto Flex" fontWeight="300" spacing={0} fontSize="24px" height="100%" pb="20px">
         <HeaderNavElMobile><Link href="/profile">profile</Link></HeaderNavElMobile>
         <HeaderNavSpacerMobile/>
-        <HeaderNavElMobile><Link href="/nft-swaps">swaps</Link></HeaderNavElMobile>
+        <HeaderNavElMobile><FakeLink>swaps</FakeLink></HeaderNavElMobile>
         <HeaderNavSpacerMobile/>
-        <HeaderNavElMobile><Link href="/pool-wars-v0">events</Link></HeaderNavElMobile>
+        <HeaderNavElMobile><FakeLink>events</FakeLink></HeaderNavElMobile>
         <HeaderNavSpacerMobile/>
         <HeaderNavElMobile><Link href="/whitepaper/">whitepaper</Link></HeaderNavElMobile>
         <Spacer/>

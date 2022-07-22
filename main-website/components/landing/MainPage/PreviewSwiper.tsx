@@ -41,7 +41,7 @@ function PreviewCard({data, index}: {data: CardData, index: number}){
              backgroundColor="rgba(232, 232, 232, 75%)" opacity={isInfoOpen? "100%": "0"}>
             <b>Description:</b> <br/>
             This card will increase your Katt&apos;s {data.type} on {data.points} points. <br/>
-            It will increase your stacking rewards on stage 2. <br/>
+            It will increase your staking rewards on stage 2. <br/>
             Also, you can use it in Pool Wars v0 and Nft Swaps on Stage 1.
         </Box>
         <Img src={"/increaseNft/" + getCardImgName(data)} w="294px" h="294px" borderRadius="24px 24px 0 0"/>
