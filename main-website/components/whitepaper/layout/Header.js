@@ -19,9 +19,7 @@ export const Header = ({onMenuOpen}) => {
                                 <HamburgerIcon height="28px" width="28px"/>
                             </Center> : ""
                     }
-                    <Link href="/">
                         <Logo />
-                    </Link>
 
                 </Stack>
 
