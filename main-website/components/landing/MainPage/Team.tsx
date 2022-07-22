@@ -37,41 +37,36 @@ export const Team = (props: BoxProps) => {
             <Text fontFamily="Njord Alternate">O</Text><Text fontFamily="Njord">UR TEAM</Text>
         </HStack>
         <Center>
-        <Grid templateColumns={size.width < 856 ? 'repeat(1, 1fr)' : size.width < 1248 ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)'}
-              gap="76px">
-            <GridItem>
-                <Member src="/teamNFTs/1.png" title="Hidden" boolean={true}>CEO</Member>
-            </GridItem>
-            <GridItem>
-                <Member src="/teamNFTs/21.png" title="Vighbiørn" boolean={true}>CTO</Member>
-            </GridItem>
-            <GridItem>
-                <Member src="/teamNFTs/96.png" title="Bjørn" boolean={true}>Designer</Member>
-            </GridItem>
-            <GridItem>
-                <Member src="/teamNFTs/16.png" title="Hashira" boolean={false}>Project Manager</Member>
-            </GridItem>
-            <GridItem>
-                <Member src="/teamNFTs/99.png" title="Malevol" boolean={false}>Blockchain Developer</Member>
-            </GridItem>
-            <GridItem>
-                <Member src="/teamNFTs/3.png" title="Måns" boolean={false}>Community Manager</Member>
-            </GridItem>
-        </Grid>
+            <Grid templateColumns={size.width < 856 ? 'repeat(1, 1fr)' : size.width < 1248 ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)'}
+                  gap="76px">
+                <GridItem>
+                    <Member src="/teamNFTs/1.png" title="Hidden" boolean={true}>CEO</Member>
+                </GridItem>
+                <GridItem>
+                    <Member src="/teamNFTs/21.png" title="Vighbiørn" boolean={true}>CTO</Member>
+                </GridItem>
+                <GridItem>
+                    <Member src="/teamNFTs/96.png" title="Bjørn" boolean={true}>Head of Design</Member>
+                </GridItem>
+                <GridItem>
+                    <Member src="/teamNFTs/16.png" title="Hashira" boolean={false}>Project Manager</Member>
+                </GridItem>
+                <GridItem>
+                    <Member src="/teamNFTs/99.png" title="Malevol" boolean={false}>Blockchain Developer</Member>
+                </GridItem>
+                <GridItem>
+                    <Member src="/teamNFTs/3.png" title="Måns" boolean={false}>Community Manager</Member>
+                </GridItem>
+                <GridItem>
+                    <Member src="/teamNFTs/82.png" title="KAI_ANGEL" boolean={false}>Content Creator</Member>
+                </GridItem>
+                <GridItem>
+                    <Member src="/teamNFTs/5.png" title="Ødger" boolean={false}>Illustrator</Member>
+                </GridItem>
+                <GridItem>
+                    <Member src="/teamNFTs/69.png" title="Vinter" boolean={false}>Illustrator</Member>
+                </GridItem>
+            </Grid>
         </Center>
-        {/*<VStack pl="" pr="">*/}
-        {/*    <HStack spacing="80px">*/}
-        {/*        <Member src="/teamNFTs/1.png" title="Hidden">CEO</Member>*/}
-        {/*        <Member src="/teamNFTs/21.png" title="Vighbiørn">CTO</Member>*/}
-        {/*        <Member src="/teamNFTs/96.png" title="Bjørn">Designer</Member>*/}
-        {/*    </HStack>*/}
-        {/*    <HStack spacing="80px">*/}
-        {/*        <Member src="/teamNFTs/16.png" title="Hashira">Project Manager</Member>*/}
-        {/*        <Member src="/teamNFTs/99.png" title="Malevol">Blockchain Developer</Member>*/}
-        {/*        <Member src="/teamNFTs/3.png" title="Måns">Community Manager</Member>*/}
-
-        {/*    </HStack>*/}
-
-        {/*</VStack>*/}
     </Box>
 }
