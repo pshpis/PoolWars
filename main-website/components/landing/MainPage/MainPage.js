@@ -1,23 +1,25 @@
-import {Box, Center, Flex, HStack, ListItem, Stack, Text, UnorderedList} from "@chakra-ui/react";
-import {Header} from "../Layout/Header/Header";
+import {Center, Stack} from "@chakra-ui/react";
 import {Welcome} from "./Welcome";
 import {TakeNow} from "./TakeNow";
 import {useWindowSize} from "../../../hooks/useWindowSize";
-import {PicPreview} from "./PicPreview";
-import {FirstSpot} from "../Layout/BackgroundSpots/FirstSpot";
+import {AllSpots} from "../Layout/BackgroundSpots/AllSpots";
+import Layout from "../Layout/Layout";
+import PreviewSwiper from "./PreviewSwiper";
+import {Roadmap} from "./Roadmap";
+import {Team} from "./Team";
 
 export const MainPage = () => {
     const size = useWindowSize();
     let defaultSidePadding = "20px";
     if (size.width < 500) defaultSidePadding = "10px"
-    return <Box paddingTop="77px">
-        <FirstSpot/>
-        <Header/>
-        <Stack mt={size.width > 500? "70px" : "20px"} paddingLeft={size.width > 1100 ? "5.5%" : defaultSidePadding}
-               direction={size.width > 1100 ? "row" : "column"} paddingRight={defaultSidePadding}>
+    return <Layout>
+        <Stack pt={size.width > 1000? "80px" : "20px"} paddingLeft={size.width > 1300 ? "5.5%" : defaultSidePadding}
+               direction={size.width > 1100 ? "row" : "column"} paddingRight={size.width > 1300 ? "5.5%" : defaultSidePadding}>
             <Welcome/>
-            <TakeNow/>
+            <Center w="100%"><TakeNow /></Center>
         </Stack>
-        <PicPreview/>
-    </Box>
+        <PreviewSwiper margin="100px 0"/>
+        <Roadmap margin="60px 0 80px"/>
+        <Team marginBottom="160px"/>
+    </Layout>
 }

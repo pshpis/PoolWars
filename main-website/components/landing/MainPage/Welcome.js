@@ -1,30 +1,27 @@
-import {Box} from "@chakra-ui/react";
+import {Box, Text} from "@chakra-ui/react";
 import {useWindowSize} from "../../../hooks/useWindowSize";
 
 export const Welcome = () => {
     const size = useWindowSize();
-    let welcomeTextSize = 60;
+    let welcomeTextSize = 48;
     if (size.width < 500) welcomeTextSize = 40;
-    return <Box width={size.width > 1100 ? "50%" : "100%"} mb={size.width>1100? "0" : "20px"}>
-        <Box fontFamily="Trap" fontWeight="900" fontSize={welcomeTextSize+"px"}  lineHeight="64px" mb={13}>
-            Welcome to the <Box fontSize={welcomeTextSize*1.33 + "px"} as='span' color="#7951F5" lineHeight={welcomeTextSize*1.33 + 2 + "px"}>#Warlords&#39;&nbsp;</Box>
-            <Box as='span' fontSize={welcomeTextSize*1.43 + "px"} color="#C4F57C" lineHeight={welcomeTextSize*1.43 + 2 + "px"} whiteSpace="nowrap">P2E&nbsp;</Box>
-            <Box as='span' fontSize={welcomeTextSize*1.33 + "px"} lineHeight={welcomeTextSize*1.33 + 2 + "px"} whiteSpace="nowrap">Metaverse</Box>
+    return <Box width={size.width > 1100 ? "100%" : "100%"} mb={size.width>1100? "0" : "20px"}>
+        <Box fontWeight="400" fontFamily="Njord" color="#E8E3DD" mb="40px">
+            <Text fontSize="48px" lineHeight="48px">welcome to the</Text>
+            <Text fontSize="88px" lineHeight="88px" color="#71CFC3">Elder Katts</Text>
         </Box>
-        <Box fontFamily="Onest" fontWeight="300" fontSize="20px">
-            <Box mb={4}>
-                We are creating a unique NFT portrait collection of the most powerful warlords <Box as="span" color="#B8C3E6" fontWeight={500}>in history</Box>. Our community will have access
-                to the “Battle of the Conquerors” game with a prize pool of <Box as="span" color="#B8C3E6" fontWeight={500}>$100,000</Box>. To participate, you should mint at least one of
-                <Box as="span" color="#B8C3E6" fontWeight={500} whiteSpace="nowrap">&nbsp;50,000 Warlords.</Box>
-            </Box>
-            <Box mb={4}>
-                To have advantage over other players you can upgrade your warlord by using special NFT cards. Each card can improve one of three parameters such as attack, defense and intellect. Moreover, cards will give access to
-                <Box as="span" borderRadius="14px" backgroundColor="#C4F57C" w="151px" color="black" padding="6px 10px 3px" ml={3}
-                     fontWeight={900} fontFamily="Trap" fontSize="20px" letterSpacing="0.12em" cursor="pointer">
-                    POOL<Box as="span" fontWeight={600}>WARS</Box>
-                </Box>
-            </Box>
-            <Box>At stage 0 you can participate in the Airdrop of these cards.</Box>
+
+        <Box whiteSpace="16px" lineHeight="30px" paragraph="16px" fontStyle="Light" fontWeight="300" fontSize="20px">
+            <Text>We are creating a unique NFT portrait collection of the most powerful and strongest nordic warriors
+                in history. Our community will gain access to the &quot;Pool Wars Events&quot; v0 and v1, staking and raffles.
+                To participate, you should mint or own at least one of Elder Katts.</Text>
+            <br/>
+            <Text>To have advantage over other brave warriors you can upgrade abilities of your Katt by using special
+                combat cards. Each card can improve one of three parameters such as attack, defense or intellect. After
+                the mint, it will allow you to earn more on Ketts staking. Moreover, combat cards will give you early
+                access to &quot;Pool Wars Events&quot; v0.</Text>
+            <br/>
+            At the initial stage you can participate in the Airdrop of the cards.
         </Box>
     </Box>
 }

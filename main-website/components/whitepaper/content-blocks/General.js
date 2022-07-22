@@ -7,13 +7,12 @@ export const General = () => {
         <hr style={{marginTop: "20px",marginBottom:"20px"}}/>
 
         <Text fontWeight="700" fontSize="16px">
-            “Pool Wars” team released an exclusive NFT collection built on Solana, including 10,000 Warlords. Warlords NFT will soon be available for minting from our <Link href="/">“Pool Wars” website.</Link>
+            We are creating a unique NFT portrait collection of the most powerful and strongest nordic warriors in history. The project has a detailed lore, beautiful hand-made arts and professional team.
         </Text>
         <hr style={{marginTop: "20px", marginBottom: "20px"}}/>
 
         <Text fontSize="16px">
-            The Collection contains 4 types of exclusive Warlords, which include <b>World</b>, <b>World Legends</b>, <b>Rebels</b> and <b>Epos Legends</b>. The rarest Warlord NFT type is the <b>Epos Legends</b>. <br/> <br/>
-            The Warlords NFT collection includes famous warlords from various states such as <b>Ancient Rome</b>, <b>Ancient Greece</b>, <b>America</b>, <b>Germany</b>, <b>France</b>, <b>Spain</b>, <b>Russia</b>, <b>China</b>, <b>India</b>, <b>Japan</b> and others, who had a huge impact on the world, which we live in today. Also our collection has several famous <b>rebels</b>, who changed the world, and a few popular <b>army commanders from books and movies</b>.
+            Our community will gain access to the <b>Combat Cards Airdrop</b>, <b>NFT swaps</b>, <b>staking</b>, <b>raffles</b> and <b>1/1 Auctions</b>. But the main utility of our project is <b>Pool Wars Event</b>.
         </Text>
 
     </>

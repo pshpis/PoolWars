@@ -1,0 +1,50 @@
+.socialButton{
+    display: inline-flex;
+    margin: 0;
+    padding: 0;
+    border: 2px #71CFC3 solid;
+    background-color: #71CFC3;
+    height: 64px;
+    width: 200px;
+    border-radius: 16px;
+    transition: all 1s;
+
+    &:hover{
+        .socialButton{
+            background-color: #202020;
+            &_main{
+                color: #202020;
+                background-color: #71CFC3;
+            }
+            &_iconplace{
+                color: #71CFC3;
+                background-color: #202020;
+
+            }
+        }
+    }
+
+    &_iconplace{
+        transition: all 1s;
+        height: 60px;
+        width: 69px;
+        display: grid;
+        place-items: center;
+        color: #201020;
+        border-radius: 16px 0 0 16px;
+    }
+
+    &_main{
+        transition: all 1s;
+        width: 100%;
+        background-color:#202020;
+        margin: 0;
+        border-radius: 0 16px 16px 0;
+        font-family: Roboto Flex, serif;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 62px;
+        color: #71CFC3;
+        text-align: center;
+    }
+}

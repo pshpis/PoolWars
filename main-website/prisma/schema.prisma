@@ -12,10 +12,12 @@ datasource db {
 
 
 
-model users {
-  tg_nickname     String    
-  received_nft    Boolean @default(false)
-  twitter_nickname String
-  nft_card_code        String     @default(cuid()) @id
-
+model User {
+  id Int @id @default(autoincrement())
+  wallet_address String @unique
+  auth_token String @unique
+  twitter_nickname String @default("")
+  discord_auth_token String @default("")
+  auth_code String
+  auth_token_created DateTime @default(now())
 }
