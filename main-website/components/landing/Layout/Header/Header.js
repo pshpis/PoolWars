@@ -1,5 +1,5 @@
 import {
-    Box, Button, Center,
+    Box, Button, Center, Divider,
     Drawer, DrawerContent,
     DrawerOverlay,
     HStack, Icon,
@@ -13,6 +13,7 @@ import Link from "next/link";
 import {AiOutlineClose} from "react-icons/ai";
 
 import ConnectButton from "../ConnectButton";
+import React from "react";
 
 const FakeLink = ({children}) => {
     const toast = useToast();
@@ -88,16 +89,15 @@ export const Header = () => {
             <Drawer placement="left" isOpen={isOpen} onClose={onClose}>
                 <DrawerOverlay />
 
-                <DrawerContent backgroundColor="#202020" pt="100px" position="relative">
+                <DrawerContent backgroundColor="#202020" pt="64px" position="relative">
                     <Box position="absolute" top="20px" right="5px" color="white" zIndex={3} onClick={onClose}>
                         <Icon as={AiOutlineClose} color="white" width="25px" height="25px"/>
                     </Box>
-                    <Box height="64px" lineHeight="64px" position="fixed" left="0" top="0"
-                         zIndex={2} backgroundColor="#010201" width="100%" pl="20px">
+                    <Box pt="10px" pb="14px" height="64px" lineHeight="64px" position="fixed" left="0" top="0"
+                         zIndex={2} backgroundColor="#202020" width="100%" pl="20px">
                         <Logo/>
                     </Box>
-                    <Box height="4px" width="100%" backgroundColor="#202020" zIndex={1} filter="blur(12px)"
-                         position="fixed" top="64px" left="0"/>
+                    <Divider mb="40px" borderColor="#E8E8E826" border="0.5px" width="99.5%" boxShadow="0px 4px 4px rgba(232, 232, 232, 0.15)"/>
                     <HeaderNavMobile onClose={onClose}/>
                 </DrawerContent>
             </Drawer> : ""
