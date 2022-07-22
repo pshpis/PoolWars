@@ -18,7 +18,7 @@ export const Welcome = () => {
             <br/>
             <Text>To have advantage over other brave warriors you can upgrade abilities of your Katt by using special
                 combat cards. Each card can improve one of three parameters such as attack, defense or intellect. After
-                the mint, it will allow you to earn more on Ketts staking. Moreover, combat cards will give you early
+                the mint, it will allow you to earn more on Katts staking. Moreover, combat cards will give you early
                 access to &quot;Pool Wars Events&quot; v0.</Text>
             <br/>
             At the initial stage you can participate in the Airdrop of the cards.
