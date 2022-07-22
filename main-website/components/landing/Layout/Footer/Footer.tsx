@@ -23,7 +23,7 @@ export const Footer = (props: BoxProps) => {
                 <br/>
                 <Link href="/"><Text>Home Page</Text></Link>
                 <br/>
-                <Text mt="16px" color="#E8E8E8">pool-wars-git-main-website-pshpis.vercel.app &copy;</Text>
+                <Text mt="16px" color="#E8E8E8">elderkatts.com &copy;</Text>
             </Box>
         </Box>
         <Box>
