@@ -33,7 +33,8 @@ export const Team = (props: BoxProps) => {
 
     return <Box pl={defaultPadding+"px"} pr={defaultPadding+"px"} {...props}>
         <Divider mb="80px" borderColor="#E8E8E826" border="0.5px"/>
-        <HStack pb="80px" fontWeight="400" fontSize={size.width < 768 ? "48px" : "64px"} lineHeight="52px" spacing={0}>
+        <HStack pb="80px" fontWeight="400" fontSize={size.width < 768 ? "48px" : "64px"} lineHeight="52px" spacing={0}
+                w="100%" maxW="1248px" margin="0 auto">
             <Text fontFamily="Njord Alternate">O</Text><Text fontFamily="Njord">UR TEAM</Text>
         </HStack>
         <Center>
