@@ -8,6 +8,7 @@ export const useSocialConnect = (walletAuthObj) => {
     const toast = useToast();
     const generateDiscordConnectionUri = useCallback(() => {
         let redirectUri = window.location.href;
+        redirectUri = redirectUri.split('#')[0];
         redirectUri.replace(':', '%3A')
         redirectUri.replace('/', '%2F');
         return `https://discord.com/api/oauth2/authorize?client_id=994958393188028496&redirect_uri=${redirectUri}&response_type=token&scope=identify%20guilds%20guilds.members.read`;
