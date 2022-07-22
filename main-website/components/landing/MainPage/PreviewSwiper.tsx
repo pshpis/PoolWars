@@ -66,6 +66,12 @@ const PreviewSwiper = (props: BoxProps) => {
         spaceBetween={10}
         navigation={true}
         breakpoints={{
+            2560: {
+                slidesPerView: 6,
+            },
+            1980: {
+                slidesPerView: 5,
+            },
             1440: {
                 slidesPerView: 4,
             },

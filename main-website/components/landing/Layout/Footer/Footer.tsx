@@ -7,10 +7,11 @@ import {Logo} from "../Header/Logo";
 export const Footer = (props: BoxProps) => {
     const size = useWindowSize();
 
-    return <Stack fontFamily="Roboto Flex" direction={size.width >= 768? "row": "column"} backgroundColor="#202020" width="100%"
-                  pl={size.width > 800 ? "96px" : "30px"} pt="44px" pb="96px"
-                  boxShadow="0px -4px 4px rgba(232, 232, 232, 0.15)" spacing={size.width >= 768? "30%": "30px"}
-                  {...props}>
+    return <Box backgroundColor="#202020" width="100%"
+                pl={size.width > 800 ? "96px" : "30px"} pt="44px" pb="96px" pr="10px"
+                boxShadow="0px -4px 4px rgba(232, 232, 232, 0.15)" {...props}>
+    <Stack fontFamily="Roboto Flex" direction={size.width >= 768? "row": "column"}
+           spacing={size.width >= 768? "30%": "30px"} w="100%" maxW="1248px" margin="0 auto">
         <Box>
             <Box mb="48px">
                 <Logo height="67px" width="205px"/>
@@ -48,5 +49,5 @@ export const Footer = (props: BoxProps) => {
             </Box>
 
         </Box>
-    </Stack>
+    </Stack></Box>
 }

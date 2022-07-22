@@ -78,7 +78,7 @@ export const Header = () => {
     const size = useWindowSize();
     const {isOpen, onOpen, onClose} = useDisclosure();
 
-    let sidePadding = "5.5%";
+    let sidePadding = "6.6%";
     if (size.width < 1100) sidePadding = "20px";
 
 
@@ -102,17 +102,21 @@ export const Header = () => {
                 </DrawerContent>
             </Drawer> : ""
         }
-        <HStack direction="row" padding={"0 " + sidePadding} w="100%" height="64px" zIndex={999} spacing={0}
-                position="fixed" top="0" left="0" backgroundColor="#202020" boxShadow="0px 4px 4px rgba(232, 232, 232, 0.15)">
-            {
-                size.width >= 768?
-                    <><Logo/> <HeaderNav/> <Spacer/>
-                        <ConnectButton/></> :
-                    <><Center width="46px" height="100%" padding="0 10px" mr="20px" onClick={onOpen}>
-                    <HamburgerIcon height="40px" width="40px"/>
-                    </Center> <Logo/></>
-            }
+        <Box position="fixed" top="0" left="0"
+             backgroundColor="#202020" boxShadow="0px 4px 4px rgba(232, 232, 232, 0.15)"
+             padding={"0 " + sidePadding} w="100%" height="64px"  zIndex={999}>
+            <HStack direction="row" spacing={0} height="64px" w="100%" maxW="1248px" margin="0 auto">
+                {
+                    size.width >= 768?
+                        <><Logo/> <HeaderNav/> <Spacer/>
+                            <ConnectButton/></> :
+                        <><Center width="46px" height="100%" padding="0 10px" mr="20px" onClick={onOpen}>
+                            <HamburgerIcon height="40px" width="40px"/>
+                        </Center> <Logo/></>
+                }
 
-        </HStack>
+            </HStack>
+        </Box>
+
         </>
 };
