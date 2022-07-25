@@ -40,9 +40,16 @@ function MyApp({ Component, pageProps }) {
 
 
     let result = <>
+        <NextNProgress
+            color="#B8C3E6"
+            startPosition={0.3}
+            stopDelayMs={200}
+            height={3}
+            showOnShallow={true}
+        />
         <Script strategy="lazyOnload" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`} />
 
-        <Script strategy="lazyOnload">
+        <Script id="google-analytics" strategy="lazyOnload">
             {`
                     window.dataLayer = window.dataLayer || [];
                     function gtag(){dataLayer.push(arguments);}
@@ -52,13 +59,6 @@ function MyApp({ Component, pageProps }) {
                     });
                 `}
         </Script>
-        <NextNProgress
-            color="#B8C3E6"
-            startPosition={0.3}
-            stopDelayMs={200}
-            height={3}
-            showOnShallow={true}
-        />
         {/*<Loader loading={loading}/>*/}
         <Component {...pageProps} />
     </>;
