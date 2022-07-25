@@ -14,6 +14,7 @@ import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import NextNProgress from "nextjs-progressbar";
 import Script from "next/script";
 import {useRouter} from "next/router";
+import * as gtag from '../lib/gtag'
 
 require('@solana/wallet-adapter-react-ui/styles.css');
 require('../styles/globals.css');
