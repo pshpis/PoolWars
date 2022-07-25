@@ -1,5 +1,5 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import {useMemo} from "react";
+import {useEffect, useMemo} from "react";
 import {
     GlowWalletAdapter,
     PhantomWalletAdapter,
@@ -13,7 +13,7 @@ import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import NextNProgress from "nextjs-progressbar";
 import Script from "next/script";
-
+import {useRouter} from "next/router";
 
 require('@solana/wallet-adapter-react-ui/styles.css');
 require('../styles/globals.css');
@@ -38,8 +38,38 @@ function MyApp({ Component, pageProps }) {
         [network]
     );
 
+    const router = useRouter()
+    useEffect(() => {
+        const handleRouteChange = (url) => {
+            gtag.pageview(url)
+        }
+        router.events.on('routeChangeComplete', handleRouteChange)
+        router.events.on('hashChangeComplete', handleRouteChange)
+        return () => {
+            router.events.off('routeChangeComplete', handleRouteChange)
+            router.events.off('hashChangeComplete', handleRouteChange)
+        }
+    }, [router.events])
 
     let result = <>
+        <Script
+            strategy="afterInteractive"
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
+        />
+        <Script
+            id="gtag-init"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+                __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}', {
+              page_path: window.location.pathname,
+            });
+          `,
+            }}
+        />
         <NextNProgress
             color="#B8C3E6"
             startPosition={0.3}
