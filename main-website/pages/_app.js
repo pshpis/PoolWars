@@ -12,6 +12,7 @@ import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import NextNProgress from "nextjs-progressbar";
+import Script from "next/script";
 
 
 require('@solana/wallet-adapter-react-ui/styles.css');
@@ -39,6 +40,18 @@ function MyApp({ Component, pageProps }) {
 
 
     let result = <>
+        <Script strategy="lazyOnload" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`} />
+
+        <Script strategy="lazyOnload">
+            {`
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}', {
+                    page_path: window.location.pathname,
+                    });
+                `}
+        </Script>
         <NextNProgress
             color="#B8C3E6"
             startPosition={0.3}
