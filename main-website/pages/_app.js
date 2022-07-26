@@ -14,7 +14,6 @@ import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import NextNProgress from "nextjs-progressbar";
 import Script from "next/script";
 import {useRouter} from "next/router";
-import * as gtag from '../lib/gtag'
 
 require('@solana/wallet-adapter-react-ui/styles.css');
 require('../styles/globals.css');
@@ -78,18 +77,6 @@ function MyApp({ Component, pageProps }) {
             height={3}
             showOnShallow={true}
         />
-        <Script strategy="lazyOnload" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`} />
-
-        <Script id="google-analytics" strategy="lazyOnload">
-            {`
-                    window.dataLayer = window.dataLayer || [];
-                    function gtag(){dataLayer.push(arguments);}
-                    gtag('js', new Date());
-                    gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}', {
-                    page_path: window.location.pathname,
-                    });
-                `}
-        </Script>
         {/*<Loader loading={loading}/>*/}
         <Component {...pageProps} />
     </>;
