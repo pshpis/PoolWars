@@ -3,7 +3,7 @@ import Link from "next/link";
 export const General = () => {
     return <>
         <Heading fontSize="48px" lineHeight="54px">General</Heading>
-        <Text fontSize="16px" color="rgba(136,153,168,1.00)" marginTop="16px">General information about Pool Wars project</Text>
+        <Text fontSize="16px" color="rgba(136,153,168,1.00)" marginTop="16px">General information about the Elder Katts project</Text>
         <hr style={{marginTop: "20px",marginBottom:"20px"}}/>
 
         <Text fontWeight="700" fontSize="16px">

@@ -3,7 +3,7 @@ import {Heading, Text} from "@chakra-ui/react";
 export const Roadmap = () => {
     return <>
         <Heading fontSize="48px" lineHeight="54px">Roadmap</Heading>
-        <Text fontSize="16px" color="rgba(136,153,168,1.00)" marginTop="16px">Here you can see the biggest &quot;Pool Wars&quot; updates</Text>
+        <Text fontSize="16px" color="rgba(136,153,168,1.00)" marginTop="16px">Here you can see the biggest Elder Katts updates</Text>
         <hr style={{marginTop: "20px",marginBottom:"20px"}}/>
 
         <Text padding="24px 0px 8px" fontWeight="700" fontSize="32px" lineHeight="40px">Stage 0</Text>
