@@ -12,7 +12,7 @@ export const General = () => {
         <hr style={{marginTop: "20px", marginBottom: "20px"}}/>
 
         <Text fontSize="16px">
-            Our community will gain access to the <b>Combat Cards Airdrop</b>, <b>NFT swaps</b>, <b>staking</b>, <b>raffles</b> and <b>1/1 Auctions</b>. But the main utility of our project is <b>Pool Wars Event</b>.
+            Our community will gain access to the <b>Combat Cards Free Mint</b>, <b>NFT swaps</b>, <b>staking</b>, <b>raffles</b> and <b>1/1 Auctions</b>. But the main utility of our project is <b>Pool Wars Event</b>.
         </Text>
 
     </>
