@@ -9,12 +9,12 @@ const Member = ({src, title, children, boolean}) => {
              filter="drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));"/>
         <Box fontSize="32px" lineHeight="37.5px" color="#71CFC3">
             {boolean ? <HStack maxWidth="294px" justifyContent="center">
-                    <Text fontWeight={600}>{title}</Text>
-                    <Text fontWeight={300}>{children}</Text>
+                    <Text fontWeight="600">{title}</Text>
+                    <Text fontWeight="300">{children}</Text>
                 </HStack>
                 : <Box maxWidth="294px" textAlign="center">
-                    <Text fontWeight={600}>{title}</Text>
-                    <Text fontWeight={300}>{children}</Text>
+                    <Text fontWeight="600">{title}</Text>
+                    <Text fontWeight="300">{children}</Text>
                 </Box>
 
             }
