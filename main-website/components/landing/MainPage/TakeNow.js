@@ -29,7 +29,7 @@ export const TakeNow = () =>
 
             <Center w="100%" mb="40px">
                 <Box width="100%" backgroundColor="#B2B2B2" height="64px" borderRadius="24px" padding="6px">
-                    {/*<Box width="40%" backgroundColor="#E8E8E8" height="100%" borderLeftRadius="20px"/>*/}
+                    <Box width="4%" backgroundColor="#E8E8E8" height="100%" borderLeftRadius="20px"/>
                 </Box>
             </Center>
 
