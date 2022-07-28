@@ -1,26 +1,30 @@
 import {useWindowSize} from "../../../hooks/useWindowSize";
 import Layout from "../Layout/Layout";
-import {Box, Center, Divider, Grid, GridItem, HStack, Img, Stack, Text, VStack} from "@chakra-ui/react";
+import {Box, Center, Divider, Grid, GridItem, HStack, Img, Input, Stack, Text, VStack} from "@chakra-ui/react";
 import {ElderKattsBox} from "../Layout/ElderKattsBox";
 import React, {useEffect, useMemo, useRef, useState} from "react";
+import {value} from "dom7";
+import {Simulate} from "react-dom/test-utils";
+import input = Simulate.input;
+import {useKattsCardsChoose} from "../../../hooks/useKattsCardsChoose";
 
 const MainText = () => {
     const size = useWindowSize();
     // @ts-ignore
     return <Box maxWidth="427px" mr={size.width < 1040 ? "" : "20px"} textAlign={size.width < 1040 ? "center" : ""}>
-        <Text fontFamily="Njord" fontWeight={400} fontSize="48px" lineHeight="55px" color="#E8E3DD">
+        <Text fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="55px" color="#E8E3DD">
             NFT SWAPS
         </Text>
-        <Text mb="31px" fontFamily="Njord" fontWeight={400} fontSize="120px" lineHeight="114px" color="#71CFC3">
+        <Text mb="31px" fontFamily="Njord" fontWeight="400" fontSize="120px" lineHeight="114px" color="#71CFC3">
             LIVE!
         </Text>
-        <Text fontWeight={300} fontSize="20px" lineHeight="30px" color="#E8E3DD">
+        <Text fontWeight="300" fontSize="20px" lineHeight="30px" color="#E8E3DD">
             Here you can swap your regular warlords cards to take a Legendary one. Now you should choose some of your NFTs to burn 12 increase points.
         </Text>
     </Box>
 }
 
-const PointsPanel = () => {
+const PointsPanel = ({numberOfCards}) => {
     const size = useWindowSize();
 
     const pointsPanelsRef = useRef(null);
@@ -35,23 +39,23 @@ const PointsPanel = () => {
                 <ElderKattsBox maxWidth="294px" mb="24px">
                     <HStack>
                         <Text pt="24px" pl="32px" pb="48px" pr="82px"
-                              fontWeight={600} fontSize="24px" lineHeight="28px" color="#E8E3DD">
+                              fontWeight="600" fontSize="24px" lineHeight="28px" color="#E8E3DD">
                             Selected<br/> points:
                         </Text>
                         <Text pt="32px" pr="16px" pb="4px" mr="auto" textAlign="right"
-                              fontFamily="Njord Alternate" fontWeight={400} fontSize="80px" lineHeight="92px" color="#71CFC3">
-                            o
+                              fontFamily="Njord Alternate" fontWeight="400" fontSize="80px" lineHeight="92px" color="#71CFC3">
+                            {numberOfCards}
                         </Text>
                     </HStack>
                 </ElderKattsBox>
                 <ElderKattsBox maxWidth="294px">
                     <HStack>
                         <Text pt="24px" pl="32px" pb="48px" pr="37px"
-                              fontWeight={600} fontSize="24px" lineHeight="28px" color="#E8E3DD">
+                              fontWeight="600" fontSize="24px" lineHeight="28px" color="#E8E3DD">
                             Need points<br/>per one:
                         </Text>
                         <Text pt="32px" pr="16px" pb="4px" mr="auto" textAlign="right"
-                              fontFamily="Njord Alternate" fontWeight={400} fontSize="80px" lineHeight="92px" color="#71CFC3">
+                              fontFamily="Njord Alternate" fontWeight="400" fontSize="80px" lineHeight="92px" color="#71CFC3">
                             o
                         </Text>
                     </HStack>
@@ -60,16 +64,16 @@ const PointsPanel = () => {
             {size.width >= 560 ? <ElderKattsBox maxWidth="294px" height={pointsPanelsHeight+"px"} pb="32px">
                 <HStack>
                     <Text pt="24px" pl="32px" pb="48px" pr="31px"
-                          fontWeight={600} fontSize="24px" lineHeight="28px" color="#E8E3DD">
+                          fontWeight="600" fontSize="24px" lineHeight="28px" color="#E8E3DD">
                         You will take:
                     </Text>
                     <Text pt="32px" pr="16px" pb="4px" mr="auto" textAlign="right"
-                          fontFamily="Njord Alternate" fontWeight={400} fontSize="80px" lineHeight="92px" color="#71CFC3">
+                          fontFamily="Njord Alternate" fontWeight="400" fontSize="80px" lineHeight="92px" color="#71CFC3">
                         o
                     </Text>
                 </HStack>
                 <Box marginTop={size.width < 1199 ?  size.width < 1040 ? size.width < 750 ? "52px" : "76px" : "52px" : "76px"} ml="24px" mr="24px" maxWidth="246px" height="48px" background="#B8C3E6" borderRadius="24px" textAlign="center"
-                     fontWeight={600} fontSize="24px" lineHeight="48px" color="#202020" transition="0.3s ease" _hover={{boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);"}}>
+                     fontWeight="600" fontSize="24px" lineHeight="48px" color="#202020" transition="0.3s ease" _hover={{boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);"}}>
                     SWAP
                 </Box>
             </ElderKattsBox> : ""}
@@ -77,16 +81,16 @@ const PointsPanel = () => {
         {size.width < 560 ? <ElderKattsBox mt="24px" pb="32px" maxWidth="294px"  height={pointsPanelsHeight+"px"}>
             <HStack>
                 <Text pt="24px" pl="32px" pb="48px" pr="31px"
-                      fontWeight={600} fontSize="24px" lineHeight="28px" color="#E8E3DD">
+                      fontWeight="600" fontSize="24px" lineHeight="28px" color="#E8E3DD">
                     You will take:
                 </Text>
                 <Text pt="32px" pr="16px" pb="4px" mr="auto" textAlign="right"
-                      fontFamily="Njord Alternate" fontWeight={400} fontSize="80px" lineHeight="92px" color="#71CFC3">
+                      fontFamily="Njord Alternate" fontWeight="400" fontSize="80px" lineHeight="92px" color="#71CFC3">
                     o
                 </Text>
             </HStack>
             <Box marginTop="76px" ml="24px" mr="24px" maxWidth="246px" height="48px" background="#B8C3E6" borderRadius="24px" textAlign="center"
-                 fontWeight={600} fontSize="24px" lineHeight="48px" color="#202020"
+                 fontWeight="600" fontSize="24px" lineHeight="48px" color="#202020"
                  transition="0.3s ease" _hover={{boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);"}}>
                 SWAP
             </Box>
@@ -94,40 +98,45 @@ const PointsPanel = () => {
     </Box>
 }
 
-const NFT = () => {
+const NFT = ({src}) => {
     return <GridItem>
         <Box width="294px" height="398px">
             <Img width="294px" height="294px" borderTopRadius="24px"
-                 src="/teamNFTs/1.png"/>
+                 src={src}/>
             <Box pt="11px" pl="24px" pb="16px" pr="24px" width="294px" height="104px" borderBottomRadius="24px"
-                 fontWeight={600} fontSize="24px" lineHeight="36px" background="#E8E8E8">
+                 fontWeight="600" fontSize="24px" lineHeight="36px" background="#E8E8E8">
                 <HStack spacing="auto">
                     <Text color="#949494">You have:</Text>
                     <Text color="#71CFC3">0</Text>
                 </HStack>
                 <HStack spacing="auto">
-                    <Text color="#949494">You choose:</Text>
-                    <Text color="#71CFC3" mr="auto">0</Text>
+                    <Text w="150px" color="#949494">You choose:</Text>
+                    <Input p="0" mr="auto" w="30px"
+                           placeholder="0" fontWeight="600" fontSize="24px" lineHeight="36px" color="#71CFC3"
+                           textAlign="right" border="0px" _placeholder={{
+                               color: 'inherit',
+                    }}></Input>
                 </HStack>
             </Box>
         </Box>
     </GridItem>
 }
 
-const NFTSPanel = () => {
+const NFTSPanel = ({chooseArr, setChooseArr}) => {
     const size = useWindowSize();
 
     return <Center>
         <Grid mt="48px" templateColumns={size.width < 660 ? 'repeat(1, 1fr)' :size.width < 978 ? 'repeat(2, 1fr)' : size.width < 1296 ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)'}
               columnGap="24px" rowGap="24px">
-            <NFT/>
-            <NFT/>
-            <NFT/>
-            <NFT/>
-            <NFT/>
-            <NFT/>
-            <NFT/>
-            <NFT/>
+            <NFT src="/increaseNft/attack_1.png"/>
+            <NFT src="/increaseNft/defence_1.png"/>
+            <NFT src="/increaseNft/intelligence_1.png"/>
+            <NFT src="/increaseNft/attack_3.png"/>
+            <NFT src="/increaseNft/defence_3.png"/>
+            <NFT src="/increaseNft/intelligence_3.png"/>
+            <NFT src="/increaseNft/attack_6.png"/>
+            <NFT src="/increaseNft/defence_6.png"/>
+            <NFT src="/increaseNft/intelligence_6.png"/>
         </Grid>
     </Center>
 }
@@ -140,7 +149,7 @@ const TitleText = () => {
         return 64;
     }, [size.width]);
 
-    return <HStack mt="80px" fontWeight={400} fontSize={defaultTitleSize+"px"} lineHeight="74px" spacing={0}
+    return <HStack mt="80px" fontWeight="400" fontSize={defaultTitleSize+"px"} lineHeight="74px" spacing={0}
                    w="100%" maxW="1440px" margin="0 auto">
         <Text fontFamily="Njord">CH</Text>
         <Text fontFamily="Njord Alternate">OO</Text>
@@ -156,21 +165,28 @@ export const Swaps = () => {
         return 96;
     }, [size.width])
 
+    const kattsCardChoose = useKattsCardsChoose();
+    const {chooseArr, setChooseArr, numberOfCards, sumPoints} = kattsCardChoose;
+
+    useEffect(() => {
+        setChooseArr([1, 1, 1, 1, 1, 1, 1, 1, 1]);
+    },[])
+
     return <Layout>
         <Box pt="80px" mb="160px" paddingLeft={defaultPadding+"px"} paddingRight={defaultPadding+"px"}>
             {size.width < 1040 ?
                 <VStack maxW="1248px" w="100%" margin="0 auto" spacing="30px">
                     <MainText/>
-                    <PointsPanel/>
+                    <PointsPanel numberOfCards={numberOfCards}/>
                 </VStack>
                 : <HStack maxW="1248px" w="100%" margin="0 auto" spacing="auto">
                 <MainText/>
-                <PointsPanel/>
+                <PointsPanel numberOfCards={numberOfCards}/>
             </HStack>}
 
             <Divider maxW="1440px" margin="76px auto" borderColor="#E8E8E826" border="0.5px"/>
             <TitleText/>
-            <NFTSPanel/>
+            <NFTSPanel chooseArr={chooseArr} setChooseArr={setChooseArr}/>
         </Box>
     </Layout>
 }
