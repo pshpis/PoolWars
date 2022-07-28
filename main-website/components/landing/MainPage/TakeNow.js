@@ -24,25 +24,26 @@ export const TakeNow = () =>
              padding={"32px " + sidePadding + " 32px"}>
 
             <Box color="#71CFC3;" fontFamily="Njord" fontWeight="400" textAlign="center" fontSize="32px" mb="40px">
-                CARD&#39;S AIRDROP NOW LIVE
+                CARD&#39;S FREE MINT WILL AVAILIBLE SOON
             </Box>
 
             <Center w="100%" mb="40px">
                 <Box width="100%" backgroundColor="#B2B2B2" height="64px" borderRadius="24px" padding="6px">
-                    <Box width="40%" backgroundColor="#E8E8E8" height="100%" borderLeftRadius="20px"/>
+                    {/*<Box width="40%" backgroundColor="#E8E8E8" height="100%" borderLeftRadius="20px"/>*/}
                 </Box>
             </Center>
 
             <Box fontSize="20px" lineHeight="30px" mb="32px">
-                <Text fontWeight="600" mb="13px">To take your exclusive card you should:</Text>
-                <UnorderedList pl="5px" mb="32px">
-                    <ListItem fontWeight="300">subscribe to our&nbsp;
-                        <a href="https://discord.gg/nhn8CEw48Z"><Box fontStyle="SemiBold" fontWeight="600" fontSize="20px" lineHeight="30px" as="span" color="#B8C3E6">discord</Box></a>
-                    </ListItem>
-                    <ListItem fontWeight="300">subscribe to our&nbsp;
-                        <a href="https://twitter.com/TheElderKatts"><Box fontStyle="SemiBold" fontWeight="600" fontSize="20px" lineHeight="30px" as="span" color="#B8C3E6" >twitter</Box></a>
-                    </ListItem>
-                </UnorderedList>
+                {/*<Text fontWeight="600" mb="13px">To take your exclusive card you should:</Text>*/}
+                {/*<UnorderedList pl="5px" mb="32px">*/}
+                {/*    <ListItem fontWeight="300">subscribe to our&nbsp;*/}
+                {/*        <a href="https://discord.gg/nhn8CEw48Z"><Box fontStyle="SemiBold" fontWeight="600" fontSize="20px" lineHeight="30px" as="span" color="#B8C3E6">discord</Box></a>*/}
+                {/*    </ListItem>*/}
+                {/*    <ListItem fontWeight="300">subscribe to our&nbsp;*/}
+                {/*        <a href="https://twitter.com/TheElderKatts"><Box fontStyle="SemiBold" fontWeight="600" fontSize="20px" lineHeight="30px" as="span" color="#B8C3E6" >twitter</Box></a>*/}
+                {/*    </ListItem>*/}
+                {/*</UnorderedList>*/}
+                <Center><Text fontWeight="600" fontSize="48px" mb="40px" color="#71CFC3;">TBA</Text></Center>
                 <Text fontWeight="300" fontStyle="Light">
                     Connect your twitter and discord to your account to get card!
                 </Text>
