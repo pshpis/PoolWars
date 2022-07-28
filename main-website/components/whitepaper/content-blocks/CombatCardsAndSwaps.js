@@ -18,7 +18,7 @@ export const CombatCards = () => {
 
         <Text padding="24px 0px 8px" fontWeight="700" fontSize="32px" lineHeight="40px">Swaps</Text>
         <Text padding="8px 0px" fontSize="16px" lineHeight="24px">
-            Swaps are DeFi application which will allow you to exchange cards with a total of 12 points for legendary card which will increase your Katt’s parameter on 15 points.
+            Swaps are DeFi application which will allow you to exchange cards with a total of 9 points for legendary card which will increase your Katt’s parameter on 12 points.
         </Text>
     </>
 }
