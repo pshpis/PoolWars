@@ -1,4 +1,4 @@
-import {Box, Center, Flex, ListItem, Text, UnorderedList, useToast} from "@chakra-ui/react";
+import {Box, Center, ListItem, Text, useToast} from "@chakra-ui/react";
 import {useWindowSize} from "../../../hooks/useWindowSize";
 import {ElderKattsBox} from "../Layout/ElderKattsBox";
 
@@ -29,7 +29,7 @@ export const TakeNow = () =>
 
             <Center w="100%" mb="40px">
                 <Box width="100%" backgroundColor="#B2B2B2" height="64px" borderRadius="24px" padding="6px">
-                    <Box width="4%" backgroundColor="#E8E8E8" height="100%" borderLeftRadius="20px"/>
+                    <Box ml="5px" width="2.5%" backgroundColor="#E8E8E8" height="100%" borderLeftRadius="20px"/>
                 </Box>
             </Center>
 
