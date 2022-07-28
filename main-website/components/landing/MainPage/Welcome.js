@@ -12,15 +12,13 @@ export const Welcome = () => {
         </Box>
 
         <Box whiteSpace="16px" lineHeight="30px" paragraph="16px" fontStyle="Light" fontWeight="300" fontSize="20px">
-            <Text>We are creating a unique NFT portrait collection of the most powerful and strongest nordic warriors
+            <Text mb="16px">We are creating a unique NFT portrait collection of the most powerful and strongest nordic warriors
                 in history. Our community will gain access to the &quot;Pool Wars Events&quot; v0 and v1, staking and raffles.
                 To participate, you should mint or own at least one of Elder Katts.</Text>
-            <br/>
-            <Text>To have advantage over other brave warriors you can upgrade abilities of your Katt by using special
+            <Text mb="16px">To have advantage over other brave warriors you can upgrade abilities of your Katt by using special
                 combat cards. Each card can improve one of three parameters such as attack, defense or intellect. After
                 the mint, it will allow you to earn more on Katts staking. Moreover, combat cards will give you early
                 access to &quot;Pool Wars Events&quot; v0.</Text>
-            <br/>
             At the initial stage you can participate in the Airdrop of the cards.
         </Box>
     </Box>
