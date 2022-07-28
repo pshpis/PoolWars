@@ -15,7 +15,7 @@ export const Welcome = () => {
             much much more.  Get ready for an exciting immersive experience and have fun Degen!</Text>
             <Text mb="16px">In order to have an advantage over other brave warriors, you can improve the abilities of
                 your Katt with special Combat Cards. Each card can improve one of three parameters, such as attack, defense,
-                or intelligence. Upgrades will allow you to earn more $KATT Tokens. What's more exciting, Combat Cards will
+                or intelligence. Upgrades will allow you to earn more $KATT Tokens. What&apos;s more exciting, Combat Cards will
                 give you early access to &quot;Pool Wars Events&quot; v0, right after the mint!</Text>
             Scroll down to see everything we have planned for you, neatly organized in our in-depth and extended roadmap!
         </Box>
