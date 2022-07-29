@@ -1,42 +1,44 @@
-import {useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 
 export function useKattsCardsChoose() {
-    const [chooseArr, setChooseArr] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    const [chooseArr, _setChooseArr] = useState([{ id : "attack_1", value: 0},
+        { id : "defence_1", value: 0},
+        { id : "intelligence_1", value: 0},
+        { id : "attack_3", value: 0},
+        { id : "defence_3", value: 0},
+        { id : "intelligence_3", value: 0},
+        { id : "attack_6", value: 0},
+        { id : "defence_6", value: 0},
+        { id : "intelligence_6", value: 0}]);
 
-    const getSumPoints = () => {
-        const nftCoasts = [1, 3, 6];
-        let newTotalPoints = 0;
-        for (let i = 0; i < chooseArr.length; i ++) {
-            newTotalPoints += chooseArr[i] * nftCoasts[i % 3];
-        }
-        return newTotalPoints;
+    const setChooseArr = (id, value) => {
+        chooseArr.find(item => item.id == id).value = value;
+        _setChooseArr(chooseArr);
     }
 
-    const numberOfCards = useMemo(() => {
-        let numberOfCards = 0;
-        for (let i = 0; i < chooseArr.length; i ++) {
-            numberOfCards += chooseArr[i];
-        }
-        return numberOfCards;
-    }, []);
+    const [willTakeCardPoints, setWillTakeCardPoints] = useState(0);
+
 
     const sumPoints = useMemo(() => {
-        return 0;
-    }, []);
+        let sumPoints = 0;
+        for (let i = 0; i < chooseArr.length; i ++) {
+            sumPoints += chooseArr[i].value * +chooseArr[i].id.slice(-1);
+        }
+        return sumPoints;
+    }, [chooseArr, _setChooseArr, setChooseArr]);
 
-    const willTakePoints = useMemo(() => {
-        return 0;
-    }, []);
+    const needPointsPerOne = useMemo(() => {
+        return sumPoints % willTakeCardPoints;
+    }, [chooseArr, _setChooseArr, setChooseArr, setWillTakeCardPoints]);
 
 
     // const get
 
     return {
         chooseArr,
-        numberOfCards,
         sumPoints,
-        willTakePoints,
+        needPointsPerOne,
         setChooseArr,
-        getSumPoints
+        setWillTakeCardPoints
     }
 }

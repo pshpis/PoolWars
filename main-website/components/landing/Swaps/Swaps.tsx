@@ -1,12 +1,14 @@
 import {useWindowSize} from "../../../hooks/useWindowSize";
 import Layout from "../Layout/Layout";
-import {Box, Center, Divider, Grid, GridItem, HStack, Img, Input, Stack, Text, VStack} from "@chakra-ui/react";
+import {Box, Center, Divider, Grid, GridItem, HStack, Img, Input, Spacer, Stack, Text, VStack} from "@chakra-ui/react";
 import {ElderKattsBox} from "../Layout/ElderKattsBox";
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import {value} from "dom7";
 import {Simulate} from "react-dom/test-utils";
 import input = Simulate.input;
 import {useKattsCardsChoose} from "../../../hooks/useKattsCardsChoose";
+import {inspect} from "util";
+import styles from "../../../styles/swaps.module.scss";
 
 const MainText = () => {
     const size = useWindowSize();
@@ -19,12 +21,34 @@ const MainText = () => {
             LIVE!
         </Text>
         <Text fontWeight="300" fontSize="20px" lineHeight="30px" color="#E8E3DD">
-            Here you can swap your regular warlords cards to take a Legendary one. Now you should choose some of your NFTs to burn 12 increase points.
+            Here you can swap your regular warlords cards to take a Legendary one. Now you should choose some of your NFTs to burn 9 increase points.
         </Text>
     </Box>
 }
 
-const PointsPanel = ({numberOfCards}) => {
+const WillTakePointsPanel = ({pointsPanelsHeight, setWillTakeCardPoints}) => {
+    return <ElderKattsBox mt="24px" pb="32px" width="294px"  height={pointsPanelsHeight+"px"}>
+
+        <Text pt="24px" pb="28px"
+              fontWeight="600" fontSize="24px" lineHeight="28px" color="#E8E3DD" textAlign="center">
+            You''ll take card with:
+        </Text>
+        <HStack ml="24px" mr="24px" mb="32px" height="88xp" spacing="15px"
+                fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="88px" color="#71CFC3">
+            <Box className={styles.willTakeCardButton} onClick={() => {setWillTakeCardPoints(+3)}}>3</Box>
+            <Box className={styles.willTakeCardButton}  onClick={() => {setWillTakeCardPoints(+6)}}>6</Box>
+            <Box className={styles.willTakeCardButton}  onClick={() => {setWillTakeCardPoints(+12)}}>12</Box>
+        </HStack>
+
+        <Box ml="24px" mr="24px" maxWidth="246px" height="48px" background="#B8C3E6" borderRadius="24px" textAlign="center"
+             fontWeight="600" fontSize="24px" lineHeight="48px" color="#202020"
+             transition="0.3s ease" _hover={{boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);"}}>
+            SWAP
+        </Box>
+    </ElderKattsBox>
+}
+
+const PointsPanels = ({chooseArr, sumPoints, needPointsPerOne, setWillTakeCardPoints}) => {
     const size = useWindowSize();
 
     const pointsPanelsRef = useRef(null);
@@ -33,10 +57,14 @@ const PointsPanel = ({numberOfCards}) => {
         setPointsPanelsHeight(pointsPanelsRef.current.offsetHeight);
     }, [pointsPanelsRef.current]);
 
+    useEffect(() => {
+        console.log(chooseArr);
+    }, [size.width])
+    
     return <Box>
         <HStack>
-            <VStack ref={pointsPanelsRef} mr={size.width < 560 ? "" : "24px"}>
-                <ElderKattsBox maxWidth="294px" mb="24px">
+            <VStack ref={pointsPanelsRef} mr={size.width < 640 ? "" : "24px"}>
+                <ElderKattsBox width="294px" mb="24px">
                     <HStack>
                         <Text pt="24px" pl="32px" pb="48px" pr="82px"
                               fontWeight="600" fontSize="24px" lineHeight="28px" color="#E8E3DD">
@@ -44,11 +72,11 @@ const PointsPanel = ({numberOfCards}) => {
                         </Text>
                         <Text pt="32px" pr="16px" pb="4px" mr="auto" textAlign="right"
                               fontFamily="Njord Alternate" fontWeight="400" fontSize="80px" lineHeight="92px" color="#71CFC3">
-                            {numberOfCards}
+                            {sumPoints}
                         </Text>
                     </HStack>
                 </ElderKattsBox>
-                <ElderKattsBox maxWidth="294px">
+                <ElderKattsBox width="294px">
                     <HStack>
                         <Text pt="24px" pl="32px" pb="48px" pr="37px"
                               fontWeight="600" fontSize="24px" lineHeight="28px" color="#E8E3DD">
@@ -56,49 +84,52 @@ const PointsPanel = ({numberOfCards}) => {
                         </Text>
                         <Text pt="32px" pr="16px" pb="4px" mr="auto" textAlign="right"
                               fontFamily="Njord Alternate" fontWeight="400" fontSize="80px" lineHeight="92px" color="#71CFC3">
-                            o
+                            {needPointsPerOne}
                         </Text>
                     </HStack>
                 </ElderKattsBox>
             </VStack>
-            {size.width >= 560 ? <ElderKattsBox maxWidth="294px" height={pointsPanelsHeight+"px"} pb="32px">
-                <HStack>
-                    <Text pt="24px" pl="32px" pb="48px" pr="31px"
-                          fontWeight="600" fontSize="24px" lineHeight="28px" color="#E8E3DD">
-                        You will take:
-                    </Text>
-                    <Text pt="32px" pr="16px" pb="4px" mr="auto" textAlign="right"
-                          fontFamily="Njord Alternate" fontWeight="400" fontSize="80px" lineHeight="92px" color="#71CFC3">
-                        o
-                    </Text>
-                </HStack>
-                <Box marginTop={size.width < 1199 ?  size.width < 1040 ? size.width < 750 ? "52px" : "76px" : "52px" : "76px"} ml="24px" mr="24px" maxWidth="246px" height="48px" background="#B8C3E6" borderRadius="24px" textAlign="center"
-                     fontWeight="600" fontSize="24px" lineHeight="48px" color="#202020" transition="0.3s ease" _hover={{boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);"}}>
-                    SWAP
-                </Box>
-            </ElderKattsBox> : ""}
+            {size.width >= 640 ? <WillTakePointsPanel pointsPanelsHeight={pointsPanelsHeight} setWillTakeCardPoints={setWillTakeCardPoints}/> : ""}
         </HStack>
-        {size.width < 560 ? <ElderKattsBox mt="24px" pb="32px" maxWidth="294px"  height={pointsPanelsHeight+"px"}>
-            <HStack>
-                <Text pt="24px" pl="32px" pb="48px" pr="31px"
-                      fontWeight="600" fontSize="24px" lineHeight="28px" color="#E8E3DD">
-                    You will take:
-                </Text>
-                <Text pt="32px" pr="16px" pb="4px" mr="auto" textAlign="right"
-                      fontFamily="Njord Alternate" fontWeight="400" fontSize="80px" lineHeight="92px" color="#71CFC3">
-                    o
-                </Text>
-            </HStack>
-            <Box marginTop="76px" ml="24px" mr="24px" maxWidth="246px" height="48px" background="#B8C3E6" borderRadius="24px" textAlign="center"
-                 fontWeight="600" fontSize="24px" lineHeight="48px" color="#202020"
-                 transition="0.3s ease" _hover={{boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);"}}>
-                SWAP
-            </Box>
-        </ElderKattsBox> : ""}
+        {size.width < 640 ? <WillTakePointsPanel pointsPanelsHeight={pointsPanelsHeight} setWillTakeCardPoints={setWillTakeCardPoints}/> : ""}
     </Box>
 }
 
-const NFT = ({src}) => {
+const numberCardInArray = (src) => {
+    return src.slice(13).slice(0, -4);
+    // const stat = src.slice(0, -2);
+    // const points = src.slice(-1);
+    // let numberCardInArray = 1;
+    // switch (stat) {
+    //     case "attack":
+    //         numberCardInArray = 0;
+    //         break;
+    //     case "defence":
+    //         numberCardInArray = 1;
+    //         break;
+    //     case "intelligence":
+    //         numberCardInArray = 2;
+    //         break;
+    //     default:
+    //         break;
+    // }
+    // switch (points) {
+    //     case "1":
+    //         break;
+    //     case "3":
+    //         numberCardInArray += 3;
+    //         break;
+    //     case "6":
+    //         numberCardInArray += 6;
+    //         break;
+    //     default:
+    //         break;
+    // }
+    // return numberCardInArray;
+}
+
+const NFT = ({src, chooseArr, setChooseArr}) => {
+    const arrayNumber = numberCardInArray(src);
     return <GridItem>
         <Box width="294px" height="398px">
             <Img width="294px" height="294px" borderTopRadius="24px"
@@ -111,11 +142,16 @@ const NFT = ({src}) => {
                 </HStack>
                 <HStack spacing="auto">
                     <Text w="150px" color="#949494">You choose:</Text>
-                    <Input p="0" mr="auto" w="30px"
+                    <Input p="0" mr="auto" w="30px" type="text"
                            placeholder="0" fontWeight="600" fontSize="24px" lineHeight="36px" color="#71CFC3"
                            textAlign="right" border="0px" _placeholder={{
                                color: 'inherit',
-                    }}></Input>
+                    }}
+                           onInput={(evt) => {
+                               // @ts-ignore
+                                setChooseArr(arrayNumber, +evt.target.value);
+                           }}
+                    ></Input>
                 </HStack>
             </Box>
         </Box>
@@ -128,15 +164,15 @@ const NFTSPanel = ({chooseArr, setChooseArr}) => {
     return <Center>
         <Grid mt="48px" templateColumns={size.width < 660 ? 'repeat(1, 1fr)' :size.width < 978 ? 'repeat(2, 1fr)' : size.width < 1296 ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)'}
               columnGap="24px" rowGap="24px">
-            <NFT src="/increaseNft/attack_1.png"/>
-            <NFT src="/increaseNft/defence_1.png"/>
-            <NFT src="/increaseNft/intelligence_1.png"/>
-            <NFT src="/increaseNft/attack_3.png"/>
-            <NFT src="/increaseNft/defence_3.png"/>
-            <NFT src="/increaseNft/intelligence_3.png"/>
-            <NFT src="/increaseNft/attack_6.png"/>
-            <NFT src="/increaseNft/defence_6.png"/>
-            <NFT src="/increaseNft/intelligence_6.png"/>
+            <NFT src="/increaseNft/attack_1.png" setChooseArr={setChooseArr} chooseArr={chooseArr}/>
+            <NFT src="/increaseNft/defence_1.png" setChooseArr={setChooseArr} chooseArr={chooseArr}/>
+            <NFT src="/increaseNft/intelligence_1.png" setChooseArr={setChooseArr} chooseArr={chooseArr}/>
+            <NFT src="/increaseNft/attack_3.png" setChooseArr={setChooseArr} chooseArr={chooseArr}/>
+            <NFT src="/increaseNft/defence_3.png" setChooseArr={setChooseArr} chooseArr={chooseArr}/>
+            <NFT src="/increaseNft/intelligence_3.png" setChooseArr={setChooseArr} chooseArr={chooseArr}/>
+            <NFT src="/increaseNft/attack_6.png" setChooseArr={setChooseArr} chooseArr={chooseArr}/>
+            <NFT src="/increaseNft/defence_6.png" setChooseArr={setChooseArr} chooseArr={chooseArr}/>
+            <NFT src="/increaseNft/intelligence_6.png" setChooseArr={setChooseArr} chooseArr={chooseArr}/>
         </Grid>
     </Center>
 }
@@ -166,22 +202,18 @@ export const Swaps = () => {
     }, [size.width])
 
     const kattsCardChoose = useKattsCardsChoose();
-    const {chooseArr, setChooseArr, numberOfCards, sumPoints} = kattsCardChoose;
-
-    useEffect(() => {
-        setChooseArr([1, 1, 1, 1, 1, 1, 1, 1, 1]);
-    },[])
+    const {chooseArr, setChooseArr, sumPoints, needPointsPerOne, setWillTakeCardPoints} = kattsCardChoose;
 
     return <Layout>
         <Box pt="80px" mb="160px" paddingLeft={defaultPadding+"px"} paddingRight={defaultPadding+"px"}>
             {size.width < 1040 ?
                 <VStack maxW="1248px" w="100%" margin="0 auto" spacing="30px">
                     <MainText/>
-                    <PointsPanel numberOfCards={numberOfCards}/>
+                    <PointsPanels chooseArr={chooseArr} sumPoints={sumPoints} needPointsPerOne={needPointsPerOne} setWillTakeCardPoints={setWillTakeCardPoints}/>
                 </VStack>
                 : <HStack maxW="1248px" w="100%" margin="0 auto" spacing="auto">
                 <MainText/>
-                <PointsPanel numberOfCards={numberOfCards}/>
+                <PointsPanels chooseArr={chooseArr} sumPoints={sumPoints} needPointsPerOne={needPointsPerOne} setWillTakeCardPoints={setWillTakeCardPoints}/>
             </HStack>}
 
             <Divider maxW="1440px" margin="76px auto" borderColor="#E8E8E826" border="0.5px"/>
