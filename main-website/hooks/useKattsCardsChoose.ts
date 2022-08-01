@@ -16,6 +16,8 @@ export function useKattsCardsChoose() {
         _setChooseArr(chooseArr);
     }
 
+
+
     const [willTakeCardPoints, setWillTakeCardPoints] = useState(0);
 
 

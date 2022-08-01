@@ -9,11 +9,11 @@
     width: 72px;
     border-radius: 20px;
     justify-content: center;
-
+    transition: all 1s;
 
     &:hover{
-        .willTakeCardButton{
-            background-color: #71CFC3;
-        }
+        transition: all 1s;
+        background-color: #71CFC3;
+        color: #202020;
     }
 }
