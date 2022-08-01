@@ -52,7 +52,7 @@ export const Profile = () => {
                             <Center>
                                 <Box mb="8px" pt="9px" pb="9px" h="40px" w="200px" backgroundColor="#313131" color="#71CFC3"
                                      borderRadius="16px"
-                                     fontWeight={300} fontSize="20px" lineHeight="24px" textAlign="center">
+                                     fontWeight="300" fontSize="20px" lineHeight="24px" textAlign="center">
                                     {walletAddressView}
                                 </Box>
                             </Center>

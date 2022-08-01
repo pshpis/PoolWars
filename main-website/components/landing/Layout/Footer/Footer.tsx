@@ -29,12 +29,12 @@ export const Footer = (props: BoxProps) => {
         </Box>
         <Box>
             <HStack lineHeight="19px" spacing={size.width > 1000 ? "115px" : "40px"} color="#E8E8E8">
-                <a href="https://discord.gg/rzd8ckvmpj">
+                <a href="https://discord.gg/nhn8CEw48Z">
                     <HStack as={Center} spacing="16px">
                         <Icon w="28px" h="27px" as={FaDiscord}/><Text>Discord</Text>
                     </HStack>
                 </a>
-                <a href="https://twitter.com/PoolWars_NFT">
+                <a href="https://twitter.com/TheElderKatts">
                     <HStack as={Center} spacing="16px">
                         <Icon w="31px" h="30px" as={FaTwitter}/><Text>Twitter</Text>
                     </HStack>

@@ -36,15 +36,15 @@ const RoadmapStageTitle = ({defaultPadding, marginTop, title, children, location
                 <Box ref={stageTitleRef} color="#71CFC3" fontWeight="600" fontSize="32px" lineHeight="48px">{title}</Box>
             </HStack>
             <Box pl={stageBallRadius*2+spacing+"px"} maxWidth={size.width < 768 ? size.width - defaultPadding * 2 + "px" : (size.width-defaultPadding)/2}
-                 fontWeight="300" lineHeight="30px" fontSize="20px">{children}</Box>
+                 fontWeight="300" lineHeight="30px" fontSize="20px" maxW="670px">{children}</Box>
         </Box>
     else return <Box mt={marginTop}>
-            <HStack pl={stageLeftTitlePadding+"px"} justifyContent="space-after" direction="row" spacing={spacing+"px"}>
-                <Box ref={stageTitleRef} color="#71CFC3" fontWeight="600" fontSize="32px" lineHeight="48px">{title}</Box>
-                <Box zIndex={0} background="#B2B2B2" w="24px" h="24px" borderRadius={stageBallRadius+"px"}
-                     boxShadow="0px 0px 56px #E8E3DD"/>
+        <HStack pl={stageLeftTitlePadding+"px"} justifyContent="space-after" direction="row" spacing={spacing+"px"}>
+            <Box ref={stageTitleRef} color="#71CFC3" fontWeight="600" fontSize="32px" lineHeight="48px">{title}</Box>
+            <Box zIndex={0} background="#B2B2B2" w="24px" h="24px" borderRadius={stageBallRadius+"px"}
+                 boxShadow="0px 0px 56px #E8E3DD"/>
         </HStack>
-        <Box pr={2*(stageBallRadius+spacing)+"px"} maxWidth={(size.width-defaultPadding)/2} fontWeight="300" lineHeight="30px"
+        <Box pl={size.width > 1440 ? size.width/2-770+"px" : ""} pr={2*(stageBallRadius+spacing)+"px"} maxWidth={(size.width-defaultPadding)/2} fontWeight="300" lineHeight="30px"
              textAlign="right" fontSize="20px">{children}</Box>
     </Box>
 }
@@ -76,7 +76,8 @@ export const Roadmap = (props: BoxProps) => {
 
     return <Box pl={defaultPadding+"px"} pr={defaultPadding+"px"} {...props}>
         <Divider mb="80px" borderColor="#E8E8E826" border="0.5px"/>
-        <HStack fontWeight="400" fontSize={size.width < 768 ? "48px" : "64px"} lineHeight="52px" spacing={0}>
+        <HStack fontWeight="400" fontSize={size.width < 768 ? "48px" : "64px"} lineHeight="52px" spacing={0}
+                w="100%" maxW="1248px" margin="0 auto">
             <Text fontFamily="Njord Alternate">R</Text><Text fontFamily="Njord">oadmap</Text>
         </HStack>
 
@@ -88,17 +89,17 @@ export const Roadmap = (props: BoxProps) => {
                 <Divider ml={size.width < 768 ? stageBallRadius-1+"px" : borderWidth-defaultPadding/2-1+"px"} position="absolute" width={defaultPadding/2+"px"}
                          height={defaultPadding/2+"px"} borderColor="#E8E8E880"
                          borderRight="2px" borderBottom="2px" borderRadius="0 0 50px 0" transform="rotate(180deg)"
-                         />
+                />
                 <Divider zIndex={-10} position="absolute" marginTop={roadmapStagesTitleWidth/2+curedDividerWidth+1+"px"}
                          marginLeft={size.width < 768 ? defaultPadding/2-roadmapStagesTitleWidth/2-3+"px" : size.width/2-defaultPadding-roadmapStagesTitleWidth/2+"px"} width={roadmapStagesTitleWidth+"px"}
                          borderColor="#E8E8E880" borderBottom="2px" transform="rotate(90deg)" boxShadow="0px 0px 32px #E8E3DD"/>
             </Flex>
 
             <Box ref={roadmapStagesRef}>
-                <RoadmapStageTitle defaultPadding={defaultPadding} marginTop={size.width < 768 ? "20px" : defaultMarginTop+"px"} title="Stage 0" location={size.width < 768}>Stage 0 Airdrop of Combat Cards. We will be providing utility for the owners of Combat Cards already before the mint of the main collection. You will be able to participate in Nft Swaps and &quot;Pool Wars &quot; v0. Our team will make collaborations with large, established and younger developing projects. At this stage we are creating a strong community of fearless warriors.</RoadmapStageTitle>
-                <RoadmapStageTitle defaultPadding={defaultPadding} marginTop={size.width < 768 ? "20px" : "-110"} title="Stage 1" location={true}>Mint of Elder Katts Collection. First hours of mint will be reserved for OG Katts and Whitelisted Katts, after this everyone will get a chance to mint their own Katt.</RoadmapStageTitle>
-                <RoadmapStageTitle defaultPadding={defaultPadding} marginTop={size.width < 768 ? "20px" : "0"} title="Stage 2" location={size.width < 768}>Launch of &quot;Pool Wars Events&quot; v1, that will be available for everyone. We will be announcing Staking and implementing Tokenomics. Also, there will be weekly raffles for part of the royalties for Katt owners only.</RoadmapStageTitle>
-                <RoadmapStageTitle defaultPadding={defaultPadding} marginTop={size.width < 768 ? "20px" : "-10"} title="Stage 3" location={true}>Launch a DAO. By Elder Katts DAO will be decided on important changes to the Katts ecosystem. Our team will realize the coolest and craziest ideas of our valorous community.</RoadmapStageTitle>
+                <RoadmapStageTitle defaultPadding={defaultPadding} marginTop={size.width < 768 ? "20px" : defaultMarginTop+"px"} title="Stage 0" location={size.width < 768}>Pool Wars v0&nbsp;and NFT Swaps Developing&nbsp;/ Marketing Campaign&nbsp;/ Connection to&nbsp;Launchpad&nbsp;/ DAO Collaborations&nbsp;/ Partnerships with Builders&nbsp;/ Free Mint of&nbsp;COMBAT CARDS&nbsp;/ Pool Wars v0&nbsp;and NFT Swaps Launch</RoadmapStageTitle>
+                <RoadmapStageTitle defaultPadding={defaultPadding} marginTop={size.width < 768 ? "20px" : "-50"} title="Stage 1" location={true}>Mint of&nbsp;Elder Katts&nbsp;/ Listing on&nbsp;ME&nbsp;/ Pool Wars v1&nbsp;Launch&nbsp;/ Provide Unique Gaming Experience&nbsp;/ Releasing Complex Tokenomics&nbsp;/ Katts Upgrading System Development</RoadmapStageTitle>
+                <RoadmapStageTitle defaultPadding={defaultPadding} marginTop={size.width < 768 ? "20px" : "0"} title="Stage 2" location={size.width < 768}>Rarity Sensetive Staking&nbsp;/ $KATT Token with LP&nbsp;/ Releasing Katts&nbsp;/ Upgrades System&nbsp;/ Pool Wars Amplification / Airdrop for the Holders</RoadmapStageTitle>
+                <RoadmapStageTitle defaultPadding={defaultPadding} marginTop={size.width < 768 ? "20px" : "-10"} title="Stage 3" location={true}>Forming the DAO&nbsp;/ Roadmap&nbsp;2.0&nbsp;/ Holders only Raffles&nbsp;/ New Utility Development&nbsp;/ Collaborations&nbsp;/ Gen2 Collection Launch&nbsp;/ Mint with $KATT Token</RoadmapStageTitle>
             </Box>
 
             <Flex>
