@@ -1,0 +1,16 @@
+FROM mcr.microsoft.com/dotnet/sdk:6.0 as BUILD
+WORKDIR /src
+
+COPY PoolWarsV0.sln ./
+COPY PoolWarsV0.MetadataReader/PoolWarsV0.MetadataReader.csproj ./PoolWarsV0.MetadataReader/
+RUN dotnet restore "PoolWarsV0.MetadataReader"
+
+COPY PoolWarsV0.MetadataReader/* ./PoolWarsV0.MetadataReader/
+RUN dotnet publish -c release "PoolWarsV0.MetadataReader" -o /publish
+
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 as RUNTIME
+WORKDIR /app
+
+COPY --from=BUILD /publish ./
+EXPOSE 80
+ENTRYPOINT ["dotnet", "PoolWarsV0.dll"]

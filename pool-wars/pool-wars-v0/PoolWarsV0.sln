@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoolWarsV0.Data", "PoolWarsV0.Data\PoolWarsV0.Data.csproj", "{20C3EDBC-C6D1-4D75-8B19-9A8408EB7D47}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoolWarsV0.MetadataReader", "PoolWarsV0.MetadataReader\PoolWarsV0.MetadataReader.csproj", "{5F5F989F-49FE-4A42-856F-BFFE8EF61846}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoolWarsV0.MetadataReader.Core", "PoolWarsV0.MetadataReader.Core\PoolWarsV0.MetadataReader.Core.csproj", "{D394F0BD-F108-40EB-988C-791D38B71044}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{20C3EDBC-C6D1-4D75-8B19-9A8408EB7D47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20C3EDBC-C6D1-4D75-8B19-9A8408EB7D47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20C3EDBC-C6D1-4D75-8B19-9A8408EB7D47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F5F989F-49FE-4A42-856F-BFFE8EF61846}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F5F989F-49FE-4A42-856F-BFFE8EF61846}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F5F989F-49FE-4A42-856F-BFFE8EF61846}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F5F989F-49FE-4A42-856F-BFFE8EF61846}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D394F0BD-F108-40EB-988C-791D38B71044}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D394F0BD-F108-40EB-988C-791D38B71044}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D394F0BD-F108-40EB-988C-791D38B71044}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D394F0BD-F108-40EB-988C-791D38B71044}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

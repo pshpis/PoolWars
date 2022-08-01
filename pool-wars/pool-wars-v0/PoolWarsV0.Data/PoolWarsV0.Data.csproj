@@ -7,11 +7,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Models"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7"/>
+        <Compile Update="Models\AllowedCreatorAddress.cs">
+            <DependentUpon>SolanaAddress.cs</DependentUpon>
+        </Compile>
+        <Compile Update="Models\CardMintAddress.cs">
+            <DependentUpon>SolanaAddress.cs</DependentUpon>
+        </Compile>
     </ItemGroup>
 
 </Project>
