@@ -7,7 +7,7 @@ const allowCors = fn => async (req, res) => {
   res.setHeader('Access-Control-Allow-Credentials', true)
   res.setHeader('Access-Control-Allow-Origin', '*')
   // another common pattern
-  // res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+  res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
   res.setHeader(
       'Access-Control-Allow-Headers',
@@ -25,8 +25,6 @@ const handler = (req, res) => {
   res.end(d.toString())
 }
 
-module.exports = allowCors(handler)
-
 const nextConfig = {
   reactStrictMode: true,
   async redirects() {
@@ -34,13 +32,13 @@ const nextConfig = {
       {
         source: '/whitepaper',
         destination: '/whitepaper/general',
-        permanent: true,
+        permanent: true
       },
       {
         source: '/advert_link',
         destination: 'https://t.me/PoolWarsAnnouncements',
-        permanent: true,
-      },
+        permanent: true
+      }
     ]
   },
   async headers() {
@@ -60,4 +58,4 @@ const nextConfig = {
   crossOrigin: 'anonymous'
 }
 
-module.exports = withBundleAnalyzer(nextConfig);
+module.exports = withBundleAnalyzer(allowCors(handler), nextConfig);
