@@ -40,7 +40,7 @@ const nextConfig = {
         source: '/advert_link',
         destination: 'https://t.me/PoolWarsAnnouncements',
         permanent: true,
-      },
+      }
     ]
   },
   async headers() {
@@ -56,8 +56,7 @@ const nextConfig = {
         ]
       }
     ]
-  },
-  crossOrigin: 'anonymous'
+  }
 }
 
 module.exports = withBundleAnalyzer(nextConfig);
