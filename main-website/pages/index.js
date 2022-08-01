@@ -1,13 +1,13 @@
 import {MainPage} from "../components/landing/MainPage/MainPage";
 import {LandingStyles} from "../styles/SectionsGlobalStyles";
 
+var express = require('express')
+var cors = require('cors')
+var app = express()
+
+app.use(cors())
+
 export default function Home () {
-    var express = require('express')
-    var cors = require('cors')
-    var app = express()
-
-    app.use(cors())
-
     return <>
         {LandingStyles}
         <MainPage/>
