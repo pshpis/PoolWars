@@ -17,20 +17,6 @@ const nextConfig = {
         destination: 'https://t.me/PoolWarsAnnouncements',
         permanent: true,
       },
-      {
-        "AllowedHeaders": [
-          "*"
-        ],
-        "AllowedMethods": [
-          "GET",
-          "HEAD"
-        ],
-        "AllowedOrigins": [
-          "*"
-        ],
-        "ExposeHeaders": [],
-        "MaxAgeSeconds": 3000
-      },
     ]
   },
   crossOrigin: 'anonymous'
