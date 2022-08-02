@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const { Client, Intents, Collection, GuildMember } = require('discord.js');
+const { Client, Intents, Collection, GuildMember, TextChannel } = require('discord.js');
 const bot = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 bot.commands = new Collection();
 const fs = require('fs')
@@ -88,6 +88,15 @@ bot.on("interactionCreate", async interaction => {
                     `2. <@${leadersInfos[1].member.id}> - ${leadersInfos[1].invites}\n` +
                     `3. <@${leadersInfos[2].member.id}> - ${leadersInfos[2].invites}`,
                 ephemeral: true
+            })
+
+            const logChannel = bot.channels.cache.get('1004031345556733952')
+
+            await logChannel.send({
+                content: `${uses} people invited by <@${interaction.member.id}>\n\n**LEADERS**\n` +
+                    `1. <@${leadersInfos[0].member.id}> - ${leadersInfos[0].invites}\n` +
+                    `2. <@${leadersInfos[1].member.id}> - ${leadersInfos[1].invites}\n` +
+                    `3. <@${leadersInfos[2].member.id}> - ${leadersInfos[2].invites}`
             })
         }
     }
