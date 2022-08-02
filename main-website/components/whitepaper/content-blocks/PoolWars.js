@@ -1,4 +1,4 @@
-import {Heading, ListItem, OrderedList, Text} from "@chakra-ui/react";
+import {Heading, Text} from "@chakra-ui/react";
 
 export const PoolWars = () => {
     return <>
@@ -25,11 +25,5 @@ export const PoolWars = () => {
         <Text padding="8px 0px" fontSize="16px" lineHeight="24px">
             The main difference between pool wars v0 and pool wars v1 is the ability to bid with the native token <b>$KATT</b>, which will be used instead of combat cards and will have more further utility. To be able to participate in Pool Wars V1 you will have to own at least one Katt.
         </Text>
-        <Text padding="8px 0px" fontSize="16px" lineHeight="24px">To participate in <b>”Pool Wars”</b> you have to be a member of our community. You have <b>two</b> options to do it:</Text>
-        <OrderedList padding="16px 0px" fontSize="16px" lineHeight="24px">
-            <ListItem><b>Own Warlord’s Card NFT</b>. This will  give a default opportunity to provide liquidity in the pools.</ListItem>
-            <ListItem><b>Own Warlord NFT</b>. This will give an opportunity to <b>participate at first and last hours</b> of each <b>“Pool War”</b> event. Moreover, Warlord’s owners can be members of exclusive “Pool Wars” and <b>take 30% of all commissions</b> into Warlord’s Metaverse.
-            </ListItem>
-        </OrderedList>
     </>
 }
