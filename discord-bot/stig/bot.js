@@ -147,10 +147,10 @@ bot.on("interactionCreate", async interaction => {
             const uses = invites
                 .filter(i => i.inviter.id === interaction.member.id)
                 .reduce((sum, i) => sum += i.uses, 0) -
-                snapshot.find(s => s.member === interaction.member.id)?.invites ?? 0;
+                (snapshot.find(s => s.member === interaction.member.id)?.invites ?? 0);
 
             await interaction.reply({
-                content: `${uses > 0 ? uses : 0} people invited\n\n**LEADERS**\n` +
+                content: `${uses} people invited\n\n**LEADERS**\n` +
                     `1. <@${leadersInfos[0].member.id}> - ${leadersInfos[0].invites}\n` +
                     `2. <@${leadersInfos[1].member.id}> - ${leadersInfos[1].invites}\n` +
                     `3. <@${leadersInfos[2].member.id}> - ${leadersInfos[2].invites}`,
