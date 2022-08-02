@@ -4,7 +4,7 @@ const { MessageEmbed, MessageActionRow, MessageButton, CommandInteraction } = re
 const { SelectMenuComponent } = require('discord-modals');
 
 const Embed = {
-    color: 0x00fcca,
+    color: 0x722f37,
     title: '**INVITE CONTEST**',
     fields: [
         {
@@ -14,7 +14,7 @@ const Embed = {
         }
     ],
     image: {
-        url: 'https://cdn.discordapp.com/attachments/1003297534170640447/1003661983528263820/promo.jpg'
+        url: 'https://cdn.discordapp.com/attachments/994580492819124295/999294589682860063/promo3-min.png'
     }
 };
 
@@ -22,7 +22,7 @@ const Row = new MessageActionRow();
 Row.addComponents(
     new MessageButton()
         .setCustomId("CHECK_BTN")
-        .setStyle('PRIMARY')
+        .setStyle('DANGER')
         .setLabel('Check'),
 );
 
