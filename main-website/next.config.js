@@ -58,4 +58,4 @@ const nextConfig = {
   crossOrigin: 'anonymous'
 }
 
-module.exports = withBundleAnalyzer(allowCors(handler), nextConfig);
+module.exports = withBundleAnalyzer(nextConfig);
