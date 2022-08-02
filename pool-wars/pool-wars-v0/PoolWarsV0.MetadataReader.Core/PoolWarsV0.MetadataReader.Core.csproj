@@ -10,4 +10,11 @@
         <ProjectReference Include="..\PoolWarsV0.Data\PoolWarsV0.Data.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <PackageReference Include="Solana.Metaplex" Version="1.3.0"/>
+        <PackageReference Include="Solnet.Programs" Version="6.1.0"/>
+        <PackageReference Include="Solnet.Rpc" Version="6.1.0"/>
+        <PackageReference Include="Solnet.Wallet" Version="6.1.0"/>
+    </ItemGroup>
+
 </Project>
