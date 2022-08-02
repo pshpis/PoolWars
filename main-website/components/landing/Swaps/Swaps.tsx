@@ -1,6 +1,20 @@
 import {useWindowSize} from "../../../hooks/useWindowSize";
 import Layout from "../Layout/Layout";
-import {Box, Center, Divider, Grid, GridItem, HStack, Img, Input, Spacer, Stack, Text, VStack} from "@chakra-ui/react";
+import {
+    background,
+    Box,
+    Center,
+    Divider,
+    Grid,
+    GridItem,
+    HStack,
+    Img,
+    Input,
+    Spacer,
+    Stack,
+    Text,
+    VStack
+} from "@chakra-ui/react";
 import {ElderKattsBox} from "../Layout/ElderKattsBox";
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import {value} from "dom7";
@@ -35,7 +49,9 @@ const WillTakePointsPanel = ({pointsPanelsHeight, setWillTakeCardPoints}) => {
         </Text>
         <HStack ml="24px" mr="24px" mb="32px" height="88xp" spacing="15px"
                 fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="88px" color="#71CFC3">
-            <Box className={styles.willTakeCardButton} onClick={() => {setWillTakeCardPoints(+3)}}>3</Box>
+            <Box className={styles.willTakeCardButton} onClick={() => {
+                setWillTakeCardPoints(+3)
+            }}>3</Box>
             <Box className={styles.willTakeCardButton}  onClick={() => {setWillTakeCardPoints(+6)}}>6</Box>
             <Box className={styles.willTakeCardButton}  onClick={() => {setWillTakeCardPoints(+12)}}>12</Box>
         </HStack>

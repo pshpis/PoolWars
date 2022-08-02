@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState} from "react";
+import {useCallback, useEffect, useMemo, useState} from "react";
 
 export function useKattsCardsChoose() {
     const [chooseArr, _setChooseArr] = useState([{ id : "attack_1", value: 0},
@@ -14,9 +14,11 @@ export function useKattsCardsChoose() {
     const setChooseArr = (id, value) => {
         chooseArr.find(item => item.id == id).value = value;
         _setChooseArr(chooseArr);
-    }
+    };
 
-
+    const getChooseArrValues = useCallback(() => {
+        return chooseArr.map(item => item.value);
+    }, [chooseArr, _setChooseArr, setChooseArr]);
 
     const [willTakeCardPoints, setWillTakeCardPoints] = useState(0);
 
@@ -27,11 +29,11 @@ export function useKattsCardsChoose() {
             sumPoints += chooseArr[i].value * +chooseArr[i].id.slice(-1);
         }
         return sumPoints;
-    }, [chooseArr, _setChooseArr, setChooseArr]);
+    }, [...getChooseArrValues(), _setChooseArr, setChooseArr]);
 
     const needPointsPerOne = useMemo(() => {
         return sumPoints % willTakeCardPoints;
-    }, [chooseArr, _setChooseArr, setChooseArr, setWillTakeCardPoints]);
+    }, [...getChooseArrValues(), _setChooseArr, setChooseArr, setWillTakeCardPoints]);
 
 
     // const get
