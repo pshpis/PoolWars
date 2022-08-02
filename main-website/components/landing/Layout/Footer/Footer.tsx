@@ -20,9 +20,9 @@ export const Footer = (props: BoxProps) => {
             <Box lineHeight="19px" color="#B8C3E6">
                 <Text>poolwars.official@gmail.com</Text>
                 <br/>
-                <Link href="/whitepaper"><Text>White paper</Text></Link>
+                <Link href="/whitepaper"><Text cursor="pointer">White paper</Text></Link>
                 <br/>
-                <Link href="/"><Text>Home Page</Text></Link>
+                <Link href="/"><Text cursor="pointer">Home Page</Text></Link>
                 <br/>
                 <Text mt="16px" color="#E8E8E8">elderkatts.com &copy;</Text>
             </Box>
