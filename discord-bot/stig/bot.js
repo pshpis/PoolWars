@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const { Client, Intents, Collection } = require('discord.js');
+const { Client, Intents, Collection, GuildMember } = require('discord.js');
 const bot = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 bot.commands = new Collection();
 const fs = require('fs')
@@ -48,12 +48,45 @@ bot.on("interactionCreate", async interaction => {
         if (interaction.customId == 'CHECK_BTN') {
 
             let invites = await interaction.guild.invites.fetch();
+            const exclude = await interaction.guild.roles.fetch('786306700318998548')
+
+            invites = invites.filter(invite => exclude.members.every(m => m.id !== invite.inviterId))
+
+            const groupedInvites = invites.reduce((group, invite) => {
+                let inviteData = group.find(o => o.member === invite.inviterId);
+
+                if (!inviteData) {
+                    inviteData = {
+                        member: invite.inviterId,
+                        invites: 0
+                    }
+
+                    group.push(inviteData)
+                }
+
+                inviteData.invites += invite.uses
+                return group;
+            }, []);
+
+            const leaders = groupedInvites.sort((a, b) => b.invites - a.invites).slice(0, 3);
+            const leadersInfos = await Promise.all(
+                leaders.map(async l => {
+                    return {
+                        member: await interaction.guild.members.fetch(l.member),
+                        invites: l.invites
+                    }
+                })
+            );
+
             const uses = invites
                 .filter(i => i.inviter.id === interaction.member.id)
                 .reduce((sum, i) => sum += i.uses, 0);
 
             await interaction.reply({
-                content: `${uses} people invited`,
+                content: `${uses} people invited\n\n**LEADERS**\n` +
+                    `1. <@${leadersInfos[0].member.id}> - ${leadersInfos[0].invites}\n` +
+                    `2. <@${leadersInfos[1].member.id}> - ${leadersInfos[1].invites}\n` +
+                    `3. <@${leadersInfos[2].member.id}> - ${leadersInfos[2].invites}`,
                 ephemeral: true
             })
         }
