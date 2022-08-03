@@ -1,8 +1,10 @@
 import {useWindowSize} from "../../hooks/useWindowSize";
 import React, {useEffect, useState} from "react";
-import {Box, Center, Grid, GridItem, HStack, Img, Input, Text} from "@chakra-ui/react";
+import {Box, Center, Grid, GridItem, HStack, Img, Input, Text, useToast} from "@chakra-ui/react";
 
-const NFT = ({src, chooseArr, setChooseArr}) => {
+const NFT = ({src, maxValue, setChooseArr}) => {
+    const toast = useToast();
+
     const NFTsName = src.slice(13).slice(0, -4);
     return <GridItem>
         <Box width="294px" height="398px">
@@ -12,7 +14,7 @@ const NFT = ({src, chooseArr, setChooseArr}) => {
                  fontWeight="600" fontSize="24px" lineHeight="36px" backgroundColor="#E8E8E8">
                 <HStack spacing="auto">
                     <Text color="#949494">You have:</Text>
-                    <Text color="#71CFC3">0</Text>
+                    <Text color="#71CFC3">{maxValue}</Text>
                 </HStack>
                 <HStack spacing="auto">
                     <Text w="150px" color="#949494">You choose:</Text>
@@ -21,25 +23,48 @@ const NFT = ({src, chooseArr, setChooseArr}) => {
                            textAlign="right" border="0px" _placeholder={{
                         color: 'inherit',
                     }}
-                           onInput={(evt) => {
-                               // @ts-ignore
-                               setChooseArr(NFTsName, +evt.target.value);
-                           }}
-                    ></Input>
+                        onInput={ (evt) => {
+                           // @ts-ignore
+                           const nftChosen = +evt.target.value;
+                           if ((nftChosen ^ 0) !== nftChosen) {
+                               toast({
+                                   title: 'This is not an integer number of NFTs',
+                                   status: 'error',
+                                   position: 'top',
+                                   isClosable: true,
+                               });
+                           } else if (nftChosen < 0) {
+                               toast({
+                                   title: 'Impossible to choose negative number of NFTs',
+                                   status: 'error',
+                                   position: 'top',
+                                   isClosable: true,
+                               });
+                           } else if (nftChosen > maxValue) {
+                               toast({
+                                   title: 'It is impossible to take more NFTs than you have',
+                                   status: 'error',
+                                   position: 'top',
+                                   isClosable: true,
+                               });
+
+                           }
+                           else setChooseArr(NFTsName, nftChosen);}
+                        }/>
                 </HStack>
             </Box>
         </Box>
     </GridItem>
 }
 
-export const NFTSPanel = ({srcs, chooseArr, setChooseArr}) => {
+export const NFTSPanel = ({NFTsStats, setChooseArr}) => {
     const size = useWindowSize();
 
     const [NFTs, setNFTs] = useState([]);
     useEffect(() => {
         let newNFTs = [...NFTs];
-        srcs.forEach((src) => {
-            newNFTs.push(<NFT src={src} setChooseArr={setChooseArr} chooseArr={chooseArr}/>);
+        NFTsStats.forEach((item) => {
+            newNFTs.push(<NFT src={item.src} setChooseArr={setChooseArr} maxValue={item.maxValue}/>);
         })
         setNFTs(newNFTs);
     }, []);

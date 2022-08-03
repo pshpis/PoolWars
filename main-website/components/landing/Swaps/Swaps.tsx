@@ -127,15 +127,15 @@ export const Swaps = () => {
     const kattsCardChoose = useKattsCardsChoose();
     const {chooseArr, setChooseArr, sumPoints, needPointsPerOne, setWillTakeCardPoints} = kattsCardChoose;
 
-    const srcs = [ "/increaseNft/attack_1.png",
-        "/increaseNft/defence_1.png",
-        "/increaseNft/intelligence_1.png",
-        "/increaseNft/attack_3.png",
-        "/increaseNft/defence_3.png",
-        "/increaseNft/intelligence_3.png",
-        "/increaseNft/attack_6.png",
-        "/increaseNft/defence_6.png",
-        "/increaseNft/intelligence_6.png"
+    const NFTsStats = [ {src: "/increaseNft/attack_1.png", maxValue: 0},
+        {src: "/increaseNft/defence_1.png", maxValue: 0},
+        {src: "/increaseNft/intelligence_1.png", maxValue: 0},
+        {src: "/increaseNft/attack_3.png", maxValue: 0},
+        {src: "/increaseNft/defence_3.png", maxValue: 0},
+        {src: "/increaseNft/intelligence_3.png", maxValue: 0},
+        {src: "/increaseNft/attack_6.png", maxValue: 0},
+        {src: "/increaseNft/defence_6.png", maxValue: 0},
+        {src: "/increaseNft/intelligence_6.png", maxValue: 0}
     ];
 
     return <Layout>
@@ -152,7 +152,7 @@ export const Swaps = () => {
 
             <Divider maxW="1440px" margin="76px auto" borderColor="#E8E8E826" border="0.5px"/>
             <TitleText/>
-            <NFTSPanel srcs={srcs} chooseArr={chooseArr} setChooseArr={setChooseArr}/>
+            <NFTSPanel NFTsStats={NFTsStats} setChooseArr={setChooseArr}/>
         </Box>
     </Layout>
 }
