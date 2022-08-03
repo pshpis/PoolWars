@@ -1,28 +1,17 @@
 import {useWindowSize} from "../../../hooks/useWindowSize";
 import Layout from "../Layout/Layout";
 import {
-    background,
     Box,
-    Center,
     Divider,
-    Grid,
-    GridItem,
     HStack,
-    Img,
-    Input,
-    Spacer,
-    Stack,
     Text,
     VStack
 } from "@chakra-ui/react";
 import {ElderKattsBox} from "../Layout/ElderKattsBox";
 import React, {useEffect, useMemo, useRef, useState} from "react";
-import {value} from "dom7";
-import {Simulate} from "react-dom/test-utils";
-import input = Simulate.input;
 import {useKattsCardsChoose} from "../../../hooks/useKattsCardsChoose";
-import {inspect} from "util";
 import styles from "../../../styles/swaps.module.scss";
+import {NFTSPanel} from "../NFTsPanel";
 
 const MainText = () => {
     const size = useWindowSize();
@@ -56,7 +45,7 @@ const WillTakePointsPanel = ({pointsPanelsHeight, setWillTakeCardPoints}) => {
             <Box className={styles.willTakeCardButton}  onClick={() => {setWillTakeCardPoints(+12)}}>12</Box>
         </HStack>
 
-        <Box ml="24px" mr="24px" maxWidth="246px" height="48px" background="#B8C3E6" borderRadius="24px" textAlign="center"
+        <Box ml="24px" mr="24px" maxWidth="246px" height="48px" backgroundColor="#B8C3E6" borderRadius="24px" textAlign="center"
              fontWeight="600" fontSize="24px" lineHeight="48px" color="#202020"
              transition="0.3s ease" _hover={{boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);"}}>
             SWAP
@@ -111,88 +100,6 @@ const PointsPanels = ({chooseArr, sumPoints, needPointsPerOne, setWillTakeCardPo
     </Box>
 }
 
-const numberCardInArray = (src) => {
-    return src.slice(13).slice(0, -4);
-    // const stat = src.slice(0, -2);
-    // const points = src.slice(-1);
-    // let numberCardInArray = 1;
-    // switch (stat) {
-    //     case "attack":
-    //         numberCardInArray = 0;
-    //         break;
-    //     case "defence":
-    //         numberCardInArray = 1;
-    //         break;
-    //     case "intelligence":
-    //         numberCardInArray = 2;
-    //         break;
-    //     default:
-    //         break;
-    // }
-    // switch (points) {
-    //     case "1":
-    //         break;
-    //     case "3":
-    //         numberCardInArray += 3;
-    //         break;
-    //     case "6":
-    //         numberCardInArray += 6;
-    //         break;
-    //     default:
-    //         break;
-    // }
-    // return numberCardInArray;
-}
-
-const NFT = ({src, chooseArr, setChooseArr}) => {
-    const arrayNumber = numberCardInArray(src);
-    return <GridItem>
-        <Box width="294px" height="398px">
-            <Img width="294px" height="294px" borderTopRadius="24px"
-                 src={src}/>
-            <Box pt="11px" pl="24px" pb="16px" pr="24px" width="294px" height="104px" borderBottomRadius="24px"
-                 fontWeight="600" fontSize="24px" lineHeight="36px" background="#E8E8E8">
-                <HStack spacing="auto">
-                    <Text color="#949494">You have:</Text>
-                    <Text color="#71CFC3">0</Text>
-                </HStack>
-                <HStack spacing="auto">
-                    <Text w="150px" color="#949494">You choose:</Text>
-                    <Input p="0" mr="auto" w="30px" type="text"
-                           placeholder="0" fontWeight="600" fontSize="24px" lineHeight="36px" color="#71CFC3"
-                           textAlign="right" border="0px" _placeholder={{
-                               color: 'inherit',
-                    }}
-                           onInput={(evt) => {
-                               // @ts-ignore
-                                setChooseArr(arrayNumber, +evt.target.value);
-                           }}
-                    ></Input>
-                </HStack>
-            </Box>
-        </Box>
-    </GridItem>
-}
-
-const NFTSPanel = ({chooseArr, setChooseArr}) => {
-    const size = useWindowSize();
-
-    return <Center>
-        <Grid mt="48px" templateColumns={size.width < 660 ? 'repeat(1, 1fr)' :size.width < 978 ? 'repeat(2, 1fr)' : size.width < 1296 ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)'}
-              columnGap="24px" rowGap="24px">
-            <NFT src="/increaseNft/attack_1.png" setChooseArr={setChooseArr} chooseArr={chooseArr}/>
-            <NFT src="/increaseNft/defence_1.png" setChooseArr={setChooseArr} chooseArr={chooseArr}/>
-            <NFT src="/increaseNft/intelligence_1.png" setChooseArr={setChooseArr} chooseArr={chooseArr}/>
-            <NFT src="/increaseNft/attack_3.png" setChooseArr={setChooseArr} chooseArr={chooseArr}/>
-            <NFT src="/increaseNft/defence_3.png" setChooseArr={setChooseArr} chooseArr={chooseArr}/>
-            <NFT src="/increaseNft/intelligence_3.png" setChooseArr={setChooseArr} chooseArr={chooseArr}/>
-            <NFT src="/increaseNft/attack_6.png" setChooseArr={setChooseArr} chooseArr={chooseArr}/>
-            <NFT src="/increaseNft/defence_6.png" setChooseArr={setChooseArr} chooseArr={chooseArr}/>
-            <NFT src="/increaseNft/intelligence_6.png" setChooseArr={setChooseArr} chooseArr={chooseArr}/>
-        </Grid>
-    </Center>
-}
-
 const TitleText = () => {
     const size = useWindowSize();
     const defaultTitleSize = useMemo(() => {
@@ -220,6 +127,17 @@ export const Swaps = () => {
     const kattsCardChoose = useKattsCardsChoose();
     const {chooseArr, setChooseArr, sumPoints, needPointsPerOne, setWillTakeCardPoints} = kattsCardChoose;
 
+    const srcs = [ "/increaseNft/attack_1.png",
+        "/increaseNft/defence_1.png",
+        "/increaseNft/intelligence_1.png",
+        "/increaseNft/attack_3.png",
+        "/increaseNft/defence_3.png",
+        "/increaseNft/intelligence_3.png",
+        "/increaseNft/attack_6.png",
+        "/increaseNft/defence_6.png",
+        "/increaseNft/intelligence_6.png"
+    ];
+
     return <Layout>
         <Box pt="80px" mb="160px" paddingLeft={defaultPadding+"px"} paddingRight={defaultPadding+"px"}>
             {size.width < 1040 ?
@@ -234,7 +152,7 @@ export const Swaps = () => {
 
             <Divider maxW="1440px" margin="76px auto" borderColor="#E8E8E826" border="0.5px"/>
             <TitleText/>
-            <NFTSPanel chooseArr={chooseArr} setChooseArr={setChooseArr}/>
+            <NFTSPanel srcs={srcs} chooseArr={chooseArr} setChooseArr={setChooseArr}/>
         </Box>
     </Layout>
 }
