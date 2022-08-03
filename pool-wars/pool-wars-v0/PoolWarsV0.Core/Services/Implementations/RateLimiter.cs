@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Logging;
 using Solnet.Rpc.Utilities;
 
-namespace PoolWarsV0.MetadataReader.Core.Services.Implementations;
+namespace PoolWarsV0.Core.Services.Implementations;
 
 public class RateLimiter : IRateLimiter
 {

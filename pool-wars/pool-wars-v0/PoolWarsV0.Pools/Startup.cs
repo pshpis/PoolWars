@@ -1,8 +1,10 @@
 using PoolWarsV0.Core.Tools;
 using PoolWarsV0.MetadataReader.Core.Tools;
+using PoolWarsV0.Pools.Core.Services;
+using PoolWarsV0.Pools.Core.Services.Implementations;
 using StartupBase = PoolWarsV0.Core.StartupBase;
 
-namespace PoolWarsV0.MetadataReader;
+namespace PoolWarsV0.Pools;
 
 internal class Startup : StartupBase
 {
@@ -20,6 +22,7 @@ internal class Startup : StartupBase
 
         services.AddMetadataReader();
 
+        services.AddTransient<IPoolWarRepository, PoolWarRepository>();
         services.AddHttpClient();
         services.AddSwaggerGen();
         services.AddControllers();
@@ -35,6 +38,7 @@ internal class Startup : StartupBase
 
         app.UseRouting();
         app.UseAuthorization();
+        app.UseTokenAuthentication();
 
         app.UseEndpoints(e => e.MapDefaultControllerRoute());
     }

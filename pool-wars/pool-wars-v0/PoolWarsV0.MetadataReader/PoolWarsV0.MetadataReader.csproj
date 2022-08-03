@@ -13,11 +13,16 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.5"/>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\PoolWarsV0.Core\PoolWarsV0.Core.csproj"/>
         <ProjectReference Include="..\PoolWarsV0.MetadataReader.Core\PoolWarsV0.MetadataReader.Core.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Models"/>
     </ItemGroup>
 
 </Project>

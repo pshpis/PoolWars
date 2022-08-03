@@ -19,6 +19,9 @@
         <Compile Update="Models\CardMintAddress.cs">
             <DependentUpon>SolanaAddress.cs</DependentUpon>
         </Compile>
+        <Compile Update="Models\PoolUserDao.cs">
+            <DependentUpon>SolanaAddress.cs</DependentUpon>
+        </Compile>
     </ItemGroup>
 
 </Project>
