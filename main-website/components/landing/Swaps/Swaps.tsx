@@ -53,6 +53,36 @@ const WillTakePointsPanel = ({pointsPanelsHeight, setWillTakeCardPoints}) => {
     </ElderKattsBox>
 }
 
+const SelectedPointsPanel = ({sumPoints}) => {
+    return <ElderKattsBox width="294px" mb="24px">
+        <HStack>
+            <Text pt="24px" pl="32px" pb="48px" pr="82px"
+                  fontWeight="600" fontSize="24px" lineHeight="28px" color="#E8E3DD">
+                Selected<br/> points:
+            </Text>
+            <Text pt="32px" pr="16px" pb="4px" mr="auto" textAlign="right"
+                  fontFamily="Njord Alternate" fontWeight="400" fontSize="80px" lineHeight="92px" color="#71CFC3">
+                {sumPoints}
+            </Text>
+        </HStack>
+    </ElderKattsBox>
+}
+
+const NeedPointsPanel = ({needPointsPerOne}) => {
+    return <ElderKattsBox width="294px">
+        <HStack>
+            <Text pt="24px" pl="32px" pb="48px" pr="37px"
+                  fontWeight="600" fontSize="24px" lineHeight="28px" color="#E8E3DD">
+                Need points<br/>per one:
+            </Text>
+            <Text pt="32px" pr="16px" pb="4px" mr="auto" textAlign="right"
+                  fontFamily="Njord Alternate" fontWeight="400" fontSize="80px" lineHeight="92px" color="#71CFC3">
+                {needPointsPerOne ? needPointsPerOne : "o"}
+            </Text>
+        </HStack>
+    </ElderKattsBox>
+}
+
 const PointsPanels = ({chooseArr, sumPoints, needPointsPerOne, setWillTakeCardPoints}) => {
     const size = useWindowSize();
 
@@ -69,30 +99,8 @@ const PointsPanels = ({chooseArr, sumPoints, needPointsPerOne, setWillTakeCardPo
     return <Box>
         <HStack>
             <VStack ref={pointsPanelsRef} mr={size.width < 640 ? "" : "24px"}>
-                <ElderKattsBox width="294px" mb="24px">
-                    <HStack>
-                        <Text pt="24px" pl="32px" pb="48px" pr="82px"
-                              fontWeight="600" fontSize="24px" lineHeight="28px" color="#E8E3DD">
-                            Selected<br/> points:
-                        </Text>
-                        <Text pt="32px" pr="16px" pb="4px" mr="auto" textAlign="right"
-                              fontFamily="Njord Alternate" fontWeight="400" fontSize="80px" lineHeight="92px" color="#71CFC3">
-                            {sumPoints}
-                        </Text>
-                    </HStack>
-                </ElderKattsBox>
-                <ElderKattsBox width="294px">
-                    <HStack>
-                        <Text pt="24px" pl="32px" pb="48px" pr="37px"
-                              fontWeight="600" fontSize="24px" lineHeight="28px" color="#E8E3DD">
-                            Need points<br/>per one:
-                        </Text>
-                        <Text pt="32px" pr="16px" pb="4px" mr="auto" textAlign="right"
-                              fontFamily="Njord Alternate" fontWeight="400" fontSize="80px" lineHeight="92px" color="#71CFC3">
-                            {needPointsPerOne}
-                        </Text>
-                    </HStack>
-                </ElderKattsBox>
+                <SelectedPointsPanel sumPoints={sumPoints}/>
+                <NeedPointsPanel needPointsPerOne={needPointsPerOne}/>
             </VStack>
             {size.width >= 640 ? <WillTakePointsPanel pointsPanelsHeight={pointsPanelsHeight} setWillTakeCardPoints={setWillTakeCardPoints}/> : ""}
         </HStack>
