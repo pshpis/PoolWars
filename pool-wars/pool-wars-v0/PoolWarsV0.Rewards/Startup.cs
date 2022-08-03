@@ -1,8 +1,7 @@
 using PoolWarsV0.Core.Tools;
-using PoolWarsV0.MetadataReader.Core.Tools;
 using StartupBase = PoolWarsV0.Core.StartupBase;
 
-namespace PoolWarsV0.MetadataReader;
+namespace PoolWarsV0.Rewards;
 
 internal class Startup : StartupBase
 {
@@ -18,12 +17,9 @@ internal class Startup : StartupBase
         var connectionString = GetConnectionString();
         services.AddDatabase(connectionString);
 
-        services.AddMetadataReader();
-
         services.AddHttpClient();
         services.AddSwaggerGen();
         services.AddControllers();
-        services.AddDefaultCors();
         services.AddDefaultCors();
     }
 
@@ -43,6 +39,7 @@ internal class Startup : StartupBase
         app.UseRouting();
         app.UseCors();
         app.UseAuthorization();
+        app.UseTokenAuthentication();
 
         app.UseEndpoints(e => e.MapDefaultControllerRoute());
     }

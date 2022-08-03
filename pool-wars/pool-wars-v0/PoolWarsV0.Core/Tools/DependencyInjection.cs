@@ -44,4 +44,17 @@ public static class DependencyInjection
     {
         app.UseMiddleware<TokenAuthenticationMiddleware>();
     }
+
+    public static void AddDefaultCors(this IServiceCollection services)
+    {
+        services.AddCors(cors =>
+        {
+            cors.AddDefaultPolicy(policy =>
+            {
+                policy.AllowAnyHeader();
+                policy.AllowAnyOrigin();
+                policy.AllowAnyMethod();
+            });
+        });
+    }
 }

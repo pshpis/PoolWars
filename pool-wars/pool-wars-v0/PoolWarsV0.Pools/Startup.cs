@@ -25,6 +25,7 @@ internal class Startup : StartupBase
         services.AddHttpClient();
         services.AddSwaggerGen();
         services.AddControllers();
+        services.AddDefaultCors();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -41,6 +42,7 @@ internal class Startup : StartupBase
         }
 
         app.UseRouting();
+        app.UseCors();
         app.UseAuthorization();
         app.UseTokenAuthentication();
 
