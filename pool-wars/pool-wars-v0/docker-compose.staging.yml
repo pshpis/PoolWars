@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  database:
+    image: postgres:14.4-alpine
+    ports:
+      - "8001:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: PoolWarsV0
+    volumes:
+      - "/var/lib/postgres/pool_wars-v0:/var/lib/postgresql/data"
+    restart: on-failure
+  
+  metadata_reader:
+    build:
+      context: .
+      dockerfile: Dockerfile.MetadataReader
+    ports:
+      - "8002:80"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Staging
+    depends_on:
+      - database
+    restart: on-failure
+    
+  pools:
+    build:
+      context: .
+      dockerfile: Dockerfile.Pools
+    ports:
+      - "8003:80"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Staging
+    depends_on:
+      - database
+    restart: on-failure

@@ -8,7 +8,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\PoolWarsV0.Core\PoolWarsV0.Core.csproj"/>
-        <ProjectReference Include="..\PoolWarsV0.Data\PoolWarsV0.Data.csproj"/>
         <ProjectReference Include="..\PoolWarsV0.MetadataReader.Core\PoolWarsV0.MetadataReader.Core.csproj"/>
         <ProjectReference Include="..\PoolWarsV0.Pools.Core\PoolWarsV0.Pools.Core.csproj"/>
     </ItemGroup>

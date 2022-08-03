@@ -30,7 +30,12 @@ internal class Startup : StartupBase
         if (!env.IsProduction())
         {
             app.UseSwagger();
-            app.UseSwaggerUI();
+
+            app.UseSwaggerUI(ui =>
+            {
+                ui.SwaggerEndpoint("swagger/v1/swagger.json", "v1");
+                ui.RoutePrefix = "";
+            });
         }
 
         app.UseRouting();

@@ -12,7 +12,7 @@ COPY PoolWarsV0.MetadataReader.Core/PoolWarsV0.MetadataReader.Core.csproj ./Pool
 COPY PoolWarsV0.Pools/PoolWarsV0.Pools.csproj ./PoolWarsV0.Pools/
 COPY PoolWarsV0.Pools.Core/PoolWarsV0.Pools.Core.csproj ./PoolWarsV0.MetadataReader.Pools.Core/
 
-RUN dotnet restore "PoolWarsV0.MetadataReader"
+RUN dotnet restore "PoolWarsV0.Pools"
 
 COPY PoolWarsV0.Core/* ./PoolWarsV0.Core/
 COPY PoolWarsV0.Data/* ./PoolWarsV0.Data/
@@ -23,11 +23,11 @@ COPY PoolWarsV0.MetadataReader.Core/* ./PoolWarsV0.MetadataReader.Core/
 COPY PoolWarsV0.Pools/* ./PoolWarsV0.Pools/
 COPY PoolWarsV0.Pools.Core/* ./PoolWarsV0.Pools.Core/
 
-RUN dotnet publish -c release "PoolWarsV0.MetadataReader" -o /publish
+RUN dotnet publish -c release "PoolWarsV0.Pools" -o /publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 as RUNTIME
 WORKDIR /app
 
 COPY --from=BUILD /publish ./
 EXPOSE 80
-ENTRYPOINT ["dotnet", "PoolWarsV0.MetadataReader.dll"]
+ENTRYPOINT ["dotnet", "PoolWarsV0.Pools.dll"]
