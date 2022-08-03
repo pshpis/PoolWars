@@ -1,6 +1,22 @@
 import {useWindowSize} from "../../hooks/useWindowSize";
-import React, {useEffect, useState} from "react";
-import {Box, Center, Grid, GridItem, HStack, Img, Input, Text, useToast} from "@chakra-ui/react";
+import React, {useEffect, useMemo, useState} from "react";
+import {Box, Center, Divider, Grid, GridItem, HStack, Img, Input, Text, useToast} from "@chakra-ui/react";
+
+const TitleText = () => {
+    const size = useWindowSize();
+    const defaultTitleSize = useMemo(() => {
+        if (size.width < 531) return 32;
+        if (size.width < 646) return 48;
+        return 64;
+    }, [size.width]);
+
+    return <HStack mt="80px" fontWeight="400" fontSize={defaultTitleSize+"px"} lineHeight="74px" spacing={0}
+                   w="100%" maxW="1440px" margin="0 auto">
+        <Text fontFamily="Njord">CH</Text>
+        <Text fontFamily="Njord Alternate">OO</Text>
+        <Text fontFamily="Njord">SE NFTS</Text>
+    </HStack>
+}
 
 const NFT = ({src, maxValue, setChooseArr}) => {
     const toast = useToast();
@@ -69,10 +85,14 @@ export const NFTSPanel = ({NFTsStats, setChooseArr}) => {
         setNFTs(newNFTs);
     }, []);
 
-    return <Center>
-        <Grid mt="48px" templateColumns={size.width < 804 ? 'repeat(1, 1fr)' :size.width < 1112 ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)'}
-              columnGap="24px" rowGap="24px">
-            {NFTs}
-        </Grid>
-    </Center>
+    return <Box>
+        <Divider maxW="1440px" margin="76px auto" borderColor="#E8E8E826" border="0.5px"/>
+        <TitleText/>
+        <Center>
+            <Grid mt="48px" templateColumns={size.width < 804 ? 'repeat(1, 1fr)' :size.width < 1112 ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)'}
+                  columnGap="24px" rowGap="24px">
+                {NFTs}
+            </Grid>
+        </Center>
+    </Box>
 }
