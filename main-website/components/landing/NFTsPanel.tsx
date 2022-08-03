@@ -70,7 +70,7 @@ export const NFTSPanel = ({NFTsStats, setChooseArr}) => {
     }, []);
 
     return <Center>
-        <Grid mt="48px" templateColumns={size.width < 660 ? 'repeat(1, 1fr)' :size.width < 978 ? 'repeat(2, 1fr)' : size.width < 1296 ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)'}
+        <Grid mt="48px" templateColumns={size.width < 804 ? 'repeat(1, 1fr)' :size.width < 1112 ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)'}
               columnGap="24px" rowGap="24px">
             {NFTs}
         </Grid>
