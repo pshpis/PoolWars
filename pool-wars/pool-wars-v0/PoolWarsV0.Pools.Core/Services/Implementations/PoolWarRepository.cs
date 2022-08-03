@@ -36,7 +36,8 @@ public class PoolWarRepository : IPoolWarRepository
                 Pools = w.Pools.Select(p => new Pool
                 {
                     Address = p.Address
-                }).ToList()
+                }).ToList(),
+                End = w.End
             });
     }
 

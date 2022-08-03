@@ -21,8 +21,4 @@
         <ProjectReference Include="..\PoolWarsV0.MetadataReader.Core\PoolWarsV0.MetadataReader.Core.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <Folder Include="Models"/>
-    </ItemGroup>
-
 </Project>

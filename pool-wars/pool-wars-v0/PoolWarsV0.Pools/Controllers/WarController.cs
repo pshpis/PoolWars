@@ -23,7 +23,7 @@ public class WarController : ControllerBase
     /// </summary>
     /// <param name="poolWar">PoolWar object</param>
     /// <returns>Card metadata or not found message</returns>
-    /// <response code="200">Metadata item</response>
+    /// <response code="200">Pool war item</response>
     /// <response code="400">Bad request</response>
     /// <response code="403">Insufficient permissions for this action</response>
     /// <response code="500">Error while creating pool war</response>
@@ -62,5 +62,19 @@ public class WarController : ControllerBase
                 Message = "Could not create pool war"
             });
         }
+    }
+
+    /// <summary>
+    ///     Gets actual pool wars
+    /// </summary>
+    /// <returns>Pool wars</returns>
+    /// <response code="200">Metadata item</response>
+    [Route("getActual")]
+    [HttpGet]
+    [ProducesResponseType(typeof(PoolWar), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<PoolWar>>> GetPoolWars()
+    {
+        return await _poolWarRepository.GetPoolWarsAsync().Where(w => w.End > DateTime.UtcNow).ToListAsync();
     }
 }

@@ -1,7 +1,6 @@
 using PoolWarsV0.Core.Tools;
 using PoolWarsV0.MetadataReader.Core.Tools;
-using PoolWarsV0.Pools.Core.Services;
-using PoolWarsV0.Pools.Core.Services.Implementations;
+using PoolWarsV0.Pools.Core.Tools;
 using StartupBase = PoolWarsV0.Core.StartupBase;
 
 namespace PoolWarsV0.Pools;
@@ -21,8 +20,8 @@ internal class Startup : StartupBase
         services.AddDatabase(connectionString);
 
         services.AddMetadataReader();
+        services.AddPools();
 
-        services.AddTransient<IPoolWarRepository, PoolWarRepository>();
         services.AddHttpClient();
         services.AddSwaggerGen();
         services.AddControllers();
