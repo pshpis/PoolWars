@@ -32,4 +32,27 @@ public class DatabaseMetadataReader : IMetadataReader
 
         return metadata;
     }
+
+    public async Task AddMetadata(CardMetadata metadata)
+    {
+        CardMetadataDao dao = new()
+        {
+            Strength = metadata.Strength,
+            CardMint = new()
+            {
+                Address = metadata.Mint
+            },
+            Type = metadata.Type
+        };
+
+        try
+        {
+            await _context.CardMetadata.AddAsync(dao);
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException)
+        {
+            throw new MetadataAddException();
+        }
+    }
 }
