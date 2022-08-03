@@ -127,15 +127,15 @@ export const Swaps = () => {
     const kattsCardChoose = useKattsCardsChoose();
     const {chooseArr, setChooseArr, sumPoints, needPointsPerOne, setWillTakeCardPoints} = kattsCardChoose;
 
-    const NFTsStats = [ {src: "/increaseNft/attack_1.png", maxValue: 0},
-        {src: "/increaseNft/defence_1.png", maxValue: 0},
-        {src: "/increaseNft/intelligence_1.png", maxValue: 0},
-        {src: "/increaseNft/attack_3.png", maxValue: 0},
-        {src: "/increaseNft/defence_3.png", maxValue: 0},
-        {src: "/increaseNft/intelligence_3.png", maxValue: 0},
-        {src: "/increaseNft/attack_6.png", maxValue: 0},
-        {src: "/increaseNft/defence_6.png", maxValue: 0},
-        {src: "/increaseNft/intelligence_6.png", maxValue: 0}
+    const NFTsStats = [ {src: "/increaseNft/attack_1.png", maxValue: 10},
+        {src: "/increaseNft/defence_1.png", maxValue: 10},
+        {src: "/increaseNft/intelligence_1.png", maxValue: 10},
+        {src: "/increaseNft/attack_3.png", maxValue: 10},
+        {src: "/increaseNft/defence_3.png", maxValue: 10},
+        {src: "/increaseNft/intelligence_3.png", maxValue: 10},
+        {src: "/increaseNft/attack_6.png", maxValue: 10},
+        {src: "/increaseNft/defence_6.png", maxValue: 10},
+        {src: "/increaseNft/intelligence_6.png", maxValue: 10}
     ];
 
     return <Layout>
