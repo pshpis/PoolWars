@@ -36,7 +36,14 @@ export const Mint = () => {
         tx.add(await mintOne(wallet.publicKey, mint));
 
         tx.partialSign(mint, airdropAuthority);
-        const signedTransaction = await wallet.signTransaction(tx);
+        let signedTransaction: Transaction | null = undefined;
+
+        try {
+            signedTransaction = await wallet.signTransaction(tx);
+        }
+        catch (e) {
+            return;
+        }
 
         try {
             const result = await connection.sendRawTransaction(signedTransaction.serialize());
