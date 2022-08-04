@@ -25,7 +25,7 @@ const EventDateTimePanel = () => {
     </Box>
 }
 
-const AttackPoolPanel = () => {
+const AttackPoolPanel = ({sumPoints}) => {
     return <ElderKattsBox zIndex={-2} width="294px" height="368px">
         <Text mt="32px" mb="32px" pl="36px"
               fontFamily="Njord" fontWeight="400" fontSize="32px" lineHeight="37px" color="#71CFC3">Attack Pool</Text>
@@ -36,7 +36,7 @@ const AttackPoolPanel = () => {
         </HStack>
         <HStack zIndex={0} paddingLeft="32px" paddingRight="32px" spacing="auto">
             <Text fontWeight="300" fontSize="20px" lineHeight="30px">You choose points:</Text>
-            <Text fontWeight="600" fontSize="24px" lineHeight="36px" color="#71CFC3">1</Text>
+            <Text fontWeight="600" fontSize="24px" lineHeight="36px" color="#71CFC3">{sumPoints}</Text>
         </HStack>
         <HStack zIndex={0} paddingLeft="32px" paddingRight="32px" spacing="auto">
             <Text fontWeight="300" fontSize="20px" lineHeight="30px">You provided points:</Text>
@@ -54,7 +54,7 @@ const AttackPoolPanel = () => {
     </ElderKattsBox>
 }
 
-const DefencePoolPanel = () => {
+const DefencePoolPanel = ({sumPoints}) => {
     return <ElderKattsBox zIndex={-2} width="294px" height="368px">
         <Text mt="32px" mb="32px" pl="36px"
               fontFamily="Njord" fontWeight="400" fontSize="32px" lineHeight="37px" color="#71CFC3">Defence Pool</Text>
@@ -65,7 +65,7 @@ const DefencePoolPanel = () => {
         </HStack>
         <HStack zIndex={0} paddingLeft="32px" paddingRight="32px" spacing="auto">
             <Text fontWeight="300" fontSize="20px" lineHeight="30px">You choose points:</Text>
-            <Text fontWeight="600" fontSize="24px" lineHeight="36px" color="#71CFC3">1</Text>
+            <Text fontWeight="600" fontSize="24px" lineHeight="36px" color="#71CFC3">{sumPoints}</Text>
         </HStack>
         <HStack zIndex={0} paddingLeft="32px" paddingRight="32px" spacing="auto">
             <Text fontWeight="300" fontSize="20px" lineHeight="30px">You provided points:</Text>
@@ -92,7 +92,7 @@ export const PoolWars = () => {
     }, [size.width])
 
     const kattsCardChoose = useKattsCardsChoose();
-    const {chooseArr, setChooseArr, sumPoints, needPointsPerOne, setWillTakeCardPoints} = kattsCardChoose;
+    const {chooseArr, sumPoints, setChooseArr} = kattsCardChoose;
 
     const NFTsStats = [ {src: "/increaseNft/attack_1.png", maxValue: 10},
         {src: "/increaseNft/defence_1.png", maxValue: 10},
@@ -114,8 +114,8 @@ export const PoolWars = () => {
                         <EventDateTimePanel/>
                     </VStack>
                     <HStack spacing="24px">
-                        <AttackPoolPanel/>
-                        <DefencePoolPanel/>
+                        <AttackPoolPanel sumPoints={sumPoints}/>
+                        <DefencePoolPanel sumPoints={sumPoints}/>
                     </HStack>
                 </HStack>
             :
@@ -126,13 +126,13 @@ export const PoolWars = () => {
                     </VStack>
                     {size.width > 804 ?
                         <HStack spacing="24px">
-                            <AttackPoolPanel/>
-                            <DefencePoolPanel/>
+                            <AttackPoolPanel sumPoints={sumPoints}/>
+                            <DefencePoolPanel sumPoints={sumPoints}/>
                         </HStack>
                         :
                         <VStack spacing="24px">
-                            <AttackPoolPanel/>
-                            <DefencePoolPanel/>
+                            <AttackPoolPanel sumPoints={sumPoints}/>
+                            <DefencePoolPanel sumPoints={sumPoints}/>
                         </VStack>
                     }
 
