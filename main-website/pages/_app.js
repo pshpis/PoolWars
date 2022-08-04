@@ -26,7 +26,7 @@ function MyApp({ Component, pageProps }) {
     const network = WalletAdapterNetwork.Testnet;
 
     const config = {
-        commitment: 'Confirmed'
+        commitment: 'confirmed'
     }
 
     const endpoint = useMemo(() => clusterApiUrl(network), [network]);
