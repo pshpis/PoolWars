@@ -14,6 +14,8 @@ import styles from "../../../styles/swaps.module.scss";
 import {NFTSPanel} from "../NFTsPanel";
 import {SwapState, useKattsCardsSwaps} from "../../../hooks/useKattsCardsSwaps";
 import clsx from "clsx";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { NFTStat, parseCards } from "../../../lib/nft-helper";
 
 const MainText = () => {
     const size = useWindowSize();
@@ -129,7 +131,8 @@ const TitleText = () => {
 
 export const Swaps = () => {
     const size = useWindowSize();
-
+    const wallet = useWallet();
+    const {connection} = useConnection();
 
     const defaultPadding = useMemo(() => {
         if (size.width < 486) return 30;
@@ -139,16 +142,19 @@ export const Swaps = () => {
     const chooseState = useKattsCardsChoose();
     const swapState = useKattsCardsSwaps();
 
-    const NFTsStats = [ {src: "/increaseNft/attack_1.png", maxValue: 10},
-        {src: "/increaseNft/defence_1.png", maxValue: 10},
-        {src: "/increaseNft/intelligence_1.png", maxValue: 10},
-        {src: "/increaseNft/attack_3.png", maxValue: 10},
-        {src: "/increaseNft/defence_3.png", maxValue: 10},
-        {src: "/increaseNft/intelligence_3.png", maxValue: 10},
-        {src: "/increaseNft/attack_6.png", maxValue: 10},
-        {src: "/increaseNft/defence_6.png", maxValue: 10},
-        {src: "/increaseNft/intelligence_6.png", maxValue: 10},
-    ];
+    const [NFTsStats, setStats] =  useState<NFTStat[]>([]);
+
+    const effect = async () => {
+        const stats = await parseCards(wallet.publicKey, connection);
+        console.log('sfdgdfghg')
+        setStats(_ => stats);
+    }
+
+    useEffect(() => {
+
+        effect()
+    },
+    [wallet.publicKey, connection])
 
     return <Layout>
         <Box pt="80px" mb="160px" paddingLeft={defaultPadding+"px"} paddingRight={defaultPadding+"px"}>

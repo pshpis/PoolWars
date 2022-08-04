@@ -1,5 +1,5 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import {useEffect, useMemo} from "react";
+import { useEffect, useMemo } from "react";
 import {
     GlowWalletAdapter,
     PhantomWalletAdapter,
@@ -13,7 +13,7 @@ import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import NextNProgress from "nextjs-progressbar";
 import Script from "next/script";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import * as gtag from '../lib/gtag'
 
 require('@solana/wallet-adapter-react-ui/styles.css');
@@ -23,7 +23,11 @@ require('../styles/globals.css');
 
 function MyApp({ Component, pageProps }) {
 
-    const network = WalletAdapterNetwork.Devnet;
+    const network = WalletAdapterNetwork.Testnet;
+
+    const config = {
+        commitment: 'Confirmed'
+    }
 
     const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 
@@ -80,7 +84,7 @@ function MyApp({ Component, pageProps }) {
         result = <ChakraProvider>{result}</ChakraProvider>
 
     if (Component.needWeb3)
-        result = <ConnectionProvider endpoint={endpoint}>
+        result = <ConnectionProvider endpoint={endpoint} config={config}>
             <WalletProvider wallets={wallets} autoConnect>
                 <WalletModalProvider>{result}</WalletModalProvider>
             </WalletProvider>
