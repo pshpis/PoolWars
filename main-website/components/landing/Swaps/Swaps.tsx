@@ -144,17 +144,18 @@ export const Swaps = () => {
 
     const [NFTsStats, setStats] =  useState<NFTStat[]>([]);
 
-    const effect = async () => {
-        const stats = await parseCards(wallet.publicKey, connection);
-        console.log('sfdgdfghg')
-        setStats(_ => stats);
-    }
-
     useEffect(() => {
+
+        const effect = async () => {
+            const stats = await parseCards(wallet.publicKey, connection);
+            setStats(_ => stats);
+        }
 
         effect()
     },
-    [wallet.publicKey, connection])
+    [wallet.publicKey])
+
+    console.log(NFTsStats)
 
     return <Layout>
         <Box pt="80px" mb="160px" paddingLeft={defaultPadding+"px"} paddingRight={defaultPadding+"px"}>
