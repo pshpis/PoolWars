@@ -16,25 +16,65 @@ pub fn logic_burn<'a>(
     swap_source: &'a AccountInfo<'a>,
     swap_destination: &'a AccountInfo<'a>,
     source_tokens: &Vec<SwapPair<'a>>,
+    admin_account: &'a AccountInfo<'a>,
+    fee_payer: &'a AccountInfo<'a>,
+    system_program: &'a AccountInfo<'a>,
+    spl_token: &'a AccountInfo<'a>,
 ) -> ProgramResult {
-    msg!("Burn {} tokens", source_tokens.len());
+    msg!("Send {} tokens", source_tokens.len());
 
     for token in source_tokens {
+        if token.destination.lamports() == 0 {
+            invoke(
+                &spl_associated_token_account::instruction::create_associated_token_account(
+                    fee_payer.key,
+                    admin_account.key,
+                    token.mint.key),
+                &[
+                    fee_payer.clone(),
+                    token.destination.clone(),
+                    admin_account.clone(),
+                    token.mint.clone(),
+                    system_program.clone(),
+                    spl_token.clone()
+                ],
+            )?;
+        }
+
         invoke(
-            &spl_token::instruction::burn(
-                &spl_token::id(),
+            &spl_token::instruction::transfer_checked(
+                spl_token.key,
                 token.token_account.key,
                 token.mint.key,
+                token.destination.key,
                 swap_source.key,
                 &[],
                 1,
+                0
             )?,
             &[
                 token.token_account.clone(),
                 token.mint.clone(),
-                swap_source.clone(),
-            ],
+                token.destination.clone(),
+                swap_source.clone()
+            ]
         )?;
+        
+        // invoke(
+        //     &spl_token::instruction::burn(
+        //         &spl_token::id(),
+        //         token.token_account.key,
+        //         token.mint.key,
+        //         swap_source.key,
+        //         &[],
+        //         1,
+        //     )?,
+        //     &[
+        //         token.token_account.clone(),
+        //         token.mint.clone(),
+        //         swap_source.clone(),
+        //     ],
+        // )?;
 
         invoke(
             &spl_token::instruction::close_account(
@@ -237,5 +277,5 @@ fn str_from_u8_nul_utf8(utf8_src: &[u8]) -> Result<&str, std::str::Utf8Error> {
         .iter()
         .position(|&c| c == b'\0')
         .unwrap_or(utf8_src.len()); // default to length if no `\0` present
-    ::std::str::from_utf8(&utf8_src[0..nul_range_end])
+    std::str::from_utf8(&utf8_src[0..nul_range_end])
 }

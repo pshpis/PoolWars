@@ -46,8 +46,9 @@ pub enum SwapInstruction {
     /// 13. `[signer]` - Swap authority
     /// 14. `[]` - Admin account
     /// 15. `[]` - Royalty wallet
-    /// 16 + 2n. `[writeable]` - Source token accounts
-    /// 17 + 2n. `[writeable]` - Source mint accounts
+    /// 16 + 3n. `[writeable]` - Source token accounts
+    /// 17 + 3n. `[writeable]` - Source mint accounts
+    /// 18 + 3n. `[writeable]` - Destination token account
     Swap(SwapArgs),
 }
 

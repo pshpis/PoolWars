@@ -1,5 +1,5 @@
 use solana_program::{
-    account_info::{next_account_info, AccountInfo},
+    account_info::{AccountInfo, next_account_info},
     entrypoint::ProgramResult,
     msg,
     program_pack::Pack,
@@ -128,9 +128,14 @@ fn process_swap_tokens<'a>(
         msg!("Assert token mint is writeable");
         assert_writeable(mint)?;
 
+        let destination = next_account_info(iter)?;
+        msg!("Assert destination is writeable");
+        assert_writeable(destination)?;
+
         source_tokens.push(SwapPair {
             token_account,
             mint,
+            destination,
         });
     }
 
@@ -206,7 +211,16 @@ fn process_swap_tokens<'a>(
         return Err(SwapError::AddressMismatch.into());
     }
 
-    swap_tokens::logic_burn(swap_source, swap_destination, &source_tokens)?;
+    swap_tokens::logic_burn(
+        swap_source,
+        swap_destination,
+        &source_tokens,
+        admin_account,
+        fee_payer,
+        system_program,
+        token_program,
+    )?;
+
     swap_tokens::logic_mint(
         swap_config_account,
         mint_account,
