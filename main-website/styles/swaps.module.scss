@@ -11,20 +11,17 @@
     justify-content: center;
     transition: all 1s;
 
-    //&:hover{
-    //    transition: all 1s;
-    //    background-color: #71CFC3;
-    //    color: #202020;
-    //}
+    &:hover{
+        background-color: #71CFC3;
+        color: #202020;
+    }
 
     &:active{
-        transition: all 1s;
         background-color: #71CFC3;
         color: #202020;
     }
 
     &_clicked{
-        transition: all 1s;
         background-color: #71CFC3;
         color: #202020;
     }

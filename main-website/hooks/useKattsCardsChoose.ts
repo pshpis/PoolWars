@@ -1,48 +1,44 @@
 import {useCallback, useEffect, useMemo, useState} from "react";
 
-export function useKattsCardsChoose() {
-    const [chooseArr, _setChooseArr] = useState([{ id : "attack_1", value: 0},
-        { id : "defence_1", value: 0},
-        { id : "intelligence_1", value: 0},
-        { id : "attack_3", value: 0},
-        { id : "defence_3", value: 0},
-        { id : "intelligence_3", value: 0},
-        { id : "attack_6", value: 0},
-        { id : "defence_6", value: 0},
-        { id : "intelligence_6", value: 0}]);
+export interface ChooseNode{
+    id: string,
+    value: number,
+    points: number
+}
 
-    const setChooseArr = (id, value) => {
-        chooseArr.find(item => item.id == id).value = value;
-        _setChooseArr(chooseArr);
-    };
+export interface ChooseState {
+    chooseArr: ChooseNode[],
+    sumPoints: number,
+    setChooseArr: (id: string, value: number) => void
+}
 
-    const getChooseArrValues = useCallback(() => {
-        return chooseArr.map(item => item.value);
-    }, [chooseArr, _setChooseArr, setChooseArr]);
+export function useKattsCardsChoose(): ChooseState {
+    const [chooseArr, _setChooseArr] = useState<ChooseNode[]>([{ id : "attack_1", value: 0, points: 1},
+        { id : "defence_1", value: 0, points: 1},
+        { id : "intelligence_1", value: 0, points: 1},
+        { id : "attack_3", value: 0, points: 3},
+        { id : "defence_3", value: 0, points: 3},
+        { id : "intelligence_3", value: 0, points: 3},
+        { id : "attack_6", value: 0, points: 6},
+        { id : "defence_6", value: 0, points: 6},
+        { id : "intelligence_6", value: 0, points: 6}]);
 
-    const [willTakeCardPoints, setWillTakeCardPoints] = useState(0);
+    const [sumPoints, setSumPoints] = useState<number>(0)
 
-
-    const sumPoints = useMemo(() => {
-        let sumPoints = 0;
-        for (let i = 0; i < chooseArr.length; i ++) {
-            sumPoints += chooseArr[i].value * +chooseArr[i].id.slice(-1);
-        }
-        return sumPoints;
-    }, [...getChooseArrValues(), _setChooseArr, setChooseArr]);
-
-    const needPointsPerOne = useMemo(() => {
-        return sumPoints % willTakeCardPoints;
-    }, [...getChooseArrValues(), _setChooseArr, setChooseArr, setWillTakeCardPoints]);
-
-
-    // const get
+    const setChooseArr = useCallback((id, value) => {
+        const newChooseArr = [...chooseArr];
+        newChooseArr.find(item => item.id == id).value = value;
+        let newSumPoints = 0;
+        newChooseArr.forEach((el) => {
+           newSumPoints +=  el.value * el.points;
+        });
+        setSumPoints(newSumPoints);
+        _setChooseArr(newChooseArr);
+    }, [chooseArr, _setChooseArr]);
 
     return {
         chooseArr,
         sumPoints,
-        needPointsPerOne,
         setChooseArr,
-        setWillTakeCardPoints
     }
 }

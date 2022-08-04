@@ -20,10 +20,8 @@ const NFT = ({src, maxValue, setChooseArr}) => {
                     <Text w="150px" color="#949494">You choose:</Text>
                     <Input p="0" mr="auto" w="30px" type="text"
                            placeholder="0" fontWeight="600" fontSize="24px" lineHeight="36px" color="#71CFC3"
-                           textAlign="right" border="0px" _placeholder={{
-                        color: 'inherit',
-                    }}
-                        onInput={ (evt) => {
+                           textAlign="right" border="0px" _placeholder={{color: 'inherit'}}
+                        onChange={ (evt) => {
                            // @ts-ignore
                            const nftChosen = +evt.target.value;
                            if ((nftChosen ^ 0) !== nftChosen) {
@@ -47,7 +45,6 @@ const NFT = ({src, maxValue, setChooseArr}) => {
                                    position: 'top',
                                    isClosable: true,
                                });
-
                            }
                            else setChooseArr(NFTsName, nftChosen);}
                         }/>
