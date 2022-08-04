@@ -97,10 +97,6 @@ const PointsPanels = ({chooseState, swapState}: { chooseState: ChooseState, swap
         setPointsPanelsHeight(pointsPanelsRef.current.offsetHeight);
     }, [pointsPanelsRef.current]);
 
-    useEffect(() => {
-        console.log(chooseState.chooseArr);
-    }, [chooseState.chooseArr, size.width])
-
     return <Box>
         <HStack>
             <VStack ref={pointsPanelsRef} mr={size.width < 640 ? "" : "24px"}>

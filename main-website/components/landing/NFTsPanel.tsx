@@ -65,7 +65,7 @@ export const NFTSPanel = ({NFTsStats, setChooseArr}) => {
                 newNFTs.push(<NFT src={item.src} setChooseArr={setChooseArr} maxValue={item.maxValue}/>);
         })
         setNFTs(newNFTs);
-    }, []);
+    }, [NFTsStats]);
 
     return <Center>
         <Grid mt="48px" templateColumns={size.width < 804 ? 'repeat(1, 1fr)' :size.width < 1112 ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)'}
