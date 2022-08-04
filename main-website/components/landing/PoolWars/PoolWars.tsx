@@ -17,11 +17,11 @@ const MainText = () => {
     </Box>
 }
 
-const EventDateTimePanel = () => {
+const EventTimerPanel = () => {
     const size = useWindowSize();
     return <Box pl="40px" pt="34px" width={size.width > 697 ? "508px" : "100%"} height="152px" backgroundColor="#313131" borderRadius="40px">
-        <Text fontWeight="300" fontSize="24px" lineHeight="36px">This event will be finished in:</Text>
-        <Text fontWeight="600" fontSize="24px" lineHeight="36px"></Text>
+        <Text fontWeight="300" fontSize="24px" lineHeight="36px" color="#E8E3DD">This event will be finished in:</Text>
+        <Text fontWeight="600" fontSize="24px" lineHeight="36px" color="#B8C3E6">19 days 14 hours 9 minutes 59 seconds</Text>
     </Box>
 }
 
@@ -111,7 +111,7 @@ export const PoolWars = () => {
                 <HStack spacing="auto" w="100%" maxWidth="1248px" margin="0 auto">
                     <VStack spacing="50px">
                         <MainText/>
-                        <EventDateTimePanel/>
+                        <EventTimerPanel/>
                     </VStack>
                     <HStack spacing="24px">
                         <AttackPoolPanel sumPoints={sumPoints}/>
@@ -122,7 +122,7 @@ export const PoolWars = () => {
                 <VStack spacing="40px">
                     <VStack spacing="50px">
                         <MainText/>
-                        <EventDateTimePanel/>
+                        <EventTimerPanel/>
                     </VStack>
                     {size.width > 804 ?
                         <HStack spacing="24px">
