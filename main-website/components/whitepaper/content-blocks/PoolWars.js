@@ -10,10 +10,10 @@ export const PoolWars = () => {
 
         <Text padding="24px 0px 8px" fontWeight="700" fontSize="32px" lineHeight="40px">Pool Wars Event v0. Combat Cards Utility.</Text>
         <Text padding="8px 0px" fontSize="16px" lineHeight="24px">
-            At the <b>0 stage</b> Pool Wars our members will bet their <b>Combat Cards NFTs</b>. You will be able to put some of your Combat Cards in <b>Defense Pool</b> or <b>Attack Pool</b> for a <b>period of three days</b>.
+            At the <b>0 stage</b> Pool Wars our members will bet their <b>Combat Cards NFTs</b>. You will be able to put some of your Combat Cards in <b>Defense Pool</b> or <b>Attack Pool</b> for some period of time.
         </Text>
         <Text padding="8px 0px" fontSize="16px" lineHeight="24px">
-            When our members put cards into the pool, the chance of the victory of this pool will increase, but will not guarantee the victory. After the winner pool is randomly selected, the winning team will receive a pool of player cards from the losing team.
+            When the holders put cards into the pool, the chance of the victory of this pool will increase, but will not guarantee the victory. After the winner pool is randomly selected, the winning team will receive a pool of player cards from the losing team.
         </Text>
         <Text padding="8px 0px" fontSize="16px" lineHeight="24px">
             That’s a great opportunity for our users to increase the amount of their cards. Also, you can invite your friends to win with more chances.
@@ -23,7 +23,7 @@ export const PoolWars = () => {
 
         <Text padding="24px 0px 8px" fontWeight="700" fontSize="32px" lineHeight="40px">Pool Wars Event v1. $KATT Utility</Text>
         <Text padding="8px 0px" fontSize="16px" lineHeight="24px">
-            The main difference between pool wars v0 and pool wars v1 is the ability to bid with the native <b>token $KATT</b>, which will be used instead of combat cards and will have more further utility. To be able to participate in Pool Wars V1 you will have to own at least one Katt.
+            The main difference between pool wars v0 and pool wars v1 is the ability to bid with the native token <b>$KATT</b>, which will be used instead of combat cards and will have more further utility. To be able to participate in Pool Wars V1 you will have to own at least one Katt.
         </Text>
         <Text padding="8px 0px" fontSize="16px" lineHeight="24px">To participate in <b>”Pool Wars”</b> you have to be a member of our community. You have <b>two</b> options to do it:</Text>
         <OrderedList padding="16px 0px" fontSize="16px" lineHeight="24px">

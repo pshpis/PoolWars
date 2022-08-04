@@ -47,7 +47,7 @@ export const Team = (props: BoxProps) => {
                     <Member src="/teamNFTs/21.png" title="Vighbiørn" boolean={true}>CTO</Member>
                 </GridItem>
                 <GridItem>
-                    <Member src="/teamNFTs/96.png" title="Bjørn" boolean={true}>Head of Design</Member>
+                    <Member src="/teamNFTs/96.png" title="Bjørn" boolean={false}>Head of Design</Member>
                 </GridItem>
                 <GridItem>
                     <Member src="/teamNFTs/16.png" title="Hashira" boolean={false}>Project Manager</Member>
