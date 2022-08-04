@@ -11,6 +11,8 @@ public class PoolWarDao
 
     public ICollection<PoolDao> Pools { get; set; } = null!;
 
+    public PoolWarResultDao? Result { get; set; }
+
     [Required]
     public DateTime End { get; set; }
 }

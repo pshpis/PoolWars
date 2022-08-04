@@ -21,6 +21,12 @@ public class Context : DbContext
 
     public DbSet<PoolDepositDao> Deposits { get; set; } = null!;
 
+    public DbSet<PoolWarResultDao> PoolWarsResults { get; set; } = null!;
+
+    public DbSet<ResultUserLink> ResultUserLinks { get; set; } = null!;
+
+    public DbSet<UserResultCard> UserResultCards { get; set; } = null!;
+    
     public DbSet<PoolWarDao> PoolWars { get; set; } = null!;
 
     public DbSet<PoolUserDao> PoolUsers { get; set; } = null!;
