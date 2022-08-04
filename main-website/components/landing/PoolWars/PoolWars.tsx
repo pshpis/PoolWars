@@ -1,5 +1,5 @@
 import Layout from "../Layout/Layout";
-import {Box, Center, Divider, Grid, HStack, Img, Spacer, Text, VStack} from "@chakra-ui/react";
+import {Box, Center, HStack, Img, Text, VStack} from "@chakra-ui/react";
 import {useWindowSize} from "../../../hooks/useWindowSize";
 import React, {useMemo} from "react";
 import {NFTSPanel} from "../NFTsPanel";
@@ -92,7 +92,7 @@ export const PoolWars = () => {
     }, [size.width])
 
     const kattsCardChoose = useKattsCardsChoose();
-    const {chooseArr, sumPoints, setChooseArr} = kattsCardChoose;
+    const {sumPoints, setChooseArr} = kattsCardChoose;
 
     const NFTsStats = [ {src: "/increaseNft/attack_1.png", maxValue: 10},
         {src: "/increaseNft/defence_1.png", maxValue: 10},
@@ -108,7 +108,7 @@ export const PoolWars = () => {
     return <Layout>
         <Box pt="80px" mb="160px" paddingLeft={defaultPadding+"px"} paddingRight={defaultPadding+"px"}>
             {size.width > 1352 ?
-                <HStack spacing="auto">
+                <HStack spacing="auto" w="100%" maxWidth="1248px" margin="0 auto">
                     <VStack spacing="50px">
                         <MainText/>
                         <EventDateTimePanel/>

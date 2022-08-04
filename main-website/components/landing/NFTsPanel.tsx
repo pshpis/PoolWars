@@ -11,7 +11,7 @@ const TitleText = () => {
     }, [size.width]);
 
     return <HStack mt="80px" fontWeight="400" fontSize={defaultTitleSize+"px"} lineHeight="74px" spacing={0}
-                   w="100%" maxW="1440px" margin="0 auto">
+                   w="100%" maxW="1248px" margin="0 auto">
         <Text fontFamily="Njord">CH</Text>
         <Text fontFamily="Njord Alternate">OO</Text>
         <Text fontFamily="Njord">SE NFTS</Text>
