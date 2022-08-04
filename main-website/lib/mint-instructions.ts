@@ -17,12 +17,16 @@ export const MINT_REVENUES_WALLET = new PublicKey('DRLCySRyuKxgPTeiJVoKgPqK5SCMw
 export async function getUserData(user: PublicKey, connection: Connection): Promise<UserMintData | null> {
 
     try {
-        const account = await connection.getAccountInfo(user);
+        console.log('0')
+        const account = await connection.getAccountInfo(await deriveUserAccount(user));
 
-        if (account.owner !== MINT_PROGRAM_ID) {
+        console.log('1')
+        console.log(account.owner.toBase58())
+        if (account.owner.toBase58() !== MINT_PROGRAM_ID.toBase58()) {
             return null
         }
 
+        console.log('2')
         const mintAmount = new BN(account.data.slice(65, 8), "le").toNumber();
         const lockTill = new BN(account.data.slice(73, 8), "le").toNumber();
 
