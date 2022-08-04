@@ -239,11 +239,6 @@ fn process_mint_one<'a>(program_id: &Pubkey, accounts: &'a [AccountInfo<'a>]) ->
 
     let clock = Clock::from_account_info(clock_var)?;
 
-    msg!("Check user timeout");
-    if user_data.locked_till >= clock.unix_timestamp as u64 {
-        return Err(AirdropError::UserTimeout.into());
-    }
-
     // Mint account checks
     msg!("Assert that mint account is signer");
     assert_signer(mint_account)?;
