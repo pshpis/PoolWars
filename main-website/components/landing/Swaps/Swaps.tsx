@@ -15,7 +15,7 @@ import {NFTSPanel} from "../NFTsPanel";
 import {SwapState, useKattsCardsSwaps} from "../../../hooks/useKattsCardsSwaps";
 import clsx from "clsx";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { NFTStat, parseCards } from "../../../lib/nft-helper";
+import { NFTStat, NFTStatWithMints, parseCards } from "../../../lib/nft-helper";
 
 const MainText = () => {
     const size = useWindowSize();
@@ -138,20 +138,19 @@ export const Swaps = () => {
     const chooseState = useKattsCardsChoose();
     const swapState = useKattsCardsSwaps();
 
-    const [NFTsStats, setStats] =  useState<NFTStat[]>([]);
+    const [NFTsStats, setStats] = useState<NFTStatWithMints[]>([]);
 
     useEffect(() => {
 
-        const effect = async () => {
+        async function load() {
             const stats = await parseCards(wallet.publicKey, connection);
+            console.log(stats);
             setStats(_ => stats);
         }
 
-        effect()
+        load()
     },
-    [wallet.publicKey])
-
-    console.log(NFTsStats)
+    [wallet.publicKey]);
 
     return <Layout>
         <Box pt="80px" mb="160px" paddingLeft={defaultPadding+"px"} paddingRight={defaultPadding+"px"}>
