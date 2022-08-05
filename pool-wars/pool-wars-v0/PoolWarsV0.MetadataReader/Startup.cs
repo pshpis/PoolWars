@@ -1,4 +1,6 @@
 using PoolWarsV0.Core.Tools;
+using PoolWarsV0.MetadataReader.Core.Services;
+using PoolWarsV0.MetadataReader.Core.Services.Implementations;
 using PoolWarsV0.MetadataReader.Core.Tools;
 using StartupBase = PoolWarsV0.Core.StartupBase;
 
@@ -12,6 +14,7 @@ internal class Startup : StartupBase
 
     public void ConfigureServices(IServiceCollection services)
     {
+        RegisterSwapProgram();
         var rpc = GetRpcUrl();
         services.AddRpcClient(rpc);
 
@@ -19,11 +22,11 @@ internal class Startup : StartupBase
         services.AddDatabase(connectionString);
 
         services.AddMetadataReader();
+        services.AddTransient<ISwapChecker, SwapChecker>();
 
         services.AddHttpClient();
         services.AddSwaggerGen();
         services.AddControllers();
-        services.AddDefaultCors();
         services.AddDefaultCors();
     }
 
@@ -40,8 +43,8 @@ internal class Startup : StartupBase
             });
         }
 
-        app.UseRouting();
         app.UseCors();
+        app.UseRouting();
         app.UseAuthorization();
 
         app.UseEndpoints(e => e.MapDefaultControllerRoute());

@@ -17,4 +17,10 @@
         <ProjectReference Include="..\PoolWarsV0.Data\PoolWarsV0.Data.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <Reference Include="Solnet.Programs">
+            <HintPath>..\..\..\..\..\.nuget\packages\solnet.programs\6.1.0\lib\net6.0\Solnet.Programs.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
 </Project>
