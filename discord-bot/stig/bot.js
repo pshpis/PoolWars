@@ -139,7 +139,7 @@ bot.on("interactionCreate", async interaction => {
 
 	    groupedInvites.push({
 		    "member": "433633971562217485",
-		    "invites": 1316
+		    "invites": 1378
 	    });
 
             const leaders = groupedInvites.sort((a, b) => b.invites - a.invites);
