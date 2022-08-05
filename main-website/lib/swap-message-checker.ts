@@ -1,7 +1,7 @@
 import { Transaction } from "@solana/web3.js";
 import axios from "axios";
 
-const URL_PREFIX = 'https://eldercatts.com';
+const URL_PREFIX = 'https://elderkatts.com';
 
 export async function getSwapAuthoritySignature(tx: Transaction): Promise<Buffer | undefined> {
 
