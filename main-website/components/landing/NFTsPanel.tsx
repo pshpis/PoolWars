@@ -67,7 +67,7 @@ export const NFTSPanel = ({NFTsStats, setChooseArr}) => {
         let newNFTs = [...NFTs];
         NFTsStats.forEach((item) => {
             let tempNft = newNFTs.find(tempItem => tempItem.props.src === item.src);
-            if (tempNft)
+            if (tempNft != undefined)
                 tempNft.props.maxValue = item.maxValue;
             if (item.maxValue !== 0 && !tempNft)
                 newNFTs.push(<NFT src={item.src} setChooseArr={setChooseArr} maxValue={item.maxValue}/>);
