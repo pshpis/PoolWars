@@ -8,7 +8,7 @@ import {
     VStack
 } from "@chakra-ui/react";
 import {ElderKattsBox} from "../Layout/ElderKattsBox";
-import React, {useEffect, useMemo, useRef, useState} from "react";
+import React, {MouseEvent, useEffect, useMemo, useRef, useState} from "react";
 import {ChooseState, useKattsCardsChoose} from "../../../hooks/useKattsCardsChoose";
 import styles from "../../../styles/swaps.module.scss";
 import {NFTSPanel} from "../NFTsPanel";
@@ -33,7 +33,7 @@ const MainText = () => {
     </Box>
 }
 
-const WillTakePointsPanel = ({pointsPanelsHeight, swapState} : {pointsPanelsHeight: number, swapState: SwapState}) => {
+const WillTakePointsPanel = ({pointsPanelsHeight, swapState, onClick} : {pointsPanelsHeight: number, swapState: SwapState, onClick: React.MouseEventHandler<HTMLDivElement>}) => {
     const [activePanel, setActivePanel] = useState()
     return <ElderKattsBox mt="24px" pb="32px" width="294px"  height={pointsPanelsHeight+"px"}>
 
@@ -51,7 +51,7 @@ const WillTakePointsPanel = ({pointsPanelsHeight, swapState} : {pointsPanelsHeig
             })}
         </HStack>
 
-        <Box ml="24px" mr="24px" maxWidth="246px" height="48px" backgroundColor="#B8C3E6" borderRadius="24px" textAlign="center"
+        <Box onClick={onClick} ml="24px" mr="24px" maxWidth="246px" height="48px" backgroundColor="#B8C3E6" borderRadius="24px" textAlign="center"
              fontWeight="600" fontSize="24px" lineHeight="48px" color="#202020"
              transition="0.3s ease" _hover={{boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);"}}>
             SWAP
@@ -89,7 +89,7 @@ const NeedPointsPanel = ({needPointsPerOne}) => {
     </ElderKattsBox>
 }
 
-const PointsPanels = ({chooseState, swapState}: { chooseState: ChooseState, swapState: SwapState}) => {
+const PointsPanels = ({chooseState, swapState, onClick}: { chooseState: ChooseState, swapState: SwapState, onClick: React.MouseEventHandler<HTMLDivElement>}) => {
     const size = useWindowSize();
 
     const pointsPanelsRef = useRef(null);
@@ -104,9 +104,9 @@ const PointsPanels = ({chooseState, swapState}: { chooseState: ChooseState, swap
                 <SelectedPointsPanel sumPoints={chooseState.sumPoints}/>
                 <NeedPointsPanel needPointsPerOne={swapState.currentMod.needPoints}/>
             </VStack>
-            {size.width >= 640 ? <WillTakePointsPanel pointsPanelsHeight={pointsPanelsHeight} swapState={swapState}/> : ""}
+            {size.width >= 640 ? <WillTakePointsPanel onClick={onClick} pointsPanelsHeight={pointsPanelsHeight} swapState={swapState}/> : ""}
         </HStack>
-        {size.width < 640 ? <WillTakePointsPanel pointsPanelsHeight={pointsPanelsHeight} swapState={swapState}/> : ""}
+        {size.width < 640 ? <WillTakePointsPanel onClick={onClick} pointsPanelsHeight={pointsPanelsHeight} swapState={swapState}/> : ""}
     </Box>
 }
 
@@ -142,6 +142,9 @@ export const Swaps = () => {
     const swapState = useKattsCardsSwaps();
 
     const [NFTsStats, setStats] = useState<NFTStatWithMints[]>([]);
+    const [version, setVersion] = useState<number>(0);
+
+    const versionInc = () => setVersion(v => v + 1);
 
     useEffect(() => {
 
@@ -153,7 +156,13 @@ export const Swaps = () => {
 
         load()
     },
-    [wallet.publicKey]);
+    [wallet.publicKey, version]);
+
+    async function swapClick(e: MouseEvent<HTMLDivElement>) {
+        console.log('Emulate swap')
+        await new Promise(resolve => setTimeout(resolve, 2500));
+        versionInc();
+    }
 
     return <Layout>
         {!connected ?
@@ -165,11 +174,11 @@ export const Swaps = () => {
                 {size.width < 1040 ?
                     <VStack maxW="1248px" w="100%" margin="0 auto" spacing="30px">
                         <MainText/>
-                        <PointsPanels chooseState={chooseState} swapState={swapState}/>
+                        <PointsPanels onClick={e => swapClick(e)} chooseState={chooseState} swapState={swapState}/>
                     </VStack>
                     : <HStack maxW="1248px" w="100%" margin="0 auto" spacing="auto">
                         <MainText/>
-                        <PointsPanels chooseState={chooseState} swapState={swapState}/>
+                        <PointsPanels onClick={e => swapClick(e)} chooseState={chooseState} swapState={swapState}/>
                     </HStack>}
 
                 <Divider maxW="1440px" margin="76px auto" borderColor="#E8E8E826" border="0.5px"/>
