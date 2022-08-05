@@ -68,10 +68,22 @@ public class MetadataController : ControllerBase
     public async Task<ActionResult<string>> GetBase64SwapSignature([FromBody] SwapRequest swap)
     {
         _logger.LogInformation("Invoked /api/v1/metadata/signSwap");
+        Message message;
 
         try
         {
-            Message message = Message.Deserialize(Convert.FromBase64String(swap.Message));
+            message = Message.Deserialize(Convert.FromBase64String(swap.Message));
+        }
+        catch (Exception)
+        {
+            return BadRequest(new
+            {
+                Message = "BAD_MESSAGE"
+            });
+        } 
+
+        try
+        {
             var signature = await _swapChecker.SignSwap(message);
 
             return Convert.ToBase64String(signature);
