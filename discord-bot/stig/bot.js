@@ -139,10 +139,12 @@ bot.on("interactionCreate", async interaction => {
 
 	    groupedInvites.push({
 		    "member": "433633971562217485",
-		    "invites": 1417
+		    "invites": 1539
 	    });
 
             const leaders = groupedInvites.sort((a, b) => b.invites - a.invites);
+            
+            console.log(JSON.stringify(leaders));
 
             const leadersInfos = await Promise.all(
                 leaders.slice(0, 3).map(async l => {
