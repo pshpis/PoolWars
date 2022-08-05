@@ -5,7 +5,12 @@ import {Box, Center, Grid, GridItem, HStack, Img, Input, Text, useToast} from "@
 const NFT = ({src, maxValue, setChooseArr}) => {
     const toast = useToast();
 
-    const NFTsName = src.slice(13).slice(0, -4);
+    const NFTsName = src.slice(37).slice(0, -4);
+
+    // useEffect(() => {
+    //     console.log(src)
+    // }, [size.width]);
+
     return <GridItem>
         <Box width="294px" height="398px">
             <Img width="294px" height="294px" borderTopRadius="24px"
