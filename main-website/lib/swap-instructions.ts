@@ -17,7 +17,7 @@ const POINTS6_SWAP_CONFIG = new PublicKey('CpJKdL8Ygzk2azLHsR3PdSrMwHjCR3sBhhk24
 
 const SWAP_ADMIN = new PublicKey('2XRgdUEKfvhtVTURZKzJ9UzwA7FeEPeF8qa2NFSSBpmL')
 const SWAP_REVENUES = new PublicKey('Ekp5qHiSnH7WGH9bqbHXm3FDqc9BxMsimfpAw7LoQzZk')
-const SWAP_AUTHORITY = new PublicKey('44Z46Nzn1hpsAZJ4TuX1CUG6kmKo7NEn2VDjztT5uUz3')
+export const SWAP_AUTHORITY = new PublicKey('44Z46Nzn1hpsAZJ4TuX1CUG6kmKo7NEn2VDjztT5uUz3')
 
 const getConfig = (swap: swapType): PublicKey => {
 

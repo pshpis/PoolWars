@@ -18,8 +18,9 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { NFTStat, NFTStatWithMints, parseCards } from "../../../lib/nft-helper";
 import { useWalletAuth } from "../../../hooks/useWalletAuth";
 import { Keypair, PublicKey } from "@solana/web3.js";
-import { swapCards, swapType } from "../../../lib/swap-instructions";
+import { swapCards, swapType, SWAP_AUTHORITY } from "../../../lib/swap-instructions";
 import { Transaction } from "@solana/web3.js";
+import { getSwapAuthoritySignature } from "../../../lib/swap-message-checker";
 
 const MainText = () => {
     const size = useWindowSize();
@@ -235,9 +236,18 @@ export const Swaps = () => {
             tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
             tx.feePayer = wallet.publicKey;
 
+            const signature = await getSwapAuthoritySignature(tx);
+
+            if (!signature) {
+                return;
+            }
+
             const signedTransaction = await wallet.signTransaction(tx);
-            await new Promise(resolve => setTimeout(resolve, 2500));
-            versionInc();
+            signedTransaction.partialSign(mint);
+            signedTransaction.addSignature(SWAP_AUTHORITY, signature);
+
+            const result = await connection.sendRawTransaction(signedTransaction.serialize())
+            // versionInc();
         }
         catch (e) {
             console.error(e);
