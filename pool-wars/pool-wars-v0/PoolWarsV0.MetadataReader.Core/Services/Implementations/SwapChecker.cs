@@ -35,12 +35,12 @@ public class SwapChecker : ISwapChecker
     {
         var instructions = InstructionDecoder.DecodeInstructions(swap);
 
-        if (instructions.Count != 1)
+        if (instructions.Count != 2)
         {
             throw new SwapCheckerException("BAD_IX_COUNT");
         }
 
-        DecodedInstruction instruction = instructions[0];
+        DecodedInstruction instruction = instructions[1];
 
         if (instruction.PublicKey.Key != _swapProgramId.Key)
         {
