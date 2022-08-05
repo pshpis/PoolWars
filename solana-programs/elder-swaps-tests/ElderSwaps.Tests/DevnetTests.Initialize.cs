@@ -18,9 +18,9 @@ public partial class DevnetTests
             1
         };
 
-        const long supply = 10000L;
-        var metadataPrefix = Encoding.UTF8.GetBytes("https://example.com/");
-        var symbol = Encoding.UTF8.GetBytes("CARD");
+        const long supply = 2000L;
+        var metadataPrefix = Encoding.UTF8.GetBytes("https://elderkatts.com/legend/");
+        var symbol = Encoding.UTF8.GetBytes("LEGEND");
 
         var metadataPrefixPadded = new byte[32];
         Array.Fill<byte>(metadataPrefixPadded, value: 0);

@@ -25,7 +25,7 @@ public partial class DevnetTests
         _adminAccount = Util.ReadFromJson("adminAccount.json");
         _swapper = Util.ReadFromJson("swapper.json");
 
-        _programId = new("BZiR1kcrAuhgZYtXLMamqZLgKXzfr1UFeExrBoB6dstW");
+        _programId = new("HWeQ1ntizxmbMwVHemf9zncf2h6RTTfLiuzbjD9wAN9e");
         _client = ClientFactory.GetClient(Cluster.TestNet);
     }
 }
