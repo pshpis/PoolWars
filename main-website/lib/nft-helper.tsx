@@ -127,11 +127,16 @@ async function parseMints(address: PublicKey | null, connection: Connection): Pr
 async function processMint(mint: PublicKey, amounts: NFTAmountsWithMints, connection: Connection): Promise<NFTAmountsWithMints> {
 
     try {
-        const metadata = await Metadata.fromAccountAddress(connection, mint);
+        console.log('fetch metadata')
+        const address = await deriveMetaplexMetadata(mint);
+        const metadata = await Metadata.fromAccountAddress(connection, address);
 
+        console.log('check metadata')
         if (!metadata.data.creators[0].verified) {
             return amounts;
         }
+
+        console.log('checked metadata')
 
         if (!allowedCreators.some(c => c.toBase58() === metadata.data.creators[0].address.toBase58())) {
             return amounts;
@@ -204,6 +209,7 @@ async function processMint(mint: PublicKey, amounts: NFTAmountsWithMints, connec
         return amounts;
     }
     catch (e) {
+        console.error(e)
         return amounts;
     }
 }
@@ -238,6 +244,7 @@ export async function parseCards(address: PublicKey | null, connection: Connecti
     }
 
     const mints = await parseMints(address, connection);
+    console.log(mints)
 
     for (let i = 0; i < mints.length; i++) {
         amounts = await processMint(mints[i], amounts, connection);
