@@ -10,6 +10,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0"/>
         <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0"/>
         <PackageReference Include="Microsoft.AspNetCore.Routing.Abstractions" Version="2.2.0"/>
+        <PackageReference Include="Solnet.Programs" Version="6.1.0"/>
         <PackageReference Include="Solnet.Rpc" Version="6.1.0"/>
     </ItemGroup>
 
