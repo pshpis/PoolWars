@@ -2,7 +2,7 @@ import {useWindowSize} from "../../../hooks/useWindowSize";
 import Layout from "../Layout/Layout";
 import {
     Box,
-    Divider,
+    Divider, Flex,
     HStack,
     Text,
     VStack
@@ -16,6 +16,7 @@ import {SwapState, useKattsCardsSwaps} from "../../../hooks/useKattsCardsSwaps";
 import clsx from "clsx";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { NFTStat, NFTStatWithMints, parseCards } from "../../../lib/nft-helper";
+import {useWalletAuth} from "../../../hooks/useWalletAuth";
 
 const MainText = () => {
     const size = useWindowSize();
@@ -129,6 +130,8 @@ export const Swaps = () => {
     const size = useWindowSize();
     const wallet = useWallet();
     const {connection} = useConnection();
+    const walletAuthObj = useWalletAuth();
+    const {connected} = walletAuthObj;
 
     const defaultPadding = useMemo(() => {
         if (size.width < 486) return 30;
@@ -153,20 +156,27 @@ export const Swaps = () => {
     [wallet.publicKey]);
 
     return <Layout>
-        <Box pt="80px" mb="160px" paddingLeft={defaultPadding+"px"} paddingRight={defaultPadding+"px"}>
-            {size.width < 1040 ?
-                <VStack maxW="1248px" w="100%" margin="0 auto" spacing="30px">
-                    <MainText/>
-                    <PointsPanels chooseState={chooseState} swapState={swapState}/>
-                </VStack>
-                : <HStack maxW="1248px" w="100%" margin="0 auto" spacing="auto">
-                    <MainText/>
-                    <PointsPanels chooseState={chooseState} swapState={swapState}/>
-                </HStack>}
+        {!connected ?
 
-            <Divider maxW="1440px" margin="76px auto" borderColor="#E8E8E826" border="0.5px"/>
-            <TitleText/>
-            <NFTSPanel NFTsStats={NFTsStats} setChooseArr={chooseState.setChooseArr}/>
-        </Box>
+            <Flex h={size.height - 64 + "px"} w={size.width} alignItems="center" justifyContent="center">Connect wallet
+                to see your profile page.</Flex>
+            :
+            <Box pt="80px" mb="160px" paddingLeft={defaultPadding+"px"} paddingRight={defaultPadding+"px"}>
+                {size.width < 1040 ?
+                    <VStack maxW="1248px" w="100%" margin="0 auto" spacing="30px">
+                        <MainText/>
+                        <PointsPanels chooseState={chooseState} swapState={swapState}/>
+                    </VStack>
+                    : <HStack maxW="1248px" w="100%" margin="0 auto" spacing="auto">
+                        <MainText/>
+                        <PointsPanels chooseState={chooseState} swapState={swapState}/>
+                    </HStack>}
+
+                <Divider maxW="1440px" margin="76px auto" borderColor="#E8E8E826" border="0.5px"/>
+                <TitleText/>
+                <NFTSPanel NFTsStats={NFTsStats} setChooseArr={chooseState.setChooseArr}/>
+            </Box>
+        }
+
     </Layout>
 }
