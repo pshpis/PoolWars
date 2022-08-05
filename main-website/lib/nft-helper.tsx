@@ -43,7 +43,9 @@ export type NFTStatWithMints = NFTStat & {
 }
 
 const allowedCreators = [
-    new PublicKey('HQqpHR1DE7o8qorjDanWFedxi5bH9rmyQksfLKYkZfZq')
+    new PublicKey('HQqpHR1DE7o8qorjDanWFedxi5bH9rmyQksfLKYkZfZq'),
+    new PublicKey('EfD2CimtxrQGXVouhvcwPjjkga11yWE9xx6aCBCUzGxq'),
+    new PublicKey('ARqf5GxW2C5xijHnt2KWh9BUnqSNto5F9QHuS3MhDtYB')
 ]
 
 const METADATA_PROGRAM_ID = new PublicKey('metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s');
@@ -192,7 +194,7 @@ async function processMint(mint: PublicKey, amounts: NFTAmountsWithMints, connec
 
                 } else if (strength === '3') {
                     amounts.intelligence3 += 1;
-                    amounts.intelligence1mints.push(mint);
+                    amounts.intelligence3mints.push(mint);
 
                 } else if (strength === '6') {
                     amounts.intelligence6 += 1;

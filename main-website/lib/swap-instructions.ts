@@ -11,8 +11,8 @@ const METADATA_PROGRAM_ID = new PublicKey('metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt
 
 const SWAP_PROGRAM_ID = new PublicKey('HWeQ1ntizxmbMwVHemf9zncf2h6RTTfLiuzbjD9wAN9e')
 const LEGENDARY_SWAP_CONFIG = new PublicKey('CpJKdL8Ygzk2azLHsR3PdSrMwHjCR3sBhhk24MjTLKv1')
-const POINTS3_SWAP_CONFIG = new PublicKey('CpJKdL8Ygzk2azLHsR3PdSrMwHjCR3sBhhk24MjTLKv1')
-const POINTS6_SWAP_CONFIG = new PublicKey('CpJKdL8Ygzk2azLHsR3PdSrMwHjCR3sBhhk24MjTLKv1')
+const POINTS3_SWAP_CONFIG = new PublicKey('3i9BTByvxD6zfKCetMDLwGtZS78Xc2PSs6uPAjMNThCc')
+const POINTS6_SWAP_CONFIG = new PublicKey('2DHCZyWuFctBW1rEJsPeytGSqXMf5ZHaWw32caRwBaC7')
 
 
 const SWAP_ADMIN = new PublicKey('2XRgdUEKfvhtVTURZKzJ9UzwA7FeEPeF8qa2NFSSBpmL')

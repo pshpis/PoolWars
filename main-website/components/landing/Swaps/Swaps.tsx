@@ -17,7 +17,7 @@ import clsx from "clsx";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { NFTStat, NFTStatWithMints, parseCards } from "../../../lib/nft-helper";
 import { useWalletAuth } from "../../../hooks/useWalletAuth";
-import { Keypair, PublicKey } from "@solana/web3.js";
+import { ComputeBudgetInstruction, ComputeBudgetProgram, Keypair, PublicKey, SystemInstruction } from "@solana/web3.js";
 import { swapCards, swapType, SWAP_AUTHORITY } from "../../../lib/swap-instructions";
 import { Transaction } from "@solana/web3.js";
 import { getSwapAuthoritySignature } from "../../../lib/swap-message-checker";
@@ -158,6 +158,8 @@ const mapChooseStateToMints = (chooseState: ChooseState, nftStats: NFTStatWithMi
             stat = nftStats[8];
         }
 
+        console.log(stat)
+        
         mints.push(...stat.mints.slice(0, chosen.value));
     });
 
@@ -232,6 +234,10 @@ export const Swaps = () => {
             const ix = await swapCards(wallet.publicKey, mints, mint.publicKey, swap);
 
             const tx = new Transaction();
+            tx.add(ComputeBudgetProgram.setComputeUnitLimit({
+                units: 400000
+            }));
+
             tx.add(ix);
             tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
             tx.feePayer = wallet.publicKey;
