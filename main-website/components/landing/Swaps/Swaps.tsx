@@ -1,4 +1,4 @@
-import {useWindowSize} from "../../../hooks/useWindowSize";
+import { useWindowSize } from "../../../hooks/useWindowSize";
 import Layout from "../Layout/Layout";
 import {
     Box,
@@ -7,16 +7,19 @@ import {
     Text,
     VStack
 } from "@chakra-ui/react";
-import {ElderKattsBox} from "../Layout/ElderKattsBox";
-import React, {MouseEvent, useEffect, useMemo, useRef, useState} from "react";
-import {ChooseState, useKattsCardsChoose} from "../../../hooks/useKattsCardsChoose";
+import { ElderKattsBox } from "../Layout/ElderKattsBox";
+import React, { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
+import { ChooseState, useKattsCardsChoose } from "../../../hooks/useKattsCardsChoose";
 import styles from "../../../styles/swaps.module.scss";
-import {NFTSPanel} from "../NFTsPanel";
-import {SwapState, useKattsCardsSwaps} from "../../../hooks/useKattsCardsSwaps";
+import { NFTSPanel } from "../NFTsPanel";
+import { SwapState, useKattsCardsSwaps } from "../../../hooks/useKattsCardsSwaps";
 import clsx from "clsx";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { NFTStat, NFTStatWithMints, parseCards } from "../../../lib/nft-helper";
-import {useWalletAuth} from "../../../hooks/useWalletAuth";
+import { useWalletAuth } from "../../../hooks/useWalletAuth";
+import { Keypair, PublicKey } from "@solana/web3.js";
+import { swapCards, swapType } from "../../../lib/swap-instructions";
+import { Transaction } from "@solana/web3.js";
 
 const MainText = () => {
     const size = useWindowSize();
@@ -33,63 +36,63 @@ const MainText = () => {
     </Box>
 }
 
-const WillTakePointsPanel = ({pointsPanelsHeight, swapState, onClick} : {pointsPanelsHeight: number, swapState: SwapState, onClick: React.MouseEventHandler<HTMLDivElement>}) => {
+const WillTakePointsPanel = ({ pointsPanelsHeight, swapState, onClick }: { pointsPanelsHeight: number, swapState: SwapState, onClick: React.MouseEventHandler<HTMLDivElement> }) => {
     const [activePanel, setActivePanel] = useState()
-    return <ElderKattsBox mt="24px" pb="32px" width="294px"  height={pointsPanelsHeight+"px"}>
+    return <ElderKattsBox mt="24px" pb="32px" width="294px" height={pointsPanelsHeight + "px"}>
 
         <Text pt="24px" pb="28px"
-              fontWeight="600" fontSize="24px" lineHeight="28px" color="#E8E3DD" textAlign="center">
+            fontWeight="600" fontSize="24px" lineHeight="28px" color="#E8E3DD" textAlign="center">
             You&apos;ll take card with:
         </Text>
         <HStack ml="24px" mr="24px" mb="32px" height="88xp" spacing="15px"
-                fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="88px" color="#71CFC3">
+            fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="88px" color="#71CFC3">
             {swapState.swapMods.map((mod, id) => {
                 return <Box key={id} className={clsx(styles.willTakeCardButton,
-                    id == swapState.currentModId ? styles.willTakeCardButton_clicked: null)} onClick={() => {
-                    swapState.setCurrentModId(id)
-                }}>{mod.getPoints}</Box>
+                    id == swapState.currentModId ? styles.willTakeCardButton_clicked : null)} onClick={() => {
+                        swapState.setCurrentModId(id)
+                    }}>{mod.getPoints}</Box>
             })}
         </HStack>
 
         <Box onClick={onClick} ml="24px" mr="24px" maxWidth="246px" height="48px" backgroundColor="#B8C3E6" borderRadius="24px" textAlign="center"
-             fontWeight="600" fontSize="24px" lineHeight="48px" color="#202020"
-             transition="0.3s ease" _hover={{boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);"}}>
+            fontWeight="600" fontSize="24px" lineHeight="48px" color="#202020"
+            transition="0.3s ease" _hover={{ boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);" }}>
             SWAP
         </Box>
     </ElderKattsBox>
 }
 
-const SelectedPointsPanel = ({sumPoints}) => {
+const SelectedPointsPanel = ({ sumPoints }) => {
     return <ElderKattsBox width="294px" mb="24px">
         <HStack>
             <Text pt="24px" pl="32px" pb="48px" pr="82px"
-                  fontWeight="600" fontSize="24px" lineHeight="28px" color="#E8E3DD">
-                Selected<br/> points:
+                fontWeight="600" fontSize="24px" lineHeight="28px" color="#E8E3DD">
+                Selected<br /> points:
             </Text>
             <Text pt="32px" pr="16px" pb="4px" mr="auto" textAlign="right"
-                  fontFamily="Njord Alternate" fontWeight="400" fontSize="80px" lineHeight="92px" color="#71CFC3">
+                fontFamily="Njord Alternate" fontWeight="400" fontSize="80px" lineHeight="92px" color="#71CFC3">
                 {sumPoints}
             </Text>
         </HStack>
     </ElderKattsBox>
 }
 
-const NeedPointsPanel = ({needPointsPerOne}) => {
+const NeedPointsPanel = ({ needPointsPerOne }) => {
     return <ElderKattsBox width="294px">
         <HStack>
             <Text pt="24px" pl="32px" pb="48px" pr="37px"
-                  fontWeight="600" fontSize="24px" lineHeight="28px" color="#E8E3DD">
-                Need points<br/>per one:
+                fontWeight="600" fontSize="24px" lineHeight="28px" color="#E8E3DD">
+                Need points<br />per one:
             </Text>
             <Text pt="32px" pr="16px" pb="4px" mr="auto" textAlign="right"
-                  fontFamily="Njord Alternate" fontWeight="400" fontSize="80px" lineHeight="92px" color="#71CFC3">
+                fontFamily="Njord Alternate" fontWeight="400" fontSize="80px" lineHeight="92px" color="#71CFC3">
                 {needPointsPerOne ? needPointsPerOne : "o"}
             </Text>
         </HStack>
     </ElderKattsBox>
 }
 
-const PointsPanels = ({chooseState, swapState, onClick}: { chooseState: ChooseState, swapState: SwapState, onClick: React.MouseEventHandler<HTMLDivElement>}) => {
+const PointsPanels = ({ chooseState, swapState, onClick }: { chooseState: ChooseState, swapState: SwapState, onClick: React.MouseEventHandler<HTMLDivElement> }) => {
     const size = useWindowSize();
 
     const pointsPanelsRef = useRef(null);
@@ -101,12 +104,12 @@ const PointsPanels = ({chooseState, swapState, onClick}: { chooseState: ChooseSt
     return <Box>
         <HStack>
             <VStack ref={pointsPanelsRef} mr={size.width < 640 ? "" : "24px"}>
-                <SelectedPointsPanel sumPoints={chooseState.sumPoints}/>
-                <NeedPointsPanel needPointsPerOne={swapState.currentMod.needPoints}/>
+                <SelectedPointsPanel sumPoints={chooseState.sumPoints} />
+                <NeedPointsPanel needPointsPerOne={swapState.currentMod.needPoints} />
             </VStack>
-            {size.width >= 640 ? <WillTakePointsPanel onClick={onClick} pointsPanelsHeight={pointsPanelsHeight} swapState={swapState}/> : ""}
+            {size.width >= 640 ? <WillTakePointsPanel onClick={onClick} pointsPanelsHeight={pointsPanelsHeight} swapState={swapState} /> : ""}
         </HStack>
-        {size.width < 640 ? <WillTakePointsPanel onClick={onClick} pointsPanelsHeight={pointsPanelsHeight} swapState={swapState}/> : ""}
+        {size.width < 640 ? <WillTakePointsPanel onClick={onClick} pointsPanelsHeight={pointsPanelsHeight} swapState={swapState} /> : ""}
     </Box>
 }
 
@@ -118,20 +121,54 @@ const TitleText = () => {
         return 64;
     }, [size.width]);
 
-    return <HStack mt="80px" fontWeight="400" fontSize={defaultTitleSize+"px"} lineHeight="74px" spacing={0}
-                   w="100%" maxW="1248px" margin="0 auto">
+    return <HStack mt="80px" fontWeight="400" fontSize={defaultTitleSize + "px"} lineHeight="74px" spacing={0}
+        w="100%" maxW="1248px" margin="0 auto">
         <Text fontFamily="Njord">CH</Text>
         <Text fontFamily="Njord Alternate">OO</Text>
         <Text fontFamily="Njord">SE NFTS</Text>
     </HStack>
 }
 
+const mapChooseStateToMints = (chooseState: ChooseState, nftStats: NFTStatWithMints[]): PublicKey[] => {
+
+    const mints: PublicKey[] = []
+
+    chooseState.chooseArr.forEach(chosen => {
+
+        let stat: NFTStatWithMints | undefined = undefined;
+
+        if (chosen.id === 'attack_1') {
+            stat = nftStats[0];
+        } else if (chosen.id === 'defence_1') {
+            stat = nftStats[1];
+        } else if (chosen.id === 'intelligence_1') {
+            stat = nftStats[2];
+        } else if (chosen.id === 'attack_3') {
+            stat = nftStats[3];
+        } else if (chosen.id === 'defence_3') {
+            stat = nftStats[4];
+        } else if (chosen.id === 'intelligence_3') {
+            stat = nftStats[5];
+        } else if (chosen.id === 'attack_6') {
+            stat = nftStats[6];
+        } else if (chosen.id === 'defence_6') {
+            stat = nftStats[7];
+        } else if (chosen.id === 'intelligence_6') {
+            stat = nftStats[8];
+        }
+
+        mints.push(...stat.mints.slice(0, chosen.value));
+    });
+
+    return mints;
+}
+
 export const Swaps = () => {
     const size = useWindowSize();
     const wallet = useWallet();
-    const {connection} = useConnection();
+    const { connection } = useConnection();
     const walletAuthObj = useWalletAuth();
-    const {connected} = walletAuthObj;
+    const { connected } = walletAuthObj;
 
     const defaultPadding = useMemo(() => {
         if (size.width < 486) return 30;
@@ -156,12 +193,55 @@ export const Swaps = () => {
 
         load()
     },
-    [wallet.publicKey, version]);
+        [wallet.publicKey, version]);
 
     async function swapClick(e: MouseEvent<HTMLDivElement>) {
-        console.log('Emulate swap')
-        await new Promise(resolve => setTimeout(resolve, 2500));
-        versionInc();
+
+        const mints = mapChooseStateToMints(chooseState, NFTsStats);
+        let swap: swapType | undefined = undefined;
+
+        if (swapState.currentMod.type === 'rare') {
+
+            if (chooseState.sumPoints < 3 || chooseState.sumPoints >= 6) {
+                return;
+            }
+
+            swap = '3'
+
+        } else if (swapState.currentMod.type === 'epic') {
+
+            if (chooseState.sumPoints < 6 || chooseState.sumPoints >= 9) {
+                return;
+            }
+
+            swap = '6'
+        } else if (swapState.currentMod.type === 'legendary') {
+
+
+            if (chooseState.sumPoints < 9 || chooseState.sumPoints >= 15) {
+                return;
+            }
+
+            swap = '9'
+        }
+
+        const mint = new Keypair();
+
+        try {
+            const ix = await swapCards(wallet.publicKey, mints, mint.publicKey, swap);
+
+            const tx = new Transaction();
+            tx.add(ix);
+            tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+            tx.feePayer = wallet.publicKey;
+
+            const signedTransaction = await wallet.signTransaction(tx);
+            await new Promise(resolve => setTimeout(resolve, 2500));
+            versionInc();
+        }
+        catch (e) {
+            console.error(e);
+        }
     }
 
     return <Layout>
@@ -170,20 +250,20 @@ export const Swaps = () => {
             <Flex h={size.height - 64 + "px"} w={size.width} alignItems="center" justifyContent="center">Connect wallet
                 to see your profile page.</Flex>
             :
-            <Box pt="80px" mb="160px" paddingLeft={defaultPadding+"px"} paddingRight={defaultPadding+"px"}>
+            <Box pt="80px" mb="160px" paddingLeft={defaultPadding + "px"} paddingRight={defaultPadding + "px"}>
                 {size.width < 1040 ?
                     <VStack maxW="1248px" w="100%" margin="0 auto" spacing="30px">
-                        <MainText/>
-                        <PointsPanels onClick={e => swapClick(e)} chooseState={chooseState} swapState={swapState}/>
+                        <MainText />
+                        <PointsPanels onClick={e => swapClick(e)} chooseState={chooseState} swapState={swapState} />
                     </VStack>
                     : <HStack maxW="1248px" w="100%" margin="0 auto" spacing="auto">
-                        <MainText/>
-                        <PointsPanels onClick={e => swapClick(e)} chooseState={chooseState} swapState={swapState}/>
+                        <MainText />
+                        <PointsPanels onClick={e => swapClick(e)} chooseState={chooseState} swapState={swapState} />
                     </HStack>}
 
-                <Divider maxW="1440px" margin="76px auto" borderColor="#E8E8E826" border="0.5px"/>
-                <TitleText/>
-                <NFTSPanel NFTsStats={NFTsStats} setChooseArr={chooseState.setChooseArr}/>
+                <Divider maxW="1440px" margin="76px auto" borderColor="#E8E8E826" border="0.5px" />
+                <TitleText />
+                <NFTSPanel NFTsStats={NFTsStats} setChooseArr={chooseState.setChooseArr} />
             </Box>
         }
 
