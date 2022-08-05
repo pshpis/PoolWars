@@ -66,29 +66,9 @@ export function amountsToArray(amounts: NFTAmountsWithMints): NFTStatWithMints[]
             mints: amounts.attack1mints
         },
         {
-            maxValue: amounts.attack3,
-            src: 'https://elderkatts.com/json-metadata/attack_3.png',
-            mints: amounts.attack3mints
-        },
-        {
-            maxValue: amounts.attack6,
-            src: 'https://elderkatts.com/json-metadata/attack_6.png',
-            mints: amounts.attack6mints
-        },
-        {
             maxValue: amounts.defence1,
             src: 'https://elderkatts.com/json-metadata/defence_1.png',
             mints: amounts.defence1mints
-        },
-        {
-            maxValue: amounts.defence3,
-            src: 'https://elderkatts.com/json-metadata/defence_3.png',
-            mints: amounts.defence3mints
-        },
-        {
-            maxValue: amounts.defence6,
-            src: 'https://elderkatts.com/json-metadata/defence_6.png',
-            mints: amounts.defence6mints
         },
         {
             maxValue: amounts.intelligence1,
@@ -96,9 +76,29 @@ export function amountsToArray(amounts: NFTAmountsWithMints): NFTStatWithMints[]
             mints: amounts.intelligence1mints
         },
         {
+            maxValue: amounts.attack3,
+            src: 'https://elderkatts.com/json-metadata/attack_3.png',
+            mints: amounts.attack3mints
+        },
+        {
+            maxValue: amounts.defence3,
+            src: 'https://elderkatts.com/json-metadata/defence_3.png',
+            mints: amounts.defence3mints
+        },
+        {
             maxValue: amounts.intelligence3,
             src: 'https://elderkatts.com/json-metadata/intelligence_3.png',
             mints: amounts.intelligence3mints
+        },
+        {
+            maxValue: amounts.attack6,
+            src: 'https://elderkatts.com/json-metadata/attack_6.png',
+            mints: amounts.attack6mints
+        },
+        {
+            maxValue: amounts.defence6,
+            src: 'https://elderkatts.com/json-metadata/defence_6.png',
+            mints: amounts.defence6mints
         },
         {
             maxValue: amounts.intelligence6,
