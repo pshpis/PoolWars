@@ -4,12 +4,7 @@ import {Box, Center, Grid, GridItem, HStack, Img, Input, Text, useToast} from "@
 
 const NFT = ({src, maxValue, setChooseArr}) => {
     const toast = useToast();
-
     const NFTsName = src.slice(37).slice(0, -4);
-
-    // useEffect(() => {
-    //     console.log(src)
-    // }, [size.width]);
 
     return <GridItem>
         <Box width="294px" height="398px">
@@ -64,12 +59,14 @@ export const NFTSPanel = ({NFTsStats, setChooseArr}) => {
 
     const [NFTs, setNFTs] = useState([]);
     useEffect(() => {
-        let newNFTs = [...NFTs];
+        let newNFTs = [];
+        // console.log(newNFTs.map(item => item.props.src))
+
         NFTsStats.forEach((item) => {
-            let tempNft = newNFTs.find(tempItem => tempItem.props.src === item.src);
-            if (tempNft != undefined)
-                tempNft.props.maxValue = item.maxValue;
-            if (item.maxValue !== 0 && !tempNft)
+            // let tempNft = newNFTs.find(tempItem => tempItem.props.src === item.src);
+            // if (tempNft !== undefined)
+            //     tempNft.props.maxValue = 10;
+            if (item.maxValue !== 0)
                 newNFTs.push(<NFT src={item.src} setChooseArr={setChooseArr} maxValue={item.maxValue}/>);
         })
         newNFTs.filter(item => item.maxValue !== 0);
