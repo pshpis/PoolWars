@@ -101,6 +101,10 @@ const snapshot = [
     {
         "member": "836178480244588584",
         "invites": 17
+    },
+    {
+	"member": "981522172289900554",
+	"invites": -2
     }
 ]
 
@@ -133,6 +137,11 @@ bot.on("interactionCreate", async interaction => {
                 return group;
             }, []);
 
+	    groupedInvites.push({
+		    "member": "433633971562217485",
+		    "invites": 502
+	    });
+
             const leaders = groupedInvites.sort((a, b) => b.invites - a.invites);
 
             const leadersInfos = await Promise.all(
@@ -144,16 +153,15 @@ bot.on("interactionCreate", async interaction => {
                 })
             );
 
-            const uses = invites
-                .filter(i => i.inviter.id === interaction.member.id)
-                .reduce((sum, i) => sum += i.uses, 0) -
-                (snapshot.find(s => s.member === interaction.member.id)?.invites ?? 0);
+            const uses = groupedInvites.find(i => i.member === interaction.member.id)?.invites ?? 0;
 
             await interaction.reply({
                 content: `${uses} people invited\n\n**LEADERS**\n` +
                     `1. <@${leadersInfos[0].member.id}> - ${leadersInfos[0].invites}\n` +
                     `2. <@${leadersInfos[1].member.id}> - ${leadersInfos[1].invites}\n` +
-                    `3. <@${leadersInfos[2].member.id}> - ${leadersInfos[2].invites}`,
+		    `3. <@${leadersInfos[2].member.id}> - ${leadersInfos[2].invites}\n`,
+		   // `4. <@${leadersInfos[3].member.id}> - ${leadersInfos[3].invites}\n` +
+		   // `5. <@${leadersInfos[4].member.id}> - ${leadersInfos[4].invites}\n`,
                 ephemeral: true
             })
 
@@ -161,10 +169,12 @@ bot.on("interactionCreate", async interaction => {
 
             await logChannel.send({
                 content: `${uses} people invited by <@${interaction.member.id}>\n\n**LEADERS**\n` +
-                    `1. <@${leadersInfos[0].member.id}> - ${leadersInfos[0].invites}\n` +
+		    `1. <@${leadersInfos[0].member.id}> - ${leadersInfos[0].invites}\n` +
                     `2. <@${leadersInfos[1].member.id}> - ${leadersInfos[1].invites}\n` +
-                    `3. <@${leadersInfos[2].member.id}> - ${leadersInfos[2].invites}`
-            })
+		    `3. <@${leadersInfos[2].member.id}> - ${leadersInfos[2].invites}\n`
+		    // `4. <@${leadersInfos[3].member.id}> - ${leadersInfos[3].invites}\n` +
+                    // `5. <@${leadersInfos[4].member.id}> - ${leadersInfos[4].invites}\n`
+	    })
         }
     }
 });
