@@ -269,7 +269,7 @@ export const PoolWars = () => {
                 <HStack spacing="auto" w="100%" maxWidth="1248px" margin="0 auto">
                     <VStack spacing="50px">
                         <MainText />
-                        <EventTimerPanel />
+                        <EventTimerPanel timeEnd={poolWar.end} />
                     </VStack>
                     <HStack spacing="24px">
                         <AttackPoolPanel onClick={() => provideNfts('attack')} sumPoints={sumPoints} totalInPool={attackPool.totalStrength} userInPool={attackPool.userStrength} />
@@ -280,7 +280,7 @@ export const PoolWars = () => {
                 <VStack spacing="40px">
                     <VStack spacing="50px">
                         <MainText />
-                        <EventTimerPanel />
+                        <EventTimerPanel timeEnd={poolWar.end} />
                     </VStack>
                     {size.width > 804 ?
                         <HStack spacing="24px">
