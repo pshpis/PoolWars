@@ -9,7 +9,6 @@ import {
 } from "@chakra-ui/react";
 import { ElderKattsBox } from "../Layout/ElderKattsBox";
 import React, { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
-import { ChooseState, useKattsCardsChoose } from "../../../hooks/useKattsCardsChoose";
 import styles from "../../../styles/swaps.module.scss";
 import { NFTSPanel } from "../NFTsPanel";
 import { SwapState, useKattsCardsSwaps } from "../../../hooks/useKattsCardsSwaps";
@@ -21,6 +20,8 @@ import { ComputeBudgetInstruction, ComputeBudgetProgram, Keypair, PublicKey, Sys
 import { swapCards, swapType, SWAP_AUTHORITY } from "../../../lib/swap-instructions";
 import { Transaction } from "@solana/web3.js";
 import { getSwapAuthoritySignature } from "../../../lib/swap-message-checker";
+import { ChooseState, mapChooseStateToMints } from "../../../lib/shared";
+import { useKattsCardsChoose } from "../../../hooks/useKattsCardsChoose";
 
 const MainText = () => {
     const size = useWindowSize();
@@ -128,42 +129,6 @@ const TitleText = () => {
         <Text fontFamily="Njord Alternate">OO</Text>
         <Text fontFamily="Njord">SE NFTS</Text>
     </HStack>
-}
-
-const mapChooseStateToMints = (chooseState: ChooseState, nftStats: NFTStatWithMints[]): PublicKey[] => {
-
-    const mints: PublicKey[] = []
-
-    chooseState.chooseArr.forEach(chosen => {
-
-        let stat: NFTStatWithMints | undefined = undefined;
-
-        if (chosen.id === 'attack_1') {
-            stat = nftStats[0];
-        } else if (chosen.id === 'defence_1') {
-            stat = nftStats[1];
-        } else if (chosen.id === 'intelligence_1') {
-            stat = nftStats[2];
-        } else if (chosen.id === 'attack_3') {
-            stat = nftStats[3];
-        } else if (chosen.id === 'defence_3') {
-            stat = nftStats[4];
-        } else if (chosen.id === 'intelligence_3') {
-            stat = nftStats[5];
-        } else if (chosen.id === 'attack_6') {
-            stat = nftStats[6];
-        } else if (chosen.id === 'defence_6') {
-            stat = nftStats[7];
-        } else if (chosen.id === 'intelligence_6') {
-            stat = nftStats[8];
-        }
-
-        console.log(stat)
-        
-        mints.push(...stat.mints.slice(0, chosen.value));
-    });
-
-    return mints;
 }
 
 export const Swaps = () => {

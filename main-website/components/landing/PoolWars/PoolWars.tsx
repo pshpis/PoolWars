@@ -8,6 +8,9 @@ import {ElderKattsBox} from "../Layout/ElderKattsBox";
 import { NFTStatWithMints, parseCards } from "../../../lib/nft-helper";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { getPoolStatus, getPoolWar, PoolState, PoolType, PoolWar } from "../../../lib/pool-wars";
+import { PublicKey, Transaction } from "@solana/web3.js";
+import { createAssociatedTokenAccount, createAssociatedTokenAccountInstruction, getAssociatedTokenAddress } from "@solana/spl-token";
+import { mapChooseStateToMints } from "../../../lib/shared";
 
 const MainText = () => {
     const size = useWindowSize();
@@ -164,7 +167,20 @@ export const PoolWars = () => {
 
     async function provideNfts(poolType: PoolType) {
 
+        let depositToPool: PublicKey | undefined;
+        
+        switch (poolType) {
+            case 'attack':
+                depositToPool = new PublicKey(attackPool.address)
+                break;
 
+            case 'defence':
+                depositToPool = new PublicKey(defencePool.address)
+                break;
+        }
+
+        const mints = mapChooseStateToMints(kattsCardChoose, NFTsStats);
+        
     }
 
     return <Layout>

@@ -1,16 +1,5 @@
 import {useCallback, useEffect, useMemo, useState} from "react";
-
-export interface ChooseNode{
-    id: string,
-    value: number,
-    points: number
-}
-
-export interface ChooseState {
-    chooseArr: ChooseNode[],
-    sumPoints: number,
-    setChooseArr: (id: string, value: number) => void
-}
+import { ChooseNode, ChooseState } from "../lib/shared";
 
 export function useKattsCardsChoose(): ChooseState {
     const [chooseArr, _setChooseArr] = useState<ChooseNode[]>([{ id : "attack_1", value: 0, points: 1},
