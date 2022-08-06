@@ -70,7 +70,8 @@ public class PoolWarRepository : IPoolWarRepository
                 Pools = poolWar.Pools.Select(p => new Pool
                 {
                     Address = p.Address
-                }).ToList()
+                }).ToList(),
+                End = poolWar.End
             };
         }
         catch (DbUpdateException)
