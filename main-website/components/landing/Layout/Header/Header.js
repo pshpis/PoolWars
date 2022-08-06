@@ -30,7 +30,7 @@ const FakeLink = ({children, href}) => {
                     title: `This page in beta test now`,
                     description: (
                         <div>
-                            You can get access <a href="/beta"><b><i><u>here</u></i></b></a>
+                            You can get access <Link href="/beta"><b><i><u>here</u></i></b></Link>
                         </div>
                     ),
                     status: 'info',
