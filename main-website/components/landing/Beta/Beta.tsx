@@ -17,7 +17,7 @@ export const Beta = () => {
                     // @ts-ignore
                     const tempSecretPhrase = evt.target.value;
                     if (secretPhrase === tempSecretPhrase) {
-                        Cookies.set(secretPhrase, tempSecretPhrase);
+                        Cookies.set("secretPhrase", tempSecretPhrase);
                         setVerify(true);
                     }
                 }}/>
