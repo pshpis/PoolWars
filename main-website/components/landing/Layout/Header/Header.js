@@ -2,14 +2,13 @@ import {
     Box, Button, Center, Divider,
     Drawer, DrawerContent,
     DrawerOverlay,
-    HStack, Icon,
+    HStack, Icon, Link,
     Spacer, useDisclosure, useToast,
     VStack
 } from "@chakra-ui/react";
 import {Logo} from "./Logo";
 import {useWindowSize} from "../../../../hooks/useWindowSize";
 import {HamburgerIcon} from "@chakra-ui/icons";
-import Link from "next/link";
 import {AiOutlineClose} from "react-icons/ai";
 
 import ConnectButton from "../ConnectButton";
@@ -30,7 +29,7 @@ const FakeLink = ({children, href}) => {
                     title: `This page in beta test now`,
                     description: (
                         <div>
-                            You can get access <Link href="/beta"><b><i><u>here</u></i></b></Link>
+                            You can get access <Link cursor="pointer" href="/beta"><b><i><u>here</u></i></b></Link>
                         </div>
                     ),
                     status: 'info',
@@ -39,7 +38,7 @@ const FakeLink = ({children, href}) => {
                 });
             }
     }
-    return <Box as="span" onClick={onClick}>{children}</Box>;
+    return <Box cursor="pointer" as="span" onClick={onClick}>{children}</Box>;
 }
 
 const HeaderNavSpacer = () => {
