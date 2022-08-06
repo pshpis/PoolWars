@@ -1,22 +1,16 @@
 import Layout from "../Layout/Layout";
 import {useWindowSize} from "../../../hooks/useWindowSize";
 import {Flex, Input} from "@chakra-ui/react";
-import React, {useEffect, useState} from "react";
+import React from "react";
 import Cookies from 'js-cookie'
+import {useCookies} from "../../../hooks/useCookies";
 
 export const Beta = () => {
     const size = useWindowSize();
-    const secretPhrase = "f4y4hANN0wOPYCaQbi6Pp4cpDkCxR2";
-
-    const [verified, setVerified] = useState(false);
-    useEffect(() => {
-        if (Cookies.get(secretPhrase) == secretPhrase)
-            setVerified(true);
-        console.log(verified);
-    }, []);
+    const {verify, setVerify, secretPhrase} = useCookies();
 
     return <Layout>
-        {!verified
+        {!verify
             ?
             <Flex h={size.height - 64 + "px"} w={size.width} alignItems="center" justifyContent="center">
                 <Input w="500px" border="2px" borderColor="#71CFC3" color="71CFC3" placeholder="Secret phrase" onChange={ (evt) => {
@@ -24,7 +18,7 @@ export const Beta = () => {
                     const tempSecretPhrase = evt.target.value;
                     if (secretPhrase === tempSecretPhrase) {
                         Cookies.set(secretPhrase, tempSecretPhrase);
-                        setVerified(true);
+                        setVerify(true);
                     }
                 }}/>
             </Flex>
