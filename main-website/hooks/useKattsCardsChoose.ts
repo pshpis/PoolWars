@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useMemo, useState} from "react";
+import {useCallback, useState} from "react";
 import { ChooseNode, ChooseState } from "../lib/shared";
 
 export function useKattsCardsChoose(): ChooseState {
@@ -10,7 +10,10 @@ export function useKattsCardsChoose(): ChooseState {
         { id : "intelligence_3", value: 0, points: 3},
         { id : "attack_6", value: 0, points: 6},
         { id : "defence_6", value: 0, points: 6},
-        { id : "intelligence_6", value: 0, points: 6}]);
+        { id : "intelligence_6", value: 0, points: 6},
+        { id : "attack_12", value: 0, points: 12},
+        { id : "defence_12", value: 0, points: 12},
+        { id : "intelligence_12", value: 0, points: 12}]);
 
     const [sumPoints, setSumPoints] = useState<number>(0)
 
