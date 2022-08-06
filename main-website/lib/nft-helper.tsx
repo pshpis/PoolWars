@@ -156,6 +156,7 @@ async function processMint(mint: PublicKey, amounts: NFTAmountsWithMints, connec
     const creators = allowedCreators;
 
     if (allowLegendary) {
+        console.log('legendaries allowed')
         creators.push(...legendaryCreators);
     }
 
@@ -197,6 +198,9 @@ async function processMint(mint: PublicKey, amounts: NFTAmountsWithMints, connec
                     amounts.attack6 += 1;
                     amounts.attack6mints.push(mint);
 
+                } else if (strength === '12') {
+                    amounts.attackLegendary += 1;
+                    amounts.attackLegendaryMints.push(mint);
                 }
 
                 break;
@@ -214,6 +218,9 @@ async function processMint(mint: PublicKey, amounts: NFTAmountsWithMints, connec
                     amounts.defence6 += 1;
                     amounts.defence6mints.push(mint);
 
+                } else if (strength === '12') {
+                    amounts.defenceLegendary += 1;
+                    amounts.defenceLegendaryMints.push(mint);
                 }
 
                 break;
@@ -231,6 +238,9 @@ async function processMint(mint: PublicKey, amounts: NFTAmountsWithMints, connec
                     amounts.intelligence6 += 1;
                     amounts.intelligence6mints.push(mint);
 
+                } else if (strength === '12') {
+                    amounts.intelligenceLegendary += 1;
+                    amounts.intelligenceLegendaryMints.push(mint);
                 }
 
                 break;
