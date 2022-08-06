@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using PoolWarsV0.Core.Attributes;
 using PoolWarsV0.Pools.Core.Models;
 using PoolWarsV0.Pools.Core.Services;
+using PoolWarsV0.Rewards.Core.Services;
 
 namespace PoolWarsV0.Rewards.Controllers;
 
@@ -10,10 +11,12 @@ namespace PoolWarsV0.Rewards.Controllers;
 public class WinnerController : ControllerBase
 {
     private readonly IPoolWarRepository _poolWarRepository;
+    private readonly IWinnerGenerator _winnerGenerator;
 
-    public WinnerController(IPoolWarRepository poolWarRepository)
+    public WinnerController(IPoolWarRepository poolWarRepository, IWinnerGenerator winnerGenerator)
     {
         _poolWarRepository = poolWarRepository;
+        _winnerGenerator = winnerGenerator;
     }
 
     /// <summary>
@@ -29,6 +32,15 @@ public class WinnerController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<Pool>> GenerateWinnerPool([FromQuery] string[] pools)
     {
+        if (pools.Length != 2)
+        {
+            return BadRequest(new
+            {
+                Message = "You need to specify exactly 2 pools"
+            });
+        }
+        
+        
         throw new NotImplementedException();
     }
 }

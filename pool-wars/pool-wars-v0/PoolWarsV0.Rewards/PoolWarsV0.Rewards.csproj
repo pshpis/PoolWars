@@ -9,6 +9,7 @@
     <ItemGroup>
         <ProjectReference Include="..\PoolWarsV0.Core\PoolWarsV0.Core.csproj"/>
         <ProjectReference Include="..\PoolWarsV0.Pools.Core\PoolWarsV0.Pools.Core.csproj"/>
+        <ProjectReference Include="..\PoolWarsV0.Rewards.Core\PoolWarsV0.Rewards.Core.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
