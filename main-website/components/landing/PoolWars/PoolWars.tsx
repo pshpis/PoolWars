@@ -11,6 +11,7 @@ import { depositMintToPool, getPoolStatus, getPoolWar, PoolState, PoolType, Pool
 import { PublicKey, Transaction } from "@solana/web3.js";
 import { ASSOCIATED_TOKEN_PROGRAM_ID, createAssociatedTokenAccount, createAssociatedTokenAccountInstruction, createTransferCheckedInstruction, getAssociatedTokenAddress, TOKEN_PROGRAM_ID, transferChecked } from "@solana/spl-token";
 import { mapChooseStateToMints } from "../../../lib/shared";
+import {useCookies} from "../../../hooks/useCookies";
 
 const MainText = () => {
     const size = useWindowSize();
@@ -93,6 +94,7 @@ export const PoolWars = () => {
     const size = useWindowSize();
     const wallet = useWallet();
     const { connection } = useConnection();
+    const {verify} = useCookies();
 
     const defaultPadding = useMemo(() => {
         if (size.width < 486) return 30;
@@ -164,6 +166,11 @@ export const PoolWars = () => {
         }
 
     }, [poolWar, wallet, version])
+
+    useEffect(() => {
+        if (size.width !== undefined && !verify)
+            window.location.replace('/');
+    }, [size.width]);
 
     async function provideNfts(poolType: PoolType) {
 

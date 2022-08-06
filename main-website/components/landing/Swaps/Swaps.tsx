@@ -1,7 +1,7 @@
 import { useWindowSize } from "../../../hooks/useWindowSize";
 import Layout from "../Layout/Layout";
 import {
-    Box,
+    Box, Center,
     Divider, Flex,
     HStack,
     Text,
@@ -22,6 +22,7 @@ import { Transaction } from "@solana/web3.js";
 import { getSwapAuthoritySignature } from "../../../lib/swap-message-checker";
 import { ChooseState, mapChooseStateToMints } from "../../../lib/shared";
 import { useKattsCardsChoose } from "../../../hooks/useKattsCardsChoose";
+import {useCookies} from "../../../hooks/useCookies";
 
 const MainText = () => {
     const size = useWindowSize();
@@ -137,6 +138,7 @@ export const Swaps = () => {
     const { connection } = useConnection();
     const walletAuthObj = useWalletAuth();
     const { connected } = walletAuthObj;
+    const {verify} = useCookies();
 
     const defaultPadding = useMemo(() => {
         if (size.width < 486) return 30;
@@ -162,6 +164,11 @@ export const Swaps = () => {
         load()
     },
         [wallet.publicKey, version]);
+
+    useEffect(() => {
+        if (size.width !== undefined && !verify)
+            window.location.replace('/');
+    }, [size.width]);
 
     async function swapClick(e: MouseEvent<HTMLDivElement>) {
 

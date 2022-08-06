@@ -7,7 +7,6 @@ import { Keypair, Transaction } from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { createUserData, getUserData, mintOne } from "../../../lib/mint-instructions";
 import {useCookies} from "../../../hooks/useCookies";
-import Cookies from 'js-cookie'
 
 const airdropAuthority = Keypair.fromSecretKey(new Uint8Array([87, 63, 47, 245, 211, 198, 55, 243, 138, 201, 237, 198, 57, 34, 88, 224, 234, 49, 51, 191, 224, 89, 45, 31, 199, 95, 209, 129, 178, 203, 158, 88, 135, 41, 24, 119, 139, 239, 142, 50, 14, 223, 31, 244, 177, 196, 221, 109, 149, 38, 54, 24, 206, 7, 176, 72, 52, 175, 40, 209, 211, 239, 86, 51]))
 
@@ -59,7 +58,7 @@ export const Mint = () => {
     useEffect(() => {
         if (size.width !== undefined && !verify)
             window.location.replace('/');
-    }, [size.width])
+    }, [size.width]);
 
     return <Layout>
         {!connected ?
