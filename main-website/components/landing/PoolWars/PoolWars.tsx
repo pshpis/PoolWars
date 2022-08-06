@@ -46,7 +46,7 @@ const EventTimerPanel = ({ timeEnd }: { timeEnd: Date }) => {
 }
 
 const AttackPoolPanel = ({ sumPoints, totalInPool, userInPool, onClick }: { sumPoints: number, totalInPool: number, userInPool: number, onClick: React.MouseEventHandler<HTMLDivElement> }) => {
-    return <ElderKattsBox zIndex={-2} width="294px" height="368px">
+    return <ElderKattsBox zIndex={0} width="294px" height="368px">
         <Text mt="32px" mb="32px" pl="36px"
             fontFamily="Njord" fontWeight="400" fontSize="32px" lineHeight="37px" color="#71CFC3">Attack Pool</Text>
 
@@ -63,9 +63,9 @@ const AttackPoolPanel = ({ sumPoints, totalInPool, userInPool, onClick }: { sumP
             <Text fontWeight="600" fontSize="24px" lineHeight="36px" color="#71CFC3">{userInPool}</Text>
         </HStack>
 
-        <Center zIndex={0} mt="81px">
+        <Center mt="81px">
             <Box onClick={onClick} width="246px" height="48px" backgroundColor="#B8C3E6" color="#202020" borderRadius="24px"
-                fontWeight="600" fontSize="22px" lineHeight="48px" textAlign="center">
+                fontWeight="600" fontSize="22px" lineHeight="48px" textAlign="center" transition="0.3s ease" _hover={{ boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);"}}>
                 Provide your NFTs!
             </Box>
         </Center>
@@ -75,7 +75,7 @@ const AttackPoolPanel = ({ sumPoints, totalInPool, userInPool, onClick }: { sumP
 }
 
 const DefencePoolPanel = ({ sumPoints, totalInPool, userInPool, onClick }: { sumPoints: number, totalInPool: number, userInPool: number, onClick: React.MouseEventHandler<HTMLDivElement> }) => {
-    return <ElderKattsBox zIndex={-2} width="294px" height="368px">
+    return <ElderKattsBox zIndex={0} width="294px" height="368px">
         <Text mt="32px" mb="32px" pl="36px"
             fontFamily="Njord" fontWeight="400" fontSize="32px" lineHeight="37px" color="#71CFC3">Defence Pool</Text>
 
@@ -92,9 +92,9 @@ const DefencePoolPanel = ({ sumPoints, totalInPool, userInPool, onClick }: { sum
             <Text fontWeight="600" fontSize="24px" lineHeight="36px" color="#71CFC3">{userInPool}</Text>
         </HStack>
 
-        <Center zIndex={0} mt="81px">
+        <Center mt="81px">
             <Box onClick={onClick} width="246px" height="48px" backgroundColor="#B8C3E6" color="#202020" borderRadius="24px"
-                fontWeight="600" fontSize="22px" lineHeight="48px" textAlign="center">
+                fontWeight="600" fontSize="22px" lineHeight="48px" textAlign="center" transition="0.3s ease" _hover={{ boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);"}}>
                 Provide your NFTs!
             </Box>
         </Center>
