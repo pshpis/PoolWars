@@ -165,6 +165,8 @@ export const PoolWars = () => {
             }
         }
 
+        load();
+
     }, [poolWar, wallet, version])
 
     useEffect(() => {
