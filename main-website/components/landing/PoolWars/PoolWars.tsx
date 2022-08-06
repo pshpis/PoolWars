@@ -11,7 +11,7 @@ import { depositMintToPool, getPoolStatus, getPoolWar, PoolState, PoolType, Pool
 import { PublicKey, Transaction } from "@solana/web3.js";
 import { ASSOCIATED_TOKEN_PROGRAM_ID, createAssociatedTokenAccount, createAssociatedTokenAccountInstruction, createTransferCheckedInstruction, getAssociatedTokenAddress, TOKEN_PROGRAM_ID, transferChecked } from "@solana/spl-token";
 import { mapChooseStateToMints } from "../../../lib/shared";
-import {useCookies} from "../../../hooks/useCookies";
+import { useCookies } from "../../../hooks/useCookies";
 
 const MainText = () => {
     const size = useWindowSize();
@@ -24,11 +24,24 @@ const MainText = () => {
     </Box>
 }
 
-const EventTimerPanel = () => {
+const EventTimerPanel = ({ timeEnd }: { timeEnd: Date }) => {
+
+    const [timer, setTimer] = useState<Date>(new Date(timeEnd.getDate() - new Date().getDate()))
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+
+            setTimer(new Date(timeEnd.getDate() - new Date().getDate()))
+
+        }, 1000);
+
+        return () => clearTimeout(timer);
+    }, []);
+
     const size = useWindowSize();
     return <Box pl="40px" pt="34px" width={size.width > 697 ? "508px" : "100%"} height="152px" backgroundColor="#313131" borderRadius="40px">
         <Text fontWeight="300" fontSize="24px" lineHeight="36px" color="#E8E3DD">This event will be finished in:</Text>
-        <Text fontWeight="600" fontSize="24px" lineHeight="36px" color="#B8C3E6">19 days 14 hours 9 minutes 59 seconds</Text>
+        <Text fontWeight="600" fontSize="24px" lineHeight="36px" color="#B8C3E6">{timer.toTimeString()}</Text>
     </Box>
 }
 
@@ -94,7 +107,7 @@ export const PoolWars = () => {
     const size = useWindowSize();
     const wallet = useWallet();
     const { connection } = useConnection();
-    const {verify} = useCookies();
+    const { verify } = useCookies();
 
     const defaultPadding = useMemo(() => {
         if (size.width < 486) return 30;
@@ -192,7 +205,7 @@ export const PoolWars = () => {
 
         const mints = mapChooseStateToMints(kattsCardChoose, NFTsStats);
         const blockhash = (await connection.getLatestBlockhash()).blockhash;
-        let transactions: {tx: Transaction, mint: PublicKey}[] = []
+        let transactions: { tx: Transaction, mint: PublicKey }[] = []
 
         for (let i = 0; i < mints.length; i++) {
             const mint = mints[i];
@@ -228,12 +241,12 @@ export const PoolWars = () => {
         }
 
         const signedTransactions = await wallet.signAllTransactions(transactions.map(t => t.tx));
-        
+
         for (let i = 0; i < signedTransactions.length; i++) {
             const transaction = signedTransactions[i];
 
             const poolState = await depositMintToPool(depositToPool, transaction, transactions[i].mint)
-            
+
             if (i == signedTransactions.length - 1) {
 
                 switch (poolType) {
@@ -241,7 +254,7 @@ export const PoolWars = () => {
                     case 'attack':
                         setAttackPool(poolState);
                         break;
-                    
+
                     case 'defence':
                         setDefencePool(poolState);
                         break;
