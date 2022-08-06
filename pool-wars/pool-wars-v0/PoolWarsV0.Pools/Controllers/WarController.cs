@@ -75,6 +75,13 @@ public class WarController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<PoolWar>>> GetPoolWars()
     {
-        return await _poolWarRepository.GetPoolWarsAsync().Where(w => w.End > DateTime.UtcNow).ToListAsync();
+        var poolWars = await _poolWarRepository.GetPoolWarsAsync().Where(w => w.End > DateTime.UtcNow).ToListAsync();
+
+        foreach (PoolWar poolWar in poolWars)
+        {
+            poolWar.Pools = poolWar.Pools.OrderBy(p => p.Address).ToList();
+        }
+
+        return poolWars;
     }
 }

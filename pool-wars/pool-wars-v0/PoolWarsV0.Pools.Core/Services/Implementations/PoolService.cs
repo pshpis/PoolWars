@@ -98,6 +98,8 @@ public class PoolService : IPoolService
 
         PoolUserDao userDao = await _context.PoolUsers
                                   .AsNoTracking()
+                                  .Include(u => u.Deposits)
+                                  .ThenInclude(d => d.CardMetadata)
                                   .FirstOrDefaultAsync(u => u.Address == poolAdapter.User) ??
                               new PoolUserDao
                               {
@@ -108,6 +110,7 @@ public class PoolService : IPoolService
         PoolDepositDao deposit = new()
         {
             PoolId = poolDao.Id,
+            Pool = poolDao,
             CardMetadataId = cardMetadataDao.Id,
             CardMetadata = cardMetadataDao,
             UserId = userDao.Id,
