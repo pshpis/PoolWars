@@ -1,0 +1,28 @@
+.willTakeCardButton{
+    display: inline-flex;
+    margin: 0;
+    padding: 0;
+    border: 2px #71CFC3 solid;
+    background-color: #202020;
+    color: #71CFC3;
+    height: 88px;
+    width: 72px;
+    border-radius: 20px;
+    justify-content: center;
+    transition: all 1s;
+
+    &:hover{
+        background-color: #71CFC3;
+        color: #202020;
+    }
+
+    &:active{
+        background-color: #71CFC3;
+        color: #202020;
+    }
+
+    &_clicked{
+        background-color: #71CFC3;
+        color: #202020;
+    }
+}
