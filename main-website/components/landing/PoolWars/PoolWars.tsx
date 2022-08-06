@@ -26,22 +26,51 @@ const MainText = () => {
 
 const EventTimerPanel = ({ timeEnd }: { timeEnd: Date }) => {
 
-    const [timer, setTimer] = useState<Date>(new Date(timeEnd.getDate() - new Date().getDate()))
+    const [timer, setTimer] = useState<number>(timeEnd.getTime() - new Date().getTime())
+
+    const totalSeconds = useMemo(() => {
+
+        return Math.floor(timer / 1000);
+
+    }, [timer]);
+
+    const seconds = useMemo(() => {
+
+        return (totalSeconds % 60).toString().padStart(2, '0') + ' seconds';
+
+    }, [totalSeconds]);
+
+    const minutes = useMemo(() => {
+
+        return (Math.floor(totalSeconds / 60) % 60).toString().padStart(2, '0') + ' minutes ';
+
+    }, [totalSeconds]);
+
+    const hours = useMemo(() => {
+
+        return (Math.floor(totalSeconds / 3600) % 24).toString().padStart(2, '0') + ' hours ';
+
+    }, [totalSeconds]);
+
+    const days = useMemo(() => {
+
+        const counted = Math.floor(totalSeconds / 86400);
+        return counted != 0 ? counted + ' days ' : undefined;
+
+    }, [totalSeconds]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
-
-            setTimer(new Date(timeEnd.getDate() - new Date().getDate()))
-
+            setTimer(timeEnd.getTime() - new Date().getTime())
         }, 1000);
 
         return () => clearTimeout(timer);
-    }, []);
+    }, [timer]);
 
     const size = useWindowSize();
     return <Box pl="40px" pt="34px" width={size.width > 697 ? "508px" : "100%"} height="152px" backgroundColor="#313131" borderRadius="40px">
         <Text fontWeight="300" fontSize="24px" lineHeight="36px" color="#E8E3DD">This event will be finished in:</Text>
-        <Text fontWeight="600" fontSize="24px" lineHeight="36px" color="#B8C3E6">{timer.toTimeString()}</Text>
+        <Text fontWeight="600" fontSize="24px" lineHeight="36px" color="#B8C3E6">{days}{hours}{minutes}{seconds}</Text>
     </Box>
 }
 
@@ -204,7 +233,7 @@ export const PoolWars = () => {
         }
 
         const mints = mapChooseStateToMints(kattsCardChoose, NFTsStats);
-        const blockhash = (await connection.getLatestBlockhash()).blockhash;
+        const blockhash = (await connection.getLatestBlockhash('finalized')).blockhash;
         let transactions: { tx: Transaction, mint: PublicKey }[] = []
 
         for (let i = 0; i < mints.length; i++) {
@@ -247,7 +276,7 @@ export const PoolWars = () => {
 
             const poolState = await depositMintToPool(depositToPool, transaction, transactions[i].mint)
 
-            if (i == signedTransactions.length - 1) {
+            if ((i == signedTransactions.length - 1) && poolState) {
 
                 switch (poolType) {
 
@@ -261,15 +290,18 @@ export const PoolWars = () => {
                 }
             }
         }
+
+        versionInc();
     }
 
     return <Layout>
+        {poolWar ?
         <Box pt="80px" mb="160px" paddingLeft={defaultPadding + "px"} paddingRight={defaultPadding + "px"}>
             {size.width > 1352 ?
                 <HStack spacing="auto" w="100%" maxWidth="1248px" margin="0 auto">
                     <VStack spacing="50px">
                         <MainText />
-                        <EventTimerPanel timeEnd={poolWar.end} />
+                        <EventTimerPanel timeEnd={poolWar ? new Date(poolWar.end) : new Date()} />
                     </VStack>
                     <HStack spacing="24px">
                         <AttackPoolPanel onClick={() => provideNfts('attack')} sumPoints={sumPoints} totalInPool={attackPool.totalStrength} userInPool={attackPool.userStrength} />
@@ -280,7 +312,7 @@ export const PoolWars = () => {
                 <VStack spacing="40px">
                     <VStack spacing="50px">
                         <MainText />
-                        <EventTimerPanel timeEnd={poolWar.end} />
+                        <EventTimerPanel timeEnd={poolWar ? new Date(poolWar.end) : new Date()} />
                     </VStack>
                     {size.width > 804 ?
                         <HStack spacing="24px">
@@ -298,6 +330,7 @@ export const PoolWars = () => {
             }
 
             <NFTSPanel NFTsStats={NFTsStats} setChooseArr={setChooseArr} />
-        </Box>
+        </Box> : <span>There are no pool war RN</span>
+        }
     </Layout>
 }
