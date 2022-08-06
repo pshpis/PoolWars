@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using PoolWarsV0.Core.Attributes;
 using PoolWarsV0.Pools.Core.Models;
 using PoolWarsV0.Pools.Core.Services;
+using PoolWarsV0.Rewards.Core.Exceptions;
 using PoolWarsV0.Rewards.Core.Services;
 
 namespace PoolWarsV0.Rewards.Controllers;
@@ -39,8 +40,22 @@ public class WinnerController : ControllerBase
                 Message = "You need to specify exactly 2 pools"
             });
         }
-        
-        
-        throw new NotImplementedException();
+
+        try
+        {
+            Pool winner = await _winnerGenerator.GetWinnerPool(pools.Select(p => new Pool
+            {
+                Address = p
+            }).ToArray());
+
+            return winner;
+        }
+        catch (WinnerGeneratorException e)
+        {
+            return BadRequest(new
+            {
+                e.Message
+            });
+        }
     }
 }
