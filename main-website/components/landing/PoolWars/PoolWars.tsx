@@ -167,7 +167,7 @@ export const PoolWars = () => {
     useEffect(() => {
 
         async function load() {
-            const stats = await parseCards(wallet.publicKey, connection);
+            const stats = await parseCards(wallet.publicKey, connection, true);
             console.log(stats);
             setStats(_ => stats);
         }
