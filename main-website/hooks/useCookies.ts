@@ -6,9 +6,8 @@ export function useCookies() {
     const [verify, setVerify] = useState(false);
 
     useEffect(() => {
-        if (Cookies.get(secretPhrase) == secretPhrase)
+        if (Cookies.get("secretPhrase") == secretPhrase)
             setVerify(true);
-        console.log(verify);
     },[])
 
     return {
