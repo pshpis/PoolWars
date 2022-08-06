@@ -12,6 +12,5 @@ public static class DependencyInjection
         services.AddTransient<ITransactionSender, TransactionSender>();
         services.AddTransient<ITransactionAssertionService, TransactionAssertionService>();
         services.AddTransient<IPoolService, PoolService>();
-        ;
     }
 }
