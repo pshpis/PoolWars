@@ -225,7 +225,7 @@ export const Swaps = () => {
             signedTransaction.addSignature(SWAP_AUTHORITY, signature);
 
             const result = await connection.sendRawTransaction(signedTransaction.serialize())
-            // versionInc();
+            versionInc();
         }
         catch (e) {
             console.error(e);
