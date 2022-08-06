@@ -1,4 +1,4 @@
-import { PublicKey } from "@solana/web3.js"
+import { PublicKey, Transaction } from "@solana/web3.js"
 import axios from "axios"
 
 const POOL_WARS_API = 'https://elderkatts.com'
@@ -47,4 +47,23 @@ export async function getPoolStatus(pool: string, user: PublicKey | undefined): 
     catch (e) {
         return;
     }
+}
+
+export async function depositMintToPool(pool: PublicKey, transaction: Transaction, mint: PublicKey): Promise<PoolState | undefined> {
+
+    const body = {
+        transactionMessage: transaction.serializeMessage().toString('base64'),
+        messageSignature: transaction.signature.toString('base64'),
+        cardMintAddress: mint.toBase58(),
+        poolAddress: pool.toBase58()
+    };
+
+    try {
+        const response = await axios.post<PoolState>(`${POOL_WARS_API}/api/v1/pools/deposit`, body);
+        return response.data;
+
+    } catch (e) {
+        console.error(e);
+    }
+
 }

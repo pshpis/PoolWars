@@ -1,15 +1,15 @@
 import Layout from "../Layout/Layout";
-import {Box, Center, HStack, Img, Text, VStack} from "@chakra-ui/react";
-import {useWindowSize} from "../../../hooks/useWindowSize";
-import React, {useEffect, useMemo, useState} from "react";
-import {NFTSPanel} from "../NFTsPanel";
-import {useKattsCardsChoose} from "../../../hooks/useKattsCardsChoose";
-import {ElderKattsBox} from "../Layout/ElderKattsBox";
+import { Box, Center, HStack, Img, Text, VStack } from "@chakra-ui/react";
+import { useWindowSize } from "../../../hooks/useWindowSize";
+import React, { useEffect, useMemo, useState } from "react";
+import { NFTSPanel } from "../NFTsPanel";
+import { useKattsCardsChoose } from "../../../hooks/useKattsCardsChoose";
+import { ElderKattsBox } from "../Layout/ElderKattsBox";
 import { NFTStatWithMints, parseCards } from "../../../lib/nft-helper";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { getPoolStatus, getPoolWar, PoolState, PoolType, PoolWar } from "../../../lib/pool-wars";
+import { depositMintToPool, getPoolStatus, getPoolWar, PoolState, PoolType, PoolWar } from "../../../lib/pool-wars";
 import { PublicKey, Transaction } from "@solana/web3.js";
-import { createAssociatedTokenAccount, createAssociatedTokenAccountInstruction, getAssociatedTokenAddress } from "@solana/spl-token";
+import { ASSOCIATED_TOKEN_PROGRAM_ID, createAssociatedTokenAccount, createAssociatedTokenAccountInstruction, createTransferCheckedInstruction, getAssociatedTokenAddress, TOKEN_PROGRAM_ID, transferChecked } from "@solana/spl-token";
 import { mapChooseStateToMints } from "../../../lib/shared";
 
 const MainText = () => {
@@ -31,10 +31,10 @@ const EventTimerPanel = () => {
     </Box>
 }
 
-const AttackPoolPanel = ({sumPoints, totalInPool, userInPool, onClick}: { sumPoints: number, totalInPool: number, userInPool: number, onClick: React.MouseEventHandler<HTMLDivElement> }) => {
+const AttackPoolPanel = ({ sumPoints, totalInPool, userInPool, onClick }: { sumPoints: number, totalInPool: number, userInPool: number, onClick: React.MouseEventHandler<HTMLDivElement> }) => {
     return <ElderKattsBox zIndex={-2} width="294px" height="368px">
         <Text mt="32px" mb="32px" pl="36px"
-              fontFamily="Njord" fontWeight="400" fontSize="32px" lineHeight="37px" color="#71CFC3">Attack Pool</Text>
+            fontFamily="Njord" fontWeight="400" fontSize="32px" lineHeight="37px" color="#71CFC3">Attack Pool</Text>
 
         <HStack zIndex={0} paddingLeft="32px" paddingRight="32px" spacing="auto">
             <Text fontWeight="300" fontSize="20px" lineHeight="30px">Total points:</Text>
@@ -51,19 +51,19 @@ const AttackPoolPanel = ({sumPoints, totalInPool, userInPool, onClick}: { sumPoi
 
         <Center zIndex={0} mt="81px">
             <Box onClick={onClick} width="246px" height="48px" backgroundColor="#B8C3E6" color="#202020" borderRadius="24px"
-                 fontWeight="600" fontSize="22px" lineHeight="48px" textAlign="center">
+                fontWeight="600" fontSize="22px" lineHeight="48px" textAlign="center">
                 Provide your NFTs!
             </Box>
         </Center>
 
-        <Img mt="-230px" position="absolute" zIndex={-1} src="/Sword.svg"/>
+        <Img mt="-230px" position="absolute" zIndex={-1} src="/Sword.svg" />
     </ElderKattsBox>
 }
 
-const DefencePoolPanel = ({sumPoints, totalInPool, userInPool, onClick}: { sumPoints: number, totalInPool: number, userInPool: number, onClick: React.MouseEventHandler<HTMLDivElement>}) => {
+const DefencePoolPanel = ({ sumPoints, totalInPool, userInPool, onClick }: { sumPoints: number, totalInPool: number, userInPool: number, onClick: React.MouseEventHandler<HTMLDivElement> }) => {
     return <ElderKattsBox zIndex={-2} width="294px" height="368px">
         <Text mt="32px" mb="32px" pl="36px"
-              fontFamily="Njord" fontWeight="400" fontSize="32px" lineHeight="37px" color="#71CFC3">Defence Pool</Text>
+            fontFamily="Njord" fontWeight="400" fontSize="32px" lineHeight="37px" color="#71CFC3">Defence Pool</Text>
 
         <HStack zIndex={0} paddingLeft="32px" paddingRight="32px" spacing="auto">
             <Text fontWeight="300" fontSize="20px" lineHeight="30px">Total points:</Text>
@@ -80,12 +80,12 @@ const DefencePoolPanel = ({sumPoints, totalInPool, userInPool, onClick}: { sumPo
 
         <Center zIndex={0} mt="81px">
             <Box onClick={onClick} width="246px" height="48px" backgroundColor="#B8C3E6" color="#202020" borderRadius="24px"
-                 fontWeight="600" fontSize="22px" lineHeight="48px" textAlign="center">
+                fontWeight="600" fontSize="22px" lineHeight="48px" textAlign="center">
                 Provide your NFTs!
             </Box>
         </Center>
 
-        <Img mt="-233px" position="absolute" zIndex={-1} src="/Shield.svg"/>
+        <Img mt="-233px" position="absolute" zIndex={-1} src="/Shield.svg" />
     </ElderKattsBox>
 }
 
@@ -100,7 +100,7 @@ export const PoolWars = () => {
     }, [size.width])
 
     const kattsCardChoose = useKattsCardsChoose();
-    const {sumPoints, setChooseArr} = kattsCardChoose;
+    const { sumPoints, setChooseArr } = kattsCardChoose;
 
     const [version, setVersion] = useState<number>(0)
     const [NFTsStats, setStats] = useState<NFTStatWithMints[]>([])
@@ -167,8 +167,10 @@ export const PoolWars = () => {
 
     async function provideNfts(poolType: PoolType) {
 
+        console.log('provide')
+
         let depositToPool: PublicKey | undefined;
-        
+
         switch (poolType) {
             case 'attack':
                 depositToPool = new PublicKey(attackPool.address)
@@ -180,36 +182,92 @@ export const PoolWars = () => {
         }
 
         const mints = mapChooseStateToMints(kattsCardChoose, NFTsStats);
+        const blockhash = (await connection.getLatestBlockhash()).blockhash;
+        let transactions: {tx: Transaction, mint: PublicKey}[] = []
+
+        for (let i = 0; i < mints.length; i++) {
+            const mint = mints[i];
+
+            const transaction = new Transaction();
+            transaction.feePayer = wallet.publicKey;
+            transaction.recentBlockhash = blockhash;
+            const sourceTokenAcc = await getAssociatedTokenAddress(mint, wallet.publicKey, false, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID);
+            const destinationTokenAcc = await getAssociatedTokenAddress(mint, depositToPool, false, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID);
+
+            transaction.add(createAssociatedTokenAccountInstruction(
+                wallet.publicKey,
+                destinationTokenAcc,
+                depositToPool,
+                mint,
+                TOKEN_PROGRAM_ID,
+                ASSOCIATED_TOKEN_PROGRAM_ID
+            ));
+
+            transaction.add(createTransferCheckedInstruction(
+                sourceTokenAcc,
+                mint,
+                destinationTokenAcc,
+                wallet.publicKey,
+                1,
+                0
+            ))
+
+            transactions.push({
+                tx: transaction,
+                mint
+            });
+        }
+
+        const signedTransactions = await wallet.signAllTransactions(transactions.map(t => t.tx));
         
+        for (let i = 0; i < signedTransactions.length; i++) {
+            const transaction = signedTransactions[i];
+
+            const poolState = await depositMintToPool(depositToPool, transaction, transactions[i].mint)
+            
+            if (i == signedTransactions.length - 1) {
+
+                switch (poolType) {
+
+                    case 'attack':
+                        setAttackPool(poolState);
+                        break;
+                    
+                    case 'defence':
+                        setDefencePool(poolState);
+                        break;
+                }
+            }
+        }
     }
 
     return <Layout>
-        <Box pt="80px" mb="160px" paddingLeft={defaultPadding+"px"} paddingRight={defaultPadding+"px"}>
+        <Box pt="80px" mb="160px" paddingLeft={defaultPadding + "px"} paddingRight={defaultPadding + "px"}>
             {size.width > 1352 ?
                 <HStack spacing="auto" w="100%" maxWidth="1248px" margin="0 auto">
                     <VStack spacing="50px">
-                        <MainText/>
-                        <EventTimerPanel/>
+                        <MainText />
+                        <EventTimerPanel />
                     </VStack>
                     <HStack spacing="24px">
-                        <AttackPoolPanel onClick={() => provideNfts('attack')} sumPoints={sumPoints} totalInPool={attackPool.totalStrength} userInPool={attackPool.userStrength}/>
+                        <AttackPoolPanel onClick={() => provideNfts('attack')} sumPoints={sumPoints} totalInPool={attackPool.totalStrength} userInPool={attackPool.userStrength} />
                         <DefencePoolPanel onClick={() => provideNfts('defence')} sumPoints={sumPoints} totalInPool={defencePool.totalStrength} userInPool={defencePool.userStrength} />
                     </HStack>
                 </HStack>
-            :
+                :
                 <VStack spacing="40px">
                     <VStack spacing="50px">
-                        <MainText/>
-                        <EventTimerPanel/>
+                        <MainText />
+                        <EventTimerPanel />
                     </VStack>
                     {size.width > 804 ?
                         <HStack spacing="24px">
-                            <AttackPoolPanel onClick={() => provideNfts('attack')} sumPoints={sumPoints} totalInPool={attackPool.totalStrength} userInPool={attackPool.userStrength}/>
+                            <AttackPoolPanel onClick={() => provideNfts('attack')} sumPoints={sumPoints} totalInPool={attackPool.totalStrength} userInPool={attackPool.userStrength} />
                             <DefencePoolPanel onClick={() => provideNfts('defence')} sumPoints={sumPoints} totalInPool={defencePool.totalStrength} userInPool={defencePool.userStrength} />
                         </HStack>
                         :
                         <VStack spacing="24px">
-                            <AttackPoolPanel onClick={() => provideNfts('attack')} sumPoints={sumPoints} totalInPool={attackPool.totalStrength} userInPool={attackPool.userStrength}/>
+                            <AttackPoolPanel onClick={() => provideNfts('attack')} sumPoints={sumPoints} totalInPool={attackPool.totalStrength} userInPool={attackPool.userStrength} />
                             <DefencePoolPanel onClick={() => provideNfts('defence')} sumPoints={sumPoints} totalInPool={defencePool.totalStrength} userInPool={defencePool.userStrength} />
                         </VStack>
                     }
@@ -217,7 +275,7 @@ export const PoolWars = () => {
                 </VStack>
             }
 
-            <NFTSPanel NFTsStats={NFTsStats} setChooseArr={setChooseArr}/>
+            <NFTSPanel NFTsStats={NFTsStats} setChooseArr={setChooseArr} />
         </Box>
     </Layout>
 }
