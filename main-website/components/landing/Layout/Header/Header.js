@@ -14,20 +14,30 @@ import {AiOutlineClose} from "react-icons/ai";
 
 import ConnectButton from "../ConnectButton";
 import React from "react";
+import {useCookies} from "../../../../hooks/useCookies";
 
-const FakeLink = ({children}) => {
+const FakeLink = ({children, href}) => {
+    const {verify} = useCookies();
     const toast = useToast();
     let toastId = '';
     const onClick = () => {
-        if (!toast.isActive(toastId)){
-            toast({
-                id: toastId,
-                title: 'This page will be available soon',
-                status: 'info',
-                position: 'top',
-                isClosable: true,
-            });
-        }
+        if (verify)
+            window.location.replace(href);
+        else
+            if (!toast.isActive(toastId)){
+                toast({
+                    id: toastId,
+                    title: `This page in beta test now`,
+                    description: (
+                        <div>
+                            You can get access <a href="/beta"><b><i><u>here</u></i></b></a>
+                        </div>
+                    ),
+                    status: 'info',
+                    position: 'top',
+                    isClosable: true,
+                });
+            }
     }
     return <Box as="span" onClick={onClick}>{children}</Box>;
 }
@@ -52,9 +62,13 @@ const HeaderNav = () => {
     return <HStack fontStyle="light" color="#B2B2B2" fontFamily="Roboto Flex" fontWeight="300" spacing={0}>
         <HeaderNavEl><Link href="/profile">profile</Link></HeaderNavEl>
         <HeaderNavSpacer/>
-        <HeaderNavEl><FakeLink>swaps</FakeLink></HeaderNavEl>
+        <HeaderNavEl><FakeLink href="/mint">mint</FakeLink></HeaderNavEl>
         <HeaderNavSpacer/>
-        <HeaderNavEl><FakeLink>events</FakeLink></HeaderNavEl>
+        <HeaderNavEl><FakeLink href="/swaps">swaps</FakeLink></HeaderNavEl>
+        <HeaderNavSpacer/>
+        <HeaderNavEl><FakeLink href="/pool-wars">events</FakeLink></HeaderNavEl>
+        <HeaderNavSpacer/>
+        <HeaderNavEl><Link href="/beta">beta</Link></HeaderNavEl>
         <HeaderNavSpacer/>
         <HeaderNavEl><Link href="/whitepaper/">whitepaper</Link></HeaderNavEl>
     </HStack>
@@ -64,9 +78,13 @@ const HeaderNavMobile = ({onClose}) => {
     return <VStack fontStyle="light" color="#B2B2B2" fontFamily="Roboto Flex" fontWeight="300" spacing={0} fontSize="24px" height="100%" pb="20px">
         <HeaderNavElMobile><Link href="/profile">profile</Link></HeaderNavElMobile>
         <HeaderNavSpacerMobile/>
-        <HeaderNavElMobile><FakeLink>swaps</FakeLink></HeaderNavElMobile>
+        <HeaderNavElMobile><FakeLink href="/mint">mint</FakeLink></HeaderNavElMobile>
         <HeaderNavSpacerMobile/>
-        <HeaderNavElMobile><FakeLink>events</FakeLink></HeaderNavElMobile>
+        <HeaderNavElMobile><FakeLink href="/swaps">swaps</FakeLink></HeaderNavElMobile>
+        <HeaderNavSpacerMobile/>
+        <HeaderNavElMobile><FakeLink href="/pool-wars">events</FakeLink></HeaderNavElMobile>
+        <HeaderNavSpacerMobile/>
+        <HeaderNavElMobile><Link href="/beta">beta</Link></HeaderNavElMobile>
         <HeaderNavSpacerMobile/>
         <HeaderNavElMobile><Link href="/whitepaper/">whitepaper</Link></HeaderNavElMobile>
         <Spacer/>
