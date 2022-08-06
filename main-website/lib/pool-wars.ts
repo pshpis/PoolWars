@@ -1,7 +1,7 @@
 import { PublicKey, Transaction } from "@solana/web3.js"
 import axios from "axios"
 
-const POOL_WARS_API = 'http://localhost:8003'
+const POOL_WARS_API = 'https://elderkatts.com'
 
 export type PoolType = 'attack' | 'defence'
 export type PoolWar = {
