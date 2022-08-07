@@ -1,4 +1,8 @@
 using PoolWarsV0.Core.Tools;
+using PoolWarsV0.Pools.Core.Services.Implementations;
+using PoolWarsV0.Pools.Core.Tools;
+using PoolWarsV0.Rewards.Core.Services;
+using PoolWarsV0.Rewards.Core.Services.Implementations;
 using StartupBase = PoolWarsV0.Core.StartupBase;
 
 namespace PoolWarsV0.Rewards;
@@ -17,6 +21,10 @@ internal class Startup : StartupBase
         var connectionString = GetConnectionString();
         services.AddDatabase(connectionString);
 
+        services.AddPools();
+        services.AddTransient<PoolService>();
+        services.AddTransient<IWinnerGenerator, WinnerGenerator>();
+        services.AddTransient<IRewardDistributor, RewardDistributor>();
         services.AddHttpClient();
         services.AddSwaggerGen();
         services.AddControllers();

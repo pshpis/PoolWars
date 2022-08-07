@@ -3,21 +3,25 @@ using PoolWarsV0.Core.Attributes;
 using PoolWarsV0.Pools.Core.Models;
 using PoolWarsV0.Pools.Core.Services;
 using PoolWarsV0.Rewards.Core.Exceptions;
+using PoolWarsV0.Rewards.Core.Models;
 using PoolWarsV0.Rewards.Core.Services;
 
 namespace PoolWarsV0.Rewards.Controllers;
 
 [ApiController]
-[Route("api/v1/winnerGenerator")]
+[Route("api/v1/winnerData")]
 public class WinnerController : ControllerBase
 {
     private readonly IPoolWarRepository _poolWarRepository;
-    private readonly IWinnerGenerator _winnerGenerator;
+    private readonly IRewardDistributor _rewardDistributor;
+    private readonly IWinnerGenerator _winnerRespository;
 
-    public WinnerController(IPoolWarRepository poolWarRepository, IWinnerGenerator winnerGenerator)
+    public WinnerController(IPoolWarRepository poolWarRepository, IWinnerGenerator winnerRespository,
+        IRewardDistributor rewardDistributor)
     {
         _poolWarRepository = poolWarRepository;
-        _winnerGenerator = winnerGenerator;
+        _winnerRespository = winnerRespository;
+        _rewardDistributor = rewardDistributor;
     }
 
     /// <summary>
@@ -27,11 +31,11 @@ public class WinnerController : ControllerBase
     /// <returns></returns>
     [TokenAuthentication]
     [HttpPost]
-    [Route("byPoolAddresses")]
-    [ProducesResponseType(typeof(Pool), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Route("generate")]
+    [ProducesResponseType(typeof(PoolWarResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<Pool>> GenerateWinnerPool([FromQuery] string[] pools)
+    public async Task<ActionResult<PoolWarResult>> GenerateWinnerPool([FromQuery] string[] pools)
     {
         if (pools.Length != 2)
         {
@@ -43,12 +47,62 @@ public class WinnerController : ControllerBase
 
         try
         {
-            Pool winner = await _winnerGenerator.GetWinnerPool(pools.Select(p => new Pool
+            WinnerData winner = await _winnerRespository.GetWinnerPool(pools.Select(p => new Pool
             {
                 Address = p
             }).ToArray());
 
-            return winner;
+            PoolWarResult result = await _rewardDistributor.DistributeRewards(winner);
+            return result;
+        }
+        catch (WinnerGeneratorException e)
+        {
+            return BadRequest(new
+            {
+                e.Message
+            });
+        }
+    }
+
+    [HttpGet]
+    [Route("getDetailed")]
+    [ProducesResponseType(typeof(PoolWarResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<PoolWarResult>> GetPoolWarResult([FromQuery] string user, [FromQuery] string pool)
+    {
+        try
+        {
+            PoolUserAdapter poolBody = new()
+            {
+                Address = pool,
+                User = user
+            };
+
+            return await _winnerRespository.GetPoolWarResult(poolBody);
+        }
+        catch (WinnerGeneratorException e)
+        {
+            return BadRequest(new
+            {
+                e.Message
+            });
+        }
+    }
+
+    [HttpGet]
+    [Route("get")]
+    [ProducesResponseType(typeof(PoolWarResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<PoolWarResult>> GetPoolWarResult([FromQuery] string pool)
+    {
+        try
+        {
+            Pool poolBody = new()
+            {
+                Address = pool
+            };
+
+            return await _winnerRespository.GetPoolWarResult(poolBody);
         }
         catch (WinnerGeneratorException e)
         {
