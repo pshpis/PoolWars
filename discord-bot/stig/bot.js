@@ -103,13 +103,13 @@ const snapshot = [
         "invites": 17
     },
     {
-	"member": "981522172289900554",
-	"invites": -2
+        "member": "981522172289900554",
+        "invites": -2
     }
 ]
 
 bot.on("interactionCreate", async interaction => {
-
+    
     if (interaction.isMessageComponent()) {
 
         if (interaction.customId == 'CHECK_BTN') {
@@ -137,13 +137,13 @@ bot.on("interactionCreate", async interaction => {
                 return group;
             }, []);
 
-	    groupedInvites.push({
-		    "member": "433633971562217485",
-		    "invites": 1539
-	    });
+            groupedInvites.push({
+                "member": "433633971562217485",
+                "invites": 1539
+            });
 
             const leaders = groupedInvites.sort((a, b) => b.invites - a.invites);
-            
+
             console.log(JSON.stringify(leaders));
 
             const leadersInfos = await Promise.all(
@@ -161,9 +161,9 @@ bot.on("interactionCreate", async interaction => {
                 content: `${uses} people invited\n\n**LEADERS**\n` +
                     `1. <@${leadersInfos[0].member.id}> - ${leadersInfos[0].invites}\n` +
                     `2. <@${leadersInfos[1].member.id}> - ${leadersInfos[1].invites}\n` +
-		    `3. <@${leadersInfos[2].member.id}> - ${leadersInfos[2].invites}\n`,
-		   // `4. <@${leadersInfos[3].member.id}> - ${leadersInfos[3].invites}\n` +
-		   // `5. <@${leadersInfos[4].member.id}> - ${leadersInfos[4].invites}\n`,
+                    `3. <@${leadersInfos[2].member.id}> - ${leadersInfos[2].invites}\n`,
+                // `4. <@${leadersInfos[3].member.id}> - ${leadersInfos[3].invites}\n` +
+                // `5. <@${leadersInfos[4].member.id}> - ${leadersInfos[4].invites}\n`,
                 ephemeral: true
             })
 
@@ -171,12 +171,12 @@ bot.on("interactionCreate", async interaction => {
 
             await logChannel.send({
                 content: `${uses} people invited by <@${interaction.member.id}>\n\n**LEADERS**\n` +
-		    `1. <@${leadersInfos[0].member.id}> - ${leadersInfos[0].invites}\n` +
+                    `1. <@${leadersInfos[0].member.id}> - ${leadersInfos[0].invites}\n` +
                     `2. <@${leadersInfos[1].member.id}> - ${leadersInfos[1].invites}\n` +
-		    `3. <@${leadersInfos[2].member.id}> - ${leadersInfos[2].invites}\n`
-		    // `4. <@${leadersInfos[3].member.id}> - ${leadersInfos[3].invites}\n` +
-                    // `5. <@${leadersInfos[4].member.id}> - ${leadersInfos[4].invites}\n`
-	    })
+                    `3. <@${leadersInfos[2].member.id}> - ${leadersInfos[2].invites}\n`
+                // `4. <@${leadersInfos[3].member.id}> - ${leadersInfos[3].invites}\n` +
+                // `5. <@${leadersInfos[4].member.id}> - ${leadersInfos[4].invites}\n`
+            })
         }
     }
 });
