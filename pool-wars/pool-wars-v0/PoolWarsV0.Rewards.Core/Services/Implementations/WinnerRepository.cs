@@ -8,12 +8,12 @@ using PoolWarsV0.Rewards.Core.Models;
 
 namespace PoolWarsV0.Rewards.Core.Services.Implementations;
 
-public class WinnerGenerator : IWinnerGenerator
+public class WinnerRepository : IWinnerRepository
 {
     private readonly Context _context;
     private readonly PoolService _poolService;
 
-    public WinnerGenerator(PoolService poolService, Context context)
+    public WinnerRepository(PoolService poolService, Context context)
     {
         _poolService = poolService;
         _context = context;

@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PoolWarsV0.Core.Attributes;
 using PoolWarsV0.Pools.Core.Models;
-using PoolWarsV0.Pools.Core.Services;
 using PoolWarsV0.Rewards.Core.Exceptions;
 using PoolWarsV0.Rewards.Core.Models;
 using PoolWarsV0.Rewards.Core.Services;
@@ -12,15 +11,13 @@ namespace PoolWarsV0.Rewards.Controllers;
 [Route("api/v1/winnerData")]
 public class WinnerController : ControllerBase
 {
-    private readonly IPoolWarRepository _poolWarRepository;
     private readonly IRewardDistributor _rewardDistributor;
-    private readonly IWinnerGenerator _winnerRespository;
+    private readonly IWinnerRepository _winnerRepository;
 
-    public WinnerController(IPoolWarRepository poolWarRepository, IWinnerGenerator winnerRespository,
+    public WinnerController(IWinnerRepository winnerRepository,
         IRewardDistributor rewardDistributor)
     {
-        _poolWarRepository = poolWarRepository;
-        _winnerRespository = winnerRespository;
+        _winnerRepository = winnerRepository;
         _rewardDistributor = rewardDistributor;
     }
 
@@ -47,7 +44,7 @@ public class WinnerController : ControllerBase
 
         try
         {
-            WinnerData winner = await _winnerRespository.GetWinnerPool(pools.Select(p => new Pool
+            WinnerData winner = await _winnerRepository.GetWinnerPool(pools.Select(p => new Pool
             {
                 Address = p
             }).ToArray());
@@ -78,7 +75,7 @@ public class WinnerController : ControllerBase
                 User = user
             };
 
-            return await _winnerRespository.GetPoolWarResult(poolBody);
+            return await _winnerRepository.GetPoolWarResult(poolBody);
         }
         catch (WinnerGeneratorException e)
         {
@@ -102,7 +99,7 @@ public class WinnerController : ControllerBase
                 Address = pool
             };
 
-            return await _winnerRespository.GetPoolWarResult(poolBody);
+            return await _winnerRepository.GetPoolWarResult(poolBody);
         }
         catch (WinnerGeneratorException e)
         {

@@ -59,7 +59,7 @@ public class SwapChecker : ISwapChecker
                 sumStrength += metadata.Strength;
             }
 
-            int? minPoints = null;
+            int minPoints;
 
             if (swapConfig.Key == _points3Swap.Key)
             {

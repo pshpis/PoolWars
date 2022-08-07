@@ -23,7 +23,7 @@ internal class Startup : StartupBase
 
         services.AddPools();
         services.AddTransient<PoolService>();
-        services.AddTransient<IWinnerGenerator, WinnerGenerator>();
+        services.AddTransient<IWinnerRepository, WinnerRepository>();
         services.AddTransient<IRewardDistributor, RewardDistributor>();
         services.AddHttpClient();
         services.AddSwaggerGen();

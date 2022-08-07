@@ -6,21 +6,21 @@ namespace PoolWarsV0.Core;
 
 public abstract class StartupBase
 {
-    public StartupBase(IConfiguration configuration)
+    protected StartupBase(IConfiguration configuration)
     {
         Configuration = configuration;
     }
 
-    protected IConfiguration Configuration { get; }
+    private IConfiguration Configuration { get; }
 
     protected string GetConnectionString()
     {
         var databasePassword = Configuration["DatabasePassword"];
         var connectionString = Configuration.GetConnectionString("DbContext");
 
-        if (databasePassword is { } pwd)
+        if (databasePassword != null)
         {
-            connectionString = string.Format(connectionString, pwd);
+            connectionString = string.Format(connectionString, databasePassword);
         }
 
         return connectionString;
