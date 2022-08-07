@@ -24,23 +24,17 @@ const NFT = ({src, maxValue, setChooseArr}) => {
                         onChange={ (evt) => {
                            // @ts-ignore
                            const nftChosen = +evt.target.value;
-                           if ((nftChosen ^ 0) !== nftChosen && !toast.isActive("integerCheck")) {
+                           if ((((nftChosen ^ 0) !== nftChosen) || nftChosen < 0) && !toast.isActive("naturalCheck")) {
+                               toast.close("moreCheck");
                                toast({
-                                   id: "integerCheck",
-                                   title: 'This is not an integer number of NFTs',
-                                   status: 'info',
-                                   position: 'top',
-                                   isClosable: true,
-                               });
-                           } else if (nftChosen < 0 && !toast.isActive("negativeCheck")) {
-                               toast({
-                                   id: "negativeCheck",
-                                   title: 'Impossible to choose negative number of NFTs',
+                                   id: "naturalCheck",
+                                   title: 'Impossible to choose negative or not integer number of NFTs',
                                    status: 'info',
                                    position: 'top',
                                    isClosable: true,
                                });
                            } else if (nftChosen > maxValue && !toast.isActive("moreCheck")) {
+                               toast.close("naturalCheck");
                                toast({
                                    id: "moreCheck",
                                    title: 'It is impossible to take more NFTs than you have',
