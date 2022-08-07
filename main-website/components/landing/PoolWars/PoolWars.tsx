@@ -353,10 +353,7 @@ export const PoolWars = () => {
                     <div className={styles.donut}/>
                 </Flex>
                 :
-                <Box>
-                    <TitleText/>
-                    <NFTSPanel NFTsStats={NFTsStats} setChooseArr={setChooseArr} />
-                </Box>
+                <NFTSPanel NFTsStats={NFTsStats} setChooseArr={setChooseArr}/>
             }
 
         </Box>

@@ -257,11 +257,7 @@ export const Swaps = () => {
                         <div className={styles.donut}/>
                     </Flex>
                     :
-                    <Box>
-                        <TitleText/>
-                        <NFTSPanel NFTsStats={NFTsStats} setChooseArr={chooseState.setChooseArr} />
-                    </Box>
-
+                    <NFTSPanel NFTsStats={NFTsStats} setChooseArr={chooseState.setChooseArr}/>
                 }
             </Box>
         }
