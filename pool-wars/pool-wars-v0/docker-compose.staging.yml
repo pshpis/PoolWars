@@ -34,4 +34,18 @@ services:
       ASPNETCORE_ENVIRONMENT: Staging
     depends_on:
       - database
+      - metadata_reader
+    restart: on-failure
+    
+  rewards:
+    build:
+      context: .
+      dockerfile: Dockerfile.Rewards
+    ports:
+      - "8004:80"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Staging
+    depends_on:
+      - database
+      - metadata_reader
     restart: on-failure

@@ -10,7 +10,7 @@ COPY PoolWarsV0.MetadataReader/PoolWarsV0.MetadataReader.csproj ./PoolWarsV0.Met
 COPY PoolWarsV0.MetadataReader.Core/PoolWarsV0.MetadataReader.Core.csproj ./PoolWarsV0.MetadataReader.Core/
 
 COPY PoolWarsV0.Pools/PoolWarsV0.Pools.csproj ./PoolWarsV0.Pools/
-COPY PoolWarsV0.Pools.Core/PoolWarsV0.Pools.Core.csproj ./PoolWarsV0.MetadataReader.Pools.Core/
+COPY PoolWarsV0.Pools.Core/PoolWarsV0.Pools.Core.csproj ./PoolWarsV0.Pools.Core/
 
 RUN dotnet restore "PoolWarsV0.Pools"
 

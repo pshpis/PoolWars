@@ -1,6 +1,22 @@
-WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-WebApplication app = builder.Build();
+using Microsoft.EntityFrameworkCore;
+using PoolWarsV0.Data;
+using PoolWarsV0.Rewards;
 
-app.MapGet("/", () => "Hello World!");
+IHost host = CreateHost(args);
 
-app.Run();
+using (IServiceScope scope = host.Services.CreateScope())
+{
+    Context context = scope.ServiceProvider.GetRequiredService<Context>();
+
+    if ((await context.Database.GetPendingMigrationsAsync()).Any())
+    {
+        await context.Database.MigrateAsync();
+    }
+}
+
+await host.RunAsync();
+
+IHost CreateHost(string[] args) =>
+    Host.CreateDefaultBuilder(args)
+        .ConfigureWebHostDefaults(defaults => defaults.UseStartup<Startup>())
+        .Build();

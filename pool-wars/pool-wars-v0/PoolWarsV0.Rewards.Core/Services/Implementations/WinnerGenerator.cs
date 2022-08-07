@@ -44,6 +44,11 @@ public class WinnerGenerator : IWinnerGenerator
 
         PoolWarDao poolWar = poolsData[0].PoolWar;
 
+        if (poolWar.End < DateTime.UtcNow)
+        {
+            throw new WinnerGeneratorException("POOL_WAR_NOT_ENDED");
+        }
+
         if (poolWar.Result is { })
         {
             throw new WinnerGeneratorException("RESULT_ALREADY_EXISTS");
