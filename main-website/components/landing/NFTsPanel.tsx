@@ -24,24 +24,27 @@ const NFT = ({src, maxValue, setChooseArr}) => {
                         onChange={ (evt) => {
                            // @ts-ignore
                            const nftChosen = +evt.target.value;
-                           if ((nftChosen ^ 0) !== nftChosen) {
+                           if ((nftChosen ^ 0) !== nftChosen && !toast.isActive("integerCheck")) {
                                toast({
+                                   id: "integerCheck",
                                    title: 'This is not an integer number of NFTs',
                                    status: 'info',
                                    position: 'top',
                                    isClosable: true,
                                });
-                           } else if (nftChosen < 0) {
+                           } else if (nftChosen < 0 && !toast.isActive("negativeCheck")) {
                                toast({
+                                   id: "negativeCheck",
                                    title: 'Impossible to choose negative number of NFTs',
                                    status: 'info',
                                    position: 'top',
                                    isClosable: true,
                                });
-                           } else if (nftChosen > maxValue) {
+                           } else if (nftChosen > maxValue && !toast.isActive("moreCheck")) {
                                toast({
+                                   id: "moreCheck",
                                    title: 'It is impossible to take more NFTs than you have',
-                                   status: 'info',
+                                   status: 'warning',
                                    position: 'top',
                                    isClosable: true,
                                });
@@ -60,12 +63,7 @@ export const NFTSPanel = ({NFTsStats, setChooseArr}) => {
     const [NFTs, setNFTs] = useState([]);
     useEffect(() => {
         let newNFTs = [];
-        // console.log(newNFTs.map(item => item.props.src))
-
         NFTsStats.forEach((item) => {
-            // let tempNft = newNFTs.find(tempItem => tempItem.props.src === item.src);
-            // if (tempNft !== undefined)
-            //     tempNft.props.maxValue = 10;
             if (item.maxValue !== 0)
                 newNFTs.push(<NFT src={item.src} setChooseArr={setChooseArr} maxValue={item.maxValue}/>);
         })
