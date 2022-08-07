@@ -258,7 +258,7 @@ export const Swaps = () => {
                     </Flex>
                     :
                     <Box>
-                        <TitleText />
+                        <TitleText/>
                         <NFTSPanel NFTsStats={NFTsStats} setChooseArr={chooseState.setChooseArr} />
                     </Box>
 
