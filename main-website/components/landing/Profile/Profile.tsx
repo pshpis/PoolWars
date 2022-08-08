@@ -20,7 +20,7 @@ import {ProfileNFTSPanel} from "./ProfileNFTsPanel";
 
 const MyNFts = () => {
     const kattsCardChoose = useKattsCardsChoose();
-    const {  setChooseArr } = kattsCardChoose;
+    const { setChooseArr } = kattsCardChoose;
     const { connection } = useConnection();
     const wallet = useWallet();
     const [load, setLoad] = useState<boolean>(false);
@@ -47,7 +47,7 @@ const MyNFts = () => {
                 <div className={styles.donut}/>
             </Flex>
             :   NFTsStats.length === 0 ?
-                <VStack mt="120px">
+                <VStack mt="140px">
                     <Image src={noItemsPic}/>
                     <Text fontStyle="Roboto Flex" fontWeight="600" fontSize="32px" lineHeight="37.5px"
                           color="#D3CDC640;">No items</Text>
@@ -74,31 +74,9 @@ export const Profile = () => {
         }
     }
 
-    const kattsCardChoose = useKattsCardsChoose();
-    const {  setChooseArr } = kattsCardChoose;
-    const { connection } = useConnection();
-    const wallet = useWallet();
     const walletAuthObj = useWalletAuth();
     const {walletAddressView, onSignToggle, isSigned, connected} = walletAuthObj;
     const {discordButtonText, onDiscordButtonClick, onDiscordButtonLeave, onDiscordButtonEnter} = useSocialConnect(walletAuthObj);
-
-    const [load, setLoad] = useState<boolean>(false);
-    const [version, setVersion] = useState<number>(0)
-    const [NFTsStats, setStats] = useState<NFTStatWithMints[]>([])
-
-    // useEffect(() => {
-    //
-    //         async function load() {
-    //             setLoad(_ => false);
-    //             const stats = await parseCards(wallet.publicKey, connection, true);
-    //             console.log(stats);
-    //             setStats(_ => stats);
-    //             setLoad(_ => true);
-    //         }
-    //
-    //         load()
-    //     },
-    //     [wallet.publicKey, version]);
 
     return <Layout>
         {!connected ?
@@ -184,20 +162,20 @@ export const Profile = () => {
 
                     <Box w="100%" alignSelf="start">
                         <HStack mb="16px" direction="row">
-                            <Box w="140px" h="40px" background="#B2B2B2" color="#202020" borderRadius="16px"
-                                    fontFamily="Roboto FLex" fontWeight="600" fontSize="20px" lineHeight="24px">
+                            <Box pt="7px" pb="6px" w="140px" h="40px" background="#B2B2B2" color="#202020" borderRadius="16px" border="2px" borderColor="#B2B2B2"
+                                    fontFamily="Roboto FLex" fontWeight="600" fontSize="20px" lineHeight="24px" textAlign="center">
                                 My NFTs
                             </Box>
-                            <Box w="140px" h="40px" border="2px" borderColor="#B2B2B2" background="#202020"
+                            <Box pt="7px" pb="6px" w="140px" h="40px" border="2px" borderColor="#B2B2B2" background="#202020"
                                     color="#B2B2B2" borderRadius="16px"
-                                    fontFamily="Roboto FLex" fontWeight="600" fontSize="20px" lineHeight="24px"
+                                    fontFamily="Roboto FLex" fontWeight="600" fontSize="20px" lineHeight="24px" textAlign="center"
                                     _hover={{boxShadow: "0 0 8px rgba(178, 178, 178, 0.75)"}} onClick={onFakeClick}>
 
                                 Activities
                             </Box>
                         </HStack>
 
-                        <Divider mt="32px" mb="40px" borderColor="#E8E8E826" border="0.5px"/>
+                        <Divider mt="32px" mb="20px" borderColor="#E8E8E826" border="0.5px"/>
                         <MyNFts/>
 
                     </Box>
