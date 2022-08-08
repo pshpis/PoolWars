@@ -16,10 +16,10 @@ public class RewardDistributor : IRewardDistributor
     private readonly Context _context;
     private readonly IEventRepository _repository;
 
-    public RewardDistributor(Context context, IEventRepository _repository)
+    public RewardDistributor(Context context, IEventRepository repository)
     {
         _context = context;
-        this._repository = _repository;
+        _repository = repository;
     }
 
     public async Task<PoolWarResult> DistributeRewards(WinnerData winner)
