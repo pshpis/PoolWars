@@ -17,6 +17,8 @@ import {useSocialConnect} from "../../../hooks/useSocialConnect";
 import {NFTStatWithMints, parseCards} from "../../../lib/nft-helper";
 import {useKattsCardsChoose} from "../../../hooks/useKattsCardsChoose";
 import {ProfileNFTSPanel} from "./ProfileNFTsPanel";
+import clsx from "clsx";
+import {useProfilePanel} from "../../../hooks/useProfilePanel";
 
 const MyNFts = () => {
     const kattsCardChoose = useKattsCardsChoose();
@@ -77,6 +79,7 @@ export const Profile = () => {
     const walletAuthObj = useWalletAuth();
     const {walletAddressView, onSignToggle, isSigned, connected} = walletAuthObj;
     const {discordButtonText, onDiscordButtonClick, onDiscordButtonLeave, onDiscordButtonEnter} = useSocialConnect(walletAuthObj);
+    const profilePanelState = useProfilePanel();
 
     return <Layout>
         {!connected ?
@@ -162,17 +165,23 @@ export const Profile = () => {
 
                     <Box w="100%" alignSelf="start">
                         <HStack mb="16px" direction="row">
-                            <Box pt="7px" pb="6px" w="140px" h="40px" background="#B2B2B2" color="#202020" borderRadius="16px" border="2px" borderColor="#B2B2B2"
-                                    fontFamily="Roboto FLex" fontWeight="600" fontSize="20px" lineHeight="24px" textAlign="center">
-                                My NFTs
-                            </Box>
-                            <Box pt="7px" pb="6px" w="140px" h="40px" border="2px" borderColor="#B2B2B2" background="#202020"
-                                    color="#B2B2B2" borderRadius="16px"
-                                    fontFamily="Roboto FLex" fontWeight="600" fontSize="20px" lineHeight="24px" textAlign="center"
-                                    _hover={{boxShadow: "0 0 8px rgba(178, 178, 178, 0.75)"}} onClick={onFakeClick}>
+                            {profilePanelState.panelMods.map((mod, id) => {
+                                return <Box key={id} className={clsx(styles.panelButton,
+                                    id == profilePanelState.currentPanelModeId ? styles.panelButton_clicked : null)} onClick={() => {
+                                    profilePanelState.setCurrentPanelModeId(id)
+                                }}>{mod.type}</Box>
+                            })}
+                            {/*<Box pt="7px" pb="6px" w="140px" h="40px" background="#B2B2B2" color="#202020" borderRadius="16px" border="2px" borderColor="#B2B2B2"*/}
+                            {/*        fontFamily="Roboto FLex" fontWeight="600" fontSize="20px" lineHeight="24px" textAlign="center">*/}
+                            {/*    My NFTs*/}
+                            {/*</Box>*/}
+                            {/*<Box pt="7px" pb="6px" w="140px" h="40px" border="2px" borderColor="#B2B2B2" background="#202020"*/}
+                            {/*        color="#B2B2B2" borderRadius="16px"*/}
+                            {/*        fontFamily="Roboto FLex" fontWeight="600" fontSize="20px" lineHeight="24px" textAlign="center"*/}
+                            {/*        _hover={{boxShadow: "0 0 8px rgba(178, 178, 178, 0.75)"}} onClick={onFakeClick}>*/}
 
-                                Activities
-                            </Box>
+                            {/*    Activities*/}
+                            {/*</Box>*/}
                         </HStack>
 
                         <Divider mt="32px" mb="20px" borderColor="#E8E8E826" border="0.5px"/>

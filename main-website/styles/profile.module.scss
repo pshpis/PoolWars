@@ -48,6 +48,7 @@
         text-align: center;
     }
 }
+
 .donut {
     display: inline-block;
     border: 5px solid #202020;
@@ -64,5 +65,38 @@
         100% {
             transform: rotate(360deg);
         }
+    }
+}
+
+.panelButton{
+    display: inline-flex;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 140px;
+    height: 40px;
+    background-color: #202020;
+    color: #B2B2B2;
+    border: 2px solid #B2B2B2;
+    border-radius: 16px;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    justify-content: center;
+    transition: all 1s;
+    cursor: pointer;
+
+    &:hover{
+        color: #202020;
+        background-color: #B2B2B2;
+    }
+
+    &:active{
+        color: #202020;
+        background-color: #B2B2B2;
+    }
+
+    &_clicked{
+        color: #202020;
+        background-color: #B2B2B2;
     }
 }
