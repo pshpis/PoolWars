@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PoolWarsV0.Data;
@@ -11,9 +12,10 @@ using PoolWarsV0.Data;
 namespace PoolWarsV0.Data.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20220808124442_Updated and created fields")]
+    partial class Updatedandcreatedfields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -258,33 +260,6 @@ namespace PoolWarsV0.Data.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("SolanaAddress");
                 });
 
-            modelBuilder.Entity("PoolWarsV0.Data.Models.UserEvent", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Time")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserEvents");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("UserEvent");
-                });
-
             modelBuilder.Entity("PoolWarsV0.Data.Models.UserResultCard", b =>
                 {
                     b.Property<int>("Id")
@@ -328,35 +303,6 @@ namespace PoolWarsV0.Data.Migrations
                     b.HasBaseType("PoolWarsV0.Data.Models.SolanaAddress");
 
                     b.HasDiscriminator().HasValue("PoolUserDao");
-                });
-
-            modelBuilder.Entity("PoolWarsV0.Data.Models.PoolWarEventDao", b =>
-                {
-                    b.HasBaseType("PoolWarsV0.Data.Models.UserEvent");
-
-                    b.Property<string>("Cards")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Result")
-                        .HasColumnType("integer");
-
-                    b.HasDiscriminator().HasValue("PoolWarEventDao");
-                });
-
-            modelBuilder.Entity("PoolWarsV0.Data.Models.SwapEventDao", b =>
-                {
-                    b.HasBaseType("PoolWarsV0.Data.Models.UserEvent");
-
-                    b.Property<string>("InputCards")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("OutputCard")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasDiscriminator().HasValue("SwapEventDao");
                 });
 
             modelBuilder.Entity("PoolWarsV0.Data.Models.CardMetadataDao", b =>
@@ -442,17 +388,6 @@ namespace PoolWarsV0.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Result");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("PoolWarsV0.Data.Models.UserEvent", b =>
-                {
-                    b.HasOne("PoolWarsV0.Data.Models.PoolUserDao", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("User");
                 });

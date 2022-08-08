@@ -35,4 +35,12 @@ public class PrismaUser
     [Required]
     [Column("auth_token_created")]
     public DateTime AuthTokenCreated { get; set; } = DateTime.UtcNow;
+
+    [Required]
+    [Column("updated_at")]
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+    [Required]
+    [Column("created_at")]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

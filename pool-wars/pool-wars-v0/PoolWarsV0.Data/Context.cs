@@ -26,10 +26,16 @@ public class Context : DbContext
     public DbSet<ResultUserLink> ResultUserLinks { get; set; } = null!;
 
     public DbSet<UserResultCard> UserResultCards { get; set; } = null!;
-    
+
     public DbSet<PoolWarDao> PoolWars { get; set; } = null!;
 
     public DbSet<PoolUserDao> PoolUsers { get; set; } = null!;
 
     public DbSet<PrismaUser> PrismaUsers { get; set; } = null!;
+
+    public DbSet<UserEvent> UserEvents { get; set; } = null!;
+
+    public DbSet<PoolWarEventDao> PoolWarsEvents { get; set; } = null!;
+
+    public DbSet<SwapEventDao> SwapEvent { get; set; } = null!;
 }

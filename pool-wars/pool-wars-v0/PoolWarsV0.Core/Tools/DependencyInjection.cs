@@ -45,6 +45,11 @@ public static class DependencyInjection
         app.UseMiddleware<TokenAuthenticationMiddleware>();
     }
 
+    public static void UseUserAuthentication(this IApplicationBuilder app)
+    {
+        app.UseMiddleware<UserAuthenticationMiddleware>();
+    }
+
     public static void AddDefaultCors(this IServiceCollection services)
     {
         services.AddCors(cors =>

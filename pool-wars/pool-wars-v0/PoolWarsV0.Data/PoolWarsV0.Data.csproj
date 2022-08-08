@@ -22,6 +22,12 @@
         <Compile Update="Models\PoolUserDao.cs">
             <DependentUpon>SolanaAddress.cs</DependentUpon>
         </Compile>
+        <Compile Update="Models\SwapEventDao.cs">
+            <DependentUpon>UserEvent.cs</DependentUpon>
+        </Compile>
+        <Compile Update="Models\PoolWarEventDao.cs">
+            <DependentUpon>UserEvent.cs</DependentUpon>
+        </Compile>
     </ItemGroup>
 
 </Project>

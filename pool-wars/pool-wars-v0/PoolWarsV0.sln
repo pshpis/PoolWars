@@ -16,6 +16,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoolWarsV0.Rewards", "PoolW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoolWarsV0.Rewards.Core", "PoolWarsV0.Rewards.Core\PoolWarsV0.Rewards.Core.csproj", "{371B8694-9313-4AD8-97B1-BB2ACA03586B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoolWarsV0.Events", "PoolWarsV0.Events\PoolWarsV0.Events.csproj", "{ABA099F7-B37A-4CED-85AB-E0EA76DD4BAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoolWarsV0.Events.Core", "PoolWarsV0.Events.Core\PoolWarsV0.Events.Core.csproj", "{4FDB84C3-7A8A-4CD9-AD8B-6C73067CD9F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,5 +58,13 @@ Global
 		{371B8694-9313-4AD8-97B1-BB2ACA03586B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{371B8694-9313-4AD8-97B1-BB2ACA03586B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{371B8694-9313-4AD8-97B1-BB2ACA03586B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABA099F7-B37A-4CED-85AB-E0EA76DD4BAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABA099F7-B37A-4CED-85AB-E0EA76DD4BAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABA099F7-B37A-4CED-85AB-E0EA76DD4BAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABA099F7-B37A-4CED-85AB-E0EA76DD4BAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FDB84C3-7A8A-4CD9-AD8B-6C73067CD9F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FDB84C3-7A8A-4CD9-AD8B-6C73067CD9F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FDB84C3-7A8A-4CD9-AD8B-6C73067CD9F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FDB84C3-7A8A-4CD9-AD8B-6C73067CD9F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

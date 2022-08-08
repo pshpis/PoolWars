@@ -80,7 +80,7 @@ public class MetadataController : ControllerBase
             {
                 Message = "BAD_MESSAGE"
             });
-        } 
+        }
 
         try
         {
