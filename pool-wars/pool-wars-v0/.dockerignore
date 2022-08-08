@@ -1,0 +1,8 @@
+### Asp.net template
+.git/
+.idea
+**/.gitignore
+**/bin/
+**/obj/
+.dockerignore
+Dockerfile

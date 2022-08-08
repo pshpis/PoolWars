@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.7"/>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.6"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="Models\AllowedCreatorAddress.cs">
+            <DependentUpon>SolanaAddress.cs</DependentUpon>
+        </Compile>
+        <Compile Update="Models\CardMintAddress.cs">
+            <DependentUpon>SolanaAddress.cs</DependentUpon>
+        </Compile>
+        <Compile Update="Models\PoolUserDao.cs">
+            <DependentUpon>SolanaAddress.cs</DependentUpon>
+        </Compile>
+        <Compile Update="Models\SwapEventDao.cs">
+            <DependentUpon>UserEvent.cs</DependentUpon>
+        </Compile>
+        <Compile Update="Models\PoolWarEventDao.cs">
+            <DependentUpon>UserEvent.cs</DependentUpon>
+        </Compile>
+    </ItemGroup>
+
+</Project>
