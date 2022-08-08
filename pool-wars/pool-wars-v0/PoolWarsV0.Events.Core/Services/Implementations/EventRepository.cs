@@ -43,6 +43,12 @@ public class EventRepository : IEventRepository
             _ => throw new EventRepositoryException("BAD_EVENT_TYPE")
         };
 
+        // If user was not present in the database then tell EF to create one
+        if (user.Id == 0)
+        {
+            ev.User = user;
+        }
+        
         try
         {
             await _context.UserEvents.AddAsync(ev);
