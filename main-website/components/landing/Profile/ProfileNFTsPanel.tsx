@@ -1,11 +1,8 @@
 import {useWindowSize} from "../../../hooks/useWindowSize";
-import React, {useEffect, useMemo, useState} from "react";
-import {Box, Center, Grid, GridItem, HStack, Img, Input, Text, useToast} from "@chakra-ui/react";
+import React, {useEffect, useState} from "react";
+import {Box, Center, Grid, GridItem, HStack, Img, Text} from "@chakra-ui/react";
 
-const NFT = ({src, maxValue, setChooseArr}) => {
-    const toast = useToast();
-    const NFTsName = src.slice(37).slice(0, -4);
-
+const NFT = ({src, maxValue}) => {
     return <GridItem>
         <Box width="294px" height="352px">
             <Img width="294px" height="294px" borderTopRadius="24px"
@@ -21,7 +18,7 @@ const NFT = ({src, maxValue, setChooseArr}) => {
     </GridItem>
 }
 
-export const ProfileNFTSPanel = ({NFTsStats, setChooseArr}) => {
+export const ProfileNFTSPanel = ({NFTsStats}) => {
     const size = useWindowSize();
 
     const [NFTs, setNFTs] = useState([]);
@@ -29,7 +26,7 @@ export const ProfileNFTSPanel = ({NFTsStats, setChooseArr}) => {
         let newNFTs = [];
         NFTsStats.forEach((item) => {
             if (item.maxValue !== 0)
-                newNFTs.push(<NFT src={item.src} setChooseArr={setChooseArr} maxValue={item.maxValue}/>);
+                newNFTs.push(<NFT src={item.src} maxValue={item.maxValue}/>);
         })
         newNFTs.filter(item => item.maxValue !== 0);
         setNFTs(newNFTs);

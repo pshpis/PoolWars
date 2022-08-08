@@ -15,47 +15,20 @@ import Layout from "../Layout/Layout";
 import {useWalletAuth} from "../../../hooks/useWalletAuth";
 import {useSocialConnect} from "../../../hooks/useSocialConnect";
 import {NFTStatWithMints, parseCards} from "../../../lib/nft-helper";
-import {useKattsCardsChoose} from "../../../hooks/useKattsCardsChoose";
 import {ProfileNFTSPanel} from "./ProfileNFTsPanel";
 import clsx from "clsx";
 import {useProfilePanel} from "../../../hooks/useProfilePanel";
 
-const MyNFts = () => {
-    const kattsCardChoose = useKattsCardsChoose();
-    const { setChooseArr } = kattsCardChoose;
-    const { connection } = useConnection();
-    const wallet = useWallet();
-    const [load, setLoad] = useState<boolean>(false);
-    const [version, setVersion] = useState<number>(0)
-    const [NFTsStats, setStats] = useState<NFTStatWithMints[]>([])
-
-    useEffect(() => {
-
-            async function load() {
-                setLoad(_ => false);
-                const stats = await parseCards(wallet.publicKey, connection, true);
-                console.log(stats);
-                setStats(_ => stats);
-                setLoad(_ => true);
-            }
-
-            load()
-        },
-        [wallet.publicKey, version]);
-
+const MyNFts = ({NFTsStats}) => {
     return <Box>
-        {!load ?
-            <Flex mt="200px" alignItems="center" justifyContent="center">
-                <div className={styles.donut}/>
-            </Flex>
-            :   NFTsStats.length === 0 ?
-                <VStack mt="140px">
-                    <Image src={noItemsPic}/>
-                    <Text fontStyle="Roboto Flex" fontWeight="600" fontSize="32px" lineHeight="37.5px"
-                          color="#D3CDC640;">No items</Text>
-                </VStack>
-                :
-                <ProfileNFTSPanel NFTsStats={NFTsStats} setChooseArr={setChooseArr}/>
+        {NFTsStats.length === 0 ?
+            <VStack mt="140px">
+                <Image src={noItemsPic}/>
+                <Text fontStyle="Roboto Flex" fontWeight="600" fontSize="32px" lineHeight="37.5px"
+                      color="#D3CDC640;">No items</Text>
+            </VStack>
+        :
+            <ProfileNFTSPanel NFTsStats={NFTsStats}/>
         }
     </Box>
 }
@@ -79,7 +52,28 @@ export const Profile = () => {
     const walletAuthObj = useWalletAuth();
     const {walletAddressView, onSignToggle, isSigned, connected} = walletAuthObj;
     const {discordButtonText, onDiscordButtonClick, onDiscordButtonLeave, onDiscordButtonEnter} = useSocialConnect(walletAuthObj);
+
     const profilePanelState = useProfilePanel();
+    const { connection } = useConnection();
+    const wallet = useWallet();
+    const [load, setLoad] = useState<boolean>(false);
+    const [version, setVersion] = useState<number>(0)
+    const [NFTsStats, setStats] = useState<NFTStatWithMints[]>([])
+
+    useEffect(() => {
+
+            async function load() {
+                setLoad(_ => false);
+                const stats = await parseCards(wallet.publicKey, connection, true);
+                console.log(stats);
+                setStats(_ => stats);
+                setLoad(_ => true);
+            }
+
+            load()
+        },
+        [wallet.publicKey, version, profilePanelState.currentPanelModeId]);
+
 
     return <Layout>
         {!connected ?
@@ -171,21 +165,20 @@ export const Profile = () => {
                                     profilePanelState.setCurrentPanelModeId(id)
                                 }}>{mod.type}</Box>
                             })}
-                            {/*<Box pt="7px" pb="6px" w="140px" h="40px" background="#B2B2B2" color="#202020" borderRadius="16px" border="2px" borderColor="#B2B2B2"*/}
-                            {/*        fontFamily="Roboto FLex" fontWeight="600" fontSize="20px" lineHeight="24px" textAlign="center">*/}
-                            {/*    My NFTs*/}
-                            {/*</Box>*/}
-                            {/*<Box pt="7px" pb="6px" w="140px" h="40px" border="2px" borderColor="#B2B2B2" background="#202020"*/}
-                            {/*        color="#B2B2B2" borderRadius="16px"*/}
-                            {/*        fontFamily="Roboto FLex" fontWeight="600" fontSize="20px" lineHeight="24px" textAlign="center"*/}
-                            {/*        _hover={{boxShadow: "0 0 8px rgba(178, 178, 178, 0.75)"}} onClick={onFakeClick}>*/}
-
-                            {/*    Activities*/}
-                            {/*</Box>*/}
                         </HStack>
 
                         <Divider mt="32px" mb="20px" borderColor="#E8E8E826" border="0.5px"/>
-                        <MyNFts/>
+
+                        {!load ?
+                            <Flex mt="200px" alignItems="center" justifyContent="center">
+                                <div className={styles.donut}/>
+                            </Flex>
+                        : profilePanelState.currentPanelMode.type === "MyNFTs" ?
+                                <MyNFts NFTsStats={NFTsStats}/>
+                                :
+                                <Box></Box>
+
+                        }
 
                     </Box>
                 </Stack>
