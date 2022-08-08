@@ -17,24 +17,30 @@ type NFTAmounts = {
     attack1: number,
     attack3: number,
     attack6: number,
+    attackLegendary: number,
     defence1: number,
     defence3: number,
     defence6: number,
+    defenceLegendary: number,
     intelligence1: number,
     intelligence3: number,
     intelligence6: number,
+    intelligenceLegendary: number,
 }
 
 export type Mints = {
     attack1mints: PublicKey[],
     attack3mints: PublicKey[],
     attack6mints: PublicKey[],
+    attackLegendaryMints: PublicKey[],
     defence1mints: PublicKey[],
     defence3mints: PublicKey[],
     defence6mints: PublicKey[],
+    defenceLegendaryMints: PublicKey[],
     intelligence1mints: PublicKey[],
     intelligence3mints: PublicKey[],
     intelligence6mints: PublicKey[],
+    intelligenceLegendaryMints: PublicKey[]
 }
 
 export type NFTAmountsWithMints = NFTAmounts & Mints;
@@ -46,6 +52,10 @@ const allowedCreators = [
     new PublicKey('HQqpHR1DE7o8qorjDanWFedxi5bH9rmyQksfLKYkZfZq'),
     new PublicKey('EfD2CimtxrQGXVouhvcwPjjkga11yWE9xx6aCBCUzGxq'),
     new PublicKey('ARqf5GxW2C5xijHnt2KWh9BUnqSNto5F9QHuS3MhDtYB')
+]
+
+const legendaryCreators = [
+    new PublicKey('8Wxo5XfNucF2hrNjaYBZ82WYxaudj5YG6xD7UYo5G2NP')
 ]
 
 const METADATA_PROGRAM_ID = new PublicKey('metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s');
@@ -107,6 +117,21 @@ export function amountsToArray(amounts: NFTAmountsWithMints): NFTStatWithMints[]
             src: 'https://elderkatts.com/json-metadata/intelligence_6.png',
             mints: amounts.intelligence6mints
         },
+        {
+            maxValue: amounts.attackLegendary,
+            src: 'https://elderkatts.com/json-metadata/attack_12.jpg',
+            mints: amounts.attackLegendaryMints
+        },
+        {
+            maxValue: amounts.defenceLegendary,
+            src: 'https://elderkatts.com/json-metadata/defence_12.jpg',
+            mints: amounts.defenceLegendaryMints
+        },
+        {
+            maxValue: amounts.intelligenceLegendary,
+            src: 'https://elderkatts.com/json-metadata/intelligence_12.jpg',
+            mints: amounts.intelligenceLegendaryMints
+        }
     ]
 }
 
@@ -126,7 +151,14 @@ async function parseMints(address: PublicKey | null, connection: Connection): Pr
     }
 }
 
-async function processMint(mint: PublicKey, amounts: NFTAmountsWithMints, connection: Connection): Promise<NFTAmountsWithMints> {
+async function processMint(mint: PublicKey, amounts: NFTAmountsWithMints, connection: Connection, allowLegendary: boolean = false): Promise<NFTAmountsWithMints> {
+
+    const creators = allowedCreators;
+
+    if (allowLegendary) {
+        console.log('legendaries allowed')
+        creators.push(...legendaryCreators);
+    }
 
     try {
         console.log('fetch metadata')
@@ -140,7 +172,7 @@ async function processMint(mint: PublicKey, amounts: NFTAmountsWithMints, connec
 
         console.log('checked metadata')
 
-        if (!allowedCreators.some(c => c.toBase58() === metadata.data.creators[0].address.toBase58())) {
+        if (!creators.some(c => c.toBase58() === metadata.data.creators[0].address.toBase58())) {
             return amounts;
         }
 
@@ -166,6 +198,9 @@ async function processMint(mint: PublicKey, amounts: NFTAmountsWithMints, connec
                     amounts.attack6 += 1;
                     amounts.attack6mints.push(mint);
 
+                } else if (strength === '12') {
+                    amounts.attackLegendary += 1;
+                    amounts.attackLegendaryMints.push(mint);
                 }
 
                 break;
@@ -183,6 +218,9 @@ async function processMint(mint: PublicKey, amounts: NFTAmountsWithMints, connec
                     amounts.defence6 += 1;
                     amounts.defence6mints.push(mint);
 
+                } else if (strength === '12') {
+                    amounts.defenceLegendary += 1;
+                    amounts.defenceLegendaryMints.push(mint);
                 }
 
                 break;
@@ -200,6 +238,9 @@ async function processMint(mint: PublicKey, amounts: NFTAmountsWithMints, connec
                     amounts.intelligence6 += 1;
                     amounts.intelligence6mints.push(mint);
 
+                } else if (strength === '12') {
+                    amounts.intelligenceLegendary += 1;
+                    amounts.intelligenceLegendaryMints.push(mint);
                 }
 
                 break;
@@ -216,7 +257,7 @@ async function processMint(mint: PublicKey, amounts: NFTAmountsWithMints, connec
     }
 }
 
-export async function parseCards(address: PublicKey | null, connection: Connection): Promise<NFTStatWithMints[]> {
+export async function parseCards(address: PublicKey | null, connection: Connection, allowLegendary: boolean = false): Promise<NFTStatWithMints[]> {
 
     console.log('parse started');
 
@@ -224,21 +265,27 @@ export async function parseCards(address: PublicKey | null, connection: Connecti
         attack1: 0,
         attack3: 0,
         attack6: 0,
+        attackLegendary: 0,
         defence1: 0,
         defence3: 0,
         defence6: 0,
+        defenceLegendary: 0,
         intelligence1: 0,
         intelligence3: 0,
         intelligence6: 0,
+        intelligenceLegendary: 0,
         attack1mints: [],
         attack3mints: [],
         attack6mints: [],
+        attackLegendaryMints: [],
         defence1mints: [],
         defence3mints: [],
         defence6mints: [],
+        defenceLegendaryMints: [],
         intelligence1mints: [],
         intelligence3mints: [],
         intelligence6mints: [],
+        intelligenceLegendaryMints: [],
     }
 
     if (!address) {
@@ -249,7 +296,7 @@ export async function parseCards(address: PublicKey | null, connection: Connecti
     console.log(mints)
 
     for (let i = 0; i < mints.length; i++) {
-        amounts = await processMint(mints[i], amounts, connection);
+        amounts = await processMint(mints[i], amounts, connection, allowLegendary);
     }
 
     return amountsToArray(amounts);

@@ -39,9 +39,13 @@ export const mapChooseStateToMints = (chooseState: ChooseState, nftStats: NFTSta
             stat = nftStats[7];
         } else if (chosen.id === 'intelligence_6') {
             stat = nftStats[8];
+        } else if (chosen.id === 'attack_12') {
+            stat = nftStats[9];
+        } else if (chosen.id === 'defence_12') {
+            stat = nftStats[10];
+        } else if (chosen.id === 'intelligence_12') {
+            stat = nftStats[11];
         }
-
-        console.log(stat)
         
         mints.push(...stat.mints.slice(0, chosen.value));
     });

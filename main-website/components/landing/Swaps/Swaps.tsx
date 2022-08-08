@@ -1,8 +1,7 @@
 import { useWindowSize } from "../../../hooks/useWindowSize";
 import Layout from "../Layout/Layout";
 import {
-    Box, Center,
-    Divider, Flex,
+    Box, Divider, Flex,
     HStack,
     Text,
     VStack
@@ -14,9 +13,9 @@ import { NFTSPanel } from "../NFTsPanel";
 import { SwapState, useKattsCardsSwaps } from "../../../hooks/useKattsCardsSwaps";
 import clsx from "clsx";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { NFTStat, NFTStatWithMints, parseCards } from "../../../lib/nft-helper";
+import { NFTStatWithMints, parseCards } from "../../../lib/nft-helper";
 import { useWalletAuth } from "../../../hooks/useWalletAuth";
-import { ComputeBudgetInstruction, ComputeBudgetProgram, Keypair, PublicKey, SystemInstruction } from "@solana/web3.js";
+import { ComputeBudgetProgram, Keypair} from "@solana/web3.js";
 import { swapCards, swapType, SWAP_AUTHORITY } from "../../../lib/swap-instructions";
 import { Transaction } from "@solana/web3.js";
 import { getSwapAuthoritySignature } from "../../../lib/swap-message-checker";
@@ -150,15 +149,18 @@ export const Swaps = () => {
 
     const [NFTsStats, setStats] = useState<NFTStatWithMints[]>([]);
     const [version, setVersion] = useState<number>(0);
+    const [load, setLoad] = useState<boolean>(false);
 
     const versionInc = () => setVersion(v => v + 1);
 
     useEffect(() => {
 
         async function load() {
+            setLoad(_ => false);
             const stats = await parseCards(wallet.publicKey, connection);
             console.log(stats);
             setStats(_ => stats);
+            setLoad(_ => true);
         }
 
         load()
@@ -225,7 +227,7 @@ export const Swaps = () => {
             signedTransaction.addSignature(SWAP_AUTHORITY, signature);
 
             const result = await connection.sendRawTransaction(signedTransaction.serialize())
-            // versionInc();
+            versionInc();
         }
         catch (e) {
             console.error(e);
@@ -250,8 +252,13 @@ export const Swaps = () => {
                     </HStack>}
 
                 <Divider maxW="1440px" margin="76px auto" borderColor="#E8E8E826" border="0.5px" />
-                <TitleText />
-                <NFTSPanel NFTsStats={NFTsStats} setChooseArr={chooseState.setChooseArr} />
+                {!load ?
+                    <Flex alignItems="center" justifyContent="center">
+                        <div className={styles.donut}/>
+                    </Flex>
+                    :
+                    <NFTSPanel NFTsStats={NFTsStats} setChooseArr={chooseState.setChooseArr}/>
+                }
             </Box>
         }
 

@@ -1,5 +1,5 @@
 import {
-    Box, Button, Center, Divider,
+    Box, Center, Divider,
     Drawer, DrawerContent,
     DrawerOverlay,
     HStack, Icon, Link,
@@ -59,7 +59,7 @@ const HeaderNavElMobile = ({children}) => {
 
 const HeaderNav = () => {
     return <HStack fontStyle="light" color="#B2B2B2" fontFamily="Roboto Flex" fontWeight="300" spacing={0}>
-        <HeaderNavEl><Link href="/profile">profile</Link></HeaderNavEl>
+        <HeaderNavEl><Link href="/profile" style={{textDecoration: 'none'}}>profile</Link></HeaderNavEl>
         <HeaderNavSpacer/>
         <HeaderNavEl><FakeLink href="/mint">mint</FakeLink></HeaderNavEl>
         <HeaderNavSpacer/>
@@ -67,15 +67,15 @@ const HeaderNav = () => {
         <HeaderNavSpacer/>
         <HeaderNavEl><FakeLink href="/pool-wars">events</FakeLink></HeaderNavEl>
         <HeaderNavSpacer/>
-        <HeaderNavEl><Link href="/beta">beta</Link></HeaderNavEl>
+        <HeaderNavEl><Link href="/beta" style={{textDecoration: 'none'}}>beta</Link></HeaderNavEl>
         <HeaderNavSpacer/>
-        <HeaderNavEl><Link href="/whitepaper/">whitepaper</Link></HeaderNavEl>
+        <HeaderNavEl><Link href="/whitepaper/" style={{textDecoration: 'none'}}>whitepaper</Link></HeaderNavEl>
     </HStack>
 }
 
 const HeaderNavMobile = ({onClose}) => {
     return <VStack fontStyle="light" color="#B2B2B2" fontFamily="Roboto Flex" fontWeight="300" spacing={0} fontSize="24px" height="100%" pb="20px">
-        <HeaderNavElMobile><Link href="/profile">profile</Link></HeaderNavElMobile>
+        <HeaderNavElMobile><Link href="/profile" style={{textDecoration: 'none'}}>profile</Link></HeaderNavElMobile>
         <HeaderNavSpacerMobile/>
         <HeaderNavElMobile><FakeLink href="/mint">mint</FakeLink></HeaderNavElMobile>
         <HeaderNavSpacerMobile/>
@@ -83,9 +83,9 @@ const HeaderNavMobile = ({onClose}) => {
         <HeaderNavSpacerMobile/>
         <HeaderNavElMobile><FakeLink href="/pool-wars">events</FakeLink></HeaderNavElMobile>
         <HeaderNavSpacerMobile/>
-        <HeaderNavElMobile><Link href="/beta">beta</Link></HeaderNavElMobile>
+        <HeaderNavElMobile><Link href="/beta" style={{textDecoration: 'none'}}>beta</Link></HeaderNavElMobile>
         <HeaderNavSpacerMobile/>
-        <HeaderNavElMobile><Link href="/whitepaper/">whitepaper</Link></HeaderNavElMobile>
+        <HeaderNavElMobile><Link href="/whitepaper/" style={{textDecoration: 'none'}}>whitepaper</Link></HeaderNavElMobile>
         <Spacer/>
         <ConnectButton onClick={onClose}/>
     </VStack>

@@ -6,7 +6,7 @@ const POOL_WARS_API = 'https://elderkatts.com'
 export type PoolType = 'attack' | 'defence'
 export type PoolWar = {
     description: string | undefined,
-    end: Date,
+    end: string,
     pools: Pool[]
 }
 
