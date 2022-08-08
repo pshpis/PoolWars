@@ -21,7 +21,10 @@ public class EventRepository : IEventRepository
                                .PoolUsers
                                .AsNoTracking()
                                .FirstOrDefaultAsync(u => u.Address == @event.UserWalletAddress) ??
-                           throw new EventRepositoryException("USER_NOT_FOUND");
+                           new()
+                           {
+                               Address = @event.UserWalletAddress
+                           };
 
         UserEvent ev = @event switch
         {
