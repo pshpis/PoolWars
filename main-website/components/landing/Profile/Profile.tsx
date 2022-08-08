@@ -4,16 +4,59 @@ import {
     Text, useToast, VStack
 } from "@chakra-ui/react";
 import {useWindowSize} from "../../../hooks/useWindowSize";
-import React, {useCallback, useEffect, useLayoutEffect, useMemo, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {ElderKattsBox} from "../Layout/ElderKattsBox";
 import Image from "next/image";
 import userPic from "../../../public/User.svg";
 import noItemsPic from "../../../public/No-items-icon.svg";
-import {useWallet} from "@solana/wallet-adapter-react";
+import {useConnection, useWallet} from "@solana/wallet-adapter-react";
 import styles from "../../../styles/profile.module.scss";
 import Layout from "../Layout/Layout";
 import {useWalletAuth} from "../../../hooks/useWalletAuth";
 import {useSocialConnect} from "../../../hooks/useSocialConnect";
+import {NFTStatWithMints, parseCards} from "../../../lib/nft-helper";
+import {useKattsCardsChoose} from "../../../hooks/useKattsCardsChoose";
+import {ProfileNFTSPanel} from "./ProfileNFTsPanel";
+
+const MyNFts = () => {
+    const kattsCardChoose = useKattsCardsChoose();
+    const {  setChooseArr } = kattsCardChoose;
+    const { connection } = useConnection();
+    const wallet = useWallet();
+    const [load, setLoad] = useState<boolean>(false);
+    const [version, setVersion] = useState<number>(0)
+    const [NFTsStats, setStats] = useState<NFTStatWithMints[]>([])
+
+    useEffect(() => {
+
+            async function load() {
+                setLoad(_ => false);
+                const stats = await parseCards(wallet.publicKey, connection, true);
+                console.log(stats);
+                setStats(_ => stats);
+                setLoad(_ => true);
+            }
+
+            load()
+        },
+        [wallet.publicKey, version]);
+
+    return <Box>
+        {!load ?
+            <Flex alignItems="center" justifyContent="center">
+                <div className={styles.donut}/>
+            </Flex>
+            :   NFTsStats.length === 0 ?
+                <VStack mt="120px">
+                    <Image src={noItemsPic}/>
+                    <Text fontStyle="Roboto Flex" fontWeight="600" fontSize="32px" lineHeight="37.5px"
+                          color="#D3CDC640;">No items</Text>
+                </VStack>
+                :
+                <ProfileNFTSPanel NFTsStats={NFTsStats} setChooseArr={setChooseArr}/>
+        }
+    </Box>
+}
 
 export const Profile = () => {
     const size = useWindowSize();
@@ -31,9 +74,31 @@ export const Profile = () => {
         }
     }
 
+    const kattsCardChoose = useKattsCardsChoose();
+    const {  setChooseArr } = kattsCardChoose;
+    const { connection } = useConnection();
+    const wallet = useWallet();
     const walletAuthObj = useWalletAuth();
     const {walletAddressView, onSignToggle, isSigned, connected} = walletAuthObj;
     const {discordButtonText, onDiscordButtonClick, onDiscordButtonLeave, onDiscordButtonEnter} = useSocialConnect(walletAuthObj);
+
+    const [load, setLoad] = useState<boolean>(false);
+    const [version, setVersion] = useState<number>(0)
+    const [NFTsStats, setStats] = useState<NFTStatWithMints[]>([])
+
+    // useEffect(() => {
+    //
+    //         async function load() {
+    //             setLoad(_ => false);
+    //             const stats = await parseCards(wallet.publicKey, connection, true);
+    //             console.log(stats);
+    //             setStats(_ => stats);
+    //             setLoad(_ => true);
+    //         }
+    //
+    //         load()
+    //     },
+    //     [wallet.publicKey, version]);
 
     return <Layout>
         {!connected ?
@@ -44,7 +109,7 @@ export const Profile = () => {
             <Box mb="160px" pt="5.5%" pl="6.6%" pr="6.6%" w="100%">
                 <Stack direction={size.width > 1000 ? "row" : "column"}
                        spacing="72px" w="100%" maxW="1248px" margin="0 auto">
-                    <Stack pt="32px" pl="23px" pr="23px" pb="32px" as={ElderKattsBox}
+                    <Stack maxHeight="578px" pt="32px" pl="23px" pr="23px" pb="32px" as={ElderKattsBox}
                            direction={size.width > 1000 ? "column" : size.width > 630 ? "row" : "column"}
                            spacing={"32px"} justifyContent="space-between">
                         <Box>
@@ -115,29 +180,26 @@ export const Profile = () => {
                                 </Box>
                             </VStack>
                         </Box>
-
                     </Stack>
 
                     <Box w="100%" alignSelf="start">
                         <HStack mb="16px" direction="row">
-                            <Button w="140px" h="40px" background="#B2B2B2" color="#202020" borderRadius="16px"
+                            <Box w="140px" h="40px" background="#B2B2B2" color="#202020" borderRadius="16px"
                                     fontFamily="Roboto FLex" fontWeight="600" fontSize="20px" lineHeight="24px">
                                 My NFTs
-                            </Button>
-                            <Button w="140px" h="40px" border="2px" borderColor="#B2B2B2" background="#202020"
+                            </Box>
+                            <Box w="140px" h="40px" border="2px" borderColor="#B2B2B2" background="#202020"
                                     color="#B2B2B2" borderRadius="16px"
                                     fontFamily="Roboto FLex" fontWeight="600" fontSize="20px" lineHeight="24px"
                                     _hover={{boxShadow: "0 0 8px rgba(178, 178, 178, 0.75)"}} onClick={onFakeClick}>
 
                                 Activities
-                            </Button>
+                            </Box>
                         </HStack>
-                        <Divider mt="32px" mb="160px" borderColor="#E8E8E826" border="0.5px"/>
-                        <VStack>
-                            <Image src={noItemsPic}/>
-                            <Text fontStyle="Roboto Flex" fontWeight="600" fontSize="32px" lineHeight="37.5px"
-                                  color="#D3CDC640;">No items</Text>
-                        </VStack>
+
+                        <Divider mt="32px" mb="40px" borderColor="#E8E8E826" border="0.5px"/>
+                        <MyNFts/>
+
                     </Box>
                 </Stack>
             </Box>

@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,14 +7,106 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-
 model User {
-  id Int @id @default(autoincrement())
-  wallet_address String @unique
-  auth_token String @unique
-  twitter_nickname String @default("")
-  discord_auth_token String @default("")
-  auth_code String
+  id                 Int      @id @default(autoincrement())
+  wallet_address     String   @unique
+  auth_token         String   @unique
+  twitter_nickname   String   @default("")
+  auth_code          String
+  updated_at         DateTime @updatedAt
   auth_token_created DateTime @default(now())
+  created_at         DateTime @default(now())
+  discord_auth_token String   @default("")
+}
+
+model Addresses {
+  Id              Int               @id(map: "PK_Addresses") @default(autoincrement())
+  Address         String            @unique(map: "IX_Addresses_Address")
+  Discriminator   String
+  CardMetadata    CardMetadata?
+  Deposits        Deposits[]
+  ResultUserLinks ResultUserLinks[]
+}
+
+model CardMetadata {
+  Id              Int               @id(map: "PK_CardMetadata") @default(autoincrement())
+  Strength        Int
+  Type            Int
+  CardMintId      Int               @unique(map: "IX_CardMetadata_CardMintId")
+  Addresses       Addresses         @relation(fields: [CardMintId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_CardMetadata_Addresses_CardMintId")
+  Deposits        Deposits[]
+  UserResultCards UserResultCards[]
+}
+
+model Deposits {
+  Id             Int          @id(map: "PK_Deposits") @default(autoincrement())
+  UserId         Int
+  PoolId         Int
+  CardMetadataId Int
+  Addresses      Addresses    @relation(fields: [UserId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_Deposits_Addresses_UserId")
+  CardMetadata   CardMetadata @relation(fields: [CardMetadataId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_Deposits_CardMetadata_CardMetadataId")
+  Pools          Pools        @relation(fields: [PoolId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_Deposits_Pools_PoolId")
+
+  @@index([CardMetadataId], map: "IX_Deposits_CardMetadataId")
+  @@index([PoolId], map: "IX_Deposits_PoolId")
+  @@index([UserId], map: "IX_Deposits_UserId")
+}
+
+model PoolWars {
+  Id              Int              @id(map: "PK_PoolWars") @default(autoincrement())
+  Description     String?
+  End             DateTime         @db.Timestamptz(6)
+  PoolWarsResults PoolWarsResults?
+  Pools           Pools[]
+}
+
+model PoolWarsResults {
+  Id              Int               @id(map: "PK_PoolWarsResults") @default(autoincrement())
+  PoolWarId       Int               @unique(map: "IX_PoolWarsResults_PoolWarId")
+  WinnerPoolId    Int               @unique(map: "IX_PoolWarsResults_WinnerPoolId")
+  PoolWars        PoolWars          @relation(fields: [PoolWarId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_PoolWarsResults_PoolWars_PoolWarId")
+  Pools           Pools             @relation(fields: [WinnerPoolId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_PoolWarsResults_Pools_WinnerPoolId")
+  ResultUserLinks ResultUserLinks[]
+}
+
+model Pools {
+  Id              Int              @id(map: "PK_Pools") @default(autoincrement())
+  Address         String           @unique(map: "IX_Pools_Address")
+  PrivateKey      String           @unique(map: "IX_Pools_PrivateKey")
+  PoolWarId       Int
+  PoolWars        PoolWars         @relation(fields: [PoolWarId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_Pools_PoolWars_PoolWarId")
+  Deposits        Deposits[]
+  PoolWarsResults PoolWarsResults?
+
+  @@index([PoolWarId], map: "IX_Pools_PoolWarId")
+}
+
+model ResultUserLinks {
+  Id              Int               @id(map: "PK_ResultUserLinks") @default(autoincrement())
+  UserId          Int
+  ResultId        Int
+  Addresses       Addresses         @relation(fields: [UserId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_ResultUserLinks_Addresses_UserId")
+  PoolWarsResults PoolWarsResults   @relation(fields: [ResultId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_ResultUserLinks_PoolWarsResults_ResultId")
+  UserResultCards UserResultCards[]
+
+  @@unique([UserId, ResultId], map: "IX_ResultUserLinks_UserId_ResultId")
+  @@index([ResultId], map: "IX_ResultUserLinks_ResultId")
+}
+
+model UserResultCards {
+  Id              Int             @id(map: "PK_UserResultCards") @default(autoincrement())
+  LinkId          Int
+  CardId          Int
+  CardMetadata    CardMetadata    @relation(fields: [CardId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_UserResultCards_CardMetadata_CardId")
+  ResultUserLinks ResultUserLinks @relation(fields: [LinkId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_UserResultCards_ResultUserLinks_LinkId")
+
+  @@unique([LinkId, CardId], map: "IX_UserResultCards_LinkId_CardId")
+  @@index([CardId], map: "IX_UserResultCards_CardId")
+}
+
+model EFMigrationsHistory {
+  MigrationId    String @id(map: "PK___EFMigrationsHistory") @db.VarChar(150)
+  ProductVersion String @db.VarChar(32)
+
+  @@map("__EFMigrationsHistory")
 }

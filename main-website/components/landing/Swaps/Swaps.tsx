@@ -58,7 +58,7 @@ const WillTakePointsPanel = ({ pointsPanelsHeight, swapState, onClick }: { point
 
         <Box onClick={onClick} ml="24px" mr="24px" maxWidth="246px" height="48px" backgroundColor="#B8C3E6" borderRadius="24px" textAlign="center"
             fontWeight="600" fontSize="24px" lineHeight="48px" color="#202020"
-            transition="0.3s ease" _hover={{ boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);" }}>
+            transition="0.3s ease" _hover={{ boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);" }} cursor="pointer">
             SWAP
         </Box>
     </ElderKattsBox>
@@ -113,22 +113,6 @@ const PointsPanels = ({ chooseState, swapState, onClick }: { chooseState: Choose
         </HStack>
         {size.width < 640 ? <WillTakePointsPanel onClick={onClick} pointsPanelsHeight={pointsPanelsHeight} swapState={swapState} /> : ""}
     </Box>
-}
-
-const TitleText = () => {
-    const size = useWindowSize();
-    const defaultTitleSize = useMemo(() => {
-        if (size.width < 531) return 32;
-        if (size.width < 646) return 48;
-        return 64;
-    }, [size.width]);
-
-    return <HStack mt="80px" fontWeight="400" fontSize={defaultTitleSize + "px"} lineHeight="74px" spacing={0}
-        w="100%" maxW="1248px" margin="0 auto">
-        <Text fontFamily="Njord">CH</Text>
-        <Text fontFamily="Njord Alternate">OO</Text>
-        <Text fontFamily="Njord">SE NFTS</Text>
-    </HStack>
 }
 
 export const Swaps = () => {

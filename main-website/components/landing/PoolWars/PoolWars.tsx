@@ -94,7 +94,7 @@ const AttackPoolPanel = ({ sumPoints, totalInPool, userInPool, onClick }: { sumP
         </HStack>
 
         <Center mt="81px">
-            <Box onClick={onClick} width="246px" height="48px" backgroundColor="#B8C3E6" color="#202020" borderRadius="24px"
+            <Box onClick={onClick} width="246px" height="48px" backgroundColor="#B8C3E6" color="#202020" borderRadius="24px" cursor="pointer"
                 fontWeight="600" fontSize="22px" lineHeight="48px" textAlign="center" transition="0.3s ease" _hover={{ boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);"}}>
                 Provide your NFTs!
             </Box>
@@ -123,7 +123,7 @@ const DefencePoolPanel = ({ sumPoints, totalInPool, userInPool, onClick }: { sum
         </HStack>
 
         <Center mt="81px">
-            <Box onClick={onClick} width="246px" height="48px" backgroundColor="#B8C3E6" color="#202020" borderRadius="24px"
+            <Box onClick={onClick} width="246px" height="48px" backgroundColor="#B8C3E6" color="#202020" borderRadius="24px" cursor="pointer"
                 fontWeight="600" fontSize="22px" lineHeight="48px" textAlign="center" transition="0.3s ease" _hover={{ boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);"}}>
                 Provide your NFTs!
             </Box>
@@ -131,22 +131,6 @@ const DefencePoolPanel = ({ sumPoints, totalInPool, userInPool, onClick }: { sum
 
         <Img mt="-233px" position="absolute" zIndex={-1} src="/Shield.svg" />
     </ElderKattsBox>
-}
-
-const TitleText = () => {
-    const size = useWindowSize();
-    const defaultTitleSize = useMemo(() => {
-        if (size.width < 531) return 32;
-        if (size.width < 646) return 48;
-        return 64;
-    }, [size.width]);
-
-    return <HStack mt="80px" fontWeight="400" fontSize={defaultTitleSize + "px"} lineHeight="74px" spacing={0}
-                   w="100%" maxW="1248px" margin="0 auto">
-        <Text fontFamily="Njord">CH</Text>
-        <Text fontFamily="Njord Alternate">OO</Text>
-        <Text fontFamily="Njord">SE NFTS</Text>
-    </HStack>
 }
 
 export const PoolWars = () => {
