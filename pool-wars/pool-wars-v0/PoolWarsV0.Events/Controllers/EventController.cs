@@ -25,13 +25,13 @@ public class EventController : ControllerBase
     /// <param name="page">Page</param>
     /// <param name="count">Items on page</param>
     /// <returns>List of events</returns>
-    [HttpGet(Name = "my")]
+    [HttpGet]
     [UserAuthentication]
     [ProducesResponseType(typeof(IEnumerable<Event>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<Event>>> Get([FromQuery] string token,
+    public async Task<ActionResult<IEnumerable<Event>>> Index([FromQuery] string token,
         [FromQuery] [Range(minimum: 1, int.MaxValue)]
         int page, [FromQuery] [Range(minimum: 1, maximum: 20)] int count)
     {
