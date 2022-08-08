@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using PoolWarsV0.Core.Tools;
 using PoolWarsV0.Events.Core.Tools;
 using StartupBase = PoolWarsV0.Core.StartupBase;
@@ -18,7 +19,11 @@ internal class Startup : StartupBase
         services.AddEvents();
         services.AddHttpClient();
         services.AddSwaggerGen();
-        services.AddControllers();
+
+        services.AddControllers().AddJsonOptions(json =>
+        {
+            json.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+        });
         services.AddDefaultCors();
     }
 

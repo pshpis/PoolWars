@@ -31,7 +31,7 @@ public class EventController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<Event>>> Index([FromQuery] string token,
+    public async Task<ActionResult<List<object>>> Index([FromQuery] string token,
         [FromQuery] [Range(minimum: 1, int.MaxValue)]
         int page, [FromQuery] [Range(minimum: 1, maximum: 20)] int count)
     {
@@ -55,6 +55,7 @@ public class EventController : ControllerBase
         var events = await _repository.GetEvents(claim.Value)
             .Skip(from)
             .Take(count)
+            .Cast<object>()
             .ToListAsync();
 
         return events;
