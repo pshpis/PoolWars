@@ -10,6 +10,7 @@
     border-radius: 20px;
     justify-content: center;
     transition: all 1s;
+    cursor: pointer;
 
     &:hover{
         background-color: #71CFC3;
@@ -24,5 +25,24 @@
     &_clicked{
         background-color: #71CFC3;
         color: #202020;
+    }
+}
+
+.donut {
+    display: inline-block;
+    border: 5px solid #202020;
+    border-left-color: #71CFC3;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    animation: donut-spin 1.2s linear infinite;
+
+    @keyframes donut-spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
     }
 }

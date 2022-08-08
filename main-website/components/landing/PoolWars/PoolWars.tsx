@@ -1,5 +1,5 @@
 import Layout from "../Layout/Layout";
-import { Box, Center, HStack, Img, Text, VStack } from "@chakra-ui/react";
+import {Box, Center, Divider, Flex, HStack, Img, Text, VStack} from "@chakra-ui/react";
 import { useWindowSize } from "../../../hooks/useWindowSize";
 import React, { useEffect, useMemo, useState } from "react";
 import { NFTSPanel } from "../NFTsPanel";
@@ -12,6 +12,7 @@ import { PublicKey, Transaction } from "@solana/web3.js";
 import { ASSOCIATED_TOKEN_PROGRAM_ID, createAssociatedTokenAccount, createAssociatedTokenAccountInstruction, createTransferCheckedInstruction, getAssociatedTokenAddress, TOKEN_PROGRAM_ID, transferChecked } from "@solana/spl-token";
 import { mapChooseStateToMints } from "../../../lib/shared";
 import { useCookies } from "../../../hooks/useCookies";
+import styles from "../../../styles/swaps.module.scss";
 
 const MainText = () => {
     const size = useWindowSize();
@@ -93,7 +94,7 @@ const AttackPoolPanel = ({ sumPoints, totalInPool, userInPool, onClick }: { sumP
         </HStack>
 
         <Center mt="81px">
-            <Box onClick={onClick} width="246px" height="48px" backgroundColor="#B8C3E6" color="#202020" borderRadius="24px"
+            <Box onClick={onClick} width="246px" height="48px" backgroundColor="#B8C3E6" color="#202020" borderRadius="24px" cursor="pointer"
                 fontWeight="600" fontSize="22px" lineHeight="48px" textAlign="center" transition="0.3s ease" _hover={{ boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);"}}>
                 Provide your NFTs!
             </Box>
@@ -122,7 +123,7 @@ const DefencePoolPanel = ({ sumPoints, totalInPool, userInPool, onClick }: { sum
         </HStack>
 
         <Center mt="81px">
-            <Box onClick={onClick} width="246px" height="48px" backgroundColor="#B8C3E6" color="#202020" borderRadius="24px"
+            <Box onClick={onClick} width="246px" height="48px" backgroundColor="#B8C3E6" color="#202020" borderRadius="24px" cursor="pointer"
                 fontWeight="600" fontSize="22px" lineHeight="48px" textAlign="center" transition="0.3s ease" _hover={{ boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);"}}>
                 Provide your NFTs!
             </Box>
@@ -151,6 +152,7 @@ export const PoolWars = () => {
     const versionInc = () => setVersion(v => v + 1);
 
     const [poolWar, setPoolWar] = useState<PoolWar | undefined>();
+    const [load, setLoad] = useState<boolean>(false);
 
     const [attackPool, setAttackPool] = useState<PoolState>({
         address: '',
@@ -167,9 +169,11 @@ export const PoolWars = () => {
     useEffect(() => {
 
         async function load() {
+            setLoad(_ => false);
             const stats = await parseCards(wallet.publicKey, connection, true);
             console.log(stats);
             setStats(_ => stats);
+            setLoad(_ => true);
         }
 
         load()
@@ -187,12 +191,10 @@ export const PoolWars = () => {
         }
 
         load();
-    },
-        [])
+    }, [])
 
     useEffect(() => {
         async function load() {
-
             if (!poolWar) {
                 return;
             }
@@ -329,8 +331,18 @@ export const PoolWars = () => {
                 </VStack>
             }
 
-            <NFTSPanel NFTsStats={NFTsStats} setChooseArr={setChooseArr} />
-        </Box> : <span>There are no pool war RN</span>
+            <Divider maxW="1440px" margin="76px auto" borderColor="#E8E8E826" border="0.5px" />
+            {!load ?
+                <Flex alignItems="center" justifyContent="center">
+                    <div className={styles.donut}/>
+                </Flex>
+                :
+                <NFTSPanel NFTsStats={NFTsStats} setChooseArr={setChooseArr}/>
+            }
+
+        </Box>
+            :
+            <span>There are no pool war RN</span>
         }
     </Layout>
 }
