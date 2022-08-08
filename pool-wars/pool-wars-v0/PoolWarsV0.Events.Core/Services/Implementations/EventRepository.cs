@@ -31,14 +31,12 @@ public class EventRepository : IEventRepository
             SwapEvent swap => new SwapEventDao
             {
                 UserId = user.Id,
-                User = user,
                 InputCards = string.Join(" ", swap.InputCards),
                 OutputCard = swap.OutputCard
             },
             PoolWarEvent pw => new PoolWarEventDao
             {
                 UserId = user.Id,
-                User = user,
                 Result = pw.Result,
                 Cards = string.Join(" ", pw.Cards)
             },
