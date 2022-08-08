@@ -30,4 +30,6 @@ public class Context : DbContext
     public DbSet<PoolWarDao> PoolWars { get; set; } = null!;
 
     public DbSet<PoolUserDao> PoolUsers { get; set; } = null!;
+
+    public DbSet<PrismaUser> PrismaUsers { get; set; } = null!;
 }
