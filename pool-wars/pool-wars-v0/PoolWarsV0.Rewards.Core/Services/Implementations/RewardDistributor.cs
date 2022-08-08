@@ -1,6 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using PoolWarsV0.Data;
 using PoolWarsV0.Data.Models;
+using PoolWarsV0.Events.Core.Exceptions;
+using PoolWarsV0.Events.Core.Models;
+using PoolWarsV0.Events.Core.Services;
 using PoolWarsV0.Pools.Core.Models;
 using PoolWarsV0.Rewards.Core.Exceptions;
 using PoolWarsV0.Rewards.Core.Models;
@@ -10,10 +14,12 @@ namespace PoolWarsV0.Rewards.Core.Services.Implementations;
 public class RewardDistributor : IRewardDistributor
 {
     private readonly Context _context;
+    private readonly IEventRepository _repository;
 
-    public RewardDistributor(Context context)
+    public RewardDistributor(Context context, IEventRepository _repository)
     {
         _context = context;
+        this._repository = _repository;
     }
 
     public async Task<PoolWarResult> DistributeRewards(WinnerData winner)
@@ -56,8 +62,12 @@ public class RewardDistributor : IRewardDistributor
             WinnerPoolId = winnerPool.Id
         };
 
+        await using IDbContextTransaction transaction = await _context.Database.BeginTransactionAsync();
+        
         foreach (PoolUserDao user in rewardedUsers)
         {
+            PoolWarEvent @event = new(user.Address);
+            
             ResultUserLink resultUserLink = new()
             {
                 User = user,
@@ -68,13 +78,25 @@ public class RewardDistributor : IRewardDistributor
             AddUserCardsToReward(resultUserLink, winnerPool, user);
             AddUserShareToReward(resultUserLink, user, winner.WinnerPool, winnerPool, winner.LoserPool, ref loserDeposits);
 
+            @event.Cards = resultUserLink.Cards.Select(c => c.Card.CardMint.Address).ToList();
+
+            try
+            {
+                await _repository.AddEventAsync(@event);
+            }
+            catch (EventRepositoryException e)
+            {
+                throw new WinnerGeneratorException(e.Message);
+            }
+
             result.Users.Add(resultUserLink);
         }
 
         poolWarDao.Result = result;
         _context.PoolWars.Update(poolWarDao);
         await _context.SaveChangesAsync();
-
+        await transaction.CommitAsync();
+        
         return new()
         {
             Address = winner.WinnerPool.Address,

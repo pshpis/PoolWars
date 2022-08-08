@@ -51,7 +51,9 @@ public abstract class StartupBase
                     Values = new()
                     {
                         {"Mints", mints},
-                        {"SwapConfig", keys[keyIndices[1]]}
+                        {"User", keys[keyIndices[0]]},
+                        {"SwapConfig", keys[keyIndices[1]]},
+                        {"Mint", keys[keyIndices[2]]}
                     }
                 };
             }

@@ -1,4 +1,5 @@
 using PoolWarsV0.Core.Tools;
+using PoolWarsV0.Events.Core.Tools;
 using PoolWarsV0.MetadataReader.Core.Services;
 using PoolWarsV0.MetadataReader.Core.Services.Implementations;
 using PoolWarsV0.MetadataReader.Core.Tools;
@@ -24,6 +25,7 @@ internal class Startup : StartupBase
         services.AddMetadataReader();
         services.AddTransient<ISwapChecker, SwapChecker>();
 
+        services.AddEvents();
         services.AddHttpClient();
         services.AddSwaggerGen();
         services.AddControllers();

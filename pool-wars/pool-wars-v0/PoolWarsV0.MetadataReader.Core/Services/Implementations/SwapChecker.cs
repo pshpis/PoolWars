@@ -1,5 +1,8 @@
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
+using PoolWarsV0.Events.Core.Exceptions;
+using PoolWarsV0.Events.Core.Models;
+using PoolWarsV0.Events.Core.Services;
 using PoolWarsV0.MetadataReader.Core.Exceptions;
 using PoolWarsV0.MetadataReader.Core.Models;
 using Solnet.Programs;
@@ -12,14 +15,16 @@ public class SwapChecker : ISwapChecker
 {
     private readonly PublicKey _legendarySwap;
     private readonly IMetadataReader _metadataReader;
+    private readonly IEventRepository _eventRepository;
     private readonly PublicKey _points3Swap;
     private readonly PublicKey _points6Swap;
     private readonly Account _swapAuthority;
     private readonly PublicKey _swapProgramId;
 
-    public SwapChecker(IConfiguration configuration, IMetadataReader metadataReader)
+    public SwapChecker(IConfiguration configuration, IMetadataReader metadataReader, IEventRepository eventRepository)
     {
         _metadataReader = metadataReader;
+        _eventRepository = eventRepository;
         var privateKey = configuration["Swap:SwapAuthority"];
 
         _swapAuthority = new Wallet(JsonSerializer.Deserialize<int[]>(privateKey)!.Select(i => (byte) i).ToArray(),
@@ -50,11 +55,14 @@ public class SwapChecker : ISwapChecker
         try
         {
             PublicKey swapConfig = (PublicKey) instruction.Values["SwapConfig"];
+            PublicKey user = (PublicKey) instruction.Values["User"];
+            SwapEvent @event = new(user.Key, ((PublicKey) instruction.Values["User"]).Key);
 
             var sumStrength = 0;
 
             foreach (PublicKey mint in (IEnumerable<PublicKey>) instruction.Values["Mints"])
             {
+                @event.InputCards.Add(mint.Key);
                 CardMetadata metadata = await _metadataReader.ReadMetadata(mint);
                 sumStrength += metadata.Strength;
             }
@@ -85,6 +93,16 @@ public class SwapChecker : ISwapChecker
 
             Transaction tx = Transaction.Populate(swap);
             tx.PartialSign(_swapAuthority);
+
+            try
+            {
+                await _eventRepository.AddEventAsync(@event);
+            }
+            catch (EventRepositoryException e)
+            {
+                throw new SwapCheckerException(e.Message, e);
+            }
+            
             return tx.Signatures[0].Signature;
         }
         catch (SwapCheckerException)
