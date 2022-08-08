@@ -28,9 +28,8 @@ public class PrismaUser
     [Column("discord_auth_token")]
     public string DiscordAuthToken { get; set; } = string.Empty;
 
-    [Required]
     [Column("auth_code")]
-    public string AuthCode { get; set; } = string.Empty;
+    public string? AuthCode { get; set; } = string.Empty;
 
     [Required]
     [Column("auth_token_created")]
