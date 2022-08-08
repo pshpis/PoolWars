@@ -43,7 +43,7 @@ const MyNFts = () => {
 
     return <Box>
         {!load ?
-            <Flex alignItems="center" justifyContent="center">
+            <Flex mt="200px" alignItems="center" justifyContent="center">
                 <div className={styles.donut}/>
             </Flex>
             :   NFTsStats.length === 0 ?
