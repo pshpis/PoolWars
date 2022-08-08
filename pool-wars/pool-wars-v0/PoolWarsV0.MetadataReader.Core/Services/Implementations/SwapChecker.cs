@@ -56,7 +56,7 @@ public class SwapChecker : ISwapChecker
         {
             PublicKey swapConfig = (PublicKey) instruction.Values["SwapConfig"];
             PublicKey user = (PublicKey) instruction.Values["User"];
-            SwapEvent @event = new(user.Key, ((PublicKey) instruction.Values["User"]).Key);
+            SwapEvent @event = new(user.Key, ((PublicKey) instruction.Values["Mint"]).Key);
 
             var sumStrength = 0;
 
