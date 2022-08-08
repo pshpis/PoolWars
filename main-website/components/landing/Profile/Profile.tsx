@@ -1,6 +1,6 @@
 import {
     Box, Button,
-    Center, Divider, Flex, HStack, Stack,
+    Center, Divider, Flex, HStack, Spacer, Stack,
     Text, useToast, VStack
 } from "@chakra-ui/react";
 import {useWindowSize} from "../../../hooks/useWindowSize";
@@ -31,6 +31,39 @@ const MyNFts = ({NFTsStats}) => {
             <ProfileNFTSPanel NFTsStats={NFTsStats}/>
         }
     </Box>
+}
+
+const EventPanel = ({id, eventName, eventStats, dateTime }) => {
+    return <Box w="100%" h="80px" backgroundColor="#202020" borderRadius="24px" boxShadow="0px 0px 2px 2px #B2B2B20D"
+         _hover={{
+             boxShadow: "0px 0px 8px 8px #B2B2B226"
+         }}>
+        <HStack>
+            <Box pl="27px" fontWeight="600" fontSize="20px" lineHeight="80px" color="#E8E3DD">{id}</Box>
+            <Box pl="0px"><Divider w="64px" color="#E8E8E826" transform="rotate(90deg)"/></Box>
+            <Text fontWeight="600" fontSize="20px" lineHeight="80px" color="#71CFC3">{eventName}</Text>
+            <Divider w="64px" color="#E8E8E826" transform="rotate(90deg)"/>
+            <Text fontWeight="600" fontSize="20px" lineHeight="80px" color="#E8E3DD">{eventStats}</Text>
+            <Spacer w="auto"/>
+            <Text pr="40px" fontWeight="300" fontSize="20px" lineHeight="80px" color="#B2B2B2">{dateTime}</Text>
+        </HStack>
+    </Box>
+}
+
+const ActivitiesPanel = ({eventsInfo}) => {
+    const [Events, setEvents] = useState([]);
+    useEffect(() => {
+        let newEvents = [];
+        let id = 0;
+        eventsInfo.forEach((item) => {
+            newEvents.push(<EventPanel id={`#${id++}`} eventName={item.eventName} eventStats={item.eventStats} dateTime={item.dateTime}/>)
+        });
+        setEvents(newEvents);
+    }, [eventsInfo]);
+
+    return <VStack mt="18px" spacing="16px">
+        {Events}
+    </VStack>
 }
 
 export const Profile = () => {
@@ -74,6 +107,9 @@ export const Profile = () => {
         },
         [wallet.publicKey, version, profilePanelState.currentPanelModeId]);
 
+    const eventsInfo = [{eventName: "POOL WARS", eventStats: "WIN", dateTime: "8.8.2022 21:00"},
+        {eventName: "SWAP", eventStats: "9 POINTS CARD TOOK", dateTime: "8.8.2022 22:00"}
+    ]
 
     return <Layout>
         {!connected ?
@@ -176,7 +212,7 @@ export const Profile = () => {
                         : profilePanelState.currentPanelMode.type === "MyNFTs" ?
                                 <MyNFts NFTsStats={NFTsStats}/>
                                 :
-                                <Box></Box>
+                                <ActivitiesPanel eventsInfo={eventsInfo}/>
 
                         }
 
