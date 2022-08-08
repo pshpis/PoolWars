@@ -18,6 +18,7 @@ import {NFTStatWithMints, parseCards} from "../../../lib/nft-helper";
 import {ProfileNFTSPanel} from "./ProfileNFTsPanel";
 import clsx from "clsx";
 import {useProfilePanel} from "../../../hooks/useProfilePanel";
+import { fetchEvents } from "../../../lib/events";
 
 const MyNFts = ({NFTsStats}) => {
     return <Box>
@@ -66,6 +67,8 @@ const ActivitiesPanel = ({eventsInfo}) => {
     </VStack>
 }
 
+type eventInfo = { eventName: string, eventStats: string, dateTime: string }
+
 export const Profile = () => {
     const size = useWindowSize();
     const toast = useToast();
@@ -92,6 +95,7 @@ export const Profile = () => {
     const [load, setLoad] = useState<boolean>(false);
     const [version, setVersion] = useState<number>(0)
     const [NFTsStats, setStats] = useState<NFTStatWithMints[]>([])
+    const [eventsInfo, setEventsInfo] = useState<eventInfo[]>([]);
 
     useEffect(() => {
 
@@ -105,11 +109,23 @@ export const Profile = () => {
 
             load()
         },
-        [wallet.publicKey, version, profilePanelState.currentPanelModeId]);
+    [wallet.publicKey, version, profilePanelState.currentPanelModeId]);
 
-    const eventsInfo = [{eventName: "POOL WARS", eventStats: "WIN", dateTime: "8.8.2022 21:00"},
-        {eventName: "SWAP", eventStats: "9 POINTS CARD TOOK", dateTime: "8.8.2022 22:00"}
-    ]
+    useEffect(() => {
+
+        async function load() {
+            setLoad(_ => false);
+            const events = await fetchEvents(walletAuthObj.authToken, 1);
+            setLoad(_ => true);
+        }
+
+        if (walletAuthObj.authToken) {
+            load();
+        } else {
+            setEventsInfo([])
+        }
+
+    }, [walletAuthObj.authToken])
 
     return <Layout>
         {!connected ?
