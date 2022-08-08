@@ -9,6 +9,8 @@ services:
       - "8002:80"
     environment:
       ASPNETCORE_ENVIRONMENT: Staging
+    depends_on:
+      - events
     restart: on-failure
     
   pools:
@@ -33,4 +35,15 @@ services:
       ASPNETCORE_ENVIRONMENT: Staging
     depends_on:
       - metadata_reader
+      - events
+    restart: on-failure
+
+  events:
+    build:
+      context: .
+      dockerfile: Dockerfile.Events
+    ports:
+      - "8005:80"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Staging
     restart: on-failure

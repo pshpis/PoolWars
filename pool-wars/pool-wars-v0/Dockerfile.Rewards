@@ -15,6 +15,9 @@ COPY PoolWarsV0.Pools.Core/PoolWarsV0.Pools.Core.csproj ./PoolWarsV0.MetadataRea
 COPY PoolWarsV0.Rewards/PoolWarsV0.Rewards.csproj ./PoolWarsV0.Rewards/
 COPY PoolWarsV0.Rewards.Core/PoolWarsV0.Rewards.Core.csproj ./PoolWarsV0.Rewards.Core/
 
+COPY PoolWarsV0.Events.Core/PoolWarsV0.Events.Core.csproj ./PoolWarsV0.Events.Core/
+COPY PoolWarsV0.Events/PoolWarsV0.Events.csproj ./PoolWarsV0.Events/
+
 RUN dotnet restore "PoolWarsV0.Rewards"
 
 COPY PoolWarsV0.Core/* ./PoolWarsV0.Core/
@@ -28,6 +31,9 @@ COPY PoolWarsV0.Pools.Core/* ./PoolWarsV0.Pools.Core/
 
 COPY PoolWarsV0.Rewards/* ./PoolWarsV0.Rewards/
 COPY PoolWarsV0.Rewards.Core/* ./PoolWarsV0.Rewards.Core/
+
+COPY PoolWarsV0.Events.Core/* ./PoolWarsV0.Events.Core/
+COPY PoolWarsV0.Events/* ./PoolWarsV0.Events/
 
 RUN dotnet publish -c release "PoolWarsV0.Rewards" -o /publish
 
