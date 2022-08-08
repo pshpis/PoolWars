@@ -11,4 +11,6 @@ public abstract class Event
     public string UserWalletAddress { get; set; }
 
     public string Type { get; set; }
+
+    public DateTime Date { get; set; }
 }

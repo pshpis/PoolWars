@@ -63,12 +63,14 @@ public class EventRepository : IEventRepository
             {
                 SwapEventDao swap => new SwapEvent(swap.User.Address, swap.OutputCard)
                 {
-                    InputCards = swap.InputCards.Split(' ')
+                    InputCards = swap.InputCards.Split(' '),
+                    Date = swap.Time
                 },
                 PoolWarEventDao pw => new PoolWarEvent(pw.User.Address)
                 {
                     Result = pw.Result,
-                    Cards = pw.Cards.Split(' ')
+                    Cards = pw.Cards.Split(' '),
+                    Date = pw.Time
                 },
                 _ => throw new EventRepositoryException("BAD_EVENT_TYPE")
             };
@@ -77,6 +79,7 @@ public class EventRepository : IEventRepository
             .AsNoTracking()
             .Include(e => e.User)
             .Where(e => e.User.Address == user)
+            .OrderByDescending(e => e.Time)
             .AsAsyncEnumerable()
             .Select(DaoToObject);
 
