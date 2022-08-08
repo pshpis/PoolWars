@@ -5,6 +5,7 @@ const bot = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MES
 bot.commands = new Collection();
 const fs = require('fs')
 let config = require('./botconfig.json');
+let members = require('./members.json')
 let token = config.token;
 let prefix = config.prefix;
 
@@ -41,75 +42,10 @@ bot.on('messageCreate', async message => {
     }
 });
 
-const snapshot = [
-    {
-        "member": "513359691963826196",
-        "invites": 108
-    },
-    {
-        "member": "864115053380894730",
-        "invites": 67
-    },
-    {
-        "member": "402003223734648834",
-        "invites": 61
-    },
-    {
-        "member": "510421124807655424",
-        "invites": 61
-    },
-    {
-        "member": "679845273811681326",
-        "invites": 61
-    },
-    {
-        "member": "548978093444825126",
-        "invites": 30
-    },
-    {
-        "member": "908239225479102525",
-        "invites": 26
-    },
-    {
-        "member": "130219759257124864",
-        "invites": 26
-    },
-    {
-        "member": "786596317475373056",
-        "invites": 25
-    },
-    {
-        "member": "881102902528212992",
-        "invites": 23
-    },
-    {
-        "member": "808397846633119774",
-        "invites": 22
-    },
-    {
-        "member": "838434696848212019",
-        "invites": 19
-    },
-    {
-        "member": "509787732638433298",
-        "invites": 18
-    },
-    {
-        "member": "910937776344666112",
-        "invites": 17
-    },
-    {
-        "member": "836178480244588584",
-        "invites": 17
-    },
-    {
-        "member": "981522172289900554",
-        "invites": -2
-    }
-]
+const snapshot = members;
 
 bot.on("interactionCreate", async interaction => {
-    
+
     if (interaction.isMessageComponent()) {
 
         if (interaction.customId == 'CHECK_BTN') {
@@ -139,13 +75,11 @@ bot.on("interactionCreate", async interaction => {
 
             groupedInvites.push({
                 "member": "433633971562217485",
-                "invites": 1539
+                "invites": 0
             });
 
             const leaders = groupedInvites.sort((a, b) => b.invites - a.invites);
-
-            console.log(JSON.stringify(leaders));
-
+            
             const leadersInfos = await Promise.all(
                 leaders.slice(0, 3).map(async l => {
                     return {
@@ -161,9 +95,9 @@ bot.on("interactionCreate", async interaction => {
                 content: `${uses} people invited\n\n**LEADERS**\n` +
                     `1. <@${leadersInfos[0].member.id}> - ${leadersInfos[0].invites}\n` +
                     `2. <@${leadersInfos[1].member.id}> - ${leadersInfos[1].invites}\n` +
-                    `3. <@${leadersInfos[2].member.id}> - ${leadersInfos[2].invites}\n`,
-                // `4. <@${leadersInfos[3].member.id}> - ${leadersInfos[3].invites}\n` +
-                // `5. <@${leadersInfos[4].member.id}> - ${leadersInfos[4].invites}\n`,
+		    `3. <@${leadersInfos[2].member.id}> - ${leadersInfos[2].invites}\n`,
+		   // `4. <@${leadersInfos[3].member.id}> - ${leadersInfos[3].invites}\n` +
+		   // `5. <@${leadersInfos[4].member.id}> - ${leadersInfos[4].invites}\n`,
                 ephemeral: true
             })
 
@@ -171,12 +105,12 @@ bot.on("interactionCreate", async interaction => {
 
             await logChannel.send({
                 content: `${uses} people invited by <@${interaction.member.id}>\n\n**LEADERS**\n` +
-                    `1. <@${leadersInfos[0].member.id}> - ${leadersInfos[0].invites}\n` +
+		    `1. <@${leadersInfos[0].member.id}> - ${leadersInfos[0].invites}\n` +
                     `2. <@${leadersInfos[1].member.id}> - ${leadersInfos[1].invites}\n` +
-                    `3. <@${leadersInfos[2].member.id}> - ${leadersInfos[2].invites}\n`
-                // `4. <@${leadersInfos[3].member.id}> - ${leadersInfos[3].invites}\n` +
-                // `5. <@${leadersInfos[4].member.id}> - ${leadersInfos[4].invites}\n`
-            })
+		    `3. <@${leadersInfos[2].member.id}> - ${leadersInfos[2].invites}\n`
+		    // `4. <@${leadersInfos[3].member.id}> - ${leadersInfos[3].invites}\n` +
+                    // `5. <@${leadersInfos[4].member.id}> - ${leadersInfos[4].invites}\n`
+	    })
         }
     }
 });
