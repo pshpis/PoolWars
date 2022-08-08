@@ -5,6 +5,7 @@ public abstract class Event
     protected private Event(string userWalletAddress, string type)
     {
         UserWalletAddress = userWalletAddress;
+        Type = type;
     }
 
     public string UserWalletAddress { get; set; }
