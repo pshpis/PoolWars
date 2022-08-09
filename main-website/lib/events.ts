@@ -21,6 +21,8 @@ export type PoolWarV0Event = Event & {
     type: 'poolwar-v0',
     result: Win | Lose,
     cards: string[],
+    pool: string,
+    takenCards: string[]
 }
 
 export function isSwapEvent(event: Event): event is SwapEvent {

@@ -30,7 +30,9 @@ import {ProfileNFTSPanel} from "./ProfileNFTsPanel";
 import clsx from "clsx";
 import {useProfilePanel} from "../../../hooks/useProfilePanel";
 import {Event, fetchEvents, isPoolWarV0Event, isSwapEvent, PoolWarV0Event, SwapEvent, Win} from "../../../lib/events";
-import {Connection} from "@solana/web3.js";
+import {Connection, PublicKey, Transaction} from "@solana/web3.js";
+import { ASSOCIATED_TOKEN_PROGRAM_ID, createAssociatedTokenAccountInstruction, createTransferCheckedInstruction, getAssociatedTokenAddress, TOKEN_PROGRAM_ID, transferChecked, transferCheckedInstructionData } from "@solana/spl-token";
+import { takeCard } from "../../../lib/pool-wars";
 
 const MyNFts = ({NFTsStats}) => {
     return <Box>
@@ -59,7 +61,7 @@ const Swap = ({inputCards, outputCard, isOpen, connection} : {inputCards: SwapEv
             for (const nft of inputCards) {
                 const nftSrc = (await getMetadataByMintAddress(nft, connection)).src;
                 console.log(nftSrc);
-                newNFTs.push(<Img w="100%" h="188px" src={nftSrc} borderRadius="16px"/>);
+                newNFTs.push(<GridItem w="188px" h="188px"><Img w="188px" h="188px" src={nftSrc} borderRadius="16px"/></GridItem>);
             }
             setInputNFTs(newNFTs);
         }
@@ -71,22 +73,90 @@ const Swap = ({inputCards, outputCard, isOpen, connection} : {inputCards: SwapEv
         else return 'repeat(3, 1fr)';
     }, [size.width]);
 
-    return <Center>
-        <Text w="473px" fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="40px">successful SWAP</Text>
-        <Grid templateColumns={templateColumns}>
-            {inputNFTs}
-        </Grid>
-    </Center>
+    return <ElderKattsBox pt="56px" pl="106px" pr="106px" pb="75px" w="100%">
+        <Text mb="48px" fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="40px" textAlign="center">successful SWAP</Text>
+        <Center>
+            <HStack>
+                {inputNFTs}
+                <Img pl="32px" pr="52px" src="/swap-transition.svg"/>
+                <Img w="188px" h="188px" src={outputNFTSrc} borderRadius="16px" boxShadow="0px 0px 50px 0px #71CFC380"/>
+            </HStack>
+        </Center>
+    </ElderKattsBox>
 }
 
-const NFT = ({src, result} : {src: string, result: PoolWarV0Event['result']}) => {
+const NFT = ({src, mint, result} : {src: string, mint: string, result: PoolWarV0Event['result']}) => {
+
+    const wallet = useWallet();
+    const { connection } = useConnection();
+
+    async function take() {
+        
+        const destinationAddress = await getAssociatedTokenAddress(new PublicKey(mint), wallet.publicKey, false, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID);
+        let needsInitialize = true;
+
+        try {
+            const account = await connection.getAccountInfo(destinationAddress);
+            
+            if (account.lamports > 0) {
+                needsInitialize = false;
+            }
+        }
+        catch (e) {
+
+        }
+
+        let sourceAddress: PublicKey = undefined;
+        let pool: PublicKey = undefined;
+
+        try {
+            const largest = await connection.getTokenLargestAccounts(new PublicKey(mint), 'finalized')
+            sourceAddress = largest.value[0].address;
+            const tokenAccInfo = await connection.getParsedAccountInfo(sourceAddress, 'finalized');
+            
+            pool = new PublicKey((tokenAccInfo.value.data as any).parsed.info.owner);
+
+        } catch(e) {
+            return;
+        }
+
+        const tx = new Transaction();
+        tx.feePayer = wallet.publicKey;
+        tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash
+
+        if (needsInitialize) {
+            tx.add(createAssociatedTokenAccountInstruction(
+                wallet.publicKey,
+                destinationAddress,
+                wallet.publicKey,
+                new PublicKey(mint),
+                TOKEN_PROGRAM_ID,
+                ASSOCIATED_TOKEN_PROGRAM_ID
+            ))
+        }
+
+        tx.add(createTransferCheckedInstruction(
+            sourceAddress,
+            new PublicKey(mint),
+            destinationAddress,
+            pool,
+            1,
+            0,
+            [],
+            TOKEN_PROGRAM_ID
+        ))
+
+        const signed = await wallet.signTransaction(tx);
+        await takeCard(signed, mint, pool.toBase58())
+    }
+
     return <GridItem w="188px">
         {
             result === 0 ?
                 <>
                     <Img w="100%" h="188px" src={src} borderRadius="16px"/>
                     <Center>
-                        <Box w="80%" h="32px" mt="10px" fontWeight="600" fontSize="18px" lineHeight="32px" textAlign="center"
+                        <Box onClick={take} w="80%" h="32px" mt="10px" fontWeight="600" fontSize="18px" lineHeight="32px" textAlign="center"
                              color="#202020" backgroundColor="#B8C3E6" borderRadius="16px" _hover={{boxShadow: "0px 0px 16px 0px #B8C3E6D9"}}>
                             TAKE NOW
                         </Box>
@@ -108,7 +178,7 @@ const PoolWarV0 = ({result, cards, isOpen, connection} : {result: PoolWarV0Event
                 console.log(nft)
                 const nftSrc = (await getMetadataByMintAddress(nft, connection)).src;
                 console.log(nftSrc);
-                newNFTs.push(<NFT src={nftSrc} result={result}/>);
+                newNFTs.push(<NFT src={nftSrc} mint={nft} result={result}/>);
             }
             setNFTs(newNFTs);
         }
@@ -149,42 +219,16 @@ const EventPanel = ({id, event, connection} : {id : string, event: Event, connec
         </HStack>
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay/>
-            <ModalContent>
-                <Center>
-                    <ElderKattsBox maxW="1036px" maxH="447px">
-                        {
-                            isSwapEvent(event) ?
-                                <Box pt="56px" pb="80px" pl="24px" pr="24px">
-                                    <Box>
-                                        <Swap inputCards={event.inputCards} outputCard={event.outputCard} isOpen={isOpen} connection={connection}/>
-                                    </Box>
-                                </Box>
-                            :
-                                isPoolWarV0Event(event) ?
-                                    <Box pt="56px" pb="80px" pl="24px" pr="24px">
-                                        <Box>
-                                            <PoolWarV0 result={event.result} cards={event.cards} isOpen={isOpen} connection={connection}/>
-                                        </Box>
-                                    </Box>
-                                :
-                                <Box></Box>
-                        }
-
-                    </ElderKattsBox>
-                </Center>
-
-                {/*<ModalHeader>Modal Title</ModalHeader>*/}
-                {/*<ModalCloseButton />*/}
-                {/*<ModalBody>*/}
-                {/*    */}
-                {/*</ModalBody>*/}
-
-                {/*<ModalFooter>*/}
-                {/*    <Button colorScheme='blue' mr={3} onClick={onClose}>*/}
-                {/*        Close*/}
-                {/*    </Button>*/}
-                {/*    <Button variant='ghost'>Secondary Action</Button>*/}
-                {/*</ModalFooter>*/}
+            <ModalContent maxW="1036px">
+                {
+                    isSwapEvent(event) ?
+                        <Swap inputCards={event.inputCards} outputCard={event.outputCard} isOpen={isOpen} connection={connection}/>
+                    :
+                        isPoolWarV0Event(event) ?
+                            <PoolWarV0 result={event.result} cards={event.cards} isOpen={isOpen} connection={connection}/>
+                        :
+                        <Box></Box>
+                }
             </ModalContent>
         </Modal>
     </Box>
@@ -362,8 +406,12 @@ export const Profile = () => {
                         : profilePanelState.currentPanelMode.type === "MyNFTs" ?
                                 <MyNFts NFTsStats={NFTsStats}/>
                                 :
-                                <ActivitiesPanel eventsInfo={eventsInfo} connection={connection}/>
-
+                                walletAuthObj.authToken ?
+                                    <ActivitiesPanel eventsInfo={eventsInfo} connection={connection}/>
+                                :
+                                    <Flex mt="200px" alignItems="center" justifyContent="center">
+                                        <Box fontWeight="400" fontSize={size.width > 768 ? "48px" : "32px"} color="#E8E3DD" textAlign="center">Sign in to see your latest activities</Box>
+                                    </Flex>
                         }
 
                     </Box>

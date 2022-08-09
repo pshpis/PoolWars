@@ -67,3 +67,21 @@ export async function depositMintToPool(pool: PublicKey, transaction: Transactio
     }
 
 }
+
+export async function takeCard(signedTransaction: Transaction, mintAddress: string, pool: string): Promise<boolean> {
+    
+    try {
+
+        await axios.post(`${POOL_WARS_API}/api/v1/winnerData/take`, {
+            transactionMessage: signedTransaction.serializeMessage().toString('base64'),
+            messageSignature: signedTransaction.signature.toString('base64'),
+            cardMintAddress: mintAddress,
+            poolAddress: pool
+        })
+
+        return true;
+    }
+    catch (e) {
+        return false;
+    }
+}
