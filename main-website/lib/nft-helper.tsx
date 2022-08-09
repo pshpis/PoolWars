@@ -151,6 +151,147 @@ async function parseMints(address: PublicKey | null, connection: Connection): Pr
     }
 }
 
+export async function getMetadataByMintAddress(mint: string, connection: Connection): Promise<NFTStat> {
+    const creators = [...allowedCreators, ...legendaryCreators];
+
+    try {
+        console.log('fetch metadata')
+        const address = await deriveMetaplexMetadata(new PublicKey(mint));
+        const metadata = await Metadata.fromAccountAddress(connection, address);
+
+        console.log('check metadata')
+        if (!metadata.data.creators[0].verified) {
+            return {
+                maxValue: 0,
+                src: ''
+            };
+        }
+
+        console.log('checked metadata')
+
+        if (!creators.some(c => c.toBase58() === metadata.data.creators[0].address.toBase58())) {
+            return {
+                maxValue: 0,
+                src: ''
+            };
+        }
+
+        const uri = metadata.data.uri;
+        const data = await axios.get<{ attributes: Attribute[] }>(uri);
+        const attributes: Attribute[] = data.data.attributes;
+
+        const type = attributes.find(a => a.trait_type === 'Type').value;
+        const strength = attributes.find(a => a.trait_type === 'Strength').value;
+
+        switch (type) {
+
+            case 'Attack':
+                if (strength === '1') {
+                    return {
+                        src: 'https://elderkatts.com/json-metadata/attack_1.png',
+                        maxValue: 1
+                    }
+
+                } else if (strength === '3') {
+                    return {
+                        src: 'https://elderkatts.com/json-metadata/attack_3.png',
+                        maxValue: 1
+                    }
+
+                } else if (strength === '6') {
+                    return {
+                        src: 'https://elderkatts.com/json-metadata/attack_6.png',
+                        maxValue: 1
+                    }
+
+                } else if (strength === '12') {
+                    return {
+                        src: 'https://elderkatts.com/json-metadata/attack_12.jpg',
+                        maxValue: 1
+                    }
+                }
+
+                break;
+
+            case 'Defence':
+                if (strength === '1') {
+                    return {
+                        src: 'https://elderkatts.com/json-metadata/defence_1.png',
+                        maxValue: 1
+                    }
+
+                } else if (strength === '3') {
+                    return {
+                        src: 'https://elderkatts.com/json-metadata/defence_3.png',
+                        maxValue: 1
+                    }
+
+                } else if (strength === '6') {
+                    return {
+                        src: 'https://elderkatts.com/json-metadata/defence_6.png',
+                        maxValue: 1
+                    }
+
+                } else if (strength === '12') {
+                    return {
+                        src: 'https://elderkatts.com/json-metadata/defence_12.jpg',
+                        maxValue: 1
+                    }
+                }
+
+                break;
+
+            case 'Intelligence':
+                if (strength === '1') {
+                    return {
+                        src: 'https://elderkatts.com/json-metadata/intelligence_1.png',
+                        maxValue: 1
+                    }
+
+                } else if (strength === '3') {
+                    return {
+                        src: 'https://elderkatts.com/json-metadata/intelligence_3.png',
+                        maxValue: 1
+                    }
+
+                } else if (strength === '6') {
+                    return {
+                        src: 'https://elderkatts.com/json-metadata/intelligence_6.png',
+                        maxValue: 1
+                    }
+
+                } else if (strength === '12') {
+                    return {
+                        src: 'https://elderkatts.com/json-metadata/intelligence_12.jpg',
+                        maxValue: 1
+                    }
+                }
+
+                break;
+
+            default:
+                break;
+        }
+
+        return {
+            src: '',
+            maxValue: 0
+        }
+    }
+    catch (e) {
+        console.error(e)
+        
+        return {
+            src: '',
+            maxValue: 0
+        }
+    }
+}
+
+
+
+
+
 async function processMint(mint: PublicKey, amounts: NFTAmountsWithMints, connection: Connection, allowLegendary: boolean = false): Promise<NFTAmountsWithMints> {
 
     const creators = allowedCreators;
