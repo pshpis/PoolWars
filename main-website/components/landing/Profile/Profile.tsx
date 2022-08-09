@@ -181,6 +181,7 @@ const NFT = ({src, mint, result, taken} : {src: string, mint: string, result: Po
 
 const PoolWarV0 = ({result, cards, takenCards, isOpen, connection} : {result: PoolWarV0Event['result'], cards: PoolWarV0Event['cards'], takenCards: PoolWarV0Event['takenCards'],isOpen: boolean,connection: Connection}) => {
     const size = useWindowSize();
+    const [load, setLoad] = useState<boolean>(false);
     const [NFTs, setNFTs] = useState([]);
     useEffect(() => {
         async function load() {
@@ -206,11 +207,18 @@ const PoolWarV0 = ({result, cards, takenCards, isOpen, connection} : {result: Po
     return <ModalContent maxW="1036px" backgroundColor="inherit">
         <ElderKattsBox pt="56px" pl="106px" pr="106px" pb="75px" w="100%">
             <Text mb="48px" fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="40px" textAlign="center">{result === 0 ? "YOU WON!" : "YOU LOSE"}</Text>
-            <Center>
-                <Grid templateColumns={templateColumns} columnGap="24px" rowGap="24px">
-                    {NFTs}
-                </Grid>
-            </Center>
+            {
+                !load ?
+                    <Flex alignItems="center" justifyContent="center">
+                        <div className={styles.donut}/>
+                    </Flex>
+                :
+                    <Center>
+                        <Grid templateColumns={templateColumns} columnGap="24px" rowGap="24px">
+                            {NFTs}
+                        </Grid>
+                    </Center>
+            }
         </ElderKattsBox>
     </ModalContent>
 }
