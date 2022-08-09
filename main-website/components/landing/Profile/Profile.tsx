@@ -30,7 +30,8 @@ import {ProfileNFTSPanel} from "./ProfileNFTsPanel";
 import clsx from "clsx";
 import {useProfilePanel} from "../../../hooks/useProfilePanel";
 import {Event, fetchEvents, isPoolWarV0Event, isSwapEvent, PoolWarV0Event, SwapEvent, Win} from "../../../lib/events";
-import {Connection} from "@solana/web3.js";
+import {Connection, PublicKey} from "@solana/web3.js";
+import { ASSOCIATED_TOKEN_PROGRAM_ID, getAssociatedTokenAddress, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 
 const MyNFts = ({NFTsStats}) => {
     return <Box>
@@ -79,14 +80,34 @@ const Swap = ({inputCards, outputCard, isOpen, connection} : {inputCards: SwapEv
     </Center>
 }
 
-const NFT = ({src, result} : {src: string, result: PoolWarV0Event['result']}) => {
+const NFT = ({src, mint, result} : {src: string, mint: string, result: PoolWarV0Event['result']}) => {
+
+    const wallet = useWallet();
+    const { connection } = useConnection();
+
+    async function take() {
+        
+        const destinationAddress = await getAssociatedTokenAddress(new PublicKey(mint), wallet.publicKey, false, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID);
+        let needsInitialize = true;
+
+        try {
+            const account = await connection.getAccountInfo(destinationAddress);
+            if (account.lamports > 0) {
+                needsInitialize = false;
+            }
+        }
+        catch(e) {
+
+        }
+    }
+
     return <GridItem w="188px">
         {
             result === 0 ?
                 <>
                     <Img w="100%" h="188px" src={src} borderRadius="16px"/>
                     <Center>
-                        <Box w="80%" h="32px" mt="10px" fontWeight="600" fontSize="18px" lineHeight="32px" textAlign="center"
+                        <Box onClick={take} w="80%" h="32px" mt="10px" fontWeight="600" fontSize="18px" lineHeight="32px" textAlign="center"
                              color="#202020" backgroundColor="#B8C3E6" borderRadius="16px" _hover={{boxShadow: "0px 0px 16px 0px #B8C3E6D9"}}>
                             TAKE NOW
                         </Box>
@@ -108,7 +129,7 @@ const PoolWarV0 = ({result, cards, isOpen, connection} : {result: PoolWarV0Event
                 console.log(nft)
                 const nftSrc = (await getMetadataByMintAddress(nft, connection)).src;
                 console.log(nftSrc);
-                newNFTs.push(<NFT src={nftSrc} result={result}/>);
+                newNFTs.push(<NFT src={nftSrc} mint={nft} result={result}/>);
             }
             setNFTs(newNFTs);
         }
