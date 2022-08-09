@@ -185,6 +185,7 @@ const PoolWarV0 = ({result, cards, takenCards, isOpen, connection} : {result: Po
     const [NFTs, setNFTs] = useState([]);
     useEffect(() => {
         async function load() {
+            setLoad(false);
             let newNFTs = [];
             for (const nft of cards) {
                 console.log(nft)
@@ -195,6 +196,7 @@ const PoolWarV0 = ({result, cards, takenCards, isOpen, connection} : {result: Po
                     newNFTs.push(<NFT src={nftSrc} mint={nft} result={result} taken={false}/>)
             }
             setNFTs(newNFTs);
+            setLoad(true);
         }
         load();
     }, [isOpen]);
