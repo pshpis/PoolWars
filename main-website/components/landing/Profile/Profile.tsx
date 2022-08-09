@@ -19,7 +19,7 @@ import {
     VStack
 } from "@chakra-ui/react";
 import {useWindowSize} from "../../../hooks/useWindowSize";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {ElderKattsBox} from "../Layout/ElderKattsBox";
 import Image from "next/image";
 import userPic from "../../../public/User.svg";
@@ -53,20 +53,36 @@ const MyNFts = ({NFTsStats}) => {
 }
 
 const Swap = ({inputCards, outputCard, isOpen, connection} : {inputCards: SwapEvent['inputCards'], outputCard: SwapEvent['outputCard'], isOpen: boolean,connection: Connection}) => {
+    const size = useWindowSize();
     const [outputNFTSrc, setOutputNFTSrc] = useState<string>();
+    const [inputNFTs, setInputNFTs] = useState([]);
     useEffect(() => {
         async function load() {
             const outputNFTSrc = (await getMetadataByMintAddress(outputCard, connection)).src;
             console.log(outputNFTSrc);
             setOutputNFTSrc(_ => outputNFTSrc);
+            let newNFTs = [];
+            for (const nft of inputCards) {
+                const nftSrc = (await getMetadataByMintAddress(nft, connection)).src;
+                console.log(nftSrc);
+                newNFTs.push(<Img w="100%" h="188px" src={nftSrc} borderRadius="16px"/>);
+            }
+            setInputNFTs(newNFTs);
         }
         load()
     }, [isOpen]);
 
-    return <Box>
+    const templateColumns = useMemo(() => {
+        if (size.width < 1112) return 'repeat(2, 1fr)';
+        else return 'repeat(3, 1fr)';
+    }, [size.width]);
+
+    return <Center>
         <Text w="473px" fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="40px">successful SWAP</Text>
-        <NFT src={outputNFTSrc} result={0}/>
-    </Box>
+        <Grid templateColumns={templateColumns}>
+            {inputNFTs}
+        </Grid>
+    </Center>
 }
 
 const NFT = ({src, result} : {src: string, result: PoolWarV0Event['result']}) => {
@@ -89,11 +105,13 @@ const NFT = ({src, result} : {src: string, result: PoolWarV0Event['result']}) =>
 }
 
 const PoolWarV0 = ({result, cards, isOpen, connection} : {result: PoolWarV0Event['result'], cards: PoolWarV0Event['cards'], isOpen: boolean,connection: Connection}) => {
+    const size = useWindowSize();
     const [NFTs, setNFTs] = useState([]);
     useEffect(() => {
         async function load() {
             let newNFTs = [];
             for (const nft of cards) {
+                console.log(nft)
                 const nftSrc = (await getMetadataByMintAddress(nft, connection)).src;
                 console.log(nftSrc);
                 newNFTs.push(<NFT src={nftSrc} result={result}/>);
@@ -101,14 +119,21 @@ const PoolWarV0 = ({result, cards, isOpen, connection} : {result: PoolWarV0Event
             setNFTs(newNFTs);
         }
         load();
-    }, [isOpen])
+    }, [isOpen]);
 
-    return <Center>
-        <Text w="473px" fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="40px">successful SWAP</Text>
-        <Grid>
-            {NFTs}
-        </Grid>
-    </Center>
+    const templateColumns = useMemo(() => {
+        if (size.width < 1112) return 'repeat(2, 1fr)';
+        else return 'repeat(3, 1fr)';
+    }, [size.width]);
+
+    return <Box>
+        <Text w="473px" fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="40px" textAlign="center">{result === 0 ? "YOU WON!" : "YOU LOSE"}</Text>
+        <Center>
+            <Grid templateColumns={templateColumns} columnGap="24px" rowGap="24px">
+                {NFTs}
+            </Grid>
+        </Center>
+    </Box>
 }
 
 const EventPanel = ({id, event, connection} : {id : string, event: Event, connection: Connection}) => {
@@ -124,7 +149,7 @@ const EventPanel = ({id, event, connection} : {id : string, event: Event, connec
             <Box pl="0px"><Divider w="64px" color="#E8E8E826" transform="rotate(90deg)"/></Box>
             <Text fontWeight="600" fontSize="20px" lineHeight="80px" color="#71CFC3">{event.type.toUpperCase()}</Text>
             <Divider w="64px" color="#E8E8E826" transform="rotate(90deg)"/>
-            <Text fontWeight="600" fontSize="20px" lineHeight="80px" color="#E8E3DD">{event.type}</Text>
+            <Text fontWeight="600" fontSize="20px" lineHeight="80px" color="#E8E3DD">{isPoolWarV0Event(event) ? event.result === 0 ? "WIN" : "LOSE" : "swap"}</Text>
             <Spacer w="auto"/>
             <Text pr="40px" fontWeight="300" fontSize="20px" lineHeight="80px" color="#B2B2B2">{event.date.toString()}</Text>
         </HStack>
@@ -175,9 +200,9 @@ const ActivitiesPanel = ({eventsInfo, connection}) => {
     const [Events, setEvents] = useState([]);
     useEffect(() => {
         let newEvents = [];
-        let id = 0;
+        let id = eventsInfo.length;
         eventsInfo.forEach((item) => {
-            newEvents.push(<EventPanel id={`#${id++}`} event={item} connection={connection}/>)
+            newEvents.push(<EventPanel id={`#${id--}`} event={item} connection={connection}/>)
         });
         setEvents(newEvents);
     }, [eventsInfo]);
