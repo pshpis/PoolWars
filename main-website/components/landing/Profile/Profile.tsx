@@ -6,11 +6,7 @@ import {
     Flex, Grid, GridItem,
     HStack, Img,
     Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent, ModalFooter,
-    ModalHeader,
-    ModalOverlay,
+    ModalContent, ModalOverlay,
     Spacer,
     Stack,
     Text,
@@ -34,9 +30,7 @@ import {ProfileNFTSPanel} from "./ProfileNFTsPanel";
 import clsx from "clsx";
 import {useProfilePanel} from "../../../hooks/useProfilePanel";
 import {Event, fetchEvents, isPoolWarV0Event, isSwapEvent, PoolWarV0Event, SwapEvent, Win} from "../../../lib/events";
-import {formatDate} from "@toruslabs/base-controllers";
 import {Connection} from "@solana/web3.js";
-import src from "@keystonehq/bc-ur-registry";
 
 const MyNFts = ({NFTsStats}) => {
     return <Box>
