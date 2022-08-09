@@ -72,7 +72,7 @@ const Swap = ({inputCards, outputCard, isOpen, connection} : {inputCards: SwapEv
         load()
     }, [isOpen]);
 
-    return <ModalContent maxW="1036px">
+    return <ModalContent maxW="1036px" backgroundColor="inherit">
         <ElderKattsBox pt="56px" pl="106px" pr="106px" pb="75px" w="100%">
             <Text mb="48px" fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="40px" textAlign="center">successful SWAP</Text>
             {
@@ -203,15 +203,15 @@ const PoolWarV0 = ({result, cards, takenCards, isOpen, connection} : {result: Po
         else return 'repeat(3, 1fr)';
     }, [size.width]);
 
-    return <ModalContent maxW="1036px">
-        <Box>
-            <Text w="473px" fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="40px" textAlign="center">{result === 0 ? "YOU WON!" : "YOU LOSE"}</Text>
+    return <ModalContent maxW="1036px" backgroundColor="inherit">
+        <ElderKattsBox pt="56px" pl="106px" pr="106px" pb="75px" w="100%">
+            <Text mb="48px" fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="40px" textAlign="center">{result === 0 ? "YOU WON!" : "YOU LOSE"}</Text>
             <Center>
                 <Grid templateColumns={templateColumns} columnGap="24px" rowGap="24px">
                     {NFTs}
                 </Grid>
             </Center>
-        </Box>
+        </ElderKattsBox>
     </ModalContent>
 }
 
