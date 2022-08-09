@@ -61,7 +61,7 @@ const Swap = ({inputCards, outputCard, isOpen, connection} : {inputCards: SwapEv
             for (const nft of inputCards) {
                 const nftSrc = (await getMetadataByMintAddress(nft, connection)).src;
                 console.log(nftSrc);
-                newNFTs.push(<Img w="100%" h="188px" src={nftSrc} borderRadius="16px"/>);
+                newNFTs.push(<GridItem w="188px" h="188px"><Img w="188px" h="188px" src={nftSrc} borderRadius="16px"/></GridItem>);
             }
             setInputNFTs(newNFTs);
         }
@@ -73,12 +73,16 @@ const Swap = ({inputCards, outputCard, isOpen, connection} : {inputCards: SwapEv
         else return 'repeat(3, 1fr)';
     }, [size.width]);
 
-    return <Center>
-        <Text w="473px" fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="40px">successful SWAP</Text>
-        <Grid templateColumns={templateColumns}>
-            {inputNFTs}
-        </Grid>
-    </Center>
+    return <ElderKattsBox pt="56px" pl="106px" pr="106px" pb="75px" w="100%">
+        <Text mb="48px" fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="40px" textAlign="center">successful SWAP</Text>
+        <Center>
+            <HStack>
+                {inputNFTs}
+                <Img pl="32px" pr="52px" src="/swap-transition.svg"/>
+                <Img w="188px" h="188px" src={outputNFTSrc} borderRadius="16px" boxShadow="0px 0px 50px 0px #71CFC380"/>
+            </HStack>
+        </Center>
+    </ElderKattsBox>
 }
 
 const NFT = ({src, mint, result} : {src: string, mint: string, result: PoolWarV0Event['result']}) => {
@@ -215,28 +219,16 @@ const EventPanel = ({id, event, connection} : {id : string, event: Event, connec
         </HStack>
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay/>
-            <ModalContent w="872px">
-                <Center>
-                    <ElderKattsBox w="872px" maxW="1036px" maxH="447px">
-                        {
-                            isSwapEvent(event) ?
-                                <Box pt="56px" pb="80px" pl="24px" pr="24px">
-                                    <Box>
-                                        <Swap inputCards={event.inputCards} outputCard={event.outputCard} isOpen={isOpen} connection={connection}/>
-                                    </Box>
-                                </Box>
-                            :
-                                isPoolWarV0Event(event) ?
-                                    <Box mt="56px" mb="80px" ml="130px" mr="130px">
-                                        <Box>
-                                            <PoolWarV0 result={event.result} cards={event.cards} isOpen={isOpen} connection={connection}/>
-                                        </Box>
-                                    </Box>
-                                :
-                                <Box></Box>
-                        }
-                    </ElderKattsBox>
-                </Center>
+            <ModalContent maxW="1036px">
+                {
+                    isSwapEvent(event) ?
+                        <Swap inputCards={event.inputCards} outputCard={event.outputCard} isOpen={isOpen} connection={connection}/>
+                    :
+                        isPoolWarV0Event(event) ?
+                            <PoolWarV0 result={event.result} cards={event.cards} isOpen={isOpen} connection={connection}/>
+                        :
+                        <Box></Box>
+                }
             </ModalContent>
         </Modal>
     </Box>
@@ -414,8 +406,12 @@ export const Profile = () => {
                         : profilePanelState.currentPanelMode.type === "MyNFTs" ?
                                 <MyNFts NFTsStats={NFTsStats}/>
                                 :
-                                <ActivitiesPanel eventsInfo={eventsInfo} connection={connection}/>
-
+                                walletAuthObj.authToken ?
+                                    <ActivitiesPanel eventsInfo={eventsInfo} connection={connection}/>
+                                :
+                                    <Flex mt="200px" alignItems="center" justifyContent="center">
+                                        <Box fontWeight="400" fontSize={size.width > 768 ? "48px" : "32px"} color="#E8E3DD" textAlign="center">Sign in to see your latest activities</Box>
+                                    </Flex>
                         }
 
                     </Box>
