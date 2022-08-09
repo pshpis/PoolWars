@@ -181,9 +181,11 @@ const NFT = ({src, mint, result, taken} : {src: string, mint: string, result: Po
 
 const PoolWarV0 = ({result, cards, takenCards, isOpen, connection} : {result: PoolWarV0Event['result'], cards: PoolWarV0Event['cards'], takenCards: PoolWarV0Event['takenCards'],isOpen: boolean,connection: Connection}) => {
     const size = useWindowSize();
+    const [load, setLoad] = useState<boolean>(false);
     const [NFTs, setNFTs] = useState([]);
     useEffect(() => {
         async function load() {
+            setLoad(false);
             let newNFTs = [];
             for (const nft of cards) {
                 console.log(nft)
@@ -194,6 +196,7 @@ const PoolWarV0 = ({result, cards, takenCards, isOpen, connection} : {result: Po
                     newNFTs.push(<NFT src={nftSrc} mint={nft} result={result} taken={false}/>)
             }
             setNFTs(newNFTs);
+            setLoad(true);
         }
         load();
     }, [isOpen]);
@@ -206,17 +209,36 @@ const PoolWarV0 = ({result, cards, takenCards, isOpen, connection} : {result: Po
     return <ModalContent maxW="1036px" backgroundColor="inherit">
         <ElderKattsBox pt="56px" pl="106px" pr="106px" pb="75px" w="100%">
             <Text mb="48px" fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="40px" textAlign="center">{result === 0 ? "YOU WON!" : "YOU LOSE"}</Text>
-            <Center>
-                <Grid templateColumns={templateColumns} columnGap="24px" rowGap="24px">
-                    {NFTs}
-                </Grid>
-            </Center>
+            {
+                !load ?
+                    <Flex alignItems="center" justifyContent="center">
+                        <div className={styles.donut}/>
+                    </Flex>
+                :
+                    <Center>
+                        <Grid templateColumns={templateColumns} columnGap="24px" rowGap="24px">
+                            {NFTs}
+                        </Grid>
+                    </Center>
+            }
         </ElderKattsBox>
     </ModalContent>
 }
 
 const EventPanel = ({id, event, connection} : {id : string, event: Event, connection: Connection}) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
+
+    const eventDescription = useMemo<string>(() => {
+        if (isPoolWarV0Event(event))
+            if (event.result === 0)
+                return "WIN"
+            else return "LOSE";
+        else
+            if (isSwapEvent(event))
+                return `SWAP ${event.inputCards.length} CARDS TO 1`
+            else
+                return "EVENT";
+    }, []);
 
     const dateString = useMemo(() => {
 
@@ -236,7 +258,9 @@ const EventPanel = ({id, event, connection} : {id : string, event: Event, connec
             <Box pl="0px"><Divider w="64px" color="#E8E8E826" transform="rotate(90deg)"/></Box>
             <Text fontWeight="600" fontSize="20px" lineHeight="80px" color="#71CFC3">{event.type.toUpperCase()}</Text>
             <Divider w="64px" color="#E8E8E826" transform="rotate(90deg)"/>
-            <Text fontWeight="600" fontSize="20px" lineHeight="80px" color="#E8E3DD">{isPoolWarV0Event(event) ? event.result === 0 ? "WIN" : "LOSE" : "swap"}</Text>
+            <Text fontWeight="600" fontSize="20px" lineHeight="80px" color="#E8E3DD">
+                {eventDescription}
+            </Text>
             <Spacer w="auto"/>
             <Text pr="40px" fontWeight="300" fontSize="20px" lineHeight="80px" color="#B2B2B2">{dateString}</Text>
         </HStack>
