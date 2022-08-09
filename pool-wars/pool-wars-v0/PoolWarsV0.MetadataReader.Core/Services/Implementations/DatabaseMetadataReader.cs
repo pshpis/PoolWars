@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using PoolWarsV0.Data;
 using PoolWarsV0.Data.Models;
 using PoolWarsV0.MetadataReader.Core.Exceptions;
@@ -6,13 +7,20 @@ using PoolWarsV0.MetadataReader.Core.Models;
 
 namespace PoolWarsV0.MetadataReader.Core.Services.Implementations;
 
-public class DatabaseMetadataReader : IMetadataReader
+public sealed class DatabaseMetadataReader : IMetadataReader, IDisposable
 {
     private readonly Context _context;
+    private readonly IServiceScope _scope;
 
-    public DatabaseMetadataReader(Context context)
+    public DatabaseMetadataReader(IServiceProvider provider)
     {
-        _context = context;
+        _scope = provider.CreateScope();
+        _context = _scope.ServiceProvider.GetRequiredService<Context>();
+    }
+
+    public void Dispose()
+    {
+        _scope.Dispose();
     }
 
     public async ValueTask<CardMetadata> ReadMetadata(string mintAddress)

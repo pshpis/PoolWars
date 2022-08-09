@@ -76,7 +76,7 @@ public class PoolService : IPoolService
                           throw new PoolServiceException("POOL_NOT_FOUND");
 
         CardMetadataDao cardMetadataDao = await _context.CardMetadata
-                                              .AsTracking()
+                                              .AsNoTracking()
                                               .Include(c => c.CardMint)
                                               .FirstOrDefaultAsync(c => c.CardMint.Address == metadata.Mint) ??
                                           new CardMetadataDao
@@ -110,12 +110,19 @@ public class PoolService : IPoolService
         PoolDepositDao deposit = new()
         {
             PoolId = poolDao.Id,
-            Pool = poolDao,
             CardMetadataId = cardMetadataDao.Id,
-            CardMetadata = cardMetadataDao,
-            UserId = userDao.Id,
-            User = userDao
+            UserId = userDao.Id
         };
+
+        if (deposit.CardMetadataId == 0)
+        {
+            deposit.CardMetadata = cardMetadataDao;
+        }
+
+        if (deposit.UserId == 0)
+        {
+            deposit.User = userDao;
+        }
 
         userDao.Deposits.Add(deposit);
 
@@ -124,25 +131,15 @@ public class PoolService : IPoolService
 
         try
         {
-            _context.PoolUsers.Update(userDao);
+            await _context.Deposits.AddAsync(deposit);
             await _context.SaveChangesAsync();
         }
         catch (DbUpdateException)
         {
-            await dbTx.RollbackAsync();
             throw new PoolServiceException("DB_UPDATE_ERROR");
         }
 
-        try
-        {
-            await _transactionSender.Send(tx);
-        }
-        catch (TransactionSenderException)
-        {
-            await dbTx.RollbackAsync();
-            throw;
-        }
-
+        await _transactionSender.Send(tx);
         await dbTx.CommitAsync();
 
         return new()

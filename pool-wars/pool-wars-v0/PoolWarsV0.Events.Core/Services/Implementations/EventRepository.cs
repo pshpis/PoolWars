@@ -38,7 +38,8 @@ public class EventRepository : IEventRepository
             {
                 UserId = user.Id,
                 Result = pw.Result,
-                Cards = string.Join(" ", pw.Cards)
+                Cards = string.Join(" ", pw.Cards),
+                PoolAddress = pw.Pool
             },
             _ => throw new EventRepositoryException("BAD_EVENT_TYPE")
         };
@@ -48,7 +49,7 @@ public class EventRepository : IEventRepository
         {
             ev.User = user;
         }
-        
+
         try
         {
             await _context.UserEvents.AddAsync(ev);
@@ -74,7 +75,9 @@ public class EventRepository : IEventRepository
                 {
                     Result = pw.Result,
                     Cards = pw.Cards.Split(' '),
-                    Date = pw.Time
+                    Date = pw.Time,
+                    Pool = pw.PoolAddress,
+                    TakenCards = pw.TakenCards.Split(' ')
                 },
                 _ => throw new EventRepositoryException("BAD_EVENT_TYPE")
             };

@@ -4,6 +4,8 @@ using PoolWarsV0.Pools.Core.Models;
 using PoolWarsV0.Rewards.Core.Exceptions;
 using PoolWarsV0.Rewards.Core.Models;
 using PoolWarsV0.Rewards.Core.Services;
+using PoolWarsV0.Rewards.Models;
+using Solnet.Rpc.Models;
 
 namespace PoolWarsV0.Rewards.Controllers;
 
@@ -11,14 +13,17 @@ namespace PoolWarsV0.Rewards.Controllers;
 [Route("api/v1/winnerData")]
 public class WinnerController : ControllerBase
 {
+    private readonly ICardTaker _cardTaker;
     private readonly IRewardDistributor _rewardDistributor;
     private readonly IWinnerRepository _winnerRepository;
 
     public WinnerController(IWinnerRepository winnerRepository,
-        IRewardDistributor rewardDistributor)
+        IRewardDistributor rewardDistributor,
+        ICardTaker cardTaker)
     {
         _winnerRepository = winnerRepository;
         _rewardDistributor = rewardDistributor;
+        _cardTaker = cardTaker;
     }
 
     /// <summary>
@@ -102,6 +107,42 @@ public class WinnerController : ControllerBase
             return await _winnerRepository.GetPoolWarResult(poolBody);
         }
         catch (WinnerGeneratorException e)
+        {
+            return BadRequest(new
+            {
+                e.Message
+            });
+        }
+    }
+
+    [HttpPost]
+    [Route("take")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> TakeCard([FromBody] TakeCardRequest takeCard)
+    {
+        Message message;
+        byte[] signature;
+
+        try
+        {
+            message = Message.Deserialize(Convert.FromBase64String(takeCard.TransactionMessage));
+            signature = Convert.FromBase64String(takeCard.MessageSignature);
+        }
+        catch (Exception)
+        {
+            return BadRequest(new
+            {
+                Message = "Bad body data"
+            });
+        }
+
+        try
+        {
+            await _cardTaker.TakeCard(message, signature, new(takeCard.CardMintAddress), new(takeCard.PoolAddress));
+            return Ok();
+        }
+        catch (CardTakerException e)
         {
             return BadRequest(new
             {

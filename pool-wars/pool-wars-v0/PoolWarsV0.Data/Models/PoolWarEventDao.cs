@@ -14,4 +14,10 @@ public class PoolWarEventDao : UserEvent
 
     [Required]
     public string Cards { get; set; } = string.Empty;
+
+    [Required]
+    public string TakenCards { get; set; } = string.Empty;
+
+    [Required]
+    public string PoolAddress { get; set; } = string.Empty;
 }

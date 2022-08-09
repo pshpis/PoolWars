@@ -11,4 +11,8 @@ public class PoolWarEvent : Event
     public PoolWarWinLose Result { get; set; }
 
     public ICollection<string> Cards { get; set; } = new List<string>();
+
+    public ICollection<string> TakenCards { get; set; } = new List<string>();
+
+    public string Pool { get; set; } = string.Empty;
 }

@@ -27,6 +27,7 @@ internal class Startup : StartupBase
         services.AddTransient<PoolService>();
         services.AddTransient<IWinnerRepository, WinnerRepository>();
         services.AddTransient<IRewardDistributor, RewardDistributor>();
+        services.AddTransient<ICardTaker, CardTaker>();
         services.AddHttpClient();
         services.AddSwaggerGen();
         services.AddControllers();

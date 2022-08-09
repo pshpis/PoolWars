@@ -70,4 +70,7 @@ public class UserResultCard
 
     [Required]
     public CardMetadataDao Card { get; set; } = null!;
+
+    [Required]
+    public bool Given { get; set; } = false;
 }

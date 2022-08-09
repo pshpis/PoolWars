@@ -59,6 +59,7 @@ public class RewardDistributor : IRewardDistributor
         var toDistribute = winnerDeposits.Concat(loserDeposits).ToList();
 
         var rewardedUsers = GetPoolUsers(winnerPool);
+        var lostUsers = GetPoolUsers(loserPool);
 
         PoolWarResultDao result = new()
         {
@@ -82,6 +83,8 @@ public class RewardDistributor : IRewardDistributor
             };
 
             AddUserShareToReward(resultUserLink, user, winner.WinnerPool, winnerPool, winner.LoserPool, ref toDistribute);
+            @event.Result = PoolWarWinLose.Win;
+            @event.Pool = winnerPool.Address;
             @event.Cards = resultUserLink.Cards.Select(c => c.Card.CardMint.Address).ToList();
 
             try
@@ -94,6 +97,27 @@ public class RewardDistributor : IRewardDistributor
             }
 
             result.Users.Add(resultUserLink);
+        }
+
+        foreach (PoolUserDao user in lostUsers)
+        {
+            PoolWarEvent @event = new(user.Address)
+            {
+                Result = PoolWarWinLose.Lose,
+                Cards = user.Deposits
+                    .Where(d => d.PoolId == loserPool.Id || d.PoolId == winnerPool.Id)
+                    .Select(c => c.CardMetadata.CardMint.Address).ToList(),
+                Pool = loserPool.Address
+            };
+
+            try
+            {
+                await _repository.AddEventAsync(@event);
+            }
+            catch (EventRepositoryException e)
+            {
+                throw new WinnerGeneratorException(e.Message);
+            }
         }
 
         poolWarDao.Result = result;
