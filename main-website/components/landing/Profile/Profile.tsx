@@ -33,6 +33,7 @@ import {Event, fetchEvents, isPoolWarV0Event, isSwapEvent, PoolWarV0Event, SwapE
 import {Connection, PublicKey, Transaction} from "@solana/web3.js";
 import { ASSOCIATED_TOKEN_PROGRAM_ID, createAssociatedTokenAccountInstruction, createTransferCheckedInstruction, getAssociatedTokenAddress, TOKEN_PROGRAM_ID, transferChecked, transferCheckedInstructionData } from "@solana/spl-token";
 import { takeCard } from "../../../lib/pool-wars";
+import {forEachComment} from "tsutils";
 
 const MyNFts = ({NFTsStats}) => {
     return <Box>
@@ -50,10 +51,12 @@ const MyNFts = ({NFTsStats}) => {
 
 const Swap = ({inputCards, outputCard, isOpen, connection} : {inputCards: SwapEvent['inputCards'], outputCard: SwapEvent['outputCard'], isOpen: boolean,connection: Connection}) => {
     const size = useWindowSize();
+    const [load, setLoad] = useState<boolean>(false);
     const [outputNFTSrc, setOutputNFTSrc] = useState<string>();
     const [inputNFTs, setInputNFTs] = useState([]);
     useEffect(() => {
         async function load() {
+            setLoad(false);
             const outputNFTSrc = (await getMetadataByMintAddress(outputCard, connection)).src;
             console.log(outputNFTSrc);
             setOutputNFTSrc(_ => outputNFTSrc);
@@ -64,30 +67,36 @@ const Swap = ({inputCards, outputCard, isOpen, connection} : {inputCards: SwapEv
                 newNFTs.push(<GridItem w="188px" h="188px"><Img w="188px" h="188px" src={nftSrc} borderRadius="16px" boxShadow="0px 0px 16px 0px #20202080" filter="drop-shadow(0px 0px 0px 16px #20202080)"/></GridItem>);
             }
             setInputNFTs(newNFTs);
+            setLoad(true);
         }
         load()
     }, [isOpen]);
 
-    const templateColumns = useMemo(() => {
-        if (size.width < 1112) return 'repeat(2, 1fr)';
-        else return 'repeat(3, 1fr)';
-    }, [size.width]);
-
-    return <ElderKattsBox pt="56px" pl="106px" pr="106px" pb="75px" w="100%">
-        <Text mb="48px" fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="40px" textAlign="center">successful SWAP</Text>
-        <Center>
-            <HStack>
-                <HStack spacing="-94px">
-                    {inputNFTs}
-                </HStack>
-                <Img pl="32px" pr="52px" src="/swap-transition.svg"/>
-                <Img w="188px" h="188px" src={outputNFTSrc} borderRadius="16px" boxShadow="0px 0px 50px 0px #71CFC380"/>
-            </HStack>
-        </Center>
-    </ElderKattsBox>
+    return <ModalContent maxW="1036px">
+        <ElderKattsBox pt="56px" pl="106px" pr="106px" pb="75px" w="100%">
+            <Text mb="48px" fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="40px" textAlign="center">successful SWAP</Text>
+            {
+                !load ?
+                    <Flex alignItems="center" justifyContent="center">
+                        <div className={styles.donut}/>
+                    </Flex>
+                :
+                    <Center>
+                        <HStack>
+                            <HStack spacing="-94px">
+                                {inputNFTs}
+                            </HStack>
+                            <Img pl="32px" pr="52px" src="/swap-transition.svg"/>
+                            <Img w="188px" h="188px" src={outputNFTSrc} borderRadius="16px"
+                                 boxShadow="0px 0px 50px 0px #71CFC380"/>
+                        </HStack>
+                    </Center>
+            }
+        </ElderKattsBox>
+    </ModalContent>
 }
 
-const NFT = ({src, mint, result} : {src: string, mint: string, result: PoolWarV0Event['result']}) => {
+const NFT = ({src, mint, result, taken} : {src: string, mint: string, result: PoolWarV0Event['result'], taken: boolean}) => {
 
     const wallet = useWallet();
     const { connection } = useConnection();
@@ -158,9 +167,9 @@ const NFT = ({src, mint, result} : {src: string, mint: string, result: PoolWarV0
                 <>
                     <Img w="100%" h="188px" src={src} borderRadius="16px"/>
                     <Center>
-                        <Box onClick={take} w="80%" h="32px" mt="10px" fontWeight="600" fontSize="18px" lineHeight="32px" textAlign="center"
-                             color="#202020" backgroundColor="#B8C3E6" borderRadius="16px" _hover={{boxShadow: "0px 0px 16px 0px #B8C3E6D9"}}>
-                            TAKE NOW
+                        <Box onClick={taken ? void(0) : take} w="80%" h="32px" mt="10px" fontWeight="600" fontSize="18px" lineHeight="32px" textAlign="center"
+                             color="#202020" backgroundColor={taken ? "#71CFC3" : "#B8C3E6"} borderRadius="16px" _hover={{boxShadow: "0px 0px 16px 0px #B8C3E6D9"}}>
+                            {taken ? "TAKEN" : "TAKE NOW"}
                         </Box>
                     </Center>
                 </>
@@ -170,7 +179,7 @@ const NFT = ({src, mint, result} : {src: string, mint: string, result: PoolWarV0
     </GridItem>
 }
 
-const PoolWarV0 = ({result, cards, isOpen, connection} : {result: PoolWarV0Event['result'], cards: PoolWarV0Event['cards'], isOpen: boolean,connection: Connection}) => {
+const PoolWarV0 = ({result, cards, takenCards, isOpen, connection} : {result: PoolWarV0Event['result'], cards: PoolWarV0Event['cards'], takenCards: PoolWarV0Event['takenCards'],isOpen: boolean,connection: Connection}) => {
     const size = useWindowSize();
     const [NFTs, setNFTs] = useState([]);
     useEffect(() => {
@@ -179,8 +188,10 @@ const PoolWarV0 = ({result, cards, isOpen, connection} : {result: PoolWarV0Event
             for (const nft of cards) {
                 console.log(nft)
                 const nftSrc = (await getMetadataByMintAddress(nft, connection)).src;
-                console.log(nftSrc);
-                newNFTs.push(<NFT src={nftSrc} mint={nft} result={result}/>);
+                if (takenCards.find((takenNFT) => takenNFT === nft))
+                    newNFTs.push(<NFT src={nftSrc} mint={nft} result={result} taken={true}/>)
+                else
+                    newNFTs.push(<NFT src={nftSrc} mint={nft} result={result} taken={false}/>)
             }
             setNFTs(newNFTs);
         }
@@ -192,14 +203,16 @@ const PoolWarV0 = ({result, cards, isOpen, connection} : {result: PoolWarV0Event
         else return 'repeat(3, 1fr)';
     }, [size.width]);
 
-    return <Box>
-        <Text w="473px" fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="40px" textAlign="center">{result === 0 ? "YOU WON!" : "YOU LOSE"}</Text>
-        <Center>
-            <Grid templateColumns={templateColumns} columnGap="24px" rowGap="24px">
-                {NFTs}
-            </Grid>
-        </Center>
-    </Box>
+    return <ModalContent maxW="1036px">
+        <Box>
+            <Text w="473px" fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="40px" textAlign="center">{result === 0 ? "YOU WON!" : "YOU LOSE"}</Text>
+            <Center>
+                <Grid templateColumns={templateColumns} columnGap="24px" rowGap="24px">
+                    {NFTs}
+                </Grid>
+            </Center>
+        </Box>
+    </ModalContent>
 }
 
 const EventPanel = ({id, event, connection} : {id : string, event: Event, connection: Connection}) => {
@@ -229,17 +242,15 @@ const EventPanel = ({id, event, connection} : {id : string, event: Event, connec
         </HStack>
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay/>
-            <ModalContent maxW="1036px">
                 {
                     isSwapEvent(event) ?
                         <Swap inputCards={event.inputCards} outputCard={event.outputCard} isOpen={isOpen} connection={connection}/>
                     :
                         isPoolWarV0Event(event) ?
-                            <PoolWarV0 result={event.result} cards={event.cards} isOpen={isOpen} connection={connection}/>
+                            <PoolWarV0 result={event.result} cards={event.cards} takenCards={event.takenCards} isOpen={isOpen} connection={connection}/>
                         :
                         <Box></Box>
                 }
-            </ModalContent>
         </Modal>
     </Box>
 }
@@ -414,14 +425,14 @@ export const Profile = () => {
                                 <div className={styles.donut}/>
                             </Flex>
                         : profilePanelState.currentPanelMode.type === "MyNFTs" ?
-                                <MyNFts NFTsStats={NFTsStats}/>
-                                :
-                                walletAuthObj.authToken ?
-                                    <ActivitiesPanel eventsInfo={eventsInfo} connection={connection}/>
-                                :
-                                    <Flex mt="200px" alignItems="center" justifyContent="center">
-                                        <Box fontWeight="400" fontSize={size.width > 768 ? "48px" : "32px"} color="#E8E3DD" textAlign="center">Sign in to see your latest activities</Box>
-                                    </Flex>
+                            <MyNFts NFTsStats={NFTsStats}/>
+                            :
+                            walletAuthObj.authToken ?
+                                <ActivitiesPanel eventsInfo={eventsInfo} connection={connection}/>
+                            :
+                                <Flex mt="200px" alignItems="center" justifyContent="center">
+                                    <Box fontWeight="400" fontSize={size.width > 768 ? "48px" : "32px"} color="#E8E3DD" textAlign="center">Sign in to see your latest activities</Box>
+                                </Flex>
                         }
 
                     </Box>
