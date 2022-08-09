@@ -48,7 +48,7 @@ public class CardTaker : ICardTaker
                           throw new CardTakerException("POOL_NOT_FOUND");
 
         PoolWarEventDao eventDao = await _context.PoolWarsEvents
-                                       .AsNoTracking()
+                                       .AsTracking()
                                        .Include(e => e.User)
                                        .FirstOrDefaultAsync(e => e.User.Address == user.Key && e.PoolAddress == pool.Address) ??
                                    throw new CardTakerException("EVENT_NOT_FOUND");

@@ -25,7 +25,6 @@ public sealed class UserAuthenticationMiddleware : IDisposable
 
     public void Dispose()
     {
-        _context.Dispose();
         _scope.Dispose();
     }
 
