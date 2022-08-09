@@ -226,6 +226,18 @@ const PoolWarV0 = ({result, cards, takenCards, isOpen, connection} : {result: Po
 const EventPanel = ({id, event, connection} : {id : string, event: Event, connection: Connection}) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
+    const eventDescription = useMemo<string>(() => {
+        if (isPoolWarV0Event(event))
+            if (event.result === 0)
+                return "WIN"
+            else return "LOSE";
+        else
+            if (isSwapEvent(event))
+                return `SWAP ${event.inputCards.length} CARDS TO 1`
+            else
+                return "EVENT";
+    }, []);
+
     const dateString = useMemo(() => {
 
         const date = new Date(event.date);
@@ -244,7 +256,9 @@ const EventPanel = ({id, event, connection} : {id : string, event: Event, connec
             <Box pl="0px"><Divider w="64px" color="#E8E8E826" transform="rotate(90deg)"/></Box>
             <Text fontWeight="600" fontSize="20px" lineHeight="80px" color="#71CFC3">{event.type.toUpperCase()}</Text>
             <Divider w="64px" color="#E8E8E826" transform="rotate(90deg)"/>
-            <Text fontWeight="600" fontSize="20px" lineHeight="80px" color="#E8E3DD">{isPoolWarV0Event(event) ? event.result === 0 ? "WIN" : "LOSE" : "swap"}</Text>
+            <Text fontWeight="600" fontSize="20px" lineHeight="80px" color="#E8E3DD">
+                {eventDescription}
+            </Text>
             <Spacer w="auto"/>
             <Text pr="40px" fontWeight="300" fontSize="20px" lineHeight="80px" color="#B2B2B2">{dateString}</Text>
         </HStack>
