@@ -61,7 +61,7 @@ const Swap = ({inputCards, outputCard, isOpen, connection} : {inputCards: SwapEv
             for (const nft of inputCards) {
                 const nftSrc = (await getMetadataByMintAddress(nft, connection)).src;
                 console.log(nftSrc);
-                newNFTs.push(<Img w="100%" h="188px" src={nftSrc} borderRadius="16px"/>);
+                newNFTs.push(<Img w="188px" h="188px" src={nftSrc} borderRadius="16px"/>);
             }
             setInputNFTs(newNFTs);
         }
@@ -215,7 +215,7 @@ const EventPanel = ({id, event, connection} : {id : string, event: Event, connec
         </HStack>
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay/>
-            <ModalContent w="872px">
+            <ModalContent>
                 <Center>
                     <ElderKattsBox w="872px" maxW="1036px" maxH="447px">
                         {
@@ -414,8 +414,12 @@ export const Profile = () => {
                         : profilePanelState.currentPanelMode.type === "MyNFTs" ?
                                 <MyNFts NFTsStats={NFTsStats}/>
                                 :
-                                <ActivitiesPanel eventsInfo={eventsInfo} connection={connection}/>
-
+                                walletAuthObj.authToken ?
+                                    <ActivitiesPanel eventsInfo={eventsInfo} connection={connection}/>
+                                :
+                                    <Flex mt="200px" alignItems="center" justifyContent="center">
+                                        <Box fontWeight="400" fontSize={size.width > 768 ? "48px" : "32px"} color="#E8E3DD" textAlign="center">Sign in to see your latest activities</Box>
+                                    </Flex>
                         }
 
                     </Box>
