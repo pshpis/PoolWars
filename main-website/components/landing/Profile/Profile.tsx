@@ -3,8 +3,8 @@ import {
     Button,
     Center,
     Divider,
-    Flex,
-    HStack,
+    Flex, Grid, GridItem,
+    HStack, Img,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -29,12 +29,14 @@ import styles from "../../../styles/profile.module.scss";
 import Layout from "../Layout/Layout";
 import {useWalletAuth} from "../../../hooks/useWalletAuth";
 import {useSocialConnect} from "../../../hooks/useSocialConnect";
-import {NFTStatWithMints, parseCards} from "../../../lib/nft-helper";
+import {getMetadataByMintAddress, NFTStatWithMints, parseCards} from "../../../lib/nft-helper";
 import {ProfileNFTSPanel} from "./ProfileNFTsPanel";
 import clsx from "clsx";
 import {useProfilePanel} from "../../../hooks/useProfilePanel";
-import {Event, fetchEvents} from "../../../lib/events";
+import {Event, fetchEvents, isPoolWarV0Event, isSwapEvent, PoolWarV0Event, SwapEvent, Win} from "../../../lib/events";
 import {formatDate} from "@toruslabs/base-controllers";
+import {Connection} from "@solana/web3.js";
+import src from "@keystonehq/bc-ur-registry";
 
 const MyNFts = ({NFTsStats}) => {
     return <Box>
@@ -50,13 +52,67 @@ const MyNFts = ({NFTsStats}) => {
     </Box>
 }
 
-const Swap = () => {
-    
+const Swap = ({inputCards, outputCard, isOpen, connection} : {inputCards: SwapEvent['inputCards'], outputCard: SwapEvent['outputCard'], isOpen: boolean,connection: Connection}) => {
+    const [outputNFTSrc, setOutputNFTSrc] = useState<string>();
+    useEffect(() => {
+        async function load() {
+            const outputNFTSrc = (await getMetadataByMintAddress(outputCard, connection)).src;
+            console.log(outputNFTSrc);
+            setOutputNFTSrc(_ => outputNFTSrc);
+        }
+        load()
+    }, [isOpen]);
+
+    return <Box>
+        <Text w="473px" fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="40px">successful SWAP</Text>
+        <NFT src={outputNFTSrc} result={0}/>
+    </Box>
 }
 
-const EventPanel = ({id, eventName, eventStats, dateTime } : {id : string, eventName: "swap" | "poolwar-v0", eventStats: string, dateTime: string}) => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+const NFT = ({src, result} : {src: string, result: PoolWarV0Event['result']}) => {
+    return <GridItem w="188px">
+        {
+            result === 0 ?
+                <>
+                    <Img w="100%" h="188px" src={src} borderRadius="16px"/>
+                    <Center>
+                        <Box w="80%" h="32px" mt="10px" fontWeight="600" fontSize="18px" lineHeight="32px" textAlign="center"
+                             color="#202020" backgroundColor="#B8C3E6" borderRadius="16px" _hover={{boxShadow: "0px 0px 16px 0px #B8C3E6D9"}}>
+                            TAKE NOW
+                        </Box>
+                    </Center>
+                </>
+            :
+                <Img w="100%" h="188px" src={src} borderRadius="16px"/>
+        }
+    </GridItem>
+}
 
+const PoolWarV0 = ({result, cards, isOpen, connection} : {result: PoolWarV0Event['result'], cards: PoolWarV0Event['cards'], isOpen: boolean,connection: Connection}) => {
+    const [NFTs, setNFTs] = useState([]);
+    useEffect(() => {
+        async function load() {
+            let newNFTs = [];
+            for (const nft of cards) {
+                const nftSrc = (await getMetadataByMintAddress(nft, connection)).src;
+                console.log(nftSrc);
+                newNFTs.push(<NFT src={nftSrc} result={result}/>);
+            }
+            setNFTs(newNFTs);
+        }
+        load();
+    }, [isOpen])
+
+    return <Center>
+        <Text w="473px" fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="40px">successful SWAP</Text>
+        <Grid>
+            {NFTs}
+        </Grid>
+    </Center>
+}
+
+const EventPanel = ({id, event, connection} : {id : string, event: Event, connection: Connection}) => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     return <Box w="100%" h="80px" backgroundColor="#202020" borderRadius="24px" boxShadow="0px 0px 2px 2px #B2B2B20D"
                 _hover={{
@@ -66,26 +122,33 @@ const EventPanel = ({id, eventName, eventStats, dateTime } : {id : string, event
         <HStack>
             <Box pl="27px" fontWeight="600" fontSize="20px" lineHeight="80px" color="#E8E3DD">{id}</Box>
             <Box pl="0px"><Divider w="64px" color="#E8E8E826" transform="rotate(90deg)"/></Box>
-            <Text fontWeight="600" fontSize="20px" lineHeight="80px" color="#71CFC3">{eventName.toUpperCase()}</Text>
+            <Text fontWeight="600" fontSize="20px" lineHeight="80px" color="#71CFC3">{event.type.toUpperCase()}</Text>
             <Divider w="64px" color="#E8E8E826" transform="rotate(90deg)"/>
-            <Text fontWeight="600" fontSize="20px" lineHeight="80px" color="#E8E3DD">{eventStats}</Text>
+            <Text fontWeight="600" fontSize="20px" lineHeight="80px" color="#E8E3DD">{event.type}</Text>
             <Spacer w="auto"/>
-            <Text pr="40px" fontWeight="300" fontSize="20px" lineHeight="80px" color="#B2B2B2">{dateTime}</Text>
+            <Text pr="40px" fontWeight="300" fontSize="20px" lineHeight="80px" color="#B2B2B2">{event.date.toString()}</Text>
         </HStack>
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay/>
             <ModalContent>
                 <Center>
                     <ElderKattsBox maxW="1036px" maxH="447px">
-                        {eventName === "swap" ?
-                            <Box pt="56px" pb="80px" pl="24px" pr="24px">
-                                <Text w="473px" fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="40px">successful SWAP</Text>
-                                <Box>
-
+                        {
+                            isSwapEvent(event) ?
+                                <Box pt="56px" pb="80px" pl="24px" pr="24px">
+                                    <Box>
+                                        <Swap inputCards={event.inputCards} outputCard={event.outputCard} isOpen={isOpen} connection={connection}/>
+                                    </Box>
                                 </Box>
-                            </Box>
                             :
-                            <Box></Box>
+                                isPoolWarV0Event(event) ?
+                                    <Box pt="56px" pb="80px" pl="24px" pr="24px">
+                                        <Box>
+                                            <PoolWarV0 result={event.result} cards={event.cards} isOpen={isOpen} connection={connection}/>
+                                        </Box>
+                                    </Box>
+                                :
+                                <Box></Box>
                         }
 
                     </ElderKattsBox>
@@ -108,13 +171,13 @@ const EventPanel = ({id, eventName, eventStats, dateTime } : {id : string, event
     </Box>
 }
 
-const ActivitiesPanel = ({eventsInfo}) => {
+const ActivitiesPanel = ({eventsInfo, connection}) => {
     const [Events, setEvents] = useState([]);
     useEffect(() => {
         let newEvents = [];
         let id = 0;
         eventsInfo.forEach((item) => {
-            newEvents.push(<EventPanel id={`#${id++}`} eventName={item.type} eventStats={item.eventStats} dateTime={item.date}/>)
+            newEvents.push(<EventPanel id={`#${id++}`} event={item} connection={connection}/>)
         });
         setEvents(newEvents);
     }, [eventsInfo]);
@@ -123,8 +186,6 @@ const ActivitiesPanel = ({eventsInfo}) => {
         {Events}
     </VStack>
 }
-
-type eventInfo = { eventName: string, eventStats: string, dateTime: string }
 
 export const Profile = () => {
     const size = useWindowSize();
@@ -282,7 +343,7 @@ export const Profile = () => {
                         : profilePanelState.currentPanelMode.type === "MyNFTs" ?
                                 <MyNFts NFTsStats={NFTsStats}/>
                                 :
-                                <ActivitiesPanel eventsInfo={eventsInfo}/>
+                                <ActivitiesPanel eventsInfo={eventsInfo} connection={connection}/>
 
                         }
 
