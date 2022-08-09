@@ -17,7 +17,7 @@ export type SwapEvent = Event & {
 export type Win = 0;
 export type Lose = 1;
 
-export type PoolWarEvent = Event & {
+export type PoolWarV0Event = Event & {
     type: 'poolwar-v0',
     result: Win | Lose,
     cards: string[],
@@ -27,7 +27,7 @@ export function isSwapEvent(event: Event): event is SwapEvent {
     return event.type === 'swap'
 }
 
-export function isPoolWarEvent(event: Event): event is PoolWarEvent {
+export function isPoolWarV0Event(event: Event): event is PoolWarV0Event {
     return event.type === 'poolwar-v0'
 }
 
