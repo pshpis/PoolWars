@@ -151,7 +151,7 @@ async function parseMints(address: PublicKey | null, connection: Connection): Pr
     }
 }
 
-async function getMetadataByMintAddress(mint: string, connection: Connection): Promise<NFTStat> {
+export async function getMetadataByMintAddress(mint: string, connection: Connection): Promise<NFTStat> {
     const creators = [...allowedCreators, ...legendaryCreators];
 
     try {
