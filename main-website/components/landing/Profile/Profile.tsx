@@ -30,8 +30,9 @@ import {ProfileNFTSPanel} from "./ProfileNFTsPanel";
 import clsx from "clsx";
 import {useProfilePanel} from "../../../hooks/useProfilePanel";
 import {Event, fetchEvents, isPoolWarV0Event, isSwapEvent, PoolWarV0Event, SwapEvent, Win} from "../../../lib/events";
-import {Connection, PublicKey} from "@solana/web3.js";
-import { ASSOCIATED_TOKEN_PROGRAM_ID, getAssociatedTokenAddress, TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import {Connection, PublicKey, Transaction} from "@solana/web3.js";
+import { ASSOCIATED_TOKEN_PROGRAM_ID, createAssociatedTokenAccountInstruction, createTransferCheckedInstruction, getAssociatedTokenAddress, TOKEN_PROGRAM_ID, transferChecked, transferCheckedInstructionData } from "@solana/spl-token";
+import { takeCard } from "../../../lib/pool-wars";
 
 const MyNFts = ({NFTsStats}) => {
     return <Box>
@@ -92,13 +93,57 @@ const NFT = ({src, mint, result} : {src: string, mint: string, result: PoolWarV0
 
         try {
             const account = await connection.getAccountInfo(destinationAddress);
+            
             if (account.lamports > 0) {
                 needsInitialize = false;
             }
         }
-        catch(e) {
+        catch (e) {
 
         }
+
+        let sourceAddress: PublicKey = undefined;
+        let pool: PublicKey = undefined;
+
+        try {
+            const largest = await connection.getTokenLargestAccounts(new PublicKey(mint), 'finalized')
+            sourceAddress = largest.value[0].address;
+            const tokenAccInfo = await connection.getParsedAccountInfo(sourceAddress, 'finalized');
+            
+            pool = new PublicKey((tokenAccInfo.value.data as any).parsed.info.owner);
+
+        } catch(e) {
+            return;
+        }
+
+        const tx = new Transaction();
+        tx.feePayer = wallet.publicKey;
+        tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash
+
+        if (needsInitialize) {
+            tx.add(createAssociatedTokenAccountInstruction(
+                wallet.publicKey,
+                destinationAddress,
+                wallet.publicKey,
+                new PublicKey(mint),
+                TOKEN_PROGRAM_ID,
+                ASSOCIATED_TOKEN_PROGRAM_ID
+            ))
+        }
+
+        tx.add(createTransferCheckedInstruction(
+            sourceAddress,
+            new PublicKey(mint),
+            destinationAddress,
+            pool,
+            1,
+            0,
+            [],
+            TOKEN_PROGRAM_ID
+        ))
+
+        const signed = await wallet.signTransaction(tx);
+        await takeCard(signed, mint, pool.toBase58())
     }
 
     return <GridItem w="188px">
