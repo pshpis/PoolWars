@@ -200,13 +200,13 @@ export const Swaps = () => {
             tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
             tx.feePayer = wallet.publicKey;
 
+            const signedTransaction = await wallet.signTransaction(tx);
             const signature = await getSwapAuthoritySignature(tx);
 
             if (!signature) {
                 return;
             }
 
-            const signedTransaction = await wallet.signTransaction(tx);
             signedTransaction.partialSign(mint);
             signedTransaction.addSignature(SWAP_AUTHORITY, signature);
 
