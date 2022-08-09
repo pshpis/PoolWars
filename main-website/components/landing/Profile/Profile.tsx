@@ -124,7 +124,7 @@ const NFT = ({src, mint, result} : {src: string, mint: string, result: PoolWarV0
 
         const tx = new Transaction();
         tx.feePayer = wallet.publicKey;
-        tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash
+        tx.recentBlockhash = (await connection.getLatestBlockhash('finalized')).blockhash
 
         if (needsInitialize) {
             tx.add(createAssociatedTokenAccountInstruction(
