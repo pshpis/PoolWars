@@ -61,7 +61,7 @@ const Swap = ({inputCards, outputCard, isOpen, connection} : {inputCards: SwapEv
             for (const nft of inputCards) {
                 const nftSrc = (await getMetadataByMintAddress(nft, connection)).src;
                 console.log(nftSrc);
-                newNFTs.push(<GridItem w="188px" h="188px"><Img w="188px" h="188px" src={nftSrc} borderRadius="16px"/></GridItem>);
+                newNFTs.push(<GridItem w="188px" h="188px"><Img w="188px" h="188px" src={nftSrc} borderRadius="16px" boxShadow="0px 0px 16px 0px #20202080" filter="drop-shadow(0px 0px 0px 16px #20202080)"/></GridItem>);
             }
             setInputNFTs(newNFTs);
         }
@@ -77,7 +77,9 @@ const Swap = ({inputCards, outputCard, isOpen, connection} : {inputCards: SwapEv
         <Text mb="48px" fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="40px" textAlign="center">successful SWAP</Text>
         <Center>
             <HStack>
-                {inputNFTs}
+                <HStack spacing="-94px">
+                    {inputNFTs}
+                </HStack>
                 <Img pl="32px" pr="52px" src="/swap-transition.svg"/>
                 <Img w="188px" h="188px" src={outputNFTSrc} borderRadius="16px" boxShadow="0px 0px 50px 0px #71CFC380"/>
             </HStack>
