@@ -48,9 +48,15 @@ public class RewardDistributor : IRewardDistributor
         PoolDao loserPool = poolWarDao.Pools.FirstOrDefault(p => p.Address == winner.LoserPool.Address) ??
                             throw new WinnerGeneratorException("POOL_NOT_FOUND");
 
+        var winnerDeposits = GetPoolCards(winnerPool)
+            .OrderByDescending(m => m.Strength)
+            .ToList();
+
         var loserDeposits = GetPoolCards(loserPool)
             .OrderByDescending(m => m.Strength)
             .ToList();
+
+        var toDistribute = winnerDeposits.Concat(loserDeposits).ToList();
 
         var rewardedUsers = GetPoolUsers(winnerPool);
 
@@ -63,11 +69,11 @@ public class RewardDistributor : IRewardDistributor
         };
 
         await using IDbContextTransaction transaction = await _context.Database.BeginTransactionAsync();
-        
+
         foreach (PoolUserDao user in rewardedUsers)
         {
             PoolWarEvent @event = new(user.Address);
-            
+
             ResultUserLink resultUserLink = new()
             {
                 User = user,
@@ -75,9 +81,7 @@ public class RewardDistributor : IRewardDistributor
                 Result = result
             };
 
-            AddUserCardsToReward(resultUserLink, winnerPool, user);
-            AddUserShareToReward(resultUserLink, user, winner.WinnerPool, winnerPool, winner.LoserPool, ref loserDeposits);
-
+            AddUserShareToReward(resultUserLink, user, winner.WinnerPool, winnerPool, winner.LoserPool, ref toDistribute);
             @event.Cards = resultUserLink.Cards.Select(c => c.Card.CardMint.Address).ToList();
 
             try
@@ -96,7 +100,7 @@ public class RewardDistributor : IRewardDistributor
         _context.PoolWars.Update(poolWarDao);
         await _context.SaveChangesAsync();
         await transaction.CommitAsync();
-        
+
         return new()
         {
             Address = winner.WinnerPool.Address,
@@ -142,32 +146,24 @@ public class RewardDistributor : IRewardDistributor
         return user.Deposits.Where(d => d.PoolId == pool.Id).Sum(d => d.CardMetadata.Strength);
     }
 
-    private static void AddUserCardsToReward(ResultUserLink resultUserLink, PoolDao winnerPool, PoolUserDao user)
-    {
-        foreach (PoolDepositDao deposit in user.Deposits.Where(d => d.PoolId == winnerPool.Id))
-        {
-            resultUserLink.Cards.Add(new()
-            {
-                Link = resultUserLink,
-                CardId = deposit.CardMetadataId,
-                Card = deposit.CardMetadata
-            });
-        }
-    }
-
     private static void AddUserShareToReward(ResultUserLink resultUserLink,
         PoolUserDao user,
         PoolState winnerPool,
         PoolDao winnerPoolDao,
         PoolState loserPool,
-        ref List<CardMetadataDao> loserDeposits)
+        ref List<CardMetadataDao> toDistribute)
     {
         var userStrength = GetUserStrength(user, winnerPoolDao);
-        var userRewardStrength = (int) Math.Floor((double) userStrength * loserPool.TotalStrength / winnerPool.TotalStrength);
+
+        var userRewardStrength = (int) Math.Floor(userStrength + // Give user his equivalent of deposit back
+                                                  (double) userStrength *
+                                                  loserPool.TotalStrength / // And add his share in loser pool
+                                                  winnerPool.TotalStrength
+        );
 
         while (userRewardStrength > 0)
         {
-            CardMetadataDao? metadata = loserDeposits.FirstOrDefault(d => userRewardStrength >= d.Strength);
+            CardMetadataDao? metadata = toDistribute.FirstOrDefault(d => userRewardStrength >= d.Strength);
 
             if (metadata is null)
             {
@@ -184,7 +180,7 @@ public class RewardDistributor : IRewardDistributor
                 Link = resultUserLink
             });
 
-            loserDeposits.Remove(metadata);
+            toDistribute.Remove(metadata);
         }
     }
 }
