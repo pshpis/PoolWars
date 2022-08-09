@@ -1,7 +1,22 @@
 import {
-    Box, Button,
-    Center, Divider, Flex, HStack, Spacer, Stack,
-    Text, useToast, VStack
+    Box,
+    Button,
+    Center,
+    Divider,
+    Flex,
+    HStack,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent, ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    Spacer,
+    Stack,
+    Text,
+    useDisclosure,
+    useToast,
+    VStack
 } from "@chakra-ui/react";
 import {useWindowSize} from "../../../hooks/useWindowSize";
 import React, {useEffect, useState} from "react";
@@ -18,7 +33,8 @@ import {NFTStatWithMints, parseCards} from "../../../lib/nft-helper";
 import {ProfileNFTSPanel} from "./ProfileNFTsPanel";
 import clsx from "clsx";
 import {useProfilePanel} from "../../../hooks/useProfilePanel";
-import { fetchEvents } from "../../../lib/events";
+import {Event, fetchEvents} from "../../../lib/events";
+import {formatDate} from "@toruslabs/base-controllers";
 
 const MyNFts = ({NFTsStats}) => {
     return <Box>
@@ -34,20 +50,61 @@ const MyNFts = ({NFTsStats}) => {
     </Box>
 }
 
-const EventPanel = ({id, eventName, eventStats, dateTime }) => {
+const Swap = () => {
+    
+}
+
+const EventPanel = ({id, eventName, eventStats, dateTime } : {id : string, eventName: "swap" | "poolwar-v0", eventStats: string, dateTime: string}) => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
+
     return <Box w="100%" h="80px" backgroundColor="#202020" borderRadius="24px" boxShadow="0px 0px 2px 2px #B2B2B20D"
-         _hover={{
-             boxShadow: "0px 0px 8px 8px #B2B2B226"
-         }}>
+                _hover={{
+                    boxShadow: "0px 0px 8px 8px #B2B2B226"
+                }}
+                onClick={onOpen}>
         <HStack>
             <Box pl="27px" fontWeight="600" fontSize="20px" lineHeight="80px" color="#E8E3DD">{id}</Box>
             <Box pl="0px"><Divider w="64px" color="#E8E8E826" transform="rotate(90deg)"/></Box>
-            <Text fontWeight="600" fontSize="20px" lineHeight="80px" color="#71CFC3">{eventName}</Text>
+            <Text fontWeight="600" fontSize="20px" lineHeight="80px" color="#71CFC3">{eventName.toUpperCase()}</Text>
             <Divider w="64px" color="#E8E8E826" transform="rotate(90deg)"/>
             <Text fontWeight="600" fontSize="20px" lineHeight="80px" color="#E8E3DD">{eventStats}</Text>
             <Spacer w="auto"/>
             <Text pr="40px" fontWeight="300" fontSize="20px" lineHeight="80px" color="#B2B2B2">{dateTime}</Text>
         </HStack>
+        <Modal isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay/>
+            <ModalContent>
+                <Center>
+                    <ElderKattsBox maxW="1036px" maxH="447px">
+                        {eventName === "swap" ?
+                            <Box pt="56px" pb="80px" pl="24px" pr="24px">
+                                <Text w="473px" fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="40px">successful SWAP</Text>
+                                <Box>
+
+                                </Box>
+                            </Box>
+                            :
+                            <Box></Box>
+                        }
+
+                    </ElderKattsBox>
+                </Center>
+
+                {/*<ModalHeader>Modal Title</ModalHeader>*/}
+                {/*<ModalCloseButton />*/}
+                {/*<ModalBody>*/}
+                {/*    */}
+                {/*</ModalBody>*/}
+
+                {/*<ModalFooter>*/}
+                {/*    <Button colorScheme='blue' mr={3} onClick={onClose}>*/}
+                {/*        Close*/}
+                {/*    </Button>*/}
+                {/*    <Button variant='ghost'>Secondary Action</Button>*/}
+                {/*</ModalFooter>*/}
+            </ModalContent>
+        </Modal>
     </Box>
 }
 
@@ -57,7 +114,7 @@ const ActivitiesPanel = ({eventsInfo}) => {
         let newEvents = [];
         let id = 0;
         eventsInfo.forEach((item) => {
-            newEvents.push(<EventPanel id={`#${id++}`} eventName={item.eventName} eventStats={item.eventStats} dateTime={item.dateTime}/>)
+            newEvents.push(<EventPanel id={`#${id++}`} eventName={item.type} eventStats={item.eventStats} dateTime={item.date}/>)
         });
         setEvents(newEvents);
     }, [eventsInfo]);
@@ -93,39 +150,36 @@ export const Profile = () => {
     const { connection } = useConnection();
     const wallet = useWallet();
     const [load, setLoad] = useState<boolean>(false);
-    const [version, setVersion] = useState<number>(0)
-    const [NFTsStats, setStats] = useState<NFTStatWithMints[]>([])
-    const [eventsInfo, setEventsInfo] = useState<eventInfo[]>([]);
+    const [version, setVersion] = useState<number>(0);
+    const [NFTsStats, setStats] = useState<NFTStatWithMints[]>([]);
+    const [eventsInfo, setEventsInfo] = useState<Event[]>([]);
 
     useEffect(() => {
-
-            async function load() {
+        async function load() {
+            if (profilePanelState.currentPanelMode.type === "MyNFTs") {
                 setLoad(_ => false);
                 const stats = await parseCards(wallet.publicKey, connection, true);
                 console.log(stats);
                 setStats(_ => stats);
                 setLoad(_ => true);
+            } else {
+                setLoad(_ => false);
+                const events : Event[] = await fetchEvents(walletAuthObj.authToken, 1);
+                console.log(events);
+                setEventsInfo(_ => events);
+                setLoad(_ => true);
             }
-
-            load()
-        },
-    [wallet.publicKey, version, profilePanelState.currentPanelModeId]);
-
-    useEffect(() => {
-
-        async function load() {
-            setLoad(_ => false);
-            const events = await fetchEvents(walletAuthObj.authToken, 1);
-            setLoad(_ => true);
         }
 
-        if (walletAuthObj.authToken) {
+        if (profilePanelState.currentPanelMode.type === "MyNFTs")
+        {
+            load()
+        } else if (walletAuthObj.authToken) {
             load();
         } else {
             setEventsInfo([])
-        }
-
-    }, [walletAuthObj.authToken])
+        }},
+    [walletAuthObj.authToken, wallet.publicKey, version, profilePanelState.currentPanelModeId]);
 
     return <Layout>
         {!connected ?
