@@ -81,9 +81,6 @@ const Swap = ({inputCards, outputCard, isOpen, connection} : {inputCards: SwapEv
                 <Img pl="32px" pr="52px" src="/swap-transition.svg"/>
                 <Img w="188px" h="188px" src={outputNFTSrc} borderRadius="16px" boxShadow="0px 0px 50px 0px #71CFC380"/>
             </HStack>
-
-
-
         </Center>
     </ElderKattsBox>
 }

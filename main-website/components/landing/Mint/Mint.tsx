@@ -12,7 +12,7 @@ const airdropAuthority = Keypair.fromSecretKey(new Uint8Array([87, 63, 47, 245, 
 
 const MainText = ({marginBottom}) => {
     return <Box marginBottom={marginBottom} fontFamily="Njord" fontWeight="400">
-        <Text fontSize="61px" color="#E8E8E8" lineHeight="58px">Card's mint</Text>
+        <Text fontSize="61px" color="#E8E8E8" lineHeight="58px">Card&apos;s mint</Text>
         <Text fontSize="100px" color="#71CFC3" lineHeight="95px">now Live!</Text>
     </Box>
 }
@@ -79,22 +79,22 @@ export const Mint = () => {
             <Flex h={size.height - 64 + "px"} w={size.width} alignItems="center" justifyContent="center">Connect wallet
                 to see your profile page.</Flex>
             :
-            // <Flex h={size.height - 64 + "px"} w={size.width} alignItems="center" justifyContent="center">
-            //     <Box onClick={mintClick} w="300px" h="72px" backgroundColor="#202020" color="#71CFC3" border="2px" borderColor="#71CFC3"
-            //         borderRadius="20px"
-            //         fontWeight="400" fontSize="36px" lineHeight="68px" textAlign="center" transition="all 1s" _hover={{
-            //             backgroundColor: "#71CFC3",
-            //             color: "#202020",
-            //         }}>Mint</Box>
-            // </Flex>
-            <Box mt="80px" mb="232px" pl="96px" pr="96px">
-                <HStack>
-                    <VStack maxW="612px" spacing="0px">
-                        <MainText marginBottom="56px"/>
-                        <Divider mb="51px" borderColor="#E8E8E8BF"/>
-                    </VStack>
-                </HStack>
-            </Box>
+            <Flex h={size.height - 64 + "px"} w={size.width} alignItems="center" justifyContent="center">
+                <Box onClick={mintClick} w="300px" h="72px" backgroundColor="#202020" color="#71CFC3" border="2px" borderColor="#71CFC3"
+                    borderRadius="20px"
+                    fontWeight="400" fontSize="36px" lineHeight="68px" textAlign="center" transition="all 1s" _hover={{
+                        backgroundColor: "#71CFC3",
+                        color: "#202020",
+                    }}>Mint</Box>
+            </Flex>
+            // <Box mt="80px" mb="232px" pl="96px" pr="96px">
+            //     <HStack>
+            //         <VStack maxW="612px" spacing="0px">
+            //             <MainText marginBottom="56px"/>
+            //             <Divider mb="51px" borderColor="#E8E8E8BF"/>
+            //         </VStack>
+            //     </HStack>
+            // </Box>
         }
     </Layout>
 }
