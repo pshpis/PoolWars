@@ -205,6 +205,14 @@ const PoolWarV0 = ({result, cards, isOpen, connection} : {result: PoolWarV0Event
 const EventPanel = ({id, event, connection} : {id : string, event: Event, connection: Connection}) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
+    const dateString = useMemo(() => {
+
+        const date = new Date(event.date);
+        const [hour, minute] = date.toLocaleTimeString().split(':');
+
+        return `${hour}:${minute}`;
+    }, [event.date])
+
     return <Box w="100%" h="80px" backgroundColor="#202020" borderRadius="24px" boxShadow="0px 0px 2px 2px #B2B2B20D"
                 _hover={{
                     boxShadow: "0px 0px 8px 8px #B2B2B226"
@@ -217,7 +225,7 @@ const EventPanel = ({id, event, connection} : {id : string, event: Event, connec
             <Divider w="64px" color="#E8E8E826" transform="rotate(90deg)"/>
             <Text fontWeight="600" fontSize="20px" lineHeight="80px" color="#E8E3DD">{isPoolWarV0Event(event) ? event.result === 0 ? "WIN" : "LOSE" : "swap"}</Text>
             <Spacer w="auto"/>
-            <Text pr="40px" fontWeight="300" fontSize="20px" lineHeight="80px" color="#B2B2B2">{event.date.toString()}</Text>
+            <Text pr="40px" fontWeight="300" fontSize="20px" lineHeight="80px" color="#B2B2B2">{dateString}</Text>
         </HStack>
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay/>
