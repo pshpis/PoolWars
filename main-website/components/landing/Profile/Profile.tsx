@@ -170,9 +170,9 @@ const EventPanel = ({id, event, connection} : {id : string, event: Event, connec
         </HStack>
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay/>
-            <ModalContent>
+            <ModalContent w="872px">
                 <Center>
-                    <ElderKattsBox maxW="1036px" maxH="447px">
+                    <ElderKattsBox w="872px" maxW="1036px" maxH="447px">
                         {
                             isSwapEvent(event) ?
                                 <Box pt="56px" pb="80px" pl="24px" pr="24px">
@@ -182,7 +182,7 @@ const EventPanel = ({id, event, connection} : {id : string, event: Event, connec
                                 </Box>
                             :
                                 isPoolWarV0Event(event) ?
-                                    <Box pt="56px" pb="80px" pl="24px" pr="24px">
+                                    <Box mt="56px" mb="80px" ml="130px" mr="130px">
                                         <Box>
                                             <PoolWarV0 result={event.result} cards={event.cards} isOpen={isOpen} connection={connection}/>
                                         </Box>
@@ -190,22 +190,8 @@ const EventPanel = ({id, event, connection} : {id : string, event: Event, connec
                                 :
                                 <Box></Box>
                         }
-
                     </ElderKattsBox>
                 </Center>
-
-                {/*<ModalHeader>Modal Title</ModalHeader>*/}
-                {/*<ModalCloseButton />*/}
-                {/*<ModalBody>*/}
-                {/*    */}
-                {/*</ModalBody>*/}
-
-                {/*<ModalFooter>*/}
-                {/*    <Button colorScheme='blue' mr={3} onClick={onClose}>*/}
-                {/*        Close*/}
-                {/*    </Button>*/}
-                {/*    <Button variant='ghost'>Secondary Action</Button>*/}
-                {/*</ModalFooter>*/}
             </ModalContent>
         </Modal>
     </Box>
