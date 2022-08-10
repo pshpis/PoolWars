@@ -70,8 +70,11 @@ public class PoolService : IPoolService
     public async Task<PoolState> DepositCardAsync(CardMetadata metadata, Pool pool, Message signCardMessage, byte[] signature)
     {
         PoolDao poolDao = await _context.Pools
-                              .AsNoTracking()
+                              .AsTracking()
                               .Include(p => p.PoolWar)
+                              .Include(p => p.Deposits)
+                              .ThenInclude(d => d.CardMetadata)
+                              .ThenInclude(m => m.CardMint)
                               .FirstOrDefaultAsync(p => p.Address == pool.Address) ??
                           throw new PoolServiceException("POOL_NOT_FOUND");
 
@@ -79,15 +82,7 @@ public class PoolService : IPoolService
                                               .AsNoTracking()
                                               .Include(c => c.CardMint)
                                               .FirstOrDefaultAsync(c => c.CardMint.Address == metadata.Mint) ??
-                                          new CardMetadataDao
-                                          {
-                                              CardMint = new()
-                                              {
-                                                  Address = metadata.Mint
-                                              },
-                                              Strength = metadata.Strength,
-                                              Type = metadata.Type
-                                          };
+                                          throw new PoolServiceException("METADATA_NOT_FOUND");
 
         if (poolDao.PoolWar.End < DateTime.UtcNow)
         {
@@ -98,8 +93,6 @@ public class PoolService : IPoolService
 
         PoolUserDao userDao = await _context.PoolUsers
                                   .AsNoTracking()
-                                  .Include(u => u.Deposits)
-                                  .ThenInclude(d => d.CardMetadata)
                                   .FirstOrDefaultAsync(u => u.Address == poolAdapter.User) ??
                               new PoolUserDao
                               {
@@ -110,22 +103,22 @@ public class PoolService : IPoolService
         PoolDepositDao deposit = new()
         {
             PoolId = poolDao.Id,
-            Pool = poolDao,
             CardMetadataId = cardMetadataDao.Id,
-            CardMetadata = cardMetadataDao,
-            UserId = userDao.Id,
-            User = userDao
-
+            UserId = userDao.Id
         };
 
-        userDao.Deposits.Add(deposit);
+        if (deposit.UserId == 0)
+        {
+            deposit.User = userDao;
+        }
 
+        poolDao.Deposits.Add(deposit);
         Transaction tx = Transaction.Populate(signCardMessage, new[] {signature});
         await using IDbContextTransaction dbTx = await _context.Database.BeginTransactionAsync();
 
         try
         {
-            _context.PoolUsers.Update(userDao);
+            _context.Pools.Update(poolDao);
             await _context.SaveChangesAsync();
         }
         catch (DbUpdateException)
@@ -136,15 +129,14 @@ public class PoolService : IPoolService
         await _transactionSender.Send(tx);
         await dbTx.CommitAsync();
 
-        // Set card metadata after transaction commits to return proper values
         deposit.CardMetadata = cardMetadataDao;
-
+        
         return new()
         {
             Address = poolAdapter.Address,
-            TotalStrength = deposit.Pool.Deposits.Sum(d => d.CardMetadata.Strength),
+            TotalStrength = poolDao.Deposits.Sum(d => d.CardMetadata.Strength),
 
-            UserStrength = deposit.Pool.Deposits
+            UserStrength = poolDao.Deposits
                 .Where(d => d.UserId == deposit.UserId)
                 .Sum(d => d.CardMetadata.Strength)
         };
