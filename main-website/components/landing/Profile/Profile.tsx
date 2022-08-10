@@ -332,6 +332,8 @@ export const Profile = () => {
     const [version, setVersion] = useState<number>(0);
     const [NFTsStats, setStats] = useState<NFTStatWithMints[]>([]);
     const [eventsInfo, setEventsInfo] = useState<EventsWrapper>({count: 0, events: []});
+    const [pageNumber, setPageNumber] = useState<number>(1);
+    const [loadedAllActivities, setLoadedAllActivities] = useState<boolean>(false);
 
     useEffect(() => {
         async function load() {
@@ -359,6 +361,19 @@ export const Profile = () => {
             setEventsInfo({count: 0, events: []});
         }},
     [walletAuthObj.authToken, wallet.publicKey, version, profilePanelState.currentPanelModeId]);
+
+    async function loadMoreActivitiesClick() {
+        setLoad(_ => false);
+        if (eventsInfo.count / (5 * pageNumber) < 1)
+            setLoadedAllActivities(true);
+        setPageNumber(pageNumber+1);
+        const newEvents : EventsWrapper = await fetchEvents(walletAuthObj.authToken, pageNumber);
+        console.log(newEvents);
+        let events = [...eventsInfo.events];
+        newEvents.events.forEach((item) => events.push(item));
+        setEventsInfo({count: eventsInfo.count, events: events});
+        setLoad(_ => true);
+    }
 
     return <Layout>
         {!connected ?
@@ -462,7 +477,19 @@ export const Profile = () => {
                             <MyNFts NFTsStats={NFTsStats}/>
                             :
                             walletAuthObj.authToken ?
-                                <ActivitiesPanel eventsInfo={eventsInfo} connection={connection}/>
+                                <Box>
+                                    <ActivitiesPanel eventsInfo={eventsInfo} connection={connection}/>
+                                    {
+                                        !loadedAllActivities ?
+                                            <Center>
+                                                <Box mt="48px" onClick={loadMoreActivitiesClick}>
+                                                    <Img src="/swap-transition.svg" transform="rotate(90deg)"/>
+                                                </Box>
+                                            </Center>
+                                        :
+                                            <></>
+                                    }
+                                </Box>
                             :
                                 <Flex mt="200px" alignItems="center" justifyContent="center">
                                     <Box fontWeight="400" fontSize={size.width > 768 ? "48px" : "32px"} color="#E8E3DD" textAlign="center">Sign in to see your latest activities</Box>
