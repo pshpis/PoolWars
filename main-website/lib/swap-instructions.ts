@@ -10,9 +10,9 @@ const MINT_AUTHORITY = "mint_authority";
 const METADATA_PROGRAM_ID = new PublicKey('metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s');
 
 const SWAP_PROGRAM_ID = new PublicKey('HWeQ1ntizxmbMwVHemf9zncf2h6RTTfLiuzbjD9wAN9e')
-const LEGENDARY_SWAP_CONFIG = new PublicKey('CpJKdL8Ygzk2azLHsR3PdSrMwHjCR3sBhhk24MjTLKv1')
-const POINTS3_SWAP_CONFIG = new PublicKey('3i9BTByvxD6zfKCetMDLwGtZS78Xc2PSs6uPAjMNThCc')
-const POINTS6_SWAP_CONFIG = new PublicKey('2DHCZyWuFctBW1rEJsPeytGSqXMf5ZHaWw32caRwBaC7')
+const LEGENDARY_SWAP_CONFIG = new PublicKey('H3ahi5w41BCUyq1rqJCnajVohxFGqxhGk4Z9sqciFbi7')
+const POINTS3_SWAP_CONFIG = new PublicKey('Dqnx4WiF1RMqtzm31Amg1MGbG2QaFdL4vr2NPybH4tJ3')
+const POINTS6_SWAP_CONFIG = new PublicKey('E1DaHgRg8fUFEd8BNwbxiTd6VgLqRPTA8kuyqDWWYqvx')
 
 
 const SWAP_ADMIN = new PublicKey('2XRgdUEKfvhtVTURZKzJ9UzwA7FeEPeF8qa2NFSSBpmL')
