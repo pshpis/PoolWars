@@ -344,8 +344,12 @@ export const Profile = () => {
                 setStats(_ => stats);
                 setLoad(_ => true);
             } else {
+                setLoadedAllActivities(false);
                 setLoad(_ => false);
-                const events : EventsWrapper = await fetchEvents(walletAuthObj.authToken, 1);
+                const events : EventsWrapper = await fetchEvents(walletAuthObj.authToken, pageNumber);
+                if (events.count / (5 * pageNumber) < 1)
+                    setLoadedAllActivities(true);
+                setPageNumber(pageNumber+1);
                 console.log(events);
                 setEventsInfo(_ => events);
                 setLoad(_ => true);
@@ -369,7 +373,7 @@ export const Profile = () => {
         setPageNumber(pageNumber+1);
         const newEvents : EventsWrapper = await fetchEvents(walletAuthObj.authToken, pageNumber);
         console.log(newEvents);
-        let events = [...eventsInfo.events];
+        let events = eventsInfo.events;
         newEvents.events.forEach((item) => events.push(item));
         setEventsInfo({count: eventsInfo.count, events: events});
         setLoad(_ => true);
