@@ -112,18 +112,11 @@ public class PoolService : IPoolService
             PoolId = poolDao.Id,
             Pool = poolDao,
             CardMetadataId = cardMetadataDao.Id,
-            UserId = userDao.Id
+            CardMetadata = cardMetadataDao,
+            UserId = userDao.Id,
+            User = userDao
+
         };
-
-        if (deposit.CardMetadataId == 0)
-        {
-            deposit.CardMetadata = cardMetadataDao;
-        }
-
-        if (deposit.UserId == 0)
-        {
-            deposit.User = userDao;
-        }
 
         userDao.Deposits.Add(deposit);
 
