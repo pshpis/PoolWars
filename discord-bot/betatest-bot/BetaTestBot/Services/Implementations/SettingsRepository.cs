@@ -15,7 +15,7 @@ public class SettingsRepository : ISettingsRepository
 
     public async Task<string?> GetValue(string key)
     {
-        return (await _context.Options.AsNoTracking().FirstOrDefaultAsync(o => o.Key == key))?.Key;
+        return (await _context.Options.AsNoTracking().FirstOrDefaultAsync(o => o.Key == key))?.Value;
     }
 
     public async Task SetValue(string key, string value)
@@ -26,10 +26,10 @@ public class SettingsRepository : ISettingsRepository
                                 .FirstOrDefaultAsync(o => o.Key == key) ??
                             new()
                             {
-                                Key = key,
-                                Value = value
+                                Key = key
                             };
 
+        option.Value = value;
         _context.Options.Update(option);
         await _context.SaveChangesAsync();
     }
