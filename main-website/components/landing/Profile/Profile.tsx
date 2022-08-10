@@ -219,26 +219,29 @@ const PoolWarV0 = ({result, cards, takenCards, isOpen, connection} : {result: Po
     }, [isOpen]);
 
     const templateColumns = useMemo(() => {
-        if (size.width < 1112) return 'repeat(2, 1fr)';
+        if (size.width < 600) return 'repeat(1, 1fr)';
+        else if (size.width < 1112) return 'repeat(2, 1fr)';
         else return 'repeat(3, 1fr)';
     }, [size.width]);
 
     return <ModalContent maxW="1036px" backgroundColor="inherit">
-        <ElderKattsBox pt="56px" pl="106px" pr="106px" pb="75px" w="100%">
-            <Text mb="48px" fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="40px" textAlign="center">{result === 0 ? "YOU WON!" : "YOU LOSE"}</Text>
-            {
-                !load ?
-                    <Flex alignItems="center" justifyContent="center">
-                        <div className={styles.donut}/>
-                    </Flex>
-                :
-                    <Center>
-                        <Grid templateColumns={templateColumns} columnGap="24px" rowGap="24px">
-                            {NFTs}
-                        </Grid>
-                    </Center>
-            }
-        </ElderKattsBox>
+        <Center>
+            <ElderKattsBox pt="56px" pl={size.width < 624 ? "24px" : "106px"} pr={size.width < 624 ? "24px" : "106px"} pb="75px" w="80%">
+                <Text mb="48px" fontFamily="Njord" fontWeight="400" fontSize={size.width < 660 ? "28px" : "48px"} lineHeight={size.width < 660 ? "34px" : "50px"} textAlign="center">{result === 0 ? "YOU WON!" : "YOU LOSE"}</Text>
+                {
+                    !load ?
+                        <Flex alignItems="center" justifyContent="center">
+                            <div className={styles.donut}/>
+                        </Flex>
+                        :
+                        <Center>
+                            <Grid templateColumns={templateColumns} columnGap="24px" rowGap="24px">
+                                {NFTs}
+                            </Grid>
+                        </Center>
+                }
+            </ElderKattsBox>
+        </Center>
     </ModalContent>
 }
 
