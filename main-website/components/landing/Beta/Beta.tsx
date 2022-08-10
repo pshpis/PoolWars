@@ -7,7 +7,7 @@ import {useCookies} from "../../../hooks/useCookies";
 
 export const Beta = () => {
     const size = useWindowSize();
-    const {verify, setVerify, secretPhrase} = useCookies();
+    const {verify, setVerify, secretPhrases} = useCookies();
 
     return <Layout>
         {!verify
@@ -16,7 +16,7 @@ export const Beta = () => {
                 <Input w="500px" border="2px" borderColor="#71CFC3" color="71CFC3" placeholder="Secret phrase" onChange={ (evt) => {
                     // @ts-ignore
                     const tempSecretPhrase = evt.target.value;
-                    if (secretPhrase === tempSecretPhrase) {
+                    if (secretPhrases.find((item) => item === tempSecretPhrase)) {
                         Cookies.set("secretPhrase", tempSecretPhrase);
                         setVerify(true);
                     }
