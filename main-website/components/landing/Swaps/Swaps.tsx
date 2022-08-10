@@ -3,7 +3,7 @@ import Layout from "../Layout/Layout";
 import {
     Box, Divider, Flex,
     HStack,
-    Text,
+    Text, useToast,
     VStack
 } from "@chakra-ui/react";
 import { ElderKattsBox } from "../Layout/ElderKattsBox";
@@ -95,6 +95,23 @@ const NeedPointsPanel = ({ needPointsPerOne }) => {
 
 const PointsPanels = ({ chooseState, swapState, onClick, cardsChooseNumber}: { chooseState: ChooseState, swapState: SwapState, onClick: React.MouseEventHandler<HTMLDivElement>, cardsChooseNumber: number }) => {
     const size = useWindowSize();
+
+    const toast = useToast();
+
+    useEffect(() => {
+        if (cardsChooseNumber >= 4) {
+            toast.close("moreThan4Cards");
+            toast({
+                id: "moreThan4Cards",
+                title: 'Impossible to swap more than 4 NFTs',
+                status: 'info',
+                position: 'top',
+                isClosable: true,
+            });
+        }
+    }, [cardsChooseNumber])
+
+
 
     const pointsPanelsRef = useRef(null);
     const [pointsPanelsHeight, setPointsPanelsHeight] = useState(0);

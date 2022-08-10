@@ -94,7 +94,7 @@ const AttackPoolPanel = ({ sumPoints, totalInPool, userInPool, onClick, cardsCho
         </HStack>
 
         <Center mt="81px">
-            <Box onClick={cardsChooseNumber > 4 ? void(0) : onClick} width="246px" height="48px" backgroundColor="#B8C3E6" color="#202020" borderRadius="24px" cursor="pointer"
+            <Box onClick={onClick} width="246px" height="48px" backgroundColor="#B8C3E6" color="#202020" borderRadius="24px" cursor="pointer"
                 fontWeight="600" fontSize="22px" lineHeight="48px" textAlign="center" transition="0.3s ease" _hover={{ boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);"}}>
                 Join Attack!
             </Box>
