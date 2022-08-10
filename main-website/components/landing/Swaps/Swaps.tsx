@@ -204,13 +204,15 @@ export const Swaps = () => {
             const signature = await getSwapAuthoritySignature(tx);
 
             if (!signature) {
+                console.log('No signature returned')
                 return;
             }
 
-            signedTransaction.partialSign(mint);
-            signedTransaction.addSignature(SWAP_AUTHORITY, signature);
+            tx.addSignature(wallet.publicKey, signedTransaction.signature)
+            tx.partialSign(mint);
+            tx.addSignature(SWAP_AUTHORITY, signature);
 
-            const result = await connection.sendRawTransaction(signedTransaction.serialize())
+            const result = await connection.sendRawTransaction(tx.serialize())
             versionInc();
         }
         catch (e) {
