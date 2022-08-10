@@ -20,7 +20,7 @@ public class SpawnEmbed
                     .WithDescription("Become <@&1006702414151299092> now")
                     .Build(),
                 components: new ComponentBuilder()
-                    .WithButton("GET", "GET_BETA", ButtonStyle.Danger)
+                    .WithButton("BECOME", "GET_BETA", ButtonStyle.Danger)
                     .Build()
             );
         }
