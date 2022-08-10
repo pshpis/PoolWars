@@ -64,9 +64,10 @@ const Swap = ({inputCards, outputCard, isOpen, connection} : {inputCards: SwapEv
     const [outputNFTSrc, setOutputNFTSrc] = useState<string>();
     const [inputNFTs, setInputNFTs] = useState([]);
 
-    const imgWidth : string = useMemo(() => {
-        if (size.width < 500) return "140px";
-        else return "188px";
+    const imgWidth : number = useMemo(() => {
+        if (size.width < 400) return 80;
+        if (size.width < 500) return 100;
+        else return 188;
     }, [size.width]);
 
     useEffect(() => {
@@ -79,7 +80,7 @@ const Swap = ({inputCards, outputCard, isOpen, connection} : {inputCards: SwapEv
             for (const nft of inputCards) {
                 const nftSrc = (await getMetadataByMintAddress(nft, connection)).src;
                 console.log(nftSrc);
-                newNFTs.push(<Img w={imgWidth} h={imgWidth} src={nftSrc} borderRadius="16px" boxShadow="0px 0px 16px 0px #20202080" filter="drop-shadow(0px 0px 0px 16px #20202080)"/>);
+                newNFTs.push(<Img w={imgWidth+"px"} h={imgWidth+"px"} src={nftSrc} borderRadius="16px" boxShadow="0px 0px 16px 0px #20202080" filter="drop-shadow(0px 0px 0px 16px #20202080)"/>);
             }
             setInputNFTs(newNFTs);
             setLoad(true);
@@ -102,11 +103,11 @@ const Swap = ({inputCards, outputCard, isOpen, connection} : {inputCards: SwapEv
                         :
                         <Center>
                             <Stack direction={size.width > 1000 ? "row" : "column"} alignItems="center">
-                                <HStack spacing={size.width < 500 ? "-70px" : "-94px"}>
+                                <HStack spacing={size.width < 500 ? -imgWidth/2+"px" : -imgWidth/2+"px"}>
                                     {inputNFTs}
                                 </HStack>
                                 <Img pl="32px" pr="52px" src="/swap-transition.svg" transform={size.width > 1000 ? "" : "rotate(90deg)"}/>
-                                <Img w={imgWidth} h={imgWidth} src={outputNFTSrc} borderRadius="16px"
+                                <Img w={imgWidth+"px"} h={imgWidth+"px"} src={outputNFTSrc} borderRadius="16px"
                                      boxShadow="0px 0px 50px 0px #71CFC380"/>
                             </Stack>
                         </Center>
