@@ -31,6 +31,11 @@ public abstract class StartupBase
         return Configuration["Solana:RpcUrl"];
     }
 
+    protected string GetStreamingRpcUrl()
+    {
+        return Configuration["Solana:StreamingRpcUrl"];
+    }
+
     protected void RegisterSwapProgram()
     {
         PublicKey programId = new(Configuration["Swap:SwapProgramId"]);

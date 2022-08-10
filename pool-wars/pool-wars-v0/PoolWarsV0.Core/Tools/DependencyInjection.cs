@@ -24,7 +24,7 @@ public static class DependencyInjection
         );
     }
 
-    public static void AddRpcClient(this IServiceCollection services, string rpc)
+    public static void AddRpcClient(this IServiceCollection services, string rpc, string streamingRpc)
     {
         services.AddSingleton<IRateLimiter>(factory =>
         {
@@ -37,6 +37,12 @@ public static class DependencyInjection
             var logger = factory.GetRequiredService<ILogger<IRpcClient>>();
             IRateLimiter rateLimiter = factory.GetRequiredService<IRateLimiter>();
             return ClientFactory.GetClient(rpc, logger, rateLimiter);
+        });
+
+        services.AddScoped<IStreamingRpcClient>(factory =>
+        {
+            var logger = factory.GetRequiredService<ILogger<IStreamingRpcClient>>();
+            return ClientFactory.GetStreamingClient(streamingRpc, logger);
         });
     }
 

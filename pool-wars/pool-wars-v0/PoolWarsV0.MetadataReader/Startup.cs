@@ -17,7 +17,8 @@ internal class Startup : StartupBase
     {
         RegisterSwapProgram();
         var rpc = GetRpcUrl();
-        services.AddRpcClient(rpc);
+        var streamingRpc = GetStreamingRpcUrl();
+        services.AddRpcClient(rpc, streamingRpc);
 
         var connectionString = GetConnectionString();
         services.AddDatabase(connectionString);

@@ -14,7 +14,8 @@ internal class Startup : StartupBase
     public void ConfigureServices(IServiceCollection services)
     {
         var rpc = GetRpcUrl();
-        services.AddRpcClient(rpc);
+        var streamingRpc = GetStreamingRpcUrl();
+        services.AddRpcClient(rpc, streamingRpc);
 
         var connectionString = GetConnectionString();
         services.AddDatabase(connectionString);
