@@ -28,7 +28,7 @@ public class TransactionSender : ITransactionSender
                 throw new TransactionSenderException();
             }
 
-            TaskCompletionSource tcs = new();
+            TaskCompletionSource tcs = new(TaskCreationOptions.RunContinuationsAsynchronously);
             SubscriptionState state = null!;
 
             try
