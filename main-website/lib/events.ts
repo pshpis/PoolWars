@@ -41,7 +41,7 @@ export function isPoolWarV0Event(event: Event): event is PoolWarV0Event {
 export async function fetchEvents(token: string, page: number): Promise<EventsWrapper> {
 
     try {
-        const events = await axios.get<EventsWrapper>(`${POOL_WARS_API}/api/v1/events?token=${token}&page=${page}&count=10`);
+        const events = await axios.get<EventsWrapper>(`${POOL_WARS_API}/api/v1/events?token=${token}&page=${page}&count=5`);
         return events.data;
     }
     catch (e) {
