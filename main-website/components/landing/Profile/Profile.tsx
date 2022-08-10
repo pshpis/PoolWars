@@ -87,10 +87,13 @@ const Swap = ({inputCards, outputCard, isOpen, connection} : {inputCards: SwapEv
         load()
     }, [isOpen, (size.width < 500), (size.width > 500)]);
 
-    return <ModalContent maxW={size.width} backgroundColor="inherit">
+    return <ModalContent maxW="80%" backgroundColor="inherit">
         <Center>
-            <ElderKattsBox pt="56px" pl={size.width < 624 ? "24px" : "106px"} pr={size.width < 624 ? "24px" : "106px"} pb="75px" w="80%">
-                <Text mb="48px" fontFamily="Njord" fontWeight="400" fontSize={size.width < 660 ? "28px" : "48px"} lineHeight={size.width < 660 ? "34px" : "50px"} textAlign="center">successful SWAP</Text>
+            <ElderKattsBox pt="56px" pl={size.width < 624 ? "24px" : "106px"} pr={size.width < 624 ? "24px" : "106px"} pb="75px" w="100%">
+                <Text mb="48px" fontFamily="Njord" fontWeight="400" fontSize={size.width < 660 ? "28px" : "48px"}
+                      lineHeight={size.width < 660 ? "34px" : "50px"} textAlign="center">
+                    successful SWAP
+                </Text>
                 {
                     !load ?
                         <Flex alignItems="center" justifyContent="center">
@@ -98,11 +101,11 @@ const Swap = ({inputCards, outputCard, isOpen, connection} : {inputCards: SwapEv
                         </Flex>
                         :
                         <Center>
-                            <Stack direction={size.width > 872 ? "row" : "column"} alignItems="center">
+                            <Stack direction={size.width > 1000 ? "row" : "column"} alignItems="center">
                                 <HStack spacing={size.width < 500 ? "-70px" : "-94px"}>
                                     {inputNFTs}
                                 </HStack>
-                                <Img pl="32px" pr="52px" src="/swap-transition.svg" transform={size.width > 872 ? "" : "rotate(90deg)"}/>
+                                <Img pl="32px" pr="52px" src="/swap-transition.svg" transform={size.width > 1000 ? "" : "rotate(90deg)"}/>
                                 <Img w={imgWidth} h={imgWidth} src={outputNFTSrc} borderRadius="16px"
                                      boxShadow="0px 0px 50px 0px #71CFC380"/>
                             </Stack>
@@ -224,10 +227,13 @@ const PoolWarV0 = ({result, cards, takenCards, isOpen, connection} : {result: Po
         else return 'repeat(3, 1fr)';
     }, [size.width]);
 
-    return <ModalContent maxW="1036px" backgroundColor="inherit">
+    return <ModalContent maxW={size.width} backgroundColor="inherit">
         <Center>
             <ElderKattsBox pt="56px" pl={size.width < 624 ? "24px" : "106px"} pr={size.width < 624 ? "24px" : "106px"} pb="75px" w="80%">
-                <Text mb="48px" fontFamily="Njord" fontWeight="400" fontSize={size.width < 660 ? "28px" : "48px"} lineHeight={size.width < 660 ? "34px" : "50px"} textAlign="center">{result === 0 ? "YOU WON!" : "YOU LOSE"}</Text>
+                <Text mb="48px" fontFamily="Njord" fontWeight="400" fontSize={size.width < 660 ? "28px" : "48px"}
+                      lineHeight={size.width < 660 ? "34px" : "50px"} textAlign="center">
+                    {result === 0 ? "YOU WON!" : "YOU LOSE"}
+                </Text>
                 {
                     !load ?
                         <Flex alignItems="center" justifyContent="center">
@@ -311,7 +317,7 @@ const EventPanel = ({id, event, connection} : {id : string, event: Event, connec
                         isPoolWarV0Event(event) ?
                             <PoolWarV0 result={event.result} cards={event.cards} takenCards={event.takenCards} isOpen={isOpen} connection={connection}/>
                         :
-                        <Box></Box>
+                            <></>
                 }
         </Modal>
     </Box>
