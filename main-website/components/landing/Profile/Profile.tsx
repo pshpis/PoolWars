@@ -496,7 +496,7 @@ export const Profile = () => {
                     </Stack>
 
                     <Box w="100%" alignSelf="start">
-                        <HStack mb="16px" direction="row">
+                        <HStack mb="16px" direction="row" justifyContent={size.width > 1040 ? "" : "center"}>
                             {profilePanelState.panelMods.map((mod, id) => {
                                 return <Box key={id} className={clsx(styles.panelButton,
                                     id == profilePanelState.currentPanelModeId ? styles.panelButton_clicked : null)} onClick={() => {
