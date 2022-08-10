@@ -253,8 +253,9 @@ const EventPanel = ({id, event, connection} : {id : string, event: Event, connec
 
         const date = new Date(event.date);
         const [hour, minute] = date.toLocaleTimeString().split(':');
+        const [day, month] = date.toLocaleDateString().split('/')
 
-        return `${hour}:${minute}`;
+        return `${day}/${month} ${hour}:${minute}`;
     }, [event.date])
 
     return <Box w="100%" h="80px" backgroundColor="#202020" borderRadius="24px" boxShadow="0px 0px 2px 2px #B2B2B20D"
