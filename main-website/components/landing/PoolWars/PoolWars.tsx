@@ -342,7 +342,11 @@ export const PoolWars = () => {
 
         </Box>
             :
-            <span>There are no pool war RN</span>
+            <Flex h={size.height - 64 + "px"} w={size.width} fontWeight="400" fontSize="24px" textAlign="center" alignItems="center" justifyContent="center">
+                There are no available Pool Wars at the moment!
+                <br/>
+                Be patient, Katts!
+            </Flex>
         }
     </Layout>
 }
