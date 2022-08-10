@@ -38,7 +38,7 @@ const MainText = () => {
     </Box>
 }
 
-const WillTakePointsPanel = ({ pointsPanelsHeight, swapState, onClick }: { pointsPanelsHeight: number, swapState: SwapState, onClick: React.MouseEventHandler<HTMLDivElement> }) => {
+const WillTakePointsPanel = ({ pointsPanelsHeight, swapState, onClick, cardsChooseNumber }: { pointsPanelsHeight: number, swapState: SwapState, onClick: React.MouseEventHandler<HTMLDivElement>, cardsChooseNumber: number }) => {
     return <ElderKattsBox mt="24px" pb="32px" width="294px" height={pointsPanelsHeight + "px"}>
 
         <Text pt="24px" pb="28px"
@@ -55,7 +55,7 @@ const WillTakePointsPanel = ({ pointsPanelsHeight, swapState, onClick }: { point
             })}
         </HStack>
 
-        <Box onClick={onClick} ml="24px" mr="24px" maxWidth="246px" height="48px" backgroundColor="#B8C3E6" borderRadius="24px" textAlign="center"
+        <Box onClick={cardsChooseNumber > 4 ? onClick : void(0)} ml="24px" mr="24px" maxWidth="246px" height="48px" backgroundColor="#B8C3E6" borderRadius="24px" textAlign="center"
             fontWeight="600" fontSize="24px" lineHeight="48px" color="#202020"
             transition="0.3s ease" _hover={{ boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);" }} cursor="pointer">
             SWAP
@@ -93,7 +93,7 @@ const NeedPointsPanel = ({ needPointsPerOne }) => {
     </ElderKattsBox>
 }
 
-const PointsPanels = ({ chooseState, swapState, onClick }: { chooseState: ChooseState, swapState: SwapState, onClick: React.MouseEventHandler<HTMLDivElement> }) => {
+const PointsPanels = ({ chooseState, swapState, onClick, cardsChooseNumber}: { chooseState: ChooseState, swapState: SwapState, onClick: React.MouseEventHandler<HTMLDivElement>, cardsChooseNumber: number }) => {
     const size = useWindowSize();
 
     const pointsPanelsRef = useRef(null);
@@ -108,9 +108,9 @@ const PointsPanels = ({ chooseState, swapState, onClick }: { chooseState: Choose
                 <SelectedPointsPanel sumPoints={chooseState.sumPoints} />
                 <NeedPointsPanel needPointsPerOne={swapState.currentMod.needPoints} />
             </VStack>
-            {size.width >= 640 ? <WillTakePointsPanel onClick={onClick} pointsPanelsHeight={pointsPanelsHeight} swapState={swapState} /> : ""}
+            {size.width >= 640 ? <WillTakePointsPanel onClick={onClick} pointsPanelsHeight={pointsPanelsHeight} swapState={swapState} cardsChooseNumber={cardsChooseNumber}/> : ""}
         </HStack>
-        {size.width < 640 ? <WillTakePointsPanel onClick={onClick} pointsPanelsHeight={pointsPanelsHeight} swapState={swapState} /> : ""}
+        {size.width < 640 ? <WillTakePointsPanel onClick={onClick} pointsPanelsHeight={pointsPanelsHeight} swapState={swapState} cardsChooseNumber={cardsChooseNumber}/> : ""}
     </Box>
 }
 
@@ -229,11 +229,11 @@ export const Swaps = () => {
                 {size.width < 1040 ?
                     <VStack maxW="1248px" w="100%" margin="0 auto" spacing="30px">
                         <MainText />
-                        <PointsPanels onClick={e => swapClick(e)} chooseState={chooseState} swapState={swapState} />
+                        <PointsPanels onClick={e => swapClick(e)} chooseState={chooseState} swapState={swapState} cardsChooseNumber={chooseState.cardsChooseNumber}/>
                     </VStack>
                     : <HStack maxW="1248px" w="100%" margin="0 auto" spacing="auto">
                         <MainText />
-                        <PointsPanels onClick={e => swapClick(e)} chooseState={chooseState} swapState={swapState} />
+                        <PointsPanels onClick={e => swapClick(e)} chooseState={chooseState} swapState={swapState} cardsChooseNumber={chooseState.cardsChooseNumber}/>
                     </HStack>}
 
                 <Divider maxW="1440px" margin="76px auto" borderColor="#E8E8E826" border="0.5px" />

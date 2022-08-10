@@ -1,5 +1,6 @@
 import {useCallback, useState} from "react";
 import { ChooseNode } from "../lib/shared";
+import {useToast} from "@chakra-ui/react";
 
 export function useKattsCardsChoose(): { sumPoints: number; chooseArr: ChooseNode[]; setChooseArr: (id, value) => void; cardsChooseNumber: number } {
     const [chooseArr, _setChooseArr] = useState<ChooseNode[]>([{ id : "attack_1", value: 0, points: 1},
@@ -18,10 +19,21 @@ export function useKattsCardsChoose(): { sumPoints: number; chooseArr: ChooseNod
     const [sumPoints, setSumPoints] = useState<number>(0)
     const [cardsChooseNumber, setCardsChooseNumber] = useState<number>(0);
 
+    const toast = useToast();
+
     const setChooseArr = useCallback((id, value) => {
         const newChooseArr = [...chooseArr];
         let newCardsChooseNumber : number = 0;
         chooseArr.forEach((item) => {newCardsChooseNumber += item.value});
+        if (newCardsChooseNumber >= 4) {
+            toast({
+                id: "moreThan4Cards",
+                title: 'Impossible to swap more than 4 NFTs',
+                status: 'info',
+                position: 'top',
+                isClosable: true,
+            });
+        }
         newChooseArr.find(item => item.id == id).value = value;
         let newSumPoints = 0;
         newChooseArr.forEach((el) => {
