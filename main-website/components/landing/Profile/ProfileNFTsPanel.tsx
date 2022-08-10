@@ -34,7 +34,7 @@ export const ProfileNFTSPanel = ({NFTsStats}) => {
 
     return <Box>
         <Center>
-            <Grid mt="48px" templateColumns={size.width < 804 ? 'repeat(1, 1fr)' :size.width < 1112 ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)'}
+            <Grid mt="48px" templateColumns={size.width < 700 ? 'repeat(1, 1fr)' :size.width < 1400 ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)'}
                   columnGap="24px" rowGap="24px">
                 {NFTs}
             </Grid>
