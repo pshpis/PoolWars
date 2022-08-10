@@ -134,6 +134,18 @@ const DefencePoolPanel = ({ sumPoints, totalInPool, userInPool, onClick, cardsCh
 }
 
 export const PoolWars = () => {
+    const ids = [{ id : "defence_1" },
+        { id : "intelligence_1" },
+        { id : "attack_3" },
+        { id : "defence_3" },
+        { id : "intelligence_3" },
+        { id : "attack_6" },
+        { id : "defence_6" },
+        { id : "intelligence_6" },
+        { id : "attack_12" },
+        { id : "defence_12" },
+        { id : "intelligence_12" }];
+
     const size = useWindowSize();
     const wallet = useWallet();
     const { connection } = useConnection();
@@ -237,6 +249,8 @@ export const PoolWars = () => {
         const mints = mapChooseStateToMints(kattsCardChoose, NFTsStats);
         const blockhash = (await connection.getLatestBlockhash('finalized')).blockhash;
         let transactions: { tx: Transaction, mint: PublicKey }[] = []
+
+        ids.forEach((item) => setChooseArr(item.id, 0));
 
         for (let i = 0; i < mints.length; i++) {
             const mint = mints[i];
