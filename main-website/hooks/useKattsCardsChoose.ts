@@ -21,7 +21,7 @@ export function useKattsCardsChoose(): { sumPoints: number; chooseArr: ChooseNod
 
     const toast = useToast();
 
-    const setChooseArr = useCallback((id, value) => {
+    const setChooseArr = useCallback((id : string, value : number) => {
         const newChooseArr = [...chooseArr];
         let newCardsChooseNumber : number = 0;
         chooseArr.forEach((item) => {newCardsChooseNumber += item.value});
