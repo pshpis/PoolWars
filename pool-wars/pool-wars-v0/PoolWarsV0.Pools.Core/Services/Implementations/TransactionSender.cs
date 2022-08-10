@@ -42,7 +42,14 @@ public class TransactionSender : ITransactionSender
                     Commitment.Confirmed
                 );
 
-                await tcs.Task.WaitAsync(TimeSpan.FromMinutes(5));
+                // After transaction is sent, check its status
+                var transaction = await _rpcClient.GetTransactionAsync(response.Result, Commitment.Confirmed);
+
+                // If not found, wait for confirmation
+                if (transaction.Result is null)
+                {
+                    await tcs.Task.WaitAsync(TimeSpan.FromMinutes(5));
+                }
             }
             finally
             {
