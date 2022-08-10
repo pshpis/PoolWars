@@ -110,6 +110,7 @@ public class PoolService : IPoolService
         PoolDepositDao deposit = new()
         {
             PoolId = poolDao.Id,
+            Pool = poolDao,
             CardMetadataId = cardMetadataDao.Id,
             UserId = userDao.Id
         };
@@ -131,7 +132,7 @@ public class PoolService : IPoolService
 
         try
         {
-            await _context.Deposits.AddAsync(deposit);
+            _context.PoolUsers.Update(userDao);
             await _context.SaveChangesAsync();
         }
         catch (DbUpdateException)

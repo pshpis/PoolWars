@@ -38,10 +38,12 @@ public class TransactionSender : ITransactionSender
                     (_, _) =>
                     {
                         tcs.SetResult();
-                    },
-                    Commitment.Confirmed
+                    }
                 );
 
+                // Костыль чтобы прогрузилась трананзакция
+                await Task.Delay(1000);
+                
                 // After transaction is sent, check its status
                 var transaction = await _rpcClient.GetTransactionAsync(response.Result, Commitment.Confirmed);
 
