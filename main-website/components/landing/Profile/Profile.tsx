@@ -29,7 +29,16 @@ import {getMetadataByMintAddress, NFTStatWithMints, parseCards} from "../../../l
 import {ProfileNFTSPanel} from "./ProfileNFTsPanel";
 import clsx from "clsx";
 import {useProfilePanel} from "../../../hooks/useProfilePanel";
-import {Event, fetchEvents, isPoolWarV0Event, isSwapEvent, PoolWarV0Event, SwapEvent, Win} from "../../../lib/events";
+import {
+    Event,
+    EventsWrapper,
+    fetchEvents,
+    isPoolWarV0Event,
+    isSwapEvent,
+    PoolWarV0Event,
+    SwapEvent,
+    Win
+} from "../../../lib/events";
 import {Connection, PublicKey, Transaction} from "@solana/web3.js";
 import { ASSOCIATED_TOKEN_PROGRAM_ID, createAssociatedTokenAccountInstruction, createTransferCheckedInstruction, getAssociatedTokenAddress, TOKEN_PROGRAM_ID, transferChecked, transferCheckedInstructionData } from "@solana/spl-token";
 import { takeCard } from "../../../lib/pool-wars";
@@ -283,8 +292,8 @@ const ActivitiesPanel = ({eventsInfo, connection}) => {
     const [Events, setEvents] = useState([]);
     useEffect(() => {
         let newEvents = [];
-        let id = eventsInfo.length;
-        eventsInfo.forEach((item) => {
+        let id = eventsInfo.count;
+        eventsInfo.events.forEach((item) => {
             newEvents.push(<EventPanel id={`#${id--}`} event={item} connection={connection}/>)
         });
         setEvents(newEvents);
@@ -321,7 +330,7 @@ export const Profile = () => {
     const [load, setLoad] = useState<boolean>(false);
     const [version, setVersion] = useState<number>(0);
     const [NFTsStats, setStats] = useState<NFTStatWithMints[]>([]);
-    const [eventsInfo, setEventsInfo] = useState<Event[]>([]);
+    const [eventsInfo, setEventsInfo] = useState<EventsWrapper>({count: 0, events: []});
 
     useEffect(() => {
         async function load() {
@@ -333,7 +342,7 @@ export const Profile = () => {
                 setLoad(_ => true);
             } else {
                 setLoad(_ => false);
-                const events : Event[] = await fetchEvents(walletAuthObj.authToken, 1);
+                const events : EventsWrapper = await fetchEvents(walletAuthObj.authToken, 1);
                 console.log(events);
                 setEventsInfo(_ => events);
                 setLoad(_ => true);
@@ -346,7 +355,7 @@ export const Profile = () => {
         } else if (walletAuthObj.authToken) {
             load();
         } else {
-            setEventsInfo([])
+            setEventsInfo({count: 0, events: []});
         }},
     [walletAuthObj.authToken, wallet.publicKey, version, profilePanelState.currentPanelModeId]);
 
