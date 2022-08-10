@@ -9,7 +9,7 @@ import { NFTStatWithMints, parseCards } from "../../../lib/nft-helper";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { depositMintToPool, getPoolStatus, getPoolWar, PoolState, PoolType, PoolWar } from "../../../lib/pool-wars";
 import { PublicKey, Transaction } from "@solana/web3.js";
-import { ASSOCIATED_TOKEN_PROGRAM_ID, createAssociatedTokenAccount, createAssociatedTokenAccountInstruction, createTransferCheckedInstruction, getAssociatedTokenAddress, TOKEN_PROGRAM_ID, transferChecked } from "@solana/spl-token";
+import { ASSOCIATED_TOKEN_PROGRAM_ID, createAssociatedTokenAccountInstruction, createTransferCheckedInstruction, getAssociatedTokenAddress, TOKEN_PROGRAM_ID} from "@solana/spl-token";
 import { mapChooseStateToMints } from "../../../lib/shared";
 import { useCookies } from "../../../hooks/useCookies";
 import styles from "../../../styles/swaps.module.scss";
@@ -80,23 +80,23 @@ const AttackPoolPanel = ({ sumPoints, totalInPool, userInPool, onClick }: { sumP
         <Text mt="32px" mb="32px" pl="36px"
             fontFamily="Njord" fontWeight="400" fontSize="32px" lineHeight="37px" color="#71CFC3">Attack Pool</Text>
 
-        <HStack zIndex={0} paddingLeft="32px" paddingRight="32px" spacing="auto">
-            <Text fontWeight="300" fontSize="20px" lineHeight="30px">Total points:</Text>
+        <HStack zIndex={0} paddingLeft="28px" paddingRight="28px" spacing="auto">
+            <Text fontWeight="300" fontSize="20px" lineHeight="30px">Points Total:</Text>
             <Text fontWeight="600" fontSize="24px" lineHeight="36px" color="#71CFC3">{totalInPool}</Text>
         </HStack>
-        <HStack zIndex={0} paddingLeft="32px" paddingRight="32px" spacing="auto">
-            <Text fontWeight="300" fontSize="20px" lineHeight="30px">You choose points:</Text>
+        <HStack zIndex={0} paddingLeft="28px" paddingRight="28px" spacing="auto">
+            <Text fontWeight="300" fontSize="20px" lineHeight="30px">Your Selected Points:</Text>
             <Text fontWeight="600" fontSize="24px" lineHeight="36px" color="#71CFC3">{sumPoints}</Text>
         </HStack>
-        <HStack zIndex={0} paddingLeft="32px" paddingRight="32px" spacing="auto">
-            <Text fontWeight="300" fontSize="20px" lineHeight="30px">You provided points:</Text>
+        <HStack zIndex={0} paddingLeft="28px" paddingRight="28px" spacing="auto">
+            <Text fontWeight="300" fontSize="20px" lineHeight="30px">Your Points in the Pool:</Text>
             <Text fontWeight="600" fontSize="24px" lineHeight="36px" color="#71CFC3">{userInPool}</Text>
         </HStack>
 
         <Center mt="81px">
             <Box onClick={onClick} width="246px" height="48px" backgroundColor="#B8C3E6" color="#202020" borderRadius="24px" cursor="pointer"
                 fontWeight="600" fontSize="22px" lineHeight="48px" textAlign="center" transition="0.3s ease" _hover={{ boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);"}}>
-                Provide your NFTs!
+                Join Attack!
             </Box>
         </Center>
 
@@ -109,23 +109,23 @@ const DefencePoolPanel = ({ sumPoints, totalInPool, userInPool, onClick }: { sum
         <Text mt="32px" mb="32px" pl="36px"
             fontFamily="Njord" fontWeight="400" fontSize="32px" lineHeight="37px" color="#71CFC3">Defence Pool</Text>
 
-        <HStack zIndex={0} paddingLeft="32px" paddingRight="32px" spacing="auto">
-            <Text fontWeight="300" fontSize="20px" lineHeight="30px">Total points:</Text>
+        <HStack zIndex={0} paddingLeft="28px" paddingRight="28px" spacing="auto">
+            <Text fontWeight="300" fontSize="20px" lineHeight="30px">Points Total:</Text>
             <Text fontWeight="600" fontSize="24px" lineHeight="36px" color="#71CFC3">{totalInPool}</Text>
         </HStack>
-        <HStack zIndex={0} paddingLeft="32px" paddingRight="32px" spacing="auto">
-            <Text fontWeight="300" fontSize="20px" lineHeight="30px">You choose points:</Text>
+        <HStack zIndex={0} paddingLeft="28px" paddingRight="28px" spacing="auto">
+            <Text fontWeight="300" fontSize="20px" lineHeight="30px">Your Selected Points:</Text>
             <Text fontWeight="600" fontSize="24px" lineHeight="36px" color="#71CFC3">{sumPoints}</Text>
         </HStack>
-        <HStack zIndex={0} paddingLeft="32px" paddingRight="32px" spacing="auto">
-            <Text fontWeight="300" fontSize="20px" lineHeight="30px">You provided points:</Text>
+        <HStack zIndex={0} paddingLeft="28px" paddingRight="28px" spacing="auto">
+            <Text fontWeight="300" fontSize="20px" lineHeight="30px">Your Points in the Pool:</Text>
             <Text fontWeight="600" fontSize="24px" lineHeight="36px" color="#71CFC3">{userInPool}</Text>
         </HStack>
 
         <Center mt="81px">
             <Box onClick={onClick} width="246px" height="48px" backgroundColor="#B8C3E6" color="#202020" borderRadius="24px" cursor="pointer"
                 fontWeight="600" fontSize="22px" lineHeight="48px" textAlign="center" transition="0.3s ease" _hover={{ boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);"}}>
-                Provide your NFTs!
+                Join Defense!
             </Box>
         </Center>
 

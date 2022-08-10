@@ -2,6 +2,11 @@ import axios from "axios"
 
 const POOL_WARS_API = 'https://elderkatts.com'
 
+export type EventsWrapper = {
+    count: number,
+    events: Event[]
+}
+
 export type Event = {
     userWalletAddress: string,
     type: string,
@@ -33,13 +38,16 @@ export function isPoolWarV0Event(event: Event): event is PoolWarV0Event {
     return event.type === 'poolwar-v0'
 }
 
-export async function fetchEvents(token: string, page: number): Promise<Event[]> {
+export async function fetchEvents(token: string, page: number): Promise<EventsWrapper> {
 
     try {
-        const events = await axios.get<Event[]>(`${POOL_WARS_API}/api/v1/events?token=${token}&page=${page}&count=10`);
+        const events = await axios.get<EventsWrapper>(`${POOL_WARS_API}/api/v1/events?token=${token}&page=${page}&count=10`);
         return events.data;
     }
     catch (e) {
-        return [];
+        return {
+            count: 0,
+            events: []
+        }
     }
 }

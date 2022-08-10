@@ -1,7 +1,7 @@
 import {useCallback, useState} from "react";
-import { ChooseNode, ChooseState } from "../lib/shared";
+import { ChooseNode } from "../lib/shared";
 
-export function useKattsCardsChoose(): ChooseState {
+export function useKattsCardsChoose(): { sumPoints: number; chooseArr: ChooseNode[]; setChooseArr: (id, value) => void; cardsChooseNumber: number } {
     const [chooseArr, _setChooseArr] = useState<ChooseNode[]>([{ id : "attack_1", value: 0, points: 1},
         { id : "defence_1", value: 0, points: 1},
         { id : "intelligence_1", value: 0, points: 1},
@@ -16,14 +16,18 @@ export function useKattsCardsChoose(): ChooseState {
         { id : "intelligence_12", value: 0, points: 12}]);
 
     const [sumPoints, setSumPoints] = useState<number>(0)
+    const [cardsChooseNumber, setCardsChooseNumber] = useState<number>(0);
 
     const setChooseArr = useCallback((id, value) => {
         const newChooseArr = [...chooseArr];
+        let newCardsChooseNumber : number = 0;
+        chooseArr.forEach((item) => {newCardsChooseNumber += item.value});
         newChooseArr.find(item => item.id == id).value = value;
         let newSumPoints = 0;
         newChooseArr.forEach((el) => {
            newSumPoints +=  el.value * el.points;
         });
+        setCardsChooseNumber(newCardsChooseNumber);
         setSumPoints(newSumPoints);
         _setChooseArr(newChooseArr);
     }, [chooseArr, _setChooseArr]);
@@ -32,5 +36,6 @@ export function useKattsCardsChoose(): ChooseState {
         chooseArr,
         sumPoints,
         setChooseArr,
+        cardsChooseNumber,
     }
 }

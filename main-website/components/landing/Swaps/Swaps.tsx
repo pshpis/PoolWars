@@ -29,22 +29,21 @@ const MainText = () => {
         <Text fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="55px" color="#E8E3DD">
             NFT SWAPS
         </Text>
-        <Text mb="31px" fontFamily="Njord" fontWeight="400" fontSize="120px" lineHeight="114px" color="#71CFC3">
+        <Text mb="10px" fontFamily="Njord" fontWeight="400" fontSize="120px" lineHeight="114px" color="#71CFC3">
             LIVE!
         </Text>
         <Text fontWeight="300" fontSize="20px" lineHeight="30px" color="#E8E3DD">
-            Here you can swap your regular warlords cards to take a Legendary one. Now you should choose some of your NFTs to burn 9 increase points.
+            Here you can swap (exchange) your Common, Rare and Epic Combat Cards to get a Legendary one! You have to combine 9 points in total to get one Legendary Combat Card with 12 power points.
         </Text>
     </Box>
 }
 
 const WillTakePointsPanel = ({ pointsPanelsHeight, swapState, onClick }: { pointsPanelsHeight: number, swapState: SwapState, onClick: React.MouseEventHandler<HTMLDivElement> }) => {
-    const [activePanel, setActivePanel] = useState()
     return <ElderKattsBox mt="24px" pb="32px" width="294px" height={pointsPanelsHeight + "px"}>
 
         <Text pt="24px" pb="28px"
             fontWeight="600" fontSize="24px" lineHeight="28px" color="#E8E3DD" textAlign="center">
-            You&apos;ll take card with:
+            Converted Card&apos;s points:
         </Text>
         <HStack ml="24px" mr="24px" mb="32px" height="88xp" spacing="15px"
             fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="88px" color="#71CFC3">
@@ -66,10 +65,10 @@ const WillTakePointsPanel = ({ pointsPanelsHeight, swapState, onClick }: { point
 
 const SelectedPointsPanel = ({ sumPoints }) => {
     return <ElderKattsBox width="294px" mb="24px">
-        <HStack>
+        <HStack spacing="auto">
             <Text pt="24px" pl="32px" pb="48px" pr="82px"
                 fontWeight="600" fontSize="24px" lineHeight="28px" color="#E8E3DD">
-                Selected<br /> points:
+                Your<br /> points:
             </Text>
             <Text pt="32px" pr="16px" pb="4px" mr="auto" textAlign="right"
                 fontFamily="Njord Alternate" fontWeight="400" fontSize="80px" lineHeight="92px" color="#71CFC3">
@@ -81,10 +80,10 @@ const SelectedPointsPanel = ({ sumPoints }) => {
 
 const NeedPointsPanel = ({ needPointsPerOne }) => {
     return <ElderKattsBox width="294px">
-        <HStack>
+        <HStack spacing="auto">
             <Text pt="24px" pl="32px" pb="48px" pr="37px"
                 fontWeight="600" fontSize="24px" lineHeight="28px" color="#E8E3DD">
-                Need points<br />per one:
+                Needed<br /> points:
             </Text>
             <Text pt="32px" pr="16px" pb="4px" mr="auto" textAlign="right"
                 fontFamily="Njord Alternate" fontWeight="400" fontSize="80px" lineHeight="92px" color="#71CFC3">
@@ -204,13 +203,15 @@ export const Swaps = () => {
             const signature = await getSwapAuthoritySignature(tx);
 
             if (!signature) {
+                console.log('No signature returned')
                 return;
             }
 
-            signedTransaction.partialSign(mint);
-            signedTransaction.addSignature(SWAP_AUTHORITY, signature);
+            tx.addSignature(wallet.publicKey, signedTransaction.signature)
+            tx.partialSign(mint);
+            tx.addSignature(SWAP_AUTHORITY, signature);
 
-            const result = await connection.sendRawTransaction(signedTransaction.serialize())
+            const result = await connection.sendRawTransaction(tx.serialize())
             versionInc();
         }
         catch (e) {
