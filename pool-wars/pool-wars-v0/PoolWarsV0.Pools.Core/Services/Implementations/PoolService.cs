@@ -142,6 +142,9 @@ public class PoolService : IPoolService
         await _transactionSender.Send(tx);
         await dbTx.CommitAsync();
 
+        // Set card metadata after transaction commits to return proper values
+        deposit.CardMetadata = cardMetadataDao;
+
         return new()
         {
             Address = poolAdapter.Address,
