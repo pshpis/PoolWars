@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using PoolWarsV0.Core.Attributes;
 using PoolWarsV0.Events.Core.Models;
 using PoolWarsV0.Events.Core.Services;
+using PoolWarsV0.Events.Models;
 
 namespace PoolWarsV0.Events.Controllers;
 
@@ -31,7 +32,7 @@ public class EventController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<List<object>>> Index([FromQuery] string token,
+    public async Task<ActionResult<EventsResponse>> Index([FromQuery] string token,
         [FromQuery] [Range(minimum: 1, int.MaxValue)]
         int page, [FromQuery] [Range(minimum: 1, maximum: 20)] int count)
     {
@@ -53,11 +54,19 @@ public class EventController : ControllerBase
         var from = (page - 1) * count;
 
         var events = await _repository.GetEvents(claim.Value)
-            .Skip(from)
-            .Take(count)
-            .Cast<object>()
             .ToListAsync();
 
-        return events;
+
+        var total = events.Count;
+
+        return new EventsResponse
+        {
+            Count = total,
+            Events = events
+                .Skip(from)
+                .Take(count)
+                .Cast<object>()
+                .ToList()
+        };
     }
 }
