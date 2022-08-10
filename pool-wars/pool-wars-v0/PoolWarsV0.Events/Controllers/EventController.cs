@@ -53,7 +53,8 @@ public class EventController : ControllerBase
 
         var from = (page - 1) * count;
 
-        var events = await _repository.GetEvents(claim.Value)
+        var events = await _repository
+            .GetEvents(claim.Value)
             .ToListAsync();
 
 
