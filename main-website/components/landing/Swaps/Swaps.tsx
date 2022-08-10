@@ -115,6 +115,18 @@ const PointsPanels = ({ chooseState, swapState, onClick, cardsChooseNumber}: { c
 }
 
 export const Swaps = () => {
+    const ids = [{ id : "defence_1" },
+    { id : "intelligence_1" },
+    { id : "attack_3" },
+    { id : "defence_3" },
+    { id : "intelligence_3" },
+    { id : "attack_6" },
+    { id : "defence_6" },
+    { id : "intelligence_6" },
+    { id : "attack_12" },
+    { id : "defence_12" },
+    { id : "intelligence_12" }];
+
     const size = useWindowSize();
     const wallet = useWallet();
     const { connection } = useConnection();
@@ -186,6 +198,8 @@ export const Swaps = () => {
         }
 
         const mint = new Keypair();
+
+        ids.forEach((item) => chooseState.setChooseArr(item.id, 0));
 
         try {
             const ix = await swapCards(wallet.publicKey, mints, mint.publicKey, swap);
