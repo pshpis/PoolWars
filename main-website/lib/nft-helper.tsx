@@ -50,12 +50,12 @@ export type NFTStatWithMints = NFTStat & {
 
 const allowedCreators = [
     new PublicKey('HQqpHR1DE7o8qorjDanWFedxi5bH9rmyQksfLKYkZfZq'),
-    new PublicKey('EfD2CimtxrQGXVouhvcwPjjkga11yWE9xx6aCBCUzGxq'),
-    new PublicKey('ARqf5GxW2C5xijHnt2KWh9BUnqSNto5F9QHuS3MhDtYB')
+    new PublicKey('EaQRJmF4BqUvgSAcPN4EbUZMw7WKzDDoxta18i8KjaeM'),
+    new PublicKey('A2vo7b1LUuLkeXWRf9xs2q9HDToFPL6N3LyJJNP9cDje')
 ]
 
 const legendaryCreators = [
-    new PublicKey('8Wxo5XfNucF2hrNjaYBZ82WYxaudj5YG6xD7UYo5G2NP')
+    new PublicKey('9wqujfQ3bziYMLxgmSdiGxWpUWHzZtwuddqYN76DeADh')
 ]
 
 const METADATA_PROGRAM_ID = new PublicKey('metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s');
