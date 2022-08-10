@@ -75,7 +75,7 @@ const EventTimerPanel = ({ timeEnd }: { timeEnd: Date }) => {
     </Box>
 }
 
-const AttackPoolPanel = ({ sumPoints, totalInPool, userInPool, onClick }: { sumPoints: number, totalInPool: number, userInPool: number, onClick: React.MouseEventHandler<HTMLDivElement> }) => {
+const AttackPoolPanel = ({ sumPoints, totalInPool, userInPool, onClick, cardsChooseNumber }: { sumPoints: number, totalInPool: number, userInPool: number, onClick: React.MouseEventHandler<HTMLDivElement>, cardsChooseNumber: number }) => {
     return <ElderKattsBox zIndex={0} width="294px" height="368px">
         <Text mt="32px" mb="32px" pl="36px"
             fontFamily="Njord" fontWeight="400" fontSize="32px" lineHeight="37px" color="#71CFC3">Attack Pool</Text>
@@ -94,7 +94,7 @@ const AttackPoolPanel = ({ sumPoints, totalInPool, userInPool, onClick }: { sumP
         </HStack>
 
         <Center mt="81px">
-            <Box onClick={onClick} width="246px" height="48px" backgroundColor="#B8C3E6" color="#202020" borderRadius="24px" cursor="pointer"
+            <Box onClick={cardsChooseNumber > 4 ? void(0) : onClick} width="246px" height="48px" backgroundColor="#B8C3E6" color="#202020" borderRadius="24px" cursor="pointer"
                 fontWeight="600" fontSize="22px" lineHeight="48px" textAlign="center" transition="0.3s ease" _hover={{ boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);"}}>
                 Join Attack!
             </Box>
@@ -104,7 +104,7 @@ const AttackPoolPanel = ({ sumPoints, totalInPool, userInPool, onClick }: { sumP
     </ElderKattsBox>
 }
 
-const DefencePoolPanel = ({ sumPoints, totalInPool, userInPool, onClick }: { sumPoints: number, totalInPool: number, userInPool: number, onClick: React.MouseEventHandler<HTMLDivElement> }) => {
+const DefencePoolPanel = ({ sumPoints, totalInPool, userInPool, onClick, cardsChooseNumber }: { sumPoints: number, totalInPool: number, userInPool: number, onClick: React.MouseEventHandler<HTMLDivElement>, cardsChooseNumber: number }) => {
     return <ElderKattsBox zIndex={0} width="294px" height="368px">
         <Text mt="32px" mb="32px" pl="36px"
             fontFamily="Njord" fontWeight="400" fontSize="32px" lineHeight="37px" color="#71CFC3">Defence Pool</Text>
@@ -123,7 +123,7 @@ const DefencePoolPanel = ({ sumPoints, totalInPool, userInPool, onClick }: { sum
         </HStack>
 
         <Center mt="81px">
-            <Box onClick={onClick} width="246px" height="48px" backgroundColor="#B8C3E6" color="#202020" borderRadius="24px" cursor="pointer"
+            <Box onClick={cardsChooseNumber > 4 ? void(0) : onClick} width="246px" height="48px" backgroundColor="#B8C3E6" color="#202020" borderRadius="24px" cursor="pointer"
                 fontWeight="600" fontSize="22px" lineHeight="48px" textAlign="center" transition="0.3s ease" _hover={{ boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);"}}>
                 Join Defense!
             </Box>
@@ -134,6 +134,18 @@ const DefencePoolPanel = ({ sumPoints, totalInPool, userInPool, onClick }: { sum
 }
 
 export const PoolWars = () => {
+    const ids = [{ id : "defence_1" },
+        { id : "intelligence_1" },
+        { id : "attack_3" },
+        { id : "defence_3" },
+        { id : "intelligence_3" },
+        { id : "attack_6" },
+        { id : "defence_6" },
+        { id : "intelligence_6" },
+        { id : "attack_12" },
+        { id : "defence_12" },
+        { id : "intelligence_12" }];
+
     const size = useWindowSize();
     const wallet = useWallet();
     const { connection } = useConnection();
@@ -145,7 +157,7 @@ export const PoolWars = () => {
     }, [size.width])
 
     const kattsCardChoose = useKattsCardsChoose();
-    const { sumPoints, setChooseArr } = kattsCardChoose;
+    const { sumPoints, setChooseArr, cardsChooseNumber } = kattsCardChoose;
 
     const [version, setVersion] = useState<number>(0)
     const [NFTsStats, setStats] = useState<NFTStatWithMints[]>([])
@@ -238,6 +250,8 @@ export const PoolWars = () => {
         const blockhash = (await connection.getLatestBlockhash('finalized')).blockhash;
         let transactions: { tx: Transaction, mint: PublicKey }[] = []
 
+        ids.forEach((item) => setChooseArr(item.id, 0));
+
         for (let i = 0; i < mints.length; i++) {
             const mint = mints[i];
 
@@ -306,8 +320,8 @@ export const PoolWars = () => {
                         <EventTimerPanel timeEnd={poolWar ? new Date(poolWar.end) : new Date()} />
                     </VStack>
                     <HStack spacing="24px">
-                        <AttackPoolPanel onClick={() => provideNfts('attack')} sumPoints={sumPoints} totalInPool={attackPool.totalStrength} userInPool={attackPool.userStrength} />
-                        <DefencePoolPanel onClick={() => provideNfts('defence')} sumPoints={sumPoints} totalInPool={defencePool.totalStrength} userInPool={defencePool.userStrength} />
+                        <AttackPoolPanel onClick={() => provideNfts('attack')} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={attackPool.totalStrength} userInPool={attackPool.userStrength} />
+                        <DefencePoolPanel onClick={() => provideNfts('defence')} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={defencePool.totalStrength} userInPool={defencePool.userStrength} />
                     </HStack>
                 </HStack>
                 :
@@ -318,13 +332,13 @@ export const PoolWars = () => {
                     </VStack>
                     {size.width > 804 ?
                         <HStack spacing="24px">
-                            <AttackPoolPanel onClick={() => provideNfts('attack')} sumPoints={sumPoints} totalInPool={attackPool.totalStrength} userInPool={attackPool.userStrength} />
-                            <DefencePoolPanel onClick={() => provideNfts('defence')} sumPoints={sumPoints} totalInPool={defencePool.totalStrength} userInPool={defencePool.userStrength} />
+                            <AttackPoolPanel onClick={() => provideNfts('attack')} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={attackPool.totalStrength} userInPool={attackPool.userStrength} />
+                            <DefencePoolPanel onClick={() => provideNfts('defence')} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={defencePool.totalStrength} userInPool={defencePool.userStrength} />
                         </HStack>
                         :
                         <VStack spacing="24px">
-                            <AttackPoolPanel onClick={() => provideNfts('attack')} sumPoints={sumPoints} totalInPool={attackPool.totalStrength} userInPool={attackPool.userStrength} />
-                            <DefencePoolPanel onClick={() => provideNfts('defence')} sumPoints={sumPoints} totalInPool={defencePool.totalStrength} userInPool={defencePool.userStrength} />
+                            <AttackPoolPanel onClick={() => provideNfts('attack')} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={attackPool.totalStrength} userInPool={attackPool.userStrength} />
+                            <DefencePoolPanel onClick={() => provideNfts('defence')} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={defencePool.totalStrength} userInPool={defencePool.userStrength} />
                         </VStack>
                     }
 
@@ -342,7 +356,11 @@ export const PoolWars = () => {
 
         </Box>
             :
-            <span>There are no pool war RN</span>
+            <Flex h={size.height - 64 + "px"} w={size.width} fontWeight="400" fontSize="24px" textAlign="center" alignItems="center" justifyContent="center">
+                There are no available Pool Wars at the moment!
+                <br/>
+                Be patient, Katts!
+            </Flex>
         }
     </Layout>
 }

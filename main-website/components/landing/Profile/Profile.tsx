@@ -63,6 +63,12 @@ const Swap = ({inputCards, outputCard, isOpen, connection} : {inputCards: SwapEv
     const [load, setLoad] = useState<boolean>(false);
     const [outputNFTSrc, setOutputNFTSrc] = useState<string>();
     const [inputNFTs, setInputNFTs] = useState([]);
+
+    const imgWidth : string = useMemo(() => {
+        if (size.width < 500) return "140px";
+        else return "188px";
+    }, [size.width]);
+
     useEffect(() => {
         async function load() {
             setLoad(false);
@@ -73,35 +79,40 @@ const Swap = ({inputCards, outputCard, isOpen, connection} : {inputCards: SwapEv
             for (const nft of inputCards) {
                 const nftSrc = (await getMetadataByMintAddress(nft, connection)).src;
                 console.log(nftSrc);
-                newNFTs.push(<GridItem w="188px" h="188px"><Img w="188px" h="188px" src={nftSrc} borderRadius="16px" boxShadow="0px 0px 16px 0px #20202080" filter="drop-shadow(0px 0px 0px 16px #20202080)"/></GridItem>);
+                newNFTs.push(<Img w={imgWidth} h={imgWidth} src={nftSrc} borderRadius="16px" boxShadow="0px 0px 16px 0px #20202080" filter="drop-shadow(0px 0px 0px 16px #20202080)"/>);
             }
             setInputNFTs(newNFTs);
             setLoad(true);
         }
         load()
-    }, [isOpen]);
+    }, [isOpen, (size.width < 500), (size.width > 500)]);
 
-    return <ModalContent maxW="1036px" backgroundColor="inherit">
-        <ElderKattsBox pt="56px" pl="106px" pr="106px" pb="75px" w="100%">
-            <Text mb="48px" fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="40px" textAlign="center">successful SWAP</Text>
-            {
-                !load ?
-                    <Flex alignItems="center" justifyContent="center">
-                        <div className={styles.donut}/>
-                    </Flex>
-                :
-                    <Center>
-                        <HStack>
-                            <HStack spacing="-94px">
-                                {inputNFTs}
-                            </HStack>
-                            <Img pl="32px" pr="52px" src="/swap-transition.svg"/>
-                            <Img w="188px" h="188px" src={outputNFTSrc} borderRadius="16px"
-                                 boxShadow="0px 0px 50px 0px #71CFC380"/>
-                        </HStack>
-                    </Center>
-            }
-        </ElderKattsBox>
+    return <ModalContent maxW="80%" backgroundColor="inherit">
+        <Center>
+            <ElderKattsBox pt="56px" pl={size.width < 624 ? "24px" : "106px"} pr={size.width < 624 ? "24px" : "106px"} pb="75px" w="100%">
+                <Text mb="48px" fontFamily="Njord" fontWeight="400" fontSize={size.width < 660 ? "28px" : "48px"}
+                      lineHeight={size.width < 660 ? "34px" : "50px"} textAlign="center">
+                    successful SWAP
+                </Text>
+                {
+                    !load ?
+                        <Flex alignItems="center" justifyContent="center">
+                            <div className={styles.donut}/>
+                        </Flex>
+                        :
+                        <Center>
+                            <Stack direction={size.width > 1000 ? "row" : "column"} alignItems="center">
+                                <HStack spacing={size.width < 500 ? "-70px" : "-94px"}>
+                                    {inputNFTs}
+                                </HStack>
+                                <Img pl="32px" pr="52px" src="/swap-transition.svg" transform={size.width > 1000 ? "" : "rotate(90deg)"}/>
+                                <Img w={imgWidth} h={imgWidth} src={outputNFTSrc} borderRadius="16px"
+                                     boxShadow="0px 0px 50px 0px #71CFC380"/>
+                            </Stack>
+                        </Center>
+                }
+            </ElderKattsBox>
+        </Center>
     </ModalContent>
 }
 
@@ -211,30 +222,37 @@ const PoolWarV0 = ({result, cards, takenCards, isOpen, connection} : {result: Po
     }, [isOpen]);
 
     const templateColumns = useMemo(() => {
-        if (size.width < 1112) return 'repeat(2, 1fr)';
+        if (size.width < 600) return 'repeat(1, 1fr)';
+        else if (size.width < 1112) return 'repeat(2, 1fr)';
         else return 'repeat(3, 1fr)';
     }, [size.width]);
 
-    return <ModalContent maxW="1036px" backgroundColor="inherit">
-        <ElderKattsBox pt="56px" pl="106px" pr="106px" pb="75px" w="100%">
-            <Text mb="48px" fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="40px" textAlign="center">{result === 0 ? "YOU WON!" : "YOU LOSE"}</Text>
-            {
-                !load ?
-                    <Flex alignItems="center" justifyContent="center">
-                        <div className={styles.donut}/>
-                    </Flex>
-                :
-                    <Center>
-                        <Grid templateColumns={templateColumns} columnGap="24px" rowGap="24px">
-                            {NFTs}
-                        </Grid>
-                    </Center>
-            }
-        </ElderKattsBox>
+    return <ModalContent maxW={size.width} backgroundColor="inherit">
+        <Center>
+            <ElderKattsBox pt="56px" pl={size.width < 624 ? "24px" : "106px"} pr={size.width < 624 ? "24px" : "106px"} pb="75px" w="80%">
+                <Text mb="48px" fontFamily="Njord" fontWeight="400" fontSize={size.width < 660 ? "28px" : "48px"}
+                      lineHeight={size.width < 660 ? "34px" : "50px"} textAlign="center">
+                    {result === 0 ? "YOU WON!" : "YOU LOSE"}
+                </Text>
+                {
+                    !load ?
+                        <Flex alignItems="center" justifyContent="center">
+                            <div className={styles.donut}/>
+                        </Flex>
+                        :
+                        <Center>
+                            <Grid templateColumns={templateColumns} columnGap="24px" rowGap="24px">
+                                {NFTs}
+                            </Grid>
+                        </Center>
+                }
+            </ElderKattsBox>
+        </Center>
     </ModalContent>
 }
 
 const EventPanel = ({id, event, connection} : {id : string, event: Event, connection: Connection}) => {
+    const size = useWindowSize();
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const eventDescription = useMemo<string>(() => {
@@ -258,23 +276,39 @@ const EventPanel = ({id, event, connection} : {id : string, event: Event, connec
         return `${day}/${month} ${hour}:${minute}`;
     }, [event.date])
 
-    return <Box w="100%" h="80px" backgroundColor="#202020" borderRadius="24px" boxShadow="0px 0px 2px 2px #B2B2B20D"
+    const defaultFontSize : string = useMemo(() => {
+        if (size.width < 500) return "16px";
+        else return "20px";
+    }, [size.width]);
+
+    const defaultBoxHeight : string = useMemo(() => {
+        if (size.width < 500) return "56px";
+        else return "80px";
+    }, [size.width]);
+
+    return <Box w="100%" h={defaultBoxHeight} backgroundColor="#202020" borderRadius="24px" boxShadow="0px 0px 2px 2px #B2B2B20D"
                 _hover={{
                     boxShadow: "0px 0px 8px 8px #B2B2B226"
                 }}
                 onClick={onOpen}>
-        <HStack>
-            <Box pl="27px" fontWeight="600" fontSize="20px" lineHeight="80px" color="#E8E3DD">{id}</Box>
-            <Box pl="0px"><Divider w="64px" color="#E8E8E826" transform="rotate(90deg)"/></Box>
-            <Text fontWeight="600" fontSize="20px" lineHeight="80px" color="#71CFC3">{event.type.toUpperCase()}</Text>
-            <Divider w="64px" color="#E8E8E826" transform="rotate(90deg)"/>
-            <Text fontWeight="600" fontSize="20px" lineHeight="80px" color="#E8E3DD">
-                {eventDescription}
-            </Text>
+        <HStack spacing="0">
+            <Box pl={size.width < 500 ? "13px" : "27px"} mr={size.width < 500 ? "12px" : "26px"} fontWeight="600"
+                 fontSize={defaultFontSize} lineHeight={defaultBoxHeight} color="#E8E3DD">{id}</Box>
+            <Box pr={size.width < 500 ? "10px" : "29px"} h={size.width < 500 ? "34px" : "64px"} borderLeft="2px solid #E8E8E826" color="#E8E8E826"/>
+            <Text pr={size.width < 500 ? "15px" : "29px"} fontWeight="600" fontSize={defaultFontSize} lineHeight={defaultBoxHeight} color="#71CFC3">{event.type.toUpperCase()}</Text>
+            {
+                size.width < 664 ?
+                    <></>
+                :
+                    <>
+                        <Box pl="32px" h="64px" borderLeft="2px solid #E8E8E826" color="#E8E8E826"/>
+                        <Text fontWeight="600" fontSize={defaultFontSize} lineHeight={defaultBoxHeight} color="#E8E3DD">{eventDescription}</Text>
+                    </>
+            }
             <Spacer w="auto"/>
-            <Text pr="40px" fontWeight="300" fontSize="20px" lineHeight="80px" color="#B2B2B2">{dateString}</Text>
+            <Text pl={size.width < 500 ? "0px" : "20px"} pr={size.width < 500 ? "20px" : "40px"} fontWeight="300" fontSize={defaultFontSize} lineHeight={defaultBoxHeight} color="#B2B2B2">{dateString}</Text>
         </HStack>
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
             <ModalOverlay/>
                 {
                     isSwapEvent(event) ?
@@ -283,7 +317,7 @@ const EventPanel = ({id, event, connection} : {id : string, event: Event, connec
                         isPoolWarV0Event(event) ?
                             <PoolWarV0 result={event.result} cards={event.cards} takenCards={event.takenCards} isOpen={isOpen} connection={connection}/>
                         :
-                        <Box></Box>
+                            <></>
                 }
         </Modal>
     </Box>
@@ -386,10 +420,10 @@ export const Profile = () => {
                 to see your profile page.</Flex>
             :
             <Box mb="160px" pt="5.5%" pl="6.6%" pr="6.6%" w="100%">
-                <Stack direction={size.width > 1000 ? "row" : "column"}
+                <Stack direction={size.width > 1040 ? "row" : "column"}
                        spacing="72px" w="100%" maxW="1248px" margin="0 auto">
                     <Stack maxHeight="578px" pt="32px" pl="23px" pr="23px" pb="32px" as={ElderKattsBox}
-                           direction={size.width > 1000 ? "column" : size.width > 630 ? "row" : "column"}
+                           direction={size.width > 1040 ? "column" : size.width > 630 ? "row" : "column"}
                            spacing={"32px"} justifyContent="space-between">
                         <Box>
                             <Center mb="16px"><Image src={userPic}/></Center>
@@ -417,7 +451,7 @@ export const Profile = () => {
                         </Box>
 
                         <Divider borderColor="#E8E8E826" border="0.5px"
-                                 hidden={size.width > 1000 ? false : size.width > 630}/>
+                                 hidden={size.width > 1040 ? false : size.width > 630}/>
                         <Box marginLeft="auto">
                             <Text mb="32px" fontFamily="Njord" fontWeight="400" fontSize="24px" lineHeight="28px"
                                   textAlign="center">
