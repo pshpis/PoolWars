@@ -379,12 +379,10 @@ export const Profile = () => {
                 setStats(_ => stats);
                 setLoad(_ => true);
             } else {
-                setLoadedAllActivities(false);
                 setLoad(_ => false);
                 const events : EventsWrapper = await fetchEvents(walletAuthObj.authToken, pageNumber);
-                if (events.count / (5 * pageNumber) < 1)
-                    setLoadedAllActivities(true);
-                setPageNumber(pageNumber+1);
+                if (events.count > 5 && pageNumber === 1) setPageNumber(pageNumber+1);
+                else setLoadedAllActivities(true);
                 console.log(events);
                 setEventsInfo(_ => events);
                 setLoad(_ => true);
