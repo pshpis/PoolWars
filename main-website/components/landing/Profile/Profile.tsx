@@ -292,8 +292,8 @@ const ActivitiesPanel = ({eventsInfo, connection}) => {
     const [Events, setEvents] = useState([]);
     useEffect(() => {
         let newEvents = [];
-        let id = eventsInfo.length;
-        eventsInfo.forEach((item) => {
+        let id = eventsInfo.count;
+        eventsInfo.events.forEach((item) => {
             newEvents.push(<EventPanel id={`#${id--}`} event={item} connection={connection}/>)
         });
         setEvents(newEvents);
