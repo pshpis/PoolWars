@@ -63,6 +63,12 @@ const Swap = ({inputCards, outputCard, isOpen, connection} : {inputCards: SwapEv
     const [load, setLoad] = useState<boolean>(false);
     const [outputNFTSrc, setOutputNFTSrc] = useState<string>();
     const [inputNFTs, setInputNFTs] = useState([]);
+
+    const imgWidth : string = useMemo(() => {
+        if (size.width < 500) return "140px";
+        else return "188px";
+    }, [size.width]);
+
     useEffect(() => {
         async function load() {
             setLoad(false);
@@ -73,35 +79,37 @@ const Swap = ({inputCards, outputCard, isOpen, connection} : {inputCards: SwapEv
             for (const nft of inputCards) {
                 const nftSrc = (await getMetadataByMintAddress(nft, connection)).src;
                 console.log(nftSrc);
-                newNFTs.push(<GridItem w="188px" h="188px"><Img w="188px" h="188px" src={nftSrc} borderRadius="16px" boxShadow="0px 0px 16px 0px #20202080" filter="drop-shadow(0px 0px 0px 16px #20202080)"/></GridItem>);
+                newNFTs.push(<Img w={imgWidth} h={imgWidth} src={nftSrc} borderRadius="16px" boxShadow="0px 0px 16px 0px #20202080" filter="drop-shadow(0px 0px 0px 16px #20202080)"/>);
             }
             setInputNFTs(newNFTs);
             setLoad(true);
         }
         load()
-    }, [isOpen]);
+    }, [isOpen, (size.width < 500), (size.width > 500)]);
 
-    return <ModalContent maxW="1036px" backgroundColor="inherit">
-        <ElderKattsBox pt="56px" pl="106px" pr="106px" pb="75px" w="100%">
-            <Text mb="48px" fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="40px" textAlign="center">successful SWAP</Text>
-            {
-                !load ?
-                    <Flex alignItems="center" justifyContent="center">
-                        <div className={styles.donut}/>
-                    </Flex>
-                :
-                    <Center>
-                        <HStack>
-                            <HStack spacing="-94px">
-                                {inputNFTs}
-                            </HStack>
-                            <Img pl="32px" pr="52px" src="/swap-transition.svg"/>
-                            <Img w="188px" h="188px" src={outputNFTSrc} borderRadius="16px"
-                                 boxShadow="0px 0px 50px 0px #71CFC380"/>
-                        </HStack>
-                    </Center>
-            }
-        </ElderKattsBox>
+    return <ModalContent maxW={size.width} backgroundColor="inherit">
+        <Center>
+            <ElderKattsBox pt="56px" pl={size.width < 624 ? "24px" : "106px"} pr={size.width < 624 ? "24px" : "106px"} pb="75px" w="80%">
+                <Text mb="48px" fontFamily="Njord" fontWeight="400" fontSize={size.width < 660 ? "28px" : "48px"} lineHeight={size.width < 660 ? "34px" : "50px"} textAlign="center">successful SWAP</Text>
+                {
+                    !load ?
+                        <Flex alignItems="center" justifyContent="center">
+                            <div className={styles.donut}/>
+                        </Flex>
+                        :
+                        <Center>
+                            <Stack direction={size.width > 872 ? "row" : "column"} alignItems="center">
+                                <HStack spacing={size.width < 500 ? "-70px" : "-94px"}>
+                                    {inputNFTs}
+                                </HStack>
+                                <Img pl="32px" pr="52px" src="/swap-transition.svg" transform={size.width > 872 ? "" : "rotate(90deg)"}/>
+                                <Img w={imgWidth} h={imgWidth} src={outputNFTSrc} borderRadius="16px"
+                                     boxShadow="0px 0px 50px 0px #71CFC380"/>
+                            </Stack>
+                        </Center>
+                }
+            </ElderKattsBox>
+        </Center>
     </ModalContent>
 }
 
@@ -211,26 +219,29 @@ const PoolWarV0 = ({result, cards, takenCards, isOpen, connection} : {result: Po
     }, [isOpen]);
 
     const templateColumns = useMemo(() => {
-        if (size.width < 1112) return 'repeat(2, 1fr)';
+        if (size.width < 600) return 'repeat(1, 1fr)';
+        else if (size.width < 1112) return 'repeat(2, 1fr)';
         else return 'repeat(3, 1fr)';
     }, [size.width]);
 
     return <ModalContent maxW="1036px" backgroundColor="inherit">
-        <ElderKattsBox pt="56px" pl="106px" pr="106px" pb="75px" w="100%">
-            <Text mb="48px" fontFamily="Njord" fontWeight="400" fontSize="48px" lineHeight="40px" textAlign="center">{result === 0 ? "YOU WON!" : "YOU LOSE"}</Text>
-            {
-                !load ?
-                    <Flex alignItems="center" justifyContent="center">
-                        <div className={styles.donut}/>
-                    </Flex>
-                :
-                    <Center>
-                        <Grid templateColumns={templateColumns} columnGap="24px" rowGap="24px">
-                            {NFTs}
-                        </Grid>
-                    </Center>
-            }
-        </ElderKattsBox>
+        <Center>
+            <ElderKattsBox pt="56px" pl={size.width < 624 ? "24px" : "106px"} pr={size.width < 624 ? "24px" : "106px"} pb="75px" w="80%">
+                <Text mb="48px" fontFamily="Njord" fontWeight="400" fontSize={size.width < 660 ? "28px" : "48px"} lineHeight={size.width < 660 ? "34px" : "50px"} textAlign="center">{result === 0 ? "YOU WON!" : "YOU LOSE"}</Text>
+                {
+                    !load ?
+                        <Flex alignItems="center" justifyContent="center">
+                            <div className={styles.donut}/>
+                        </Flex>
+                        :
+                        <Center>
+                            <Grid templateColumns={templateColumns} columnGap="24px" rowGap="24px">
+                                {NFTs}
+                            </Grid>
+                        </Center>
+                }
+            </ElderKattsBox>
+        </Center>
     </ModalContent>
 }
 
@@ -288,12 +299,10 @@ const EventPanel = ({id, event, connection} : {id : string, event: Event, connec
                         <Text fontWeight="600" fontSize={defaultFontSize} lineHeight={defaultBoxHeight} color="#E8E3DD">{eventDescription}</Text>
                     </>
             }
-
-
             <Spacer w="auto"/>
             <Text pl={size.width < 500 ? "0px" : "20px"} pr={size.width < 500 ? "20px" : "40px"} fontWeight="300" fontSize={defaultFontSize} lineHeight={defaultBoxHeight} color="#B2B2B2">{dateString}</Text>
         </HStack>
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
             <ModalOverlay/>
                 {
                     isSwapEvent(event) ?
