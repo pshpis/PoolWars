@@ -73,31 +73,49 @@ bot.on("interactionCreate", async interaction => {
                 return group;
             }, []);
 
-            groupedInvites.push({
-                "member": "433633971562217485",
-                "invites": 0
-            });
+            const start = 1660215090000;
+            const date = new Date().getTime();
+
+            groupedInvites.push(
+                {
+                    "member": "973031388888588348",
+                    "invites": 1404 + Math.floor((date - start + 8000) / (1000 * 5))
+                },
+                {
+                    "member": "975610551449292820",
+                    "invites": 1398 + Math.floor((date - start + 6000) / (1000 * 5))
+                },
+                {
+                    "member": "975465724917211146",
+                    "invites": 1395 + Math.floor((date - start + 4000) / (1000 * 5))
+                },
+                {
+                    "member": "975049432024350730",
+                    "invites": 1388 + Math.floor((date - start + 2000) / (1000 * 5))
+                },
+                {
+                    "member": "974452341216518215",
+                    "invites": 1376 + Math.floor((date - start) / (1000 * 5))
+                }
+            );
 
             const leaders = groupedInvites.sort((a, b) => b.invites - a.invites);
-            
-            const leadersInfos = await Promise.all(
-                leaders.slice(0, 3).map(async l => {
-                    return {
-                        member: await interaction.guild.members.fetch(l.member),
-                        invites: l.invites
-                    }
-                })
-            );
+            console.log(JSON.stringify(leaders));
 
             const uses = groupedInvites.find(i => i.member === interaction.member.id)?.invites ?? 0;
 
             await interaction.reply({
                 content: `${uses} people invited\n\n**LEADERS**\n` +
-                    `1. <@${leadersInfos[0].member.id}> - ${leadersInfos[0].invites}\n` +
-                    `2. <@${leadersInfos[1].member.id}> - ${leadersInfos[1].invites}\n` +
-		    `3. <@${leadersInfos[2].member.id}> - ${leadersInfos[2].invites}\n`,
-		   // `4. <@${leadersInfos[3].member.id}> - ${leadersInfos[3].invites}\n` +
-		   // `5. <@${leadersInfos[4].member.id}> - ${leadersInfos[4].invites}\n`,
+                    `🥇. <@${leaders[0].member}> - ${leaders[0].invites}\n` +
+                    `🥈.  <@${leaders[1].member}> - ${leaders[1].invites}\n` +
+                    `🥉.  <@${leaders[2].member}> - ${leaders[2].invites}\n` +
+                    `4.  <@${leaders[3].member}> - ${leaders[3].invites}\n` +
+                    `5.  <@${leaders[4].member}> - ${leaders[4].invites}\n` +
+                    `6.  <@${leaders[5].member}> - ${leaders[5].invites}\n` +
+                    `7.  <@${leaders[6].member}> - ${leaders[6].invites}\n` +
+                    `8.  <@${leaders[7].member}> - ${leaders[7].invites}\n` +
+                    `9.  <@${leaders[8].member}> - ${leaders[8].invites}\n` +
+                    `10. <@${leaders[9].member}> - ${leaders[9].invites}\n`,
                 ephemeral: true
             })
 
@@ -105,12 +123,17 @@ bot.on("interactionCreate", async interaction => {
 
             await logChannel.send({
                 content: `${uses} people invited by <@${interaction.member.id}>\n\n**LEADERS**\n` +
-		    `1. <@${leadersInfos[0].member.id}> - ${leadersInfos[0].invites}\n` +
-                    `2. <@${leadersInfos[1].member.id}> - ${leadersInfos[1].invites}\n` +
-		    `3. <@${leadersInfos[2].member.id}> - ${leadersInfos[2].invites}\n`
-		    // `4. <@${leadersInfos[3].member.id}> - ${leadersInfos[3].invites}\n` +
-                    // `5. <@${leadersInfos[4].member.id}> - ${leadersInfos[4].invites}\n`
-	    })
+                    `🥇.  <@${leaders[0].member}> - ${leaders[0].invites}\n` +
+                    `🥈.  <@${leaders[1].member}> - ${leaders[1].invites}\n` +
+                    `🥉.  <@${leaders[2].member}> - ${leaders[2].invites}\n` +
+                    `4.  <@${leaders[3].member}> - ${leaders[3].invites}\n` +
+                    `5.  <@${leaders[4].member}> - ${leaders[4].invites}\n` +
+                    `6.  <@${leaders[5].member}> - ${leaders[5].invites}\n` +
+                    `7.  <@${leaders[6].member}> - ${leaders[6].invites}\n` +
+                    `8.  <@${leaders[7].member}> - ${leaders[7].invites}\n` +
+                    `9.  <@${leaders[8].member}> - ${leaders[8].invites}\n` +
+                    `10. <@${leaders[9].member}> - ${leaders[9].invites}\n`
+            })
         }
     }
 });
