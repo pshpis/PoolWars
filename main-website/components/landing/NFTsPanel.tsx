@@ -1,6 +1,17 @@
 import {useWindowSize} from "../../hooks/useWindowSize";
 import React, {useEffect, useMemo, useState} from "react";
-import {Box, Center, Grid, GridItem, HStack, Img, Input, Text, useToast} from "@chakra-ui/react";
+import {
+    Box,
+    Center,
+    Grid,
+    GridItem,
+    HStack,
+    Img,
+    Input,
+    Text,
+    useBoolean,
+    useToast
+} from "@chakra-ui/react";
 
 const TitleText = () => {
     const size = useWindowSize();
@@ -22,8 +33,15 @@ const NFT = ({src, maxValue, setChooseArr}) => {
     const toast = useToast();
     const NFTsName = src.slice(37).slice(0, -4);
 
+    const [nftClick, setNftClick] = useBoolean(false)
+
+    function onClick() {
+        setNftClick.on();
+        return void(0);
+    }
+
     return <GridItem>
-        <Box width="294px" height="398px">
+        <Box width="294px" height="398px" onClick={onClick}>
             <Img width="294px" height="294px" borderTopRadius="24px"
                  src={src}/>
             <Box pt="11px" pl="24px" pb="16px" pr="24px" width="294px" height="104px" borderBottomRadius="24px"
@@ -31,11 +49,13 @@ const NFT = ({src, maxValue, setChooseArr}) => {
 
                 <HStack spacing="auto">
                     <Text w="150px" color="#949494">You choose:</Text>
-                    <Input p="0" mr="auto" w="30px" type="text"
+                    <Input p="0" mr="auto" w="30px" type="text" autoFocus={nftClick} maxLength={maxValue.toString().length}
                            placeholder="0" fontWeight="600" fontSize="24px" lineHeight="36px" color="#71CFC3"
                            textAlign="right" border="0px" _placeholder={{color: 'inherit'}} cursor="pointer"
+                           _focus={{cursor: "text"}}
                         onChange={ (evt) => {
                            // @ts-ignore
+                           console.log(nftClick)
                            const nftChosen = +evt.target.value;
                            if ((((nftChosen ^ 0) !== nftChosen) || nftChosen < 0) && !toast.isActive("naturalCheck")) {
                                toast.close("moreCheck");
