@@ -228,9 +228,9 @@ const PoolWarV0 = ({result, cards, takenCards, isOpen, connection} : {result: Po
         else return 'repeat(3, 1fr)';
     }, [size.width]);
 
-    return <ModalContent maxW={size.width} backgroundColor="inherit">
+    return <ModalContent maxW="80%" backgroundColor="inherit">
         <Center>
-            <ElderKattsBox pt="56px" pl={size.width < 624 ? "24px" : "106px"} pr={size.width < 624 ? "24px" : "106px"} pb="75px" w="80%">
+            <ElderKattsBox pt="56px" pl={size.width < 624 ? "24px" : "106px"} pr={size.width < 624 ? "24px" : "106px"} pb="75px" w="100%">
                 <Text mb="48px" fontFamily="Njord" fontWeight="400" fontSize={size.width < 660 ? "28px" : "48px"}
                       lineHeight={size.width < 660 ? "34px" : "50px"} textAlign="center">
                     {result === 0 ? "YOU WON!" : "YOU LOSE"}
