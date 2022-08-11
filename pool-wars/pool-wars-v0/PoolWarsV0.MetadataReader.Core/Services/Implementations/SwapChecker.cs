@@ -60,6 +60,11 @@ public class SwapChecker : ISwapChecker
 
             var sumStrength = 0;
 
+            if (((IEnumerable<PublicKey>) instruction.Values["Mints"]).Count() < 2)
+            {
+                throw new SwapCheckerException("NEED_AT_LEAST_TWO_CARDS");
+            }
+
             foreach (PublicKey mint in (IEnumerable<PublicKey>) instruction.Values["Mints"])
             {
                 @event.InputCards.Add(mint.Key);

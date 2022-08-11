@@ -1,3 +1,4 @@
+using System.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using PoolWarsV0.Data;
@@ -69,6 +70,8 @@ public class PoolService : IPoolService
 
     public async Task<PoolState> DepositCardAsync(CardMetadata metadata, Pool pool, Message signCardMessage, byte[] signature)
     {
+        await using IDbContextTransaction dbTx = await _context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
+
         PoolDao poolDao = await _context.Pools
                               .AsTracking()
                               .Include(p => p.PoolWar)
@@ -87,6 +90,11 @@ public class PoolService : IPoolService
         if (poolDao.PoolWar.End < DateTime.UtcNow)
         {
             throw new PoolServiceException("POOL_WAR_ENDED");
+        }
+
+        if (poolDao.PoolWar.Pools.Any(p => p.Deposits.Any(d => d.CardMetadata.CardMint.Address == metadata.Mint)))
+        {
+            throw new PoolServiceException("CARD_ALREADY_IN_POOL_WAR");
         }
 
         PoolUserAdapter poolAdapter = _assertionService.AssertMessageValid(signCardMessage, metadata, pool);
@@ -114,7 +122,6 @@ public class PoolService : IPoolService
 
         poolDao.Deposits.Add(deposit);
         Transaction tx = Transaction.Populate(signCardMessage, new[] {signature});
-        await using IDbContextTransaction dbTx = await _context.Database.BeginTransactionAsync();
 
         try
         {

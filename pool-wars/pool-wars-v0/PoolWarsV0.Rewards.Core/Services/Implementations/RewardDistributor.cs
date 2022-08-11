@@ -1,3 +1,4 @@
+using System.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using PoolWarsV0.Data;
@@ -24,6 +25,8 @@ public class RewardDistributor : IRewardDistributor
 
     public async Task<PoolWarResult> DistributeRewards(WinnerData winner)
     {
+        await using IDbContextTransaction transaction = await _context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
+
         PoolWarDao poolWarDao = await _context.PoolWars
                                     .AsTracking()
                                     .Include(w => w.Pools)
@@ -67,9 +70,7 @@ public class RewardDistributor : IRewardDistributor
             PoolWarId = poolWarDao.Id,
             WinnerPoolId = winnerPool.Id
         };
-
-        await using IDbContextTransaction transaction = await _context.Database.BeginTransactionAsync();
-
+        
         foreach (PoolUserDao user in rewardedUsers)
         {
             PoolWarEvent @event = new(user.Address);

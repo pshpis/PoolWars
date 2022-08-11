@@ -1,3 +1,4 @@
+using System.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using PoolWarsV0.Data;
@@ -26,6 +27,7 @@ public class CardTaker : ICardTaker
     public async Task TakeCard(Message message, byte[] signature, PublicKey cardMint, PublicKey poolAddress)
     {
         var cardMintString = cardMint.Key;
+        await using IDbContextTransaction transaction = await _context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
 
         UserResultCard cardLink = await _context.UserResultCards
                                       .AsTracking()
@@ -64,9 +66,7 @@ public class CardTaker : ICardTaker
 
         tx.AddSignature(user, signature);
         tx.PartialSign(new Account(poolDao.PrivateKey, poolDao.Address));
-
-        await using IDbContextTransaction transaction = await _context.Database.BeginTransactionAsync();
-
+        
         cardLink.Given = true;
         eventDao.TakenCards = string.Join(" ", takenCards.Concat(new[] {mint.Key}));
         _context.UserResultCards.Update(cardLink);
