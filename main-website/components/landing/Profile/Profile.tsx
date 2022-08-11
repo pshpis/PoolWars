@@ -228,9 +228,9 @@ const PoolWarV0 = ({result, cards, takenCards, isOpen, connection} : {result: Po
         else return 'repeat(3, 1fr)';
     }, [size.width]);
 
-    return <ModalContent maxW={size.width} backgroundColor="inherit">
+    return <ModalContent maxW="80%" backgroundColor="inherit">
         <Center>
-            <ElderKattsBox pt="56px" pl={size.width < 624 ? "24px" : "106px"} pr={size.width < 624 ? "24px" : "106px"} pb="75px" w="80%">
+            <ElderKattsBox pt="56px" pl={size.width < 624 ? "24px" : "106px"} pr={size.width < 624 ? "24px" : "106px"} pb="75px" w="100%">
                 <Text mb="48px" fontFamily="Njord" fontWeight="400" fontSize={size.width < 660 ? "28px" : "48px"}
                       lineHeight={size.width < 660 ? "34px" : "50px"} textAlign="center">
                     {result === 0 ? "YOU WON!" : "YOU LOSE"}
@@ -515,7 +515,7 @@ export const Profile = () => {
                         : profilePanelState.currentPanelMode.type === "MyNFTs" ?
                             <MyNFts NFTsStats={NFTsStats}/>
                             :
-                            walletAuthObj.authToken ?
+                            walletAuthObj.isSigned ?
                                 <Box>
                                     <ActivitiesPanel eventsInfo={eventsInfo} connection={connection}/>
                                     {
@@ -531,7 +531,7 @@ export const Profile = () => {
                                 </Box>
                             :
                                 <Flex mt="200px" alignItems="center" justifyContent="center">
-                                    <Box fontWeight="400" fontSize={size.width > 768 ? "48px" : "32px"} color="#E8E3DD" textAlign="center">Sign in to see your latest activities</Box>
+                                    <Box fontWeight="400" fontSize={size.width > 768 ? "48px" : "32px"} color="#E8E3DD" textAlign="center">Sign in to see your activities</Box>
                                 </Flex>
                         }
 

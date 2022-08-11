@@ -3,7 +3,7 @@ import Layout from "../Layout/Layout";
 import {
     Box, Divider, Flex,
     HStack,
-    Text, useToast,
+    Text, useBoolean, useToast,
     VStack
 } from "@chakra-ui/react";
 import { ElderKattsBox } from "../Layout/ElderKattsBox";
@@ -38,7 +38,7 @@ const MainText = () => {
     </Box>
 }
 
-const WillTakePointsPanel = ({ pointsPanelsHeight, swapState, onClick, cardsChooseNumber }: { pointsPanelsHeight: number, swapState: SwapState, onClick: React.MouseEventHandler<HTMLDivElement>, cardsChooseNumber: number }) => {
+const WillTakePointsPanel = ({ pointsPanelsHeight, swapState, onClick, cardsChooseNumber, loadClick }: { pointsPanelsHeight: number, swapState: SwapState, onClick: React.MouseEventHandler<HTMLDivElement>, cardsChooseNumber: number, loadClick: boolean }) => {
     return <ElderKattsBox mt="24px" pb="32px" width="294px" height={pointsPanelsHeight + "px"}>
 
         <Text pt="24px" pb="28px"
@@ -55,11 +55,20 @@ const WillTakePointsPanel = ({ pointsPanelsHeight, swapState, onClick, cardsChoo
             })}
         </HStack>
 
-        <Box onClick={cardsChooseNumber > 4 ? void(0) : onClick} ml="24px" mr="24px" maxWidth="246px" height="48px" backgroundColor="#B8C3E6" borderRadius="24px" textAlign="center"
-            fontWeight="600" fontSize="24px" lineHeight="48px" color="#202020"
-            transition="0.3s ease" _hover={{ boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);" }} cursor="pointer">
-            SWAP
-        </Box>
+        {
+            loadClick
+                ?
+                <Box onClick={cardsChooseNumber > 4 ? void(0) : onClick} ml="24px" mr="24px" maxWidth="246px" height="48px" backgroundColor="#B8C3E6" borderRadius="24px" textAlign="center"
+                     fontWeight="600" fontSize="24px" lineHeight="48px" color="#202020"
+                     transition="0.3s ease" _hover={{ boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);" }} cursor="pointer">
+                    SWAP
+                </Box>
+                :
+                <Flex alignItems="center" justifyContent="center">
+                    <div className={styles.smallDonut}/>
+                </Flex>
+        }
+
     </ElderKattsBox>
 }
 
@@ -93,7 +102,7 @@ const NeedPointsPanel = ({ needPointsPerOne }) => {
     </ElderKattsBox>
 }
 
-const PointsPanels = ({ chooseState, swapState, onClick, cardsChooseNumber}: { chooseState: ChooseState, swapState: SwapState, onClick: React.MouseEventHandler<HTMLDivElement>, cardsChooseNumber: number }) => {
+const PointsPanels = ({ chooseState, swapState, onClick, cardsChooseNumber, loadClick}: { chooseState: ChooseState, swapState: SwapState, onClick: React.MouseEventHandler<HTMLDivElement>, cardsChooseNumber: number, loadClick: boolean }) => {
     const size = useWindowSize();
 
     const toast = useToast();
@@ -125,9 +134,9 @@ const PointsPanels = ({ chooseState, swapState, onClick, cardsChooseNumber}: { c
                 <SelectedPointsPanel sumPoints={chooseState.sumPoints} />
                 <NeedPointsPanel needPointsPerOne={swapState.currentMod.needPoints} />
             </VStack>
-            {size.width >= 640 ? <WillTakePointsPanel onClick={onClick} pointsPanelsHeight={pointsPanelsHeight} swapState={swapState} cardsChooseNumber={cardsChooseNumber}/> : ""}
+            {size.width >= 640 ? <WillTakePointsPanel onClick={onClick} pointsPanelsHeight={pointsPanelsHeight} swapState={swapState} cardsChooseNumber={cardsChooseNumber} loadClick={loadClick}/> : ""}
         </HStack>
-        {size.width < 640 ? <WillTakePointsPanel onClick={onClick} pointsPanelsHeight={pointsPanelsHeight} swapState={swapState} cardsChooseNumber={cardsChooseNumber}/> : ""}
+        {size.width < 640 ? <WillTakePointsPanel onClick={onClick} pointsPanelsHeight={pointsPanelsHeight} swapState={swapState} cardsChooseNumber={cardsChooseNumber} loadClick={loadClick}/> : ""}
     </Box>
 }
 
@@ -163,6 +172,8 @@ export const Swaps = () => {
     const [version, setVersion] = useState<number>(0);
     const [load, setLoad] = useState<boolean>(false);
 
+    const [loadClick, setLoadClick] = useBoolean(true);
+
     const versionInc = () => setVersion(v => v + 1);
 
     useEffect(() => {
@@ -185,7 +196,7 @@ export const Swaps = () => {
     }, [size.width]);
 
     async function swapClick(e: MouseEvent<HTMLDivElement>) {
-
+        setLoadClick.off();
         const mints = mapChooseStateToMints(chooseState, NFTsStats);
         let swap: swapType | undefined = undefined;
 
@@ -243,10 +254,14 @@ export const Swaps = () => {
             tx.addSignature(SWAP_AUTHORITY, signature);
 
             const result = await connection.sendRawTransaction(tx.serialize())
+
             versionInc();
         }
         catch (e) {
             console.error(e);
+        }
+        finally {
+            setLoadClick.on();
         }
     }
 
@@ -260,11 +275,11 @@ export const Swaps = () => {
                 {size.width < 1040 ?
                     <VStack maxW="1248px" w="100%" margin="0 auto" spacing="30px">
                         <MainText />
-                        <PointsPanels onClick={e => swapClick(e)} chooseState={chooseState} swapState={swapState} cardsChooseNumber={chooseState.cardsChooseNumber}/>
+                        <PointsPanels onClick={e => swapClick(e)} chooseState={chooseState} swapState={swapState} cardsChooseNumber={chooseState.cardsChooseNumber} loadClick={loadClick}/>
                     </VStack>
                     : <HStack maxW="1248px" w="100%" margin="0 auto" spacing="auto">
                         <MainText />
-                        <PointsPanels onClick={e => swapClick(e)} chooseState={chooseState} swapState={swapState} cardsChooseNumber={chooseState.cardsChooseNumber}/>
+                        <PointsPanels onClick={e => swapClick(e)} chooseState={chooseState} swapState={swapState} cardsChooseNumber={chooseState.cardsChooseNumber} loadClick={loadClick}/>
                     </HStack>}
 
                 <Divider maxW="1440px" margin="76px auto" borderColor="#E8E8E826" border="0.5px" />
