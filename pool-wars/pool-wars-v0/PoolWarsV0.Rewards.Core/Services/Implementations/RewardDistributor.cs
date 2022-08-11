@@ -57,7 +57,6 @@ public class RewardDistributor : IRewardDistributor
             .ToList();
 
         var toDistribute = winnerDeposits.Concat(loserDeposits).ToList();
-
         var rewardedUsers = GetPoolUsers(winnerPool);
         var lostUsers = GetPoolUsers(loserPool);
 
@@ -147,7 +146,9 @@ public class RewardDistributor : IRewardDistributor
 
     private static IEnumerable<CardMetadataDao> GetPoolCards(PoolDao pool)
     {
-        return pool.Deposits.Select(d => d.CardMetadata);
+        return pool.Deposits
+            .DistinctBy(d => d.CardMetadataId)
+            .Select(d => d.CardMetadata);
     }
 
     private static IEnumerable<PoolUserDao> GetPoolUsers(PoolDao pool)
