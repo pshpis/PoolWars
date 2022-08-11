@@ -350,8 +350,8 @@ export const PoolWars = () => {
                         <EventTimerPanel timeEnd={poolWar ? new Date(poolWar.end) : new Date()} />
                     </VStack>
                     <HStack spacing="24px">
-                        <AttackPoolPanel onClick={() => provideNfts('attack')} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={attackPool.totalStrength} userInPool={attackPool.userStrength} />
                         <DefencePoolPanel onClick={() => provideNfts('defence')} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={defencePool.totalStrength} userInPool={defencePool.userStrength} />
+                        <AttackPoolPanel onClick={() => provideNfts('attack')} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={attackPool.totalStrength} userInPool={attackPool.userStrength} />
                     </HStack>
                 </HStack>
                 :
@@ -362,13 +362,13 @@ export const PoolWars = () => {
                     </VStack>
                     {size.width > 804 ?
                         <HStack spacing="24px">
-                            <AttackPoolPanel onClick={() => provideNfts('attack')} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={attackPool.totalStrength} userInPool={attackPool.userStrength} />
                             <DefencePoolPanel onClick={() => provideNfts('defence')} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={defencePool.totalStrength} userInPool={defencePool.userStrength} />
+                            <AttackPoolPanel onClick={() => provideNfts('attack')} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={attackPool.totalStrength} userInPool={attackPool.userStrength} />
                         </HStack>
                         :
                         <VStack spacing="24px">
-                            <AttackPoolPanel onClick={() => provideNfts('attack')} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={attackPool.totalStrength} userInPool={attackPool.userStrength} />
                             <DefencePoolPanel onClick={() => provideNfts('defence')} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={defencePool.totalStrength} userInPool={defencePool.userStrength} />
+                            <AttackPoolPanel onClick={() => provideNfts('attack')} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={attackPool.totalStrength} userInPool={attackPool.userStrength} />
                         </VStack>
                     }
 
