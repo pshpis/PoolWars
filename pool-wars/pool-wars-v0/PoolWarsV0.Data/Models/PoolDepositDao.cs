@@ -5,8 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace PoolWarsV0.Data.Models;
 
 [Index(nameof(UserId), IsUnique = false)]
-[Index(nameof(PoolId), IsUnique = false)]
-[Index(nameof(CardMetadataId), IsUnique = false)]
+[Index(nameof(PoolId), nameof(CardMetadataId), IsUnique = true)]
 public class PoolDepositDao
 {
     [Key]
