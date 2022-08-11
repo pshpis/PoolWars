@@ -1,11 +1,11 @@
 import Layout from "../Layout/Layout";
 import {Box, Divider, Flex, HStack, Text, VStack} from "@chakra-ui/react";
-import React, {MouseEvent, useCallback, useEffect} from "react";
+import React, {MouseEvent, useCallback, useEffect, useState} from "react";
 import { useWindowSize } from "../../../hooks/useWindowSize";
 import { useWalletAuth } from "../../../hooks/useWalletAuth";
 import { Keypair, Transaction } from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { createUserData, getUserData, mintOne } from "../../../lib/mint-instructions";
+import { createUserData, decodeMintData, getMintData, getUserData, MintData, mintOne, MINT_CONFIG_ADDRESS } from "../../../lib/mint-instructions";
 import {useCookies} from "../../../hooks/useCookies";
 
 const airdropAuthority = Keypair.fromSecretKey(new Uint8Array([87, 63, 47, 245, 211, 198, 55, 243, 138, 201, 237, 198, 57, 34, 88, 224, 234, 49, 51, 191, 224, 89, 45, 31, 199, 95, 209, 129, 178, 203, 158, 88, 135, 41, 24, 119, 139, 239, 142, 50, 14, 223, 31, 244, 177, 196, 221, 109, 149, 38, 54, 24, 206, 7, 176, 72, 52, 175, 40, 209, 211, 239, 86, 51]))
@@ -18,6 +18,28 @@ const MainText = ({marginBottom}) => {
 }
 
 const ProgressBar = () => {
+
+    const { connection } = useConnection();
+    const [mintState, setMintState] = useState<MintData | undefined>();
+
+    useEffect(() => {
+
+        const load = async () => {
+            const accountData = await getMintData(connection);
+            const state = decodeMintData(accountData);
+            setMintState(state);
+        };
+
+        connection.onAccountChange(MINT_CONFIG_ADDRESS, (accountInfo, _) => {
+
+            const state = decodeMintData(accountInfo.data);
+            setMintState(state);
+        });
+
+        load();
+    },
+        [])
+
     return <Box w="100%" h="64px" color="#20202080">
 
     </Box>
