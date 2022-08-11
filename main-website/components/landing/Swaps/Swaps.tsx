@@ -196,7 +196,7 @@ export const Swaps = () => {
     }, [size.width]);
 
     async function swapClick(e: MouseEvent<HTMLDivElement>) {
-        setLoadClick.off;
+        setLoadClick.off();
         const mints = mapChooseStateToMints(chooseState, NFTsStats);
         let swap: swapType | undefined = undefined;
 
@@ -261,7 +261,7 @@ export const Swaps = () => {
             console.error(e);
         }
         finally {
-            setLoadClick.on;
+            setLoadClick.on();
         }
     }
 
