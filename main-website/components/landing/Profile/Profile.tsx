@@ -189,7 +189,7 @@ const NFT = ({src, mint, result, taken} : {src: string, mint: string, result: Po
                     <Img w="100%" h="188px" src={src} borderRadius="16px"/>
                     <Center>
                         <Box onClick={taken ? void(0) : take} w="80%" h="32px" mt="10px" fontWeight="600" fontSize="18px" lineHeight="32px" textAlign="center"
-                             color="#202020" backgroundColor={taken ? "#71CFC3" : "#B8C3E6"} borderRadius="16px" _hover={{boxShadow: "0px 0px 16px 0px #B8C3E6D9"}}>
+                             color="#202020" backgroundColor={taken ? "#71CFC3" : "#B8C3E6"} borderRadius="16px" _hover={{boxShadow: "0px 0px 16px 0px #B8C3E6D9"}} cursor="pointer">
                             {taken ? "TAKEN" : "TAKE NOW"}
                         </Box>
                     </Center>
@@ -291,7 +291,8 @@ const EventPanel = ({id, event, connection} : {id : string, event: Event, connec
                 _hover={{
                     boxShadow: "0px 0px 8px 8px #B2B2B226"
                 }}
-                onClick={onOpen}>
+                onClick={onOpen}
+                cursor="pointer">
         <HStack spacing="0">
             <Box pl={size.width < 500 ? "13px" : "27px"} mr={size.width < 500 ? "12px" : "26px"} fontWeight="600"
                  fontSize={defaultFontSize} lineHeight={defaultBoxHeight} color="#E8E3DD">{id}</Box>
@@ -460,7 +461,8 @@ export const Profile = () => {
                                 <Box className={styles.socialButton}
                                      onClick={onDiscordButtonClick}
                                      onMouseEnter={onDiscordButtonEnter}
-                                     onMouseLeave={onDiscordButtonLeave}>
+                                     onMouseLeave={onDiscordButtonLeave}
+                                     cursor="pointer">
                                     <Flex p="0" alignItems="center" w="100%">
                                         <Box className={styles.socialButton_iconplace}>
                                             <svg stroke="currentColor" fill="currentColor" strokeWidth="0"
@@ -475,7 +477,7 @@ export const Profile = () => {
                                         </Box>
                                     </Flex>
                                 </Box>
-                                <Box className={styles.socialButton} onClick={onFakeClick}>
+                                <Box className={styles.socialButton} onClick={onFakeClick} cursor="pointer">
                                     <Flex p="0px" alignItems="center" w="100%">
                                         <Box className={styles.socialButton_iconplace}>
                                             <svg stroke="currentColor" fill="currentColor" strokeWidth="0"
