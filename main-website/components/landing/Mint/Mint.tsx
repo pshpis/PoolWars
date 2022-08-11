@@ -1,25 +1,77 @@
 import Layout from "../Layout/Layout";
-import {Box, Divider, Flex, HStack, Text, VStack} from "@chakra-ui/react";
-import React, {MouseEvent, useCallback, useEffect} from "react";
+import {Box, Center, chakra, Flex, HStack, Img, Spacer, Stack, Text, VStack} from "@chakra-ui/react";
+import React, {MouseEvent, useEffect, useRef, useState} from "react";
 import { useWindowSize } from "../../../hooks/useWindowSize";
 import { useWalletAuth } from "../../../hooks/useWalletAuth";
 import { Keypair, Transaction } from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { createUserData, getUserData, mintOne } from "../../../lib/mint-instructions";
+import { createUserData, decodeMintData, getMintData, getUserData, MintData, mintOne, MINT_CONFIG_ADDRESS } from "../../../lib/mint-instructions";
 import {useCookies} from "../../../hooks/useCookies";
+import styles from "../../../styles/mint.module.scss"
 
 const airdropAuthority = Keypair.fromSecretKey(new Uint8Array([87, 63, 47, 245, 211, 198, 55, 243, 138, 201, 237, 198, 57, 34, 88, 224, 234, 49, 51, 191, 224, 89, 45, 31, 199, 95, 209, 129, 178, 203, 158, 88, 135, 41, 24, 119, 139, 239, 142, 50, 14, 223, 31, 244, 177, 196, 221, 109, 149, 38, 54, 24, 206, 7, 176, 72, 52, 175, 40, 209, 211, 239, 86, 51]))
 
 const MainText = ({marginBottom}) => {
-    return <Box marginBottom={marginBottom} fontFamily="Njord" fontWeight="400">
-        <Text fontSize="61px" color="#E8E8E8" lineHeight="58px">Card&apos;s mint</Text>
-        <Text fontSize="100px" color="#71CFC3" lineHeight="95px">now Live!</Text>
+    const size = useWindowSize();
+    return <Box marginBottom={marginBottom} w="100%" fontFamily="Njord" fontWeight="400" textAlign="left">
+        <Text fontSize={size.width < 500 ? "31px" : "61px"} color="#E8E8E8" lineHeight={size.width < 500 ? "29px" : "58px"}>Card&apos;s mint</Text>
+        <Text fontSize={size.width < 500 ? "50px" : "100px"} color="#71CFC3" lineHeight={size.width < 500 ? "47px" : "95px"}>now Live!</Text>
     </Box>
 }
 
-const ProgressBar = () => {
-    return <Box w="100%" h="64px" color="#20202080">
+const ProgressPanel = () => {
+    const { connection } = useConnection();
+    const [mintState, setMintState] = useState<MintData | undefined>();
+    const srcWidth = 22;
 
+    const loadedBarRef = useRef(null);
+    const [loadedBarWidth, setLoadedBarWidth] = useState(0);
+    useEffect(() => {
+        if (mintState !== undefined)
+            setLoadedBarWidth(loadedBarRef.current.offsetWidth);
+    }, [loadedBarRef.current]);
+
+    useEffect(() => {
+
+        const load = async () => {
+            const accountData = await getMintData(connection);
+            const state = decodeMintData(accountData);
+            setMintState(state);
+        };
+
+        connection.onAccountChange(MINT_CONFIG_ADDRESS, (accountInfo, _) => {
+            const state = decodeMintData(accountInfo.data);
+            setMintState(state);
+        });
+
+        load();
+    },
+        [])
+
+    return <Box w="100%">
+        {
+            mintState === undefined
+                ?
+                <></>
+                :
+                <Box pl="7px" pr="7px">
+                    <Text mb="5px" ml={loadedBarWidth-40+"px"} width="80px" textAlign="center"
+                          fontWeight="600" fontSize="24px" lineHeight="28.13px" color="#B8C3E6">
+                        {mintState.mintedAmount}
+                    </Text>
+                    <Img mb="8px" w={srcWidth} ml={loadedBarWidth-srcWidth/2+"px"} src="/triangle.svg"/>
+                </Box>
+        }
+        <Box pt="6px" pl="7px" pr="7px" pb="6px" w="100%" h="64px" backgroundColor="#B2B2B2" borderRadius="24px" boxShadow="0px 0px 8px 0px #20202080 inset">
+            {
+                mintState === undefined
+                    ?
+                    <></>
+                    :
+                    <Box ref={loadedBarRef} w={mintState.mintedAmount/mintState.supply} h="52px" backgroundColor="#E8E8E8" borderLeftRadius="20px" boxShadow="0px 0px 4px 0px #20202040"></Box>
+            }
+        </Box>
+        <Text mt="7px" pr="20px" fontWeight="600" fontSize="24px" lineHeight="28.13px" color="#B8C3E6" textAlign="right">Total: 10 000</Text>
     </Box>
 }
 
@@ -75,26 +127,37 @@ export const Mint = () => {
 
     return <Layout>
         {!connected ?
-
             <Flex h={size.height - 64 + "px"} w={size.width} alignItems="center" justifyContent="center">Connect wallet
                 to see your profile page.</Flex>
             :
-            <Flex h={size.height - 64 + "px"} w={size.width} alignItems="center" justifyContent="center">
-                <Box onClick={mintClick} w="300px" h="72px" backgroundColor="#202020" color="#71CFC3" border="2px" borderColor="#71CFC3"
-                    borderRadius="20px" cursor="pointer"
-                    fontWeight="400" fontSize="36px" lineHeight="68px" textAlign="center" transition="all 1s" _hover={{
-                        backgroundColor: "#71CFC3",
-                        color: "#202020",
-                    }}>Mint</Box>
-            </Flex>
-            // <Box mt="80px" mb="232px" pl="96px" pr="96px">
-            //     <HStack>
-            //         <VStack maxW="612px" spacing="0px">
-            //             <MainText marginBottom="56px"/>
-            //             <Divider mb="51px" borderColor="#E8E8E8BF"/>
-            //         </VStack>
-            //     </HStack>
-            // </Box>
+                <Box mt="80px" mb="232px" pl={size.width < 500 ? "24px" : "96px"} pr={size.width < 500 ? "24px" : "96px"}>
+                    <Stack direction={size.width < 1260 ? "column" : "row"} spacing={size.width < 1260 ? "40px" : "auto"}>
+                        <Center>
+                            <VStack maxW="612px" spacing="0px">
+                                <MainText marginBottom="56px"/>
+                                <Box pb="51px" w="100%" borderTop="2px solid #E8E8E826"/>
+                                <ProgressPanel/>
+                                <Box h="16px"/>
+                                <Stack direction={size.width < 670 ? "column" : "row"} spacing="23px">
+                                    <Box className={styles.currentStageBox}>OG stage</Box>
+                                    <Box className={styles.stageBox}>WL stage</Box>
+                                    <Box className={styles.stageBox}>Public stage</Box>
+                                </Stack>
+                            </VStack>
+                        </Center>
+                        <VStack>
+                            {
+                                size.width < 680
+                                ?
+                                    <Img w="212px" h="212px" src='/ezgif-3-fc8b60ab28.gif' borderRadius="40px" boxShadow="0px 4px 4px 0px #00000040"/>
+                                :
+                                    <Img src='/ezgif-3-fc8b60ab28.gif' borderRadius="40px" boxShadow="0px 4px 4px 0px #00000040"/>
+                            }
+
+                            <Box w={size.width < 680 ? "212px" : ""} className={styles.mintButton} onClick={mintClick}>MINT</Box>
+                        </VStack>
+                    </Stack>
+                </Box>
         }
     </Layout>
 }

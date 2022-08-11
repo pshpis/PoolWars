@@ -7,12 +7,45 @@ export type UserMintData = {
     lockTill: number
 }
 
+export type MintData = {
+    supply: number,
+    mintedAmount: number
+}
+
 export const MINT_PROGRAM_ID = new PublicKey('9fHdkidrwJJamCk2EmFb45MzUoy4scoGRz1XJqqGZmGN');
 export const MINT_CONFIG_ADDRESS = new PublicKey('7GpvkSRqxHvCwNMWcmHv3pWKo2qyk4ZSpBdamnDDaDW4');
 export const MINT_AIRDROP_AUTHORITY = new PublicKey('A6cPHtm1AQUvYjBUBMMsVgLiRgZ54bRT7T6bXEkhQe8r');
 export const MINT_ADMIN_ACCOUNT = new PublicKey('Gc2J1WxU2EpFfj2U3rbQkdd3WfVz7qVUXjNnS8ETvpsL');
 export const MINT_REVENUES_WALLET = new PublicKey('DRLCySRyuKxgPTeiJVoKgPqK5SCMwtJDBLtNPQrwUoXL');
 
+
+export async function getMintData(connection: Connection): Promise<Buffer | undefined> {
+
+    try {
+
+        const account = await connection.getAccountInfo(MINT_CONFIG_ADDRESS, 'finalized');
+        return account?.data;
+    }
+    catch (e) {
+        return;
+    }
+}
+
+export function decodeMintData(account: Buffer): MintData | undefined {
+
+    try {
+
+        const index = new BN(account.slice(33, 33 + 8), 'le');
+        const supply = new BN(account.slice(41, 41 + 8), 'le');
+
+        return {
+            supply: supply.toNumber(),
+            mintedAmount: index.toNumber()
+        }
+    } catch (e) {
+        return;
+    }
+}
 
 export async function getUserData(user: PublicKey, connection: Connection): Promise<UserMintData | null> {
 
