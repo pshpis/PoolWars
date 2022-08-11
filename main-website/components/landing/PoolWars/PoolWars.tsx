@@ -1,5 +1,5 @@
 import Layout from "../Layout/Layout";
-import {Box, Center, Divider, Flex, HStack, Img, Text, useToast, VStack} from "@chakra-ui/react";
+import {Box, Center, Divider, Flex, HStack, Img, Text, useBoolean, useToast, VStack} from "@chakra-ui/react";
 import { useWindowSize } from "../../../hooks/useWindowSize";
 import React, { useEffect, useMemo, useState } from "react";
 import { NFTSPanel } from "../NFTsPanel";
@@ -75,7 +75,7 @@ const EventTimerPanel = ({ timeEnd }: { timeEnd: Date }) => {
     </Box>
 }
 
-const AttackPoolPanel = ({ sumPoints, totalInPool, userInPool, onClick, cardsChooseNumber }: { sumPoints: number, totalInPool: number, userInPool: number, onClick: React.MouseEventHandler<HTMLDivElement>, cardsChooseNumber: number }) => {
+const AttackPoolPanel = ({ sumPoints, totalInPool, userInPool, onClick, cardsChooseNumber, loadClick }: { sumPoints: number, totalInPool: number, userInPool: number, onClick: React.MouseEventHandler<HTMLDivElement>, cardsChooseNumber: number, loadClick: boolean }) => {
     const toast = useToast();
 
     function zeroCardsChoseClick() {
@@ -109,17 +109,27 @@ const AttackPoolPanel = ({ sumPoints, totalInPool, userInPool, onClick, cardsCho
         </HStack>
 
         <Center mt="81px">
-            <Box onClick={cardsChooseNumber === 0 ? zeroCardsChoseClick : onClick} width="246px" height="48px" backgroundColor="#B8C3E6" color="#202020" borderRadius="24px" cursor="pointer"
-                fontWeight="600" fontSize="22px" lineHeight="48px" textAlign="center" transition="0.3s ease" _hover={{ boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);"}}>
-                Join Attack!
-            </Box>
+            {
+                loadClick
+                    ?
+                    <Box onClick={cardsChooseNumber === 0 ? zeroCardsChoseClick : onClick} width="246px" height="48px"
+                         backgroundColor="#B8C3E6" color="#202020" borderRadius="24px" cursor="pointer"
+                         fontWeight="600" fontSize="22px" lineHeight="48px" textAlign="center" transition="0.3s ease"
+                         _hover={{boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);"}}>
+                        Join Attack!
+                    </Box>
+                    :
+                    <Flex alignItems="center" justifyContent="center">
+                        <div className={styles.smallDonut}/>
+                    </Flex>
+            }
         </Center>
 
         <Img mt="-230px" position="absolute" zIndex={-1} src="/Sword.svg" />
     </ElderKattsBox>
 }
 
-const DefencePoolPanel = ({ sumPoints, totalInPool, userInPool, onClick, cardsChooseNumber }: { sumPoints: number, totalInPool: number, userInPool: number, onClick: React.MouseEventHandler<HTMLDivElement>, cardsChooseNumber: number }) => {
+const DefencePoolPanel = ({ sumPoints, totalInPool, userInPool, onClick, cardsChooseNumber, loadClick }: { sumPoints: number, totalInPool: number, userInPool: number, onClick: React.MouseEventHandler<HTMLDivElement>, cardsChooseNumber: number, loadClick: boolean }) => {
     const toast = useToast();
 
     function zeroCardsChoseClick() {
@@ -153,10 +163,20 @@ const DefencePoolPanel = ({ sumPoints, totalInPool, userInPool, onClick, cardsCh
         </HStack>
 
         <Center mt="81px">
-            <Box onClick={cardsChooseNumber === 0 ? zeroCardsChoseClick : onClick} width="246px" height="48px" backgroundColor="#B8C3E6" color="#202020" borderRadius="24px" cursor="pointer"
-                fontWeight="600" fontSize="22px" lineHeight="48px" textAlign="center" transition="0.3s ease" _hover={{ boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);"}}>
-                Join Defense!
-            </Box>
+            {
+                loadClick
+                    ?
+                    <Box onClick={cardsChooseNumber === 0 ? zeroCardsChoseClick : onClick} width="246px" height="48px"
+                         backgroundColor="#B8C3E6" color="#202020" borderRadius="24px" cursor="pointer"
+                         fontWeight="600" fontSize="22px" lineHeight="48px" textAlign="center" transition="0.3s ease"
+                         _hover={{boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);"}}>
+                        Join Defense!
+                    </Box>
+                    :
+                    <Flex alignItems="center" justifyContent="center">
+                        <div className={styles.smallDonut}/>
+                    </Flex>
+            }
         </Center>
 
         <Img mt="-233px" position="absolute" zIndex={-1} src="/Shield.svg" />
@@ -195,6 +215,8 @@ export const PoolWars = () => {
 
     const [poolWar, setPoolWar] = useState<PoolWar | undefined>();
     const [load, setLoad] = useState<boolean>(false);
+
+    const [loadClick, setLoadClick] = useBoolean(true);
 
     const [attackPool, setAttackPool] = useState<PoolState>({
         address: '',
@@ -261,83 +283,90 @@ export const PoolWars = () => {
     }, [size.width]);
 
     async function provideNfts(poolType: PoolType) {
-
+        setLoadClick.off();
         console.log('provide')
 
-        let depositToPool: PublicKey | undefined;
+        try {
+            let depositToPool: PublicKey | undefined;
 
-        switch (poolType) {
-            case 'attack':
-                depositToPool = new PublicKey(attackPool.address)
-                break;
+            switch (poolType) {
+                case 'attack':
+                    depositToPool = new PublicKey(attackPool.address)
+                    break;
 
-            case 'defence':
-                depositToPool = new PublicKey(defencePool.address)
-                break;
-        }
+                case 'defence':
+                    depositToPool = new PublicKey(defencePool.address)
+                    break;
+            }
 
-        const mints = mapChooseStateToMints(kattsCardChoose, NFTsStats);
-        const blockhash = (await connection.getLatestBlockhash('finalized')).blockhash;
-        let transactions: { tx: Transaction, mint: PublicKey }[] = []
+            const mints = mapChooseStateToMints(kattsCardChoose, NFTsStats);
+            const blockhash = (await connection.getLatestBlockhash('finalized')).blockhash;
+            let transactions: { tx: Transaction, mint: PublicKey }[] = []
 
-        ids.forEach((item) => setChooseArr(item.id, 0));
+            ids.forEach((item) => setChooseArr(item.id, 0));
 
-        for (let i = 0; i < mints.length; i++) {
-            const mint = mints[i];
+            for (let i = 0; i < mints.length; i++) {
+                const mint = mints[i];
 
-            const transaction = new Transaction();
-            transaction.feePayer = wallet.publicKey;
-            transaction.recentBlockhash = blockhash;
-            const sourceTokenAcc = await getAssociatedTokenAddress(mint, wallet.publicKey, false, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID);
-            const destinationTokenAcc = await getAssociatedTokenAddress(mint, depositToPool, false, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID);
+                const transaction = new Transaction();
+                transaction.feePayer = wallet.publicKey;
+                transaction.recentBlockhash = blockhash;
+                const sourceTokenAcc = await getAssociatedTokenAddress(mint, wallet.publicKey, false, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID);
+                const destinationTokenAcc = await getAssociatedTokenAddress(mint, depositToPool, false, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID);
 
-            transaction.add(createAssociatedTokenAccountInstruction(
-                wallet.publicKey,
-                destinationTokenAcc,
-                depositToPool,
-                mint,
-                TOKEN_PROGRAM_ID,
-                ASSOCIATED_TOKEN_PROGRAM_ID
-            ));
+                transaction.add(createAssociatedTokenAccountInstruction(
+                    wallet.publicKey,
+                    destinationTokenAcc,
+                    depositToPool,
+                    mint,
+                    TOKEN_PROGRAM_ID,
+                    ASSOCIATED_TOKEN_PROGRAM_ID
+                ));
 
-            transaction.add(createTransferCheckedInstruction(
-                sourceTokenAcc,
-                mint,
-                destinationTokenAcc,
-                wallet.publicKey,
-                1,
-                0
-            ))
+                transaction.add(createTransferCheckedInstruction(
+                    sourceTokenAcc,
+                    mint,
+                    destinationTokenAcc,
+                    wallet.publicKey,
+                    1,
+                    0
+                ))
 
-            transactions.push({
-                tx: transaction,
-                mint
-            });
-        }
+                transactions.push({
+                    tx: transaction,
+                    mint
+                });
+            }
 
-        const signedTransactions = await wallet.signAllTransactions(transactions.map(t => t.tx));
+            const signedTransactions = await wallet.signAllTransactions(transactions.map(t => t.tx));
 
-        for (let i = 0; i < signedTransactions.length; i++) {
-            const transaction = signedTransactions[i];
+            for (let i = 0; i < signedTransactions.length; i++) {
+                const transaction = signedTransactions[i];
 
-            const poolState = await depositMintToPool(depositToPool, transaction, transactions[i].mint)
+                const poolState = await depositMintToPool(depositToPool, transaction, transactions[i].mint)
 
-            if ((i == signedTransactions.length - 1) && poolState) {
+                if ((i == signedTransactions.length - 1) && poolState) {
 
-                switch (poolType) {
+                    switch (poolType) {
 
-                    case 'attack':
-                        setAttackPool(poolState);
-                        break;
+                        case 'attack':
+                            setAttackPool(poolState);
+                            break;
 
-                    case 'defence':
-                        setDefencePool(poolState);
-                        break;
+                        case 'defence':
+                            setDefencePool(poolState);
+                            break;
+                    }
                 }
             }
-        }
 
-        versionInc();
+            versionInc();
+        } catch (e) {
+
+        }
+        finally {
+            setLoadClick.on();
+        }
     }
 
     return <Layout>
@@ -350,8 +379,8 @@ export const PoolWars = () => {
                         <EventTimerPanel timeEnd={poolWar ? new Date(poolWar.end) : new Date()} />
                     </VStack>
                     <HStack spacing="24px">
-                        <DefencePoolPanel onClick={() => provideNfts('defence')} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={defencePool.totalStrength} userInPool={defencePool.userStrength} />
-                        <AttackPoolPanel onClick={() => provideNfts('attack')} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={attackPool.totalStrength} userInPool={attackPool.userStrength} />
+                        <DefencePoolPanel onClick={() => provideNfts('defence')} loadClick={loadClick} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={defencePool.totalStrength} userInPool={defencePool.userStrength} />
+                        <AttackPoolPanel onClick={() => provideNfts('attack')} loadClick={loadClick} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={attackPool.totalStrength} userInPool={attackPool.userStrength} />
                     </HStack>
                 </HStack>
                 :
@@ -362,13 +391,13 @@ export const PoolWars = () => {
                     </VStack>
                     {size.width > 804 ?
                         <HStack spacing="24px">
-                            <DefencePoolPanel onClick={() => provideNfts('defence')} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={defencePool.totalStrength} userInPool={defencePool.userStrength} />
-                            <AttackPoolPanel onClick={() => provideNfts('attack')} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={attackPool.totalStrength} userInPool={attackPool.userStrength} />
+                            <DefencePoolPanel onClick={() => provideNfts('defence')} loadClick={loadClick} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={defencePool.totalStrength} userInPool={defencePool.userStrength} />
+                            <AttackPoolPanel onClick={() => provideNfts('attack')} loadClick={loadClick} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={attackPool.totalStrength} userInPool={attackPool.userStrength} />
                         </HStack>
                         :
                         <VStack spacing="24px">
-                            <DefencePoolPanel onClick={() => provideNfts('defence')} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={defencePool.totalStrength} userInPool={defencePool.userStrength} />
-                            <AttackPoolPanel onClick={() => provideNfts('attack')} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={attackPool.totalStrength} userInPool={attackPool.userStrength} />
+                            <DefencePoolPanel onClick={() => provideNfts('defence')} loadClick={loadClick} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={defencePool.totalStrength} userInPool={defencePool.userStrength} />
+                            <AttackPoolPanel onClick={() => provideNfts('attack')} loadClick={loadClick} cardsChooseNumber={cardsChooseNumber} sumPoints={sumPoints} totalInPool={attackPool.totalStrength} userInPool={attackPool.userStrength} />
                         </VStack>
                     }
 
