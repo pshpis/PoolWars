@@ -81,7 +81,7 @@ export const Mint = () => {
             :
             <Flex h={size.height - 64 + "px"} w={size.width} alignItems="center" justifyContent="center">
                 <Box onClick={mintClick} w="300px" h="72px" backgroundColor="#202020" color="#71CFC3" border="2px" borderColor="#71CFC3"
-                    borderRadius="20px"
+                    borderRadius="20px" cursor="pointer"
                     fontWeight="400" fontSize="36px" lineHeight="68px" textAlign="center" transition="all 1s" _hover={{
                         backgroundColor: "#71CFC3",
                         color: "#202020",
