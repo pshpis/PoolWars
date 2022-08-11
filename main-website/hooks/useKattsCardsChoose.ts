@@ -1,6 +1,5 @@
 import {useCallback, useState} from "react";
 import { ChooseNode } from "../lib/shared";
-import {useToast} from "@chakra-ui/react";
 
 export function useKattsCardsChoose(): { sumPoints: number; chooseArr: ChooseNode[]; setChooseArr: (id, value) => void; cardsChooseNumber: number } {
     const [chooseArr, _setChooseArr] = useState<ChooseNode[]>([{ id : "attack_1", value: 0, points: 1},
@@ -21,16 +20,17 @@ export function useKattsCardsChoose(): { sumPoints: number; chooseArr: ChooseNod
 
     const setChooseArr = useCallback((id : string, value : number) => {
         const newChooseArr = [...chooseArr];
-        let newCardsChooseNumber : number = 0;
-        chooseArr.forEach((item) => {newCardsChooseNumber += item.value});
         newChooseArr.find(item => item.id == id).value = value;
         let newSumPoints = 0;
         newChooseArr.forEach((el) => {
            newSumPoints +=  el.value * el.points;
         });
-        setCardsChooseNumber(newCardsChooseNumber);
         setSumPoints(newSumPoints);
         _setChooseArr(newChooseArr);
+        let newCardsChooseNumber : number = 0;
+        chooseArr.forEach((item) => {newCardsChooseNumber += item.value});
+        console.log(newCardsChooseNumber);
+        setCardsChooseNumber(newCardsChooseNumber);
     }, [chooseArr, _setChooseArr]);
 
     return {
