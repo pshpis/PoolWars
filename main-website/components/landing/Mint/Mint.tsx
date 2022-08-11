@@ -1,5 +1,13 @@
 import Layout from "../Layout/Layout";
-import {Box, Center, chakra, Flex, HStack, Img, Spacer, Stack, Text, VStack} from "@chakra-ui/react";
+import {
+    Box,
+    Center,
+    Flex,
+    Img,
+    Stack,
+    Text,
+    VStack
+} from "@chakra-ui/react";
 import React, {MouseEvent, useEffect, useRef, useState} from "react";
 import { useWindowSize } from "../../../hooks/useWindowSize";
 import { useWalletAuth } from "../../../hooks/useWalletAuth";
@@ -29,7 +37,7 @@ const ProgressPanel = () => {
     useEffect(() => {
         if (mintState !== undefined)
             setLoadedBarWidth(loadedBarRef.current.offsetWidth);
-    }, [loadedBarRef.current]);
+    }, [loadedBarRef.current, mintState]);
 
     useEffect(() => {
 
