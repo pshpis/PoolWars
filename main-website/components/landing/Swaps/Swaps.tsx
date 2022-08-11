@@ -68,7 +68,7 @@ const SelectedPointsPanel = ({ sumPoints }) => {
         <HStack spacing="auto">
             <Text pt="24px" pl="32px" pb="48px" pr="82px"
                 fontWeight="600" fontSize="24px" lineHeight="28px" color="#E8E3DD">
-                Your<br /> points:
+                Selected<br/> points:
             </Text>
             <Text pt="32px" pr="16px" pb="4px" mr="auto" textAlign="right"
                 fontFamily="Njord Alternate" fontWeight="400" fontSize="80px" lineHeight="92px" color="#71CFC3">
