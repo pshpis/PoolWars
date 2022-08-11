@@ -515,7 +515,7 @@ export const Profile = () => {
                         : profilePanelState.currentPanelMode.type === "MyNFTs" ?
                             <MyNFts NFTsStats={NFTsStats}/>
                             :
-                            walletAuthObj.authToken ?
+                            walletAuthObj.isSigned ?
                                 <Box>
                                     <ActivitiesPanel eventsInfo={eventsInfo} connection={connection}/>
                                     {
@@ -531,7 +531,7 @@ export const Profile = () => {
                                 </Box>
                             :
                                 <Flex mt="200px" alignItems="center" justifyContent="center">
-                                    <Box fontWeight="400" fontSize={size.width > 768 ? "48px" : "32px"} color="#E8E3DD" textAlign="center">Sign in to see your latest activities</Box>
+                                    <Box fontWeight="400" fontSize={size.width > 768 ? "48px" : "32px"} color="#E8E3DD" textAlign="center">Sign in to see your activities</Box>
                                 </Flex>
                         }
 
