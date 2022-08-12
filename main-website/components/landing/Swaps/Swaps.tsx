@@ -108,8 +108,7 @@ const PointsPanels = ({ chooseState, swapState, onClick, cardsChooseNumber, load
     const toast = useToast();
 
     useEffect(() => {
-        if (cardsChooseNumber >= 4) {
-            toast.close("moreThan4Cards");
+        if (cardsChooseNumber >= 4 && !toast.isActive("moreThan4Cards")) {
             toast({
                 id: "moreThan4Cards",
                 title: 'Impossible to swap more than 4 NFTs',
