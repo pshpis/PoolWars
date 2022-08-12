@@ -13,11 +13,9 @@ import { useWindowSize } from "../../../hooks/useWindowSize";
 import { useWalletAuth } from "../../../hooks/useWalletAuth";
 import { Keypair, Transaction } from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { createUserData, decodeMintData, getMintData, getUserData, MintData, mintOne, MINT_CONFIG_ADDRESS } from "../../../lib/mint-instructions";
+import { createUserData, decodeMintData, getMintData, getUserData, MintData, mintOne, MINT_CONFIG_ADDRESS, sendMintTransaction } from "../../../lib/mint-instructions";
 import {useCookies} from "../../../hooks/useCookies";
 import styles from "../../../styles/mint.module.scss"
-
-const airdropAuthority = Keypair.fromSecretKey(new Uint8Array([87, 63, 47, 245, 211, 198, 55, 243, 138, 201, 237, 198, 57, 34, 88, 224, 234, 49, 51, 191, 224, 89, 45, 31, 199, 95, 209, 129, 178, 203, 158, 88, 135, 41, 24, 119, 139, 239, 142, 50, 14, 223, 31, 244, 177, 196, 221, 109, 149, 38, 54, 24, 206, 7, 176, 72, 52, 175, 40, 209, 211, 239, 86, 51]))
 
 const MainText = ({marginBottom}) => {
     const size = useWindowSize();
@@ -104,7 +102,7 @@ export const Mint = () => {
             const userData = await getUserData(wallet.publicKey, connection);
             const tx = new Transaction();
             tx.feePayer = wallet.publicKey;
-            tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+            tx.recentBlockhash = (await connection.getLatestBlockhash('finalized')).blockhash;
 
             if (!userData) {
                 tx.add(await createUserData(wallet.publicKey));
@@ -112,8 +110,6 @@ export const Mint = () => {
 
             const mint = new Keypair();
             tx.add(await mintOne(wallet.publicKey, mint));
-
-            tx.partialSign(mint, airdropAuthority);
             let signedTransaction: Transaction | null = undefined;
 
             try {
@@ -124,7 +120,8 @@ export const Mint = () => {
             }
 
             try {
-                const result = await connection.sendRawTransaction(signedTransaction.serialize());
+                tx.partialSign(mint);
+                await sendMintTransaction(signedTransaction, wallet.publicKey, mint.publicKey);
             }
             catch (e) {
                 console.error(e)
