@@ -336,7 +336,10 @@ const ActivitiesPanel = ({eventsInfo, connection}) => {
         setEvents(newEvents);
     }, [eventsInfo]);
 
-    return <VStack mt="18px" spacing="16px">
+    const premint = true;
+
+    return premint ? <Center>You can see your activities after mint stage</Center>
+        : <VStack mt="18px" spacing="16px">
         {Events}
     </VStack>
 }
