@@ -58,7 +58,7 @@ const WillTakePointsPanel = ({ pointsPanelsHeight, swapState, onClick, cardsChoo
         {
             loadClick
                 ?
-                <Box onClick={cardsChooseNumber > 4 ? void(0) : onClick} ml="24px" mr="24px" maxWidth="246px" height="48px" backgroundColor="#B8C3E6" borderRadius="24px" textAlign="center"
+                <Box onClick={cardsChooseNumber > 4 || cardsChooseNumber === 0 ? void(0) : onClick} ml="24px" mr="24px" maxWidth="246px" height="48px" backgroundColor="#B8C3E6" borderRadius="24px" textAlign="center"
                      fontWeight="600" fontSize="24px" lineHeight="48px" color="#202020"
                      transition="0.3s ease" _hover={{ boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);" }} cursor="pointer">
                     SWAP
