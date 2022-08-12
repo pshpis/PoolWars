@@ -2,8 +2,7 @@ import {useEffect, useState} from "react";
 import Cookies from 'js-cookie'
 
 export function useCookies() {
-    const secretPhrases = ["f4y4hANN0wOPYCaQbi6Pp4cpDkCxR2",
-                           "IcbF3lMurMGxs1C2C1CD3hJKAIO583",];
+    const secretPhrases = ["f4y4hANN0wOPYCaQbi6Pp4cpDkCxR2"];
 
     const [verify, setVerify] = useState(false);
 
