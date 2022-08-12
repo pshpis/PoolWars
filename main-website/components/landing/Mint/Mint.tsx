@@ -194,8 +194,10 @@ export const Mint = () => {
 
     useEffect(() => {
         async function load() {
-            const newUserStageInfo : UserStageInfo = await getWalletStatus(wallet.publicKey.toBase58());
-            setUserStageInfo(_ => newUserStageInfo);
+            if (wallet.publicKey) {
+                const newUserStageInfo: UserStageInfo = await getWalletStatus(wallet.publicKey.toBase58());
+                setUserStageInfo(_ => newUserStageInfo);
+            }
         }
 
         load();
