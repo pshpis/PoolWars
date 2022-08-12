@@ -1,5 +1,5 @@
 import {useWindowSize} from "../../hooks/useWindowSize";
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import {
     Box,
     Center,
@@ -35,13 +35,43 @@ const NFT = ({src, maxValue, setChooseArr}) => {
 
     const [nftClick, setNftClick] = useBoolean(false)
 
-    function onClick() {
+    const chooseInputRef = useRef();
+
+    const onChooseInputChange = (evt) => {
+        const nftChosen = +evt.target.value;
+        if ((((nftChosen ^ 0) !== nftChosen) || nftChosen < 0) && !toast.isActive("naturalCheck")) {
+            toast.close("moreCheck");
+            toast({
+                id: "naturalCheck",
+                title: 'Impossible to choose negative or not integer number of NFTs',
+                status: 'info',
+                position: 'top',
+                isClosable: true,
+            });
+        } else if (nftChosen > maxValue && !toast.isActive("moreCheck")) {
+            toast.close("naturalCheck");
+            toast({
+                id: "moreCheck",
+                title: 'It is impossible to take more NFTs than you have',
+                status: 'warning',
+                position: 'top',
+                isClosable: true,
+            });
+        }
+        else setChooseArr(NFTsName, nftChosen);
+    }
+
+    function onGlobalClick() {
         setNftClick.on();
-        return void(0);
+        console.log(chooseInputRef.current)
+        if (chooseInputRef.current !== undefined){
+            // @ts-ignore
+            chooseInputRef.current.focus();
+        }
     }
 
     return <GridItem>
-        <Box width="294px" height="398px" onClick={onClick}>
+        <Box width="294px" height="398px" onClick={onGlobalClick}>
             <Img width="294px" height="294px" borderTopRadius="24px"
                  src={src}/>
             <Box pt="11px" pl="24px" pb="16px" pr="24px" width="294px" height="104px" borderBottomRadius="24px"
@@ -52,32 +82,8 @@ const NFT = ({src, maxValue, setChooseArr}) => {
                     <Input p="0" mr="auto" w="30px" type="text" autoFocus={nftClick} maxLength={maxValue.toString().length}
                            placeholder="0" fontWeight="600" fontSize="24px" lineHeight="36px" color="#71CFC3"
                            textAlign="right" border="0px" _placeholder={{color: 'inherit'}} cursor="pointer"
-                           _focus={{cursor: "text"}}
-                        onChange={ (evt) => {
-                           // @ts-ignore
-                           console.log(nftClick)
-                           const nftChosen = +evt.target.value;
-                           if ((((nftChosen ^ 0) !== nftChosen) || nftChosen < 0) && !toast.isActive("naturalCheck")) {
-                               toast.close("moreCheck");
-                               toast({
-                                   id: "naturalCheck",
-                                   title: 'Impossible to choose negative or not integer number of NFTs',
-                                   status: 'info',
-                                   position: 'top',
-                                   isClosable: true,
-                               });
-                           } else if (nftChosen > maxValue && !toast.isActive("moreCheck")) {
-                               toast.close("naturalCheck");
-                               toast({
-                                   id: "moreCheck",
-                                   title: 'It is impossible to take more NFTs than you have',
-                                   status: 'warning',
-                                   position: 'top',
-                                   isClosable: true,
-                               });
-                           }
-                           else setChooseArr(NFTsName, nftChosen);}
-                        }/>
+                           ref={chooseInputRef}
+                           onChange={onChooseInputChange}/>
                 </HStack>
                 <HStack spacing="auto">
                     <Text color="#949494">You have:</Text>
