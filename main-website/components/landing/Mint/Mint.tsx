@@ -169,6 +169,11 @@ export const Mint = () => {
             try {
                 tx.partialSign(mint);
                 const signature = await getAuthorityMintSig(signedTransaction, wallet.publicKey, mint.publicKey);
+
+                if (!signature) {
+                    throw 'No signature from server';
+                }
+
                 signedTransaction.addSignature(MINT_AIRDROP_AUTHORITY, signature);
                 await connection.sendRawTransaction(signedTransaction.serialize());
             }
