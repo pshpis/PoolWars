@@ -5,7 +5,7 @@ import {
     Flex,
     Img,
     Stack,
-    Text,
+    Text, useBoolean,
     VStack
 } from "@chakra-ui/react";
 import React, {MouseEvent, useEffect, useRef, useState} from "react";
@@ -91,40 +91,49 @@ export const Mint = () => {
     const wallet = useWallet();
     const { connection } = useConnection();
     const {verify} = useCookies();
+    const [load, setLoad] = useBoolean(true);
 
     async function mintClick(e: MouseEvent<HTMLDivElement>) {
-
-        if (!wallet.publicKey) {
-            return;
-        }
-
-        const userData = await getUserData(wallet.publicKey, connection);
-        const tx = new Transaction();
-        tx.feePayer = wallet.publicKey;
-        tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
-
-        if (!userData) {
-            tx.add(await createUserData(wallet.publicKey));
-        }
-
-        const mint = new Keypair();
-        tx.add(await mintOne(wallet.publicKey, mint));
-
-        tx.partialSign(mint, airdropAuthority);
-        let signedTransaction: Transaction | null = undefined;
+        setLoad.off();
 
         try {
-            signedTransaction = await wallet.signTransaction(tx);
-        }
-        catch (e) {
-            return;
-        }
+            if (!wallet.publicKey) {
+                return;
+            }
 
-        try {
-            const result = await connection.sendRawTransaction(signedTransaction.serialize());
+            const userData = await getUserData(wallet.publicKey, connection);
+            const tx = new Transaction();
+            tx.feePayer = wallet.publicKey;
+            tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+
+            if (!userData) {
+                tx.add(await createUserData(wallet.publicKey));
+            }
+
+            const mint = new Keypair();
+            tx.add(await mintOne(wallet.publicKey, mint));
+
+            tx.partialSign(mint, airdropAuthority);
+            let signedTransaction: Transaction | null = undefined;
+
+            try {
+                signedTransaction = await wallet.signTransaction(tx);
+            }
+            catch (e) {
+                return;
+            }
+
+            try {
+                const result = await connection.sendRawTransaction(signedTransaction.serialize());
+            }
+            catch (e) {
+                console.error(e)
+            }
         }
         catch (e) {
-            console.error(e)
+
+        } finally {
+            setLoad.on()
         }
     }
 
@@ -162,8 +171,15 @@ export const Mint = () => {
                                     :
                                     <Img src='/ezgif-3-fc8b60ab28.gif' borderRadius="40px" boxShadow="0px 4px 4px 0px #00000040"/>
                             }
-
-                            <Box w={size.width < 680 ? "212px" : ""} className={styles.mintButton} onClick={mintClick}>MINT</Box>
+                            {
+                                !load
+                                ?
+                                    <Flex alignItems="center" justifyContent="center">
+                                        <div className={styles.smallDonut}/>
+                                    </Flex>
+                                    :
+                                    <Box w={size.width < 680 ? "212px" : ""} className={styles.mintButton} onClick={mintClick}>MINT</Box>
+                            }
                         </VStack>
                     </Stack>
                 </Box>
