@@ -2,7 +2,7 @@ import Layout from "../Layout/Layout";
 import {
     Box,
     Center,
-    Flex,
+    Flex, HStack,
     Img,
     Stack,
     Text, useBoolean, useToast,
@@ -13,15 +13,25 @@ import { useWindowSize } from "../../../hooks/useWindowSize";
 import { useWalletAuth } from "../../../hooks/useWalletAuth";
 import { Keypair, Transaction } from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { createUserData, decodeMintData, getMintData, getUserData, MintData, mintOne, MINT_CONFIG_ADDRESS, sendMintTransaction } from "../../../lib/mint-instructions";
+import {
+    createUserData,
+    decodeMintData,
+    getMintData,
+    getUserData,
+    MintData,
+    mintOne,
+    MINT_CONFIG_ADDRESS,
+    sendMintTransaction,
+    getWalletStatus, getMintStatus, WhitelistStatus
+} from "../../../lib/mint-instructions";
 import {useCookies} from "../../../hooks/useCookies";
 import styles from "../../../styles/mint.module.scss"
 
 const MainText = ({marginBottom}) => {
     const size = useWindowSize();
-    return <Box marginBottom={marginBottom} w="100%" fontFamily="Njord" fontWeight="400" textAlign="left">
-        <Text fontSize={size.width < 500 ? "31px" : "61px"} color="#E8E8E8" lineHeight={size.width < 500 ? "29px" : "58px"}>Card&apos;s mint</Text>
-        <Text fontSize={size.width < 500 ? "50px" : "100px"} color="#71CFC3" lineHeight={size.width < 500 ? "47px" : "95px"}>now Live!</Text>
+    return <Box marginBottom={marginBottom} w="100%" fontFamily="Njord" fontWeight="400" textAlign={size.width < 500 ? "center" : "left"}>
+        <Text fontSize={size.width < 500 ? "40px" : "61px"} color="#E8E8E8" lineHeight={size.width < 500 ? "39px" : "58px"}>Card&apos;s mint</Text>
+        <Text fontSize={size.width < 500 ? "64px" : "100px"} color="#71CFC3" lineHeight={size.width < 500 ? "60px" : "95px"}>now Live!</Text>
     </Box>
 }
 
@@ -92,6 +102,7 @@ export const Mint = () => {
     const { connection } = useConnection();
     const {verify} = useCookies();
     const [load, setLoad] = useBoolean(true);
+    const [mintStatus, setMintStatus] = useState<WhitelistStatus>('NONE');
 
     async function mintClick(e: MouseEvent<HTMLDivElement>) {
         setLoad.off();
@@ -100,6 +111,9 @@ export const Mint = () => {
             if (!wallet.publicKey) {
                 return;
             }
+
+            // const walletStatus = getWalletStatus(wallet.wallet.);
+            console.log(wallet.publicKey);
 
             const userData = await getUserData(wallet.publicKey, connection);
             const tx = new Transaction();
@@ -157,6 +171,15 @@ export const Mint = () => {
             window.location.replace('/');
     }, [size.width]);
 
+    useEffect(() => {
+        async function load() {
+            const newMintStatus = await getMintStatus();
+            setMintStatus(_ => newMintStatus);
+        }
+
+        load();
+    }, []);
+
     return <Layout>
         {!connected ?
             <Flex h={size.height - 64 + "px"} w={size.width} alignItems="center" justifyContent="center">Connect wallet
@@ -166,23 +189,35 @@ export const Mint = () => {
                 <Box mt="80px" mb="232px" maxW="1440px" w="100%" pl={size.width < 500 ? "24px" : "96px"} pr={size.width < 500 ? "24px" : "96px"}>
                     <Stack direction={size.width < 1260 ? "column" : "row"} spacing={size.width < 1260 ? "40px" : "auto"}>
                         <Center>
-                            <VStack maxW="612px" spacing="0px">
+                            <VStack maxW="612px" w="100%" spacing="0px">
                                 <MainText marginBottom="56px"/>
                                 <Box pb="51px" w="100%" borderTop="2px solid #E8E8E826"/>
                                 <ProgressPanel/>
                                 <Box h="16px"/>
-                                <Stack direction={size.width < 670 ? "column" : "row"} spacing="23px">
-                                    <Box className={styles.currentStageBox}>OG stage</Box>
-                                    <Box className={styles.stageBox}>WL stage</Box>
-                                    <Box className={styles.stageBox}>Public stage</Box>
-                                </Stack>
+
+                                    {
+                                        size.width < 640
+                                            ?<HStack spacing="10px">
+                                                <Box className={mintStatus === 'OG' ? styles.currentStageBox_small : styles.stageBox_small}>OG</Box>
+                                                <Box className={mintStatus === 'WL' ? styles.currentStageBox_small : styles.stageBox_small}>WL</Box>
+                                                <Box className={mintStatus === 'PUBLIC' ? styles.currentStageBox_small : styles.stageBox_small}>Public</Box>
+                                            </HStack>
+                                            :
+                                            <HStack spacing="23px">
+                                                <Box className={mintStatus === 'OG' ? styles.currentStageBox : styles.stageBox}>OG stage</Box>
+                                                <Box className={mintStatus === 'WL' ? styles.currentStageBox : styles.stageBox}>WL stage</Box>
+                                                <Box className={mintStatus === 'PUBLIC' ? styles.currentStageBox : styles.stageBox}>Public stage</Box>
+                                            </HStack>
+                                    }
+
+
                             </VStack>
                         </Center>
                         <VStack>
                             {
                                 size.width < 680
                                     ?
-                                    <Img w="212px" h="212px" src='/ezgif-3-fc8b60ab28.gif' borderRadius="40px" boxShadow="0px 4px 4px 0px #00000040"/>
+                                    <Img w="290px" h="290px" src='/ezgif-3-fc8b60ab28.gif' borderRadius="40px" boxShadow="0px 4px 4px 0px #00000040"/>
                                     :
                                     <Img src='/ezgif-3-fc8b60ab28.gif' borderRadius="40px" boxShadow="0px 4px 4px 0px #00000040"/>
                             }
@@ -193,7 +228,7 @@ export const Mint = () => {
                                         <div className={styles.smallDonut}/>
                                     </Flex>
                                     :
-                                    <Box w={size.width < 680 ? "212px" : ""} className={styles.mintButton} onClick={mintClick}>MINT</Box>
+                                    <Box w={size.width < 680 ? "290px" : ""} className={styles.mintButton} onClick={mintClick}>MINT</Box>
                             }
                         </VStack>
                     </Stack>
