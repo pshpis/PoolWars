@@ -174,6 +174,14 @@ export const Mint = () => {
                         throw 'No signature from server';
                     }
                 } catch (e) {
+                    if (!toast.isActive("serverCancellation"))
+                        toast({
+                            id: "serverCancellation",
+                            title: 'You are not authorized to take a mint now',
+                            status: 'error',
+                            position: 'top',
+                            isClosable: true,
+                        });
                     return;
                 }
 
