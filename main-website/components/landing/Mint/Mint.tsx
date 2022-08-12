@@ -22,7 +22,7 @@ import {
     mintOne,
     MINT_CONFIG_ADDRESS,
     sendMintTransaction,
-    getWalletStatus, getMintStatus
+    getWalletStatus, getMintStatus, WhitelistStatus
 } from "../../../lib/mint-instructions";
 import {useCookies} from "../../../hooks/useCookies";
 import styles from "../../../styles/mint.module.scss"
@@ -102,13 +102,7 @@ export const Mint = () => {
     const { connection } = useConnection();
     const {verify} = useCookies();
     const [load, setLoad] = useBoolean(true);
-    const [mintStatus, setMintStatus] = useState<string>('NONE');
-    let ogBoxStyle = styles.stageBox;
-    let wlBoxStyle = styles.stageBox;
-    let publicBoxStyle = styles.stageBox;
-    let ogBoxStyleSmall = styles.stageBox_small;
-    let wlBoxStyleSmall = styles.stageBox_small;
-    let publicBoxStyleSmall = styles.stageBox_small;
+    const [mintStatus, setMintStatus] = useState<WhitelistStatus>('NONE');
 
     async function mintClick(e: MouseEvent<HTMLDivElement>) {
         setLoad.off();
@@ -181,64 +175,10 @@ export const Mint = () => {
         async function load() {
             const newMintStatus = await getMintStatus();
             setMintStatus(_ => newMintStatus);
-            console.log(mintStatus);
         }
 
         load();
     }, []);
-
-    useEffect(() => {
-        if (mintStatus === 'NONE')
-        {
-            if (size.width < 500)
-            {
-                ogBoxStyle = styles.stageBox_small;
-                wlBoxStyle = styles.stageBox_small;
-                publicBoxStyle = styles.stageBox_small;
-            } else {
-                ogBoxStyle = styles.stageBox;
-                wlBoxStyle = styles.stageBox;
-                publicBoxStyle = styles.stageBox;
-            }
-
-        } else if (mintStatus === 'OG') {
-            if (size.width < 500)
-            {
-                ogBoxStyle = styles.currentStageBox_small;
-                wlBoxStyle = styles.stageBox_small;
-                publicBoxStyle = styles.stageBox_small;
-            } else {
-                ogBoxStyle = styles.currentStageBox;
-                wlBoxStyle = styles.stageBox;
-                publicBoxStyle = styles.stageBox;
-            }
-
-        } else if (mintStatus === 'WL') {
-            if (size.width < 500)
-            {
-                ogBoxStyle = styles.stageBox_small;
-                wlBoxStyle = styles.currentStageBox_small;
-                publicBoxStyle = styles.stageBox_small;
-            } else {
-                ogBoxStyle = styles.stageBox;
-                wlBoxStyle = styles.currentStageBox;
-                publicBoxStyle = styles.stageBox;
-            }
-
-        } else if (mintStatus === 'PUBLIC') {
-            if (size.width < 500)
-            {
-                ogBoxStyle = styles.stageBox_small;
-                wlBoxStyle = styles.stageBox_small;
-                publicBoxStyle = styles.currentStageBox_small;
-            } else {
-                ogBoxStyle = styles.stageBox;
-                wlBoxStyle = styles.stageBox;
-                publicBoxStyle = styles.currentStageBox;
-            }
-
-        }
-    }, [size.width]);
 
     return <Layout>
         {!connected ?
@@ -257,17 +197,16 @@ export const Mint = () => {
 
                                     {
                                         size.width < 640
-                                            ?<HStack spacing="23px">
-                                                <Box className={ogBoxStyleSmall}>OG</Box>
-                                                <Box className={wlBoxStyleSmall}>WL</Box>
-                                                <Box className={publicBoxStyleSmall}>Public</Box>
+                                            ?<HStack spacing="10px">
+                                                <Box className={mintStatus === 'OG' ? styles.currentStageBox_small : styles.stageBox_small}>OG</Box>
+                                                <Box className={mintStatus === 'WL' ? styles.currentStageBox_small : styles.stageBox_small}>WL</Box>
+                                                <Box className={mintStatus === 'PUBLIC' ? styles.currentStageBox_small : styles.stageBox_small}>Public</Box>
                                             </HStack>
-
                                             :
                                             <HStack spacing="23px">
-                                                <Box className={ogBoxStyle}>OG stage</Box>
-                                                <Box className={wlBoxStyle}>WL stage</Box>
-                                                <Box className={publicBoxStyle}>Public stage</Box>
+                                                <Box className={mintStatus === 'OG' ? styles.currentStageBox : styles.stageBox}>OG stage</Box>
+                                                <Box className={mintStatus === 'WL' ? styles.currentStageBox : styles.stageBox}>WL stage</Box>
+                                                <Box className={mintStatus === 'PUBLIC' ? styles.currentStageBox : styles.stageBox}>Public stage</Box>
                                             </HStack>
                                     }
 
