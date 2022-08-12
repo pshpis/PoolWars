@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoolWarsV0.Events", "PoolWa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoolWarsV0.Events.Core", "PoolWarsV0.Events.Core\PoolWarsV0.Events.Core.csproj", "{4FDB84C3-7A8A-4CD9-AD8B-6C73067CD9F1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserAdder", "UserAdder\UserAdder.csproj", "{CCA35F96-F076-4A9C-ACA2-179B230BACD6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,5 +68,9 @@ Global
 		{4FDB84C3-7A8A-4CD9-AD8B-6C73067CD9F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FDB84C3-7A8A-4CD9-AD8B-6C73067CD9F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FDB84C3-7A8A-4CD9-AD8B-6C73067CD9F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCA35F96-F076-4A9C-ACA2-179B230BACD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCA35F96-F076-4A9C-ACA2-179B230BACD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCA35F96-F076-4A9C-ACA2-179B230BACD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCA35F96-F076-4A9C-ACA2-179B230BACD6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
