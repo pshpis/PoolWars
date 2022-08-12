@@ -21,8 +21,8 @@ import {
     MintData,
     mintOne,
     MINT_CONFIG_ADDRESS,
-    sendMintTransaction,
-    getWalletStatus, getMintStatus, WhitelistStatus
+    getAuthorityMintSig,
+    getWalletStatus, getMintStatus, WhitelistStatus, MINT_AIRDROP_AUTHORITY, UserStageInfo
 } from "../../../lib/mint-instructions";
 import {useCookies} from "../../../hooks/useCookies";
 import styles from "../../../styles/mint.module.scss"
@@ -100,9 +100,10 @@ export const Mint = () => {
     const { connected } = walletAuthObj;
     const wallet = useWallet();
     const { connection } = useConnection();
-    const {verify} = useCookies();
     const [load, setLoad] = useBoolean(true);
     const [mintStatus, setMintStatus] = useState<WhitelistStatus>('NONE');
+    const [userStageInfo, setUserStageInfo] = useState<UserStageInfo>({mintStage: 'PUBLIC', remainingMints: 10});
+    const [version, setVersion] = useState<number>(0);
 
     async function mintClick(e: MouseEvent<HTMLDivElement>) {
         setLoad.off();
@@ -111,9 +112,43 @@ export const Mint = () => {
             if (!wallet.publicKey) {
                 return;
             }
-
-            // const walletStatus = getWalletStatus(wallet.wallet.);
-            console.log(wallet.publicKey);
+            if (mintStatus === 'NONE') {
+                if (!toast.isActive("walletStageCheck")) {
+                    toast({
+                        id: "walletStageCheck",
+                        title: 'Your stage has not yet reached the turn',
+                        status: 'info',
+                        position: 'top',
+                        isClosable: true,
+                    });
+                }
+                return;
+            }
+            if (mintStatus === 'OG' && userStageInfo.mintStage !== 'OG') {
+                if (!toast.isActive("walletStageCheck")) {
+                    toast({
+                        id: "walletStageCheck",
+                        title: 'Your stage has not yet reached the turn',
+                        status: 'info',
+                        position: 'top',
+                        isClosable: true,
+                    });
+                }
+                return;
+            }
+            if (mintStatus === 'WL' && userStageInfo.mintStage !== 'OG' && userStageInfo.mintStage !== 'WL')
+            {
+                if (!toast.isActive("walletStageCheck")) {
+                    toast({
+                        id: "walletStageCheck",
+                        title: 'Your stage has not yet reached the turn',
+                        status: 'info',
+                        position: 'top',
+                        isClosable: true,
+                    });
+                }
+                return;
+            }
 
             const userData = await getUserData(wallet.publicKey, connection);
             const tx = new Transaction();
@@ -145,7 +180,25 @@ export const Mint = () => {
 
             try {
                 tx.partialSign(mint);
-                await sendMintTransaction(signedTransaction, wallet.publicKey, mint.publicKey);
+                const signature = await getAuthorityMintSig(signedTransaction, wallet.publicKey, mint.publicKey);
+                try {
+                    if (!signature) {
+                        throw 'No signature from server';
+                    }
+                } catch (e) {
+                    if (!toast.isActive("serverCancellation"))
+                        toast({
+                            id: "serverCancellation",
+                            title: 'You are not authorized to take a mint now',
+                            status: 'error',
+                            position: 'top',
+                            isClosable: true,
+                        });
+                    return;
+                }
+
+                signedTransaction.addSignature(MINT_AIRDROP_AUTHORITY, signature);
+                await connection.sendRawTransaction(signedTransaction.serialize());
             }
             catch (e) {
                 if (!toast.isActive("blockchainCancellation"))
@@ -162,14 +215,21 @@ export const Mint = () => {
         catch (e) {
 
         } finally {
+            setVersion(version+1);
             setLoad.on()
         }
     }
 
     useEffect(() => {
-        if (size.width !== undefined && !verify)
-            window.location.replace('/');
-    }, [size.width]);
+        async function load() {
+            if (wallet.publicKey) {
+                const newUserStageInfo: UserStageInfo = await getWalletStatus(wallet.publicKey.toBase58());
+                setUserStageInfo(_ => newUserStageInfo);
+            }
+        }
+
+        load();
+    }, [wallet.publicKey]);
 
     useEffect(() => {
         async function load() {
@@ -191,7 +251,7 @@ export const Mint = () => {
                         <Center>
                             <VStack maxW="612px" w="100%" spacing="0px">
                                 <MainText marginBottom="56px"/>
-                                <Box pb="51px" w="100%" borderTop="2px solid #E8E8E826"/>
+                                <Box pb={size.width < 12600 ? "31px" : "51px"} w="100%" borderTop="2px solid #E8E8E826"/>
                                 <ProgressPanel/>
                                 <Box h="16px"/>
 
@@ -217,9 +277,9 @@ export const Mint = () => {
                             {
                                 size.width < 680
                                     ?
-                                    <Img w="290px" h="290px" src='/ezgif-3-fc8b60ab28.gif' borderRadius="40px" boxShadow="0px 4px 4px 0px #00000040"/>
+                                    <Img w="290px" h="290px" src='/combat-cards-mint.gif' borderRadius="40px" boxShadow="0px 4px 4px 0px #00000040"/>
                                     :
-                                    <Img src='/ezgif-3-fc8b60ab28.gif' borderRadius="40px" boxShadow="0px 4px 4px 0px #00000040"/>
+                                    <Img src='/combat-cards-mint.gif' borderRadius="40px" boxShadow="0px 4px 4px 0px #00000040"/>
                             }
                             {
                                 !load
