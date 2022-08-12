@@ -273,8 +273,7 @@ const EventPanel = ({id, event, connection} : {id : string, event: Event, connec
         const date = new Date(event.date);
         const [hour, minute] = date.toLocaleTimeString().split(':');
         const [day, month] = [date.getDate().toString().padStart(2, '0'), (date.getMonth() + 1).toString().padStart(2, '0')];
-        //${hour}:${minute}
-        return `${day}/${month}`;
+        return `${day}/${month} ${hour}:${minute}`;
     }, [event.date])
 
     const defaultFontSize : string = useMemo(() => {
@@ -336,10 +335,7 @@ const ActivitiesPanel = ({eventsInfo, connection}) => {
         setEvents(newEvents);
     }, [eventsInfo]);
 
-    const premint = true;
-
-    return premint ? <Center>You can see your activities after mint stage</Center>
-        : <VStack mt="18px" spacing="16px">
+    return <VStack mt="18px" spacing="16px">
         {Events}
     </VStack>
 }
