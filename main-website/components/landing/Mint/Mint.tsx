@@ -258,15 +258,15 @@ export const Mint = () => {
                                     {
                                         size.width < 640
                                             ?<HStack spacing="10px">
-                                                <Box className={mintStatus === 'OG' ? styles.currentStageBox_small : styles.stageBox_small}>OG</Box>
-                                                <Box className={mintStatus === 'WL' ? styles.currentStageBox_small : styles.stageBox_small}>WL</Box>
-                                                <Box className={mintStatus === 'PUBLIC' ? styles.currentStageBox_small : styles.stageBox_small}>Public</Box>
+                                                <Box className={styles.stageBox_small}>OG</Box>
+                                                <Box className={styles.stageBox_small}>WL</Box>
+                                                <Box className={styles.stageBox_small}>Public</Box>
                                             </HStack>
                                             :
                                             <HStack spacing="23px">
-                                                <Box className={mintStatus === 'OG' ? styles.currentStageBox : styles.stageBox}>OG stage</Box>
-                                                <Box className={mintStatus === 'WL' ? styles.currentStageBox : styles.stageBox}>WL stage</Box>
-                                                <Box className={mintStatus === 'PUBLIC' ? styles.currentStageBox : styles.stageBox}>Public stage</Box>
+                                                <Box className={styles.stageBox}>OG stage</Box>
+                                                <Box className={styles.stageBox}>WL stage</Box>
+                                                <Box className={styles.stageBox}>Public stage</Box>
                                             </HStack>
                                     }
 
