@@ -28,7 +28,8 @@ public class MintService : IMintService
             seedMode: SeedMode.Bip39).Account;
     }
 
-    public async Task MintOne(Message message, byte[] signature, PublicKey userAddress)
+    public async Task MintOne(Message message, byte[] userSignature, byte[] mintAccountSignature, PublicKey userAddress,
+        PublicKey cardMint)
     {
         Transaction solanaTransaction = Transaction.Populate(message);
 
@@ -41,6 +42,8 @@ public class MintService : IMintService
 
         try
         {
+            solanaTransaction.AddSignature(userAddress, userSignature);
+            solanaTransaction.AddSignature(cardMint, mintAccountSignature);
             solanaTransaction.PartialSign(_authority);
             await _transactionSender.Send(solanaTransaction);
         }

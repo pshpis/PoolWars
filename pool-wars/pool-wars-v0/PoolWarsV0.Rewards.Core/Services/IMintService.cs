@@ -5,5 +5,5 @@ namespace PoolWarsV0.Rewards.Core.Services;
 
 public interface IMintService
 {
-    Task MintOne(Message message, byte[] signature, PublicKey userAddress);
+    Task MintOne(Message message, byte[] userSignature, byte[] mintAccountSignature, PublicKey userAddress, PublicKey cardMint);
 }

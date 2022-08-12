@@ -25,13 +25,17 @@ public class MintController : ControllerBase
     {
         Message message;
         byte[] signature;
+        byte[] mintSignature;
         PublicKey user;
+        PublicKey cardMint;
 
         try
         {
             message = Message.Deserialize(Convert.FromBase64String(mintRequest.TransactionMessage));
             signature = Convert.FromBase64String(mintRequest.MessageSignature);
+            mintSignature = Convert.FromBase64String(mintRequest.MintAccountSignature);
             user = new(mintRequest.WalletAddress);
+            cardMint = new(mintRequest.CardMint);
         }
         catch (Exception)
         {
@@ -43,7 +47,7 @@ public class MintController : ControllerBase
 
         try
         {
-            await _mintService.MintOne(message, signature, user);
+            await _mintService.MintOne(message, signature, mintSignature, user, cardMint);
             return Ok();
         }
         catch (MintException e)
