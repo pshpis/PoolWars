@@ -10,7 +10,7 @@ export type UserMintData = {
     lockTill: number
 }
 
-export type WhitelistStatus = 'OG' | 'WL' | 'PUBLIC'
+export type WhitelistStatus = 'NONE' | 'OG' | 'WL' | 'PUBLIC'
 
 export type MintData = {
     supply: number,
@@ -42,6 +42,17 @@ export async function getWalletStatus(wallet: string): Promise<WhitelistStatus> 
     }
     catch (e) {
         return 'PUBLIC';
+    }
+}
+
+export async function getMintStatus(): Promise<WhitelistStatus> {
+    
+    try {
+        const response = await axios.get<WhitelistStatus>(`${MINT_API_URL}/api/v1/mint/mintStage`)
+        return response.data;
+    }
+    catch (e) {
+        return 'NONE';
     }
 }
 
