@@ -5,7 +5,7 @@ import {
     Flex,
     Img,
     Stack,
-    Text, useBoolean,
+    Text, useBoolean, useToast,
     VStack
 } from "@chakra-ui/react";
 import React, {MouseEvent, useEffect, useRef, useState} from "react";
@@ -84,6 +84,8 @@ const ProgressPanel = () => {
 export const Mint = () => {
     const size = useWindowSize();
 
+    const toast = useToast();
+
     const walletAuthObj = useWalletAuth();
     const { connected } = walletAuthObj;
     const wallet = useWallet();
@@ -116,6 +118,14 @@ export const Mint = () => {
                 signedTransaction = await wallet.signTransaction(tx);
             }
             catch (e) {
+                if (!toast.isActive("userCancellation"))
+                    toast({
+                        id: "userCancellation",
+                        title: 'Transaction canceled by user',
+                        status: 'info',
+                        position: 'top',
+                        isClosable: true,
+                    });
                 return;
             }
 
@@ -124,6 +134,14 @@ export const Mint = () => {
                 await sendMintTransaction(signedTransaction, wallet.publicKey, mint.publicKey);
             }
             catch (e) {
+                if (!toast.isActive("userCancellation"))
+                    toast({
+                        id: "blockchainCancellation",
+                        title: 'Transaction canceled by blockchain',
+                        status: 'info',
+                        position: 'top',
+                        isClosable: true,
+                    });
                 console.error(e)
             }
         }
