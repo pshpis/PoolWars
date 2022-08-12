@@ -26,7 +26,9 @@ function MyApp({ Component, pageProps }) {
     const network = WalletAdapterNetwork.Mainnet;
 
     const config = {
-        commitment: 'confirmed'
+        commitment: 'confirmed',
+        endpoint: 'https://omniscient-burned-haze.solana-mainnet.discover.quiknode.pro/8c1c39b15055f92e29ffbc74586b0607d098801c',
+        wsEndpoint: 'wss://omniscient-burned-haze.solana-mainnet.discover.quiknode.pro/8c1c39b15055f92e29ffbc74586b0607d098801c'
     }
 
     const endpoint = useMemo(() => clusterApiUrl(network), [network]);
