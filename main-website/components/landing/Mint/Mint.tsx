@@ -288,7 +288,7 @@ export const Mint = () => {
                                         <div className={styles.smallDonut}/>
                                     </Flex>
                                     :
-                                    <Box w={size.width < 680 ? "290px" : ""} className={styles.mintButton} onClick={void(0)}>MINT</Box>
+                                    <Box w={size.width < 680 ? "290px" : ""} className={styles.mintButton} onClick={void(0)}>SOLD OUT!!!</Box>
                             }
                         </VStack>
                     </Stack>
