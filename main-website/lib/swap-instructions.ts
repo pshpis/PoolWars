@@ -10,14 +10,14 @@ const MINT_AUTHORITY = "mint_authority";
 const METADATA_PROGRAM_ID = new PublicKey('metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s');
 
 const SWAP_PROGRAM_ID = new PublicKey('HWeQ1ntizxmbMwVHemf9zncf2h6RTTfLiuzbjD9wAN9e')
-const LEGENDARY_SWAP_CONFIG = new PublicKey('H3ahi5w41BCUyq1rqJCnajVohxFGqxhGk4Z9sqciFbi7')
-const POINTS3_SWAP_CONFIG = new PublicKey('Dqnx4WiF1RMqtzm31Amg1MGbG2QaFdL4vr2NPybH4tJ3')
-const POINTS6_SWAP_CONFIG = new PublicKey('E1DaHgRg8fUFEd8BNwbxiTd6VgLqRPTA8kuyqDWWYqvx')
+const LEGENDARY_SWAP_CONFIG = new PublicKey('DaDEzMwCC8iwm6QkuctHpQjVs9HyEmxV8VCEyvQj7XQ7')
+const POINTS3_SWAP_CONFIG = new PublicKey('Df9KUpqhgUPuXcLx4NbCY6bqFoTKU3XMGLf8oKJjUsYD')
+const POINTS6_SWAP_CONFIG = new PublicKey('HF3QD8nzTaTnMyQ1bGPubNS7GDEaW1sZCjiwy9bhCKDw')
 
 
-const SWAP_ADMIN = new PublicKey('2XRgdUEKfvhtVTURZKzJ9UzwA7FeEPeF8qa2NFSSBpmL')
-const SWAP_REVENUES = new PublicKey('Ekp5qHiSnH7WGH9bqbHXm3FDqc9BxMsimfpAw7LoQzZk')
-export const SWAP_AUTHORITY = new PublicKey('44Z46Nzn1hpsAZJ4TuX1CUG6kmKo7NEn2VDjztT5uUz3')
+const SWAP_ADMIN = new PublicKey('4yPHTi9whraHaRvQNH2e1AJezDJvPUTjehyrjKHzPLj5')
+const SWAP_REVENUES = new PublicKey('4yPHTi9whraHaRvQNH2e1AJezDJvPUTjehyrjKHzPLj5')
+export const SWAP_AUTHORITY = new PublicKey('EQHnc5jJTnVsTxEDSpzYMn73TW9swcHgZcgzSJ8yZxHj')
 
 const getConfig = (swap: swapType): PublicKey => {
 

@@ -21,8 +21,8 @@ import {
     MintData,
     mintOne,
     MINT_CONFIG_ADDRESS,
-    sendMintTransaction,
-    getWalletStatus, getMintStatus, WhitelistStatus
+    getAuthorityMintSig,
+    getWalletStatus, getMintStatus, WhitelistStatus, MINT_AIRDROP_AUTHORITY
 } from "../../../lib/mint-instructions";
 import {useCookies} from "../../../hooks/useCookies";
 import styles from "../../../styles/mint.module.scss"
@@ -144,7 +144,9 @@ export const Mint = () => {
 
             try {
                 tx.partialSign(mint);
-                await sendMintTransaction(signedTransaction, wallet.publicKey, mint.publicKey);
+                const signature = await getAuthorityMintSig(signedTransaction, wallet.publicKey, mint.publicKey);
+                signedTransaction.addSignature(MINT_AIRDROP_AUTHORITY, signature);
+                await connection.sendRawTransaction(signedTransaction.serialize());
             }
             catch (e) {
                 if (!toast.isActive("blockchainCancellation"))
