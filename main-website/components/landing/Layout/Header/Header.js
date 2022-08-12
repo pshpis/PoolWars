@@ -2,8 +2,7 @@ import {
     Box, Center, Divider,
     Drawer, DrawerContent,
     DrawerOverlay,
-    HStack, Icon, Link,
-    Spacer, useDisclosure, useToast,
+    HStack, Icon, Spacer, useDisclosure, useToast,
     VStack
 } from "@chakra-ui/react";
 import {Logo} from "./Logo";
@@ -13,25 +12,20 @@ import {AiOutlineClose} from "react-icons/ai";
 
 import ConnectButton from "../ConnectButton";
 import React from "react";
-import {useCookies} from "../../../../hooks/useCookies";
 
 const FakeLink = ({children, href}) => {
-    const {verify} = useCookies();
     const toast = useToast();
     let toastId = '';
     const onClick = () => {
-        if (verify)
-            window.location.replace(href);
-        else
-            if (!toast.isActive(toastId)){
-                toast({
-                    id: toastId,
-                    title: `This page will be available after mint opening`,
-                    status: 'info',
-                    position: 'top',
-                    isClosable: true,
-                });
-            }
+        if (!toast.isActive(toastId)){
+            toast({
+                id: toastId,
+                title: `This page will be available after mint opening`,
+                status: 'info',
+                position: 'top',
+                isClosable: true,
+            });
+        }
     }
     return <Box cursor="pointer" as="span" onClick={onClick}
                 color={window.location.host+href === window.location.href.split("//")[1] ? "#B8C3E6" : "inherit"}
@@ -65,7 +59,7 @@ const HeaderNav = () => {
     return <HStack fontStyle="light" color="#B2B2B2" fontFamily="Roboto Flex" fontWeight="300" spacing={0}>
         <HeaderNavEl><RealLink href="/profile">profile</RealLink></HeaderNavEl>
         <HeaderNavSpacer/>
-        <HeaderNavEl><FakeLink href="/mint">mint</FakeLink></HeaderNavEl>
+        <HeaderNavEl><RealLink href="/mint">mint</RealLink></HeaderNavEl>
         <HeaderNavSpacer/>
         <HeaderNavEl><FakeLink href="/swaps">swaps</FakeLink></HeaderNavEl>
         <HeaderNavSpacer/>
@@ -77,15 +71,15 @@ const HeaderNav = () => {
 
 const HeaderNavMobile = ({onClose}) => {
     return <VStack fontStyle="light" color="#B2B2B2" fontFamily="Roboto Flex" fontWeight="300" spacing={0} fontSize="24px" height="100%" pb="20px">
-        <HeaderNavElMobile><Link href="/profile" style={{textDecoration: 'none'}}>profile</Link></HeaderNavElMobile>
+        <HeaderNavElMobile><RealLink href="/profile" style={{textDecoration: 'none'}}>profile</RealLink></HeaderNavElMobile>
         <HeaderNavSpacerMobile/>
-        <HeaderNavElMobile><FakeLink href="/mint">mint</FakeLink></HeaderNavElMobile>
+        <HeaderNavElMobile><RealLink href="/mint">mint</RealLink></HeaderNavElMobile>
         <HeaderNavSpacerMobile/>
         <HeaderNavElMobile><FakeLink href="/swaps">swaps</FakeLink></HeaderNavElMobile>
         <HeaderNavSpacerMobile/>
         <HeaderNavElMobile><FakeLink href="/pool-wars">events</FakeLink></HeaderNavElMobile>
         <HeaderNavSpacerMobile/>
-        <HeaderNavElMobile><Link href="/whitepaper/" style={{textDecoration: 'none'}}>whitepaper</Link></HeaderNavElMobile>
+        <HeaderNavElMobile><RealLink href="/whitepaper/" style={{textDecoration: 'none'}}>whitepaper</RealLink></HeaderNavElMobile>
         <Spacer/>
         <ConnectButton onClick={onClose}/>
     </VStack>

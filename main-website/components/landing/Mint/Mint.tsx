@@ -100,7 +100,6 @@ export const Mint = () => {
     const { connected } = walletAuthObj;
     const wallet = useWallet();
     const { connection } = useConnection();
-    const {verify} = useCookies();
     const [load, setLoad] = useBoolean(true);
     const [mintStatus, setMintStatus] = useState<WhitelistStatus>('NONE');
 
@@ -165,11 +164,6 @@ export const Mint = () => {
             setLoad.on()
         }
     }
-
-    useEffect(() => {
-        if (size.width !== undefined && !verify)
-            window.location.replace('/');
-    }, [size.width]);
 
     useEffect(() => {
         async function load() {

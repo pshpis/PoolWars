@@ -157,7 +157,6 @@ export const Swaps = () => {
     const { connection } = useConnection();
     const walletAuthObj = useWalletAuth();
     const { connected } = walletAuthObj;
-    const {verify} = useCookies();
 
     const defaultPadding = useMemo(() => {
         if (size.width < 486) return 30;
@@ -190,7 +189,7 @@ export const Swaps = () => {
         [wallet.publicKey, version]);
 
     useEffect(() => {
-        if (size.width !== undefined && !verify)
+        if (size.width !== undefined)
             window.location.replace('/');
     }, [size.width]);
 
