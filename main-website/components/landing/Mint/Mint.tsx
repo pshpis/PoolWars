@@ -134,11 +134,11 @@ export const Mint = () => {
                 await sendMintTransaction(signedTransaction, wallet.publicKey, mint.publicKey);
             }
             catch (e) {
-                if (!toast.isActive("userCancellation"))
+                if (!toast.isActive("blockchainCancellation"))
                     toast({
                         id: "blockchainCancellation",
                         title: 'Transaction canceled by blockchain',
-                        status: 'info',
+                        status: 'error',
                         position: 'top',
                         isClosable: true,
                     });
