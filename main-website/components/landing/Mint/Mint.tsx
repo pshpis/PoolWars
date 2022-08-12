@@ -138,7 +138,8 @@ export const Mint = () => {
             <Flex h={size.height - 64 + "px"} w={size.width} alignItems="center" justifyContent="center">Connect wallet
                 to see your profile page.</Flex>
             :
-                <Box mt="80px" mb="232px" pl={size.width < 500 ? "24px" : "96px"} pr={size.width < 500 ? "24px" : "96px"}>
+            <Center>
+                <Box mt="80px" mb="232px" maxW="1440px" w="100%" pl={size.width < 500 ? "24px" : "96px"} pr={size.width < 500 ? "24px" : "96px"}>
                     <Stack direction={size.width < 1260 ? "column" : "row"} spacing={size.width < 1260 ? "40px" : "auto"}>
                         <Center>
                             <VStack maxW="612px" spacing="0px">
@@ -156,9 +157,9 @@ export const Mint = () => {
                         <VStack>
                             {
                                 size.width < 680
-                                ?
+                                    ?
                                     <Img w="212px" h="212px" src='/ezgif-3-fc8b60ab28.gif' borderRadius="40px" boxShadow="0px 4px 4px 0px #00000040"/>
-                                :
+                                    :
                                     <Img src='/ezgif-3-fc8b60ab28.gif' borderRadius="40px" boxShadow="0px 4px 4px 0px #00000040"/>
                             }
 
@@ -166,6 +167,7 @@ export const Mint = () => {
                         </VStack>
                     </Stack>
                 </Box>
+            </Center>
         }
     </Layout>
 }
