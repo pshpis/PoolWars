@@ -188,11 +188,6 @@ export const Swaps = () => {
     },
         [wallet.publicKey, version]);
 
-    useEffect(() => {
-        if (size.width !== undefined)
-            window.location.replace('/');
-    }, [size.width]);
-
     async function swapClick(e: MouseEvent<HTMLDivElement>) {
         setLoadClick.off();
         const mints = mapChooseStateToMints(chooseState, NFTsStats);

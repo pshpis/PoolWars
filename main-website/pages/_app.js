@@ -26,10 +26,10 @@ function MyApp({ Component, pageProps }) {
     const network = WalletAdapterNetwork.Mainnet;
 
     const config = {
-        commitment: 'confirmed'
+        commitment: 'confirmed',
+        endpoint: 'https://omniscient-burned-haze.solana-mainnet.discover.quiknode.pro/8c1c39b15055f92e29ffbc74586b0607d098801c',
+        wsEndpoint: 'wss://omniscient-burned-haze.solana-mainnet.discover.quiknode.pro/8c1c39b15055f92e29ffbc74586b0607d098801c'
     }
-
-    const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 
     const wallets = useMemo(
         () => [
@@ -84,7 +84,7 @@ function MyApp({ Component, pageProps }) {
         result = <ChakraProvider>{result}</ChakraProvider>
 
     if (Component.needWeb3)
-        result = <ConnectionProvider endpoint={endpoint} config={config}>
+        result = <ConnectionProvider endpoint={config.endpoint} config={config}>
             <WalletProvider wallets={wallets} autoConnect>
                 <WalletModalProvider>{result}</WalletModalProvider>
             </WalletProvider>
