@@ -84,7 +84,7 @@ const ProgressPanel = () => {
                     ?
                     <></>
                     :
-                    <Box ref={loadedBarRef} w={mintState.mintedAmount/mintState.supply} h="52px" backgroundColor="#E8E8E8" borderLeftRadius="20px" boxShadow="0px 0px 4px 0px #20202040"></Box>
+                    <Box ref={loadedBarRef} w="100%" h="52px" backgroundColor="#E8E8E8" borderRadius="20px" boxShadow="0px 0px 4px 0px #20202040"></Box>
             }
         </Box>
         <Text mt="7px" pr="20px" fontWeight="600" fontSize="24px" lineHeight="28.13px" color="#B8C3E6" textAlign="right">Total: 10 000</Text>
@@ -288,7 +288,7 @@ export const Mint = () => {
                                         <div className={styles.smallDonut}/>
                                     </Flex>
                                     :
-                                    <Box w={size.width < 680 ? "290px" : ""} className={styles.mintButton} onClick={mintClick}>MINT</Box>
+                                    <Box w={size.width < 680 ? "290px" : ""} className={styles.mintButton} onClick={void(0)}>MINT</Box>
                             }
                         </VStack>
                     </Stack>
