@@ -61,7 +61,7 @@ const HeaderNav = () => {
         <HeaderNavSpacer/>
         <HeaderNavEl><RealLink href="/mint">mint</RealLink></HeaderNavEl>
         <HeaderNavSpacer/>
-        <HeaderNavEl><FakeLink href="/swaps">swaps</FakeLink></HeaderNavEl>
+        <HeaderNavEl><RealLink href="/swaps">swaps</RealLink></HeaderNavEl>
         <HeaderNavSpacer/>
         <HeaderNavEl><FakeLink href="/pool-wars">events</FakeLink></HeaderNavEl>
         <HeaderNavSpacer/>
@@ -75,7 +75,7 @@ const HeaderNavMobile = ({onClose}) => {
         <HeaderNavSpacerMobile/>
         <HeaderNavElMobile><RealLink href="/mint">mint</RealLink></HeaderNavElMobile>
         <HeaderNavSpacerMobile/>
-        <HeaderNavElMobile><FakeLink href="/swaps">swaps</FakeLink></HeaderNavElMobile>
+        <HeaderNavElMobile><RealLink href="/swaps">swaps</RealLink></HeaderNavElMobile>
         <HeaderNavSpacerMobile/>
         <HeaderNavElMobile><FakeLink href="/pool-wars">events</FakeLink></HeaderNavElMobile>
         <HeaderNavSpacerMobile/>
