@@ -1,12 +1,11 @@
 ﻿using System.Data;
-using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using PoolWarsV0.Data;
 using PoolWarsV0.Data.Models;
 using UserAdder;
 
-UserData[] userData;
+List<UserData> userData = new();
 var optionsBuilder = new DbContextOptionsBuilder<Context>();
 
 var options = optionsBuilder
@@ -16,10 +15,13 @@ var options = optionsBuilder
 await using Context context = new(options);
 await using IDbContextTransaction transaction = await context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
 
-using (TextReader reader = new StreamReader(File.OpenRead("whitelistData.json")))
+using (TextReader reader = new StreamReader(File.OpenRead("ogSpots.txt")))
 {
-    var json = await reader.ReadToEndAsync();
-    userData = JsonSerializer.Deserialize<UserData[]>(json, new JsonSerializerOptions(JsonSerializerDefaults.Web))!;
+    var addresses = (await reader.ReadToEndAsync()).Split('\n');
+
+    userData.AddRange(addresses.Distinct().Select(address => new UserData(address, "OG Katt")));
+    // var json = await reader.ReadToEndAsync();
+    // userData = JsonSerializer.Deserialize<UserData[]>(json, new JsonSerializerOptions(JsonSerializerDefaults.Web))!;
 }
 
 MintStageDao ogStage = await context.MintStages
