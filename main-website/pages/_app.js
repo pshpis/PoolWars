@@ -23,7 +23,7 @@ require('../styles/globals.css');
 
 function MyApp({ Component, pageProps }) {
 
-    const network = WalletAdapterNetwork.Devnet;
+    const network = WalletAdapterNetwork.Mainnet;
 
     const config = {
         commitment: 'confirmed'
