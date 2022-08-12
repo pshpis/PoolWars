@@ -2,7 +2,7 @@ import Layout from "../Layout/Layout";
 import {
     Box,
     Center,
-    Flex,
+    Flex, HStack,
     Img,
     Stack,
     Text, useBoolean, useToast,
@@ -29,9 +29,9 @@ import styles from "../../../styles/mint.module.scss"
 
 const MainText = ({marginBottom}) => {
     const size = useWindowSize();
-    return <Box marginBottom={marginBottom} w="100%" fontFamily="Njord" fontWeight="400" textAlign="left">
-        <Text fontSize={size.width < 500 ? "31px" : "61px"} color="#E8E8E8" lineHeight={size.width < 500 ? "29px" : "58px"}>Card&apos;s mint</Text>
-        <Text fontSize={size.width < 500 ? "50px" : "100px"} color="#71CFC3" lineHeight={size.width < 500 ? "47px" : "95px"}>now Live!</Text>
+    return <Box marginBottom={marginBottom} w="100%" fontFamily="Njord" fontWeight="400" textAlign={size.width < 500 ? "center" : "left"}>
+        <Text fontSize={size.width < 500 ? "40px" : "61px"} color="#E8E8E8" lineHeight={size.width < 500 ? "39px" : "58px"}>Card&apos;s mint</Text>
+        <Text fontSize={size.width < 500 ? "64px" : "100px"} color="#71CFC3" lineHeight={size.width < 500 ? "60px" : "95px"}>now Live!</Text>
     </Box>
 }
 
@@ -106,6 +106,9 @@ export const Mint = () => {
     let ogBoxStyle = styles.stageBox;
     let wlBoxStyle = styles.stageBox;
     let publicBoxStyle = styles.stageBox;
+    let ogBoxStyleSmall = styles.stageBox_small;
+    let wlBoxStyleSmall = styles.stageBox_small;
+    let publicBoxStyleSmall = styles.stageBox_small;
 
     async function mintClick(e: MouseEvent<HTMLDivElement>) {
         setLoad.off();
@@ -178,28 +181,64 @@ export const Mint = () => {
         async function load() {
             const newMintStatus = await getMintStatus();
             setMintStatus(_ => newMintStatus);
-            if (mintStatus === 'NONE')
-            {
-                ogBoxStyle = styles.stageBox;
-                wlBoxStyle = styles.stageBox;
-                publicBoxStyle = styles.stageBox;
-            } else if (mintStatus === 'OG') {
-                ogBoxStyle = styles.currentStageBox;
-                wlBoxStyle = styles.stageBox;
-                publicBoxStyle = styles.stageBox;
-            } else if (mintStatus === 'WL') {
-                ogBoxStyle = styles.stageBox;
-                wlBoxStyle = styles.currentStageBox;
-                publicBoxStyle = styles.stageBox;
-            } else if (mintStatus === 'PUBLIC') {
-                ogBoxStyle = styles.stageBox;
-                wlBoxStyle = styles.stageBox;
-                publicBoxStyle = styles.currentStageBox;
-            }
+            console.log(mintStatus);
         }
 
         load();
     }, []);
+
+    useEffect(() => {
+        if (mintStatus === 'NONE')
+        {
+            if (size.width < 500)
+            {
+                ogBoxStyle = styles.stageBox_small;
+                wlBoxStyle = styles.stageBox_small;
+                publicBoxStyle = styles.stageBox_small;
+            } else {
+                ogBoxStyle = styles.stageBox;
+                wlBoxStyle = styles.stageBox;
+                publicBoxStyle = styles.stageBox;
+            }
+
+        } else if (mintStatus === 'OG') {
+            if (size.width < 500)
+            {
+                ogBoxStyle = styles.currentStageBox_small;
+                wlBoxStyle = styles.stageBox_small;
+                publicBoxStyle = styles.stageBox_small;
+            } else {
+                ogBoxStyle = styles.currentStageBox;
+                wlBoxStyle = styles.stageBox;
+                publicBoxStyle = styles.stageBox;
+            }
+
+        } else if (mintStatus === 'WL') {
+            if (size.width < 500)
+            {
+                ogBoxStyle = styles.stageBox_small;
+                wlBoxStyle = styles.currentStageBox_small;
+                publicBoxStyle = styles.stageBox_small;
+            } else {
+                ogBoxStyle = styles.stageBox;
+                wlBoxStyle = styles.currentStageBox;
+                publicBoxStyle = styles.stageBox;
+            }
+
+        } else if (mintStatus === 'PUBLIC') {
+            if (size.width < 500)
+            {
+                ogBoxStyle = styles.stageBox_small;
+                wlBoxStyle = styles.stageBox_small;
+                publicBoxStyle = styles.currentStageBox_small;
+            } else {
+                ogBoxStyle = styles.stageBox;
+                wlBoxStyle = styles.stageBox;
+                publicBoxStyle = styles.currentStageBox;
+            }
+
+        }
+    }, [size.width]);
 
     return <Layout>
         {!connected ?
@@ -210,23 +249,36 @@ export const Mint = () => {
                 <Box mt="80px" mb="232px" maxW="1440px" w="100%" pl={size.width < 500 ? "24px" : "96px"} pr={size.width < 500 ? "24px" : "96px"}>
                     <Stack direction={size.width < 1260 ? "column" : "row"} spacing={size.width < 1260 ? "40px" : "auto"}>
                         <Center>
-                            <VStack maxW="612px" spacing="0px">
+                            <VStack maxW="612px" w="100%" spacing="0px">
                                 <MainText marginBottom="56px"/>
                                 <Box pb="51px" w="100%" borderTop="2px solid #E8E8E826"/>
                                 <ProgressPanel/>
                                 <Box h="16px"/>
-                                <Stack direction={size.width < 670 ? "column" : "row"} spacing="23px">
-                                    <Box className={ogBoxStyle}>OG stage</Box>
-                                    <Box className={wlBoxStyle}>WL stage</Box>
-                                    <Box className={publicBoxStyle}>Public stage</Box>
-                                </Stack>
+
+                                    {
+                                        size.width < 640
+                                            ?<HStack spacing="23px">
+                                                <Box className={ogBoxStyleSmall}>OG</Box>
+                                                <Box className={wlBoxStyleSmall}>WL</Box>
+                                                <Box className={publicBoxStyleSmall}>Public</Box>
+                                            </HStack>
+
+                                            :
+                                            <HStack spacing="23px">
+                                                <Box className={ogBoxStyle}>OG stage</Box>
+                                                <Box className={wlBoxStyle}>WL stage</Box>
+                                                <Box className={publicBoxStyle}>Public stage</Box>
+                                            </HStack>
+                                    }
+
+
                             </VStack>
                         </Center>
                         <VStack>
                             {
                                 size.width < 680
                                     ?
-                                    <Img w="212px" h="212px" src='/ezgif-3-fc8b60ab28.gif' borderRadius="40px" boxShadow="0px 4px 4px 0px #00000040"/>
+                                    <Img w="290px" h="290px" src='/ezgif-3-fc8b60ab28.gif' borderRadius="40px" boxShadow="0px 4px 4px 0px #00000040"/>
                                     :
                                     <Img src='/ezgif-3-fc8b60ab28.gif' borderRadius="40px" boxShadow="0px 4px 4px 0px #00000040"/>
                             }
@@ -237,7 +289,7 @@ export const Mint = () => {
                                         <div className={styles.smallDonut}/>
                                     </Flex>
                                     :
-                                    <Box w={size.width < 680 ? "212px" : ""} className={styles.mintButton} onClick={mintClick}>MINT</Box>
+                                    <Box w={size.width < 680 ? "290px" : ""} className={styles.mintButton} onClick={mintClick}>MINT</Box>
                             }
                         </VStack>
                     </Stack>
