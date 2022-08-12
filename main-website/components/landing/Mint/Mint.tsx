@@ -112,6 +112,18 @@ export const Mint = () => {
             if (!wallet.publicKey) {
                 return;
             }
+            if (mintStatus === 'NONE') {
+                if (!toast.isActive("walletStageCheck")) {
+                    toast({
+                        id: "walletStageCheck",
+                        title: 'Your stage has not yet reached the turn',
+                        status: 'info',
+                        position: 'top',
+                        isClosable: true,
+                    });
+                }
+                return;
+            }
             if (mintStatus === 'OG' && userStageInfo.mintStage !== 'OG') {
                 if (!toast.isActive("walletStageCheck")) {
                     toast({
@@ -265,9 +277,9 @@ export const Mint = () => {
                             {
                                 size.width < 680
                                     ?
-                                    <Img w="290px" h="290px" src='/ezgif-3-fc8b60ab28.gif' borderRadius="40px" boxShadow="0px 4px 4px 0px #00000040"/>
+                                    <Img w="290px" h="290px" src='/combat-cards-mint.gif' borderRadius="40px" boxShadow="0px 4px 4px 0px #00000040"/>
                                     :
-                                    <Img src='/ezgif-3-fc8b60ab28.gif' borderRadius="40px" boxShadow="0px 4px 4px 0px #00000040"/>
+                                    <Img src='/combat-cards-mint.gif' borderRadius="40px" boxShadow="0px 4px 4px 0px #00000040"/>
                             }
                             {
                                 !load
