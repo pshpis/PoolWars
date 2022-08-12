@@ -418,7 +418,7 @@ export const Profile = () => {
             <Flex h={size.height - 64 + "px"} w={size.width} alignItems="center" justifyContent="center">Connect wallet
                 to see your profile page.</Flex>
             :
-            <Box mb="160px" pt="5.5%" pl="6.6%" pr="6.6%" w="100%">
+            <Box mb={size.width < 1040 ? "50px" : "160px"} pt="5.5%" pl="6.6%" pr="6.6%" w="100%">
                 <Stack direction={size.width > 1040 ? "row" : "column"}
                        spacing="72px" w="100%" maxW="1248px" margin="0 auto">
                     <Stack maxHeight="578px" pt="32px" pl="23px" pr="23px" pb="32px" as={ElderKattsBox}
@@ -529,8 +529,8 @@ export const Profile = () => {
                                     }
                                 </Box>
                             :
-                                <Flex mt="200px" alignItems="center" justifyContent="center">
-                                    <Box fontWeight="400" fontSize={size.width > 768 ? "48px" : "32px"} color="#E8E3DD" textAlign="center">Sign in to see your activities</Box>
+                                <Flex alignItems="center" justifyContent="center" alignContent="center" verticalAlign="center">
+                                    <Box fontWeight="400" fontSize={size.width > 768 ? "48px" : "32px"} lineHeight={size.width < 1048 ? "50px" : "450px"} color="#E8E3DD" textAlign="center">Sign in to see your activities</Box>
                                 </Flex>
                         }
 
