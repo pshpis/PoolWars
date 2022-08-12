@@ -22,7 +22,7 @@ import {
     mintOne,
     MINT_CONFIG_ADDRESS,
     getAuthorityMintSig,
-    getWalletStatus, getMintStatus, WhitelistStatus, MINT_AIRDROP_AUTHORITY
+    getWalletStatus, getMintStatus, WhitelistStatus, MINT_AIRDROP_AUTHORITY, UserStageInfo
 } from "../../../lib/mint-instructions";
 import {useCookies} from "../../../hooks/useCookies";
 import styles from "../../../styles/mint.module.scss"
@@ -102,6 +102,8 @@ export const Mint = () => {
     const { connection } = useConnection();
     const [load, setLoad] = useBoolean(true);
     const [mintStatus, setMintStatus] = useState<WhitelistStatus>('NONE');
+    const [userStageInfo, setUserStageInfo] = useState<UserStageInfo>({mintStage: 'PUBLIC', remainingMints: 10});
+    const [version, setVersion] = useState<number>(0);
 
     async function mintClick(e: MouseEvent<HTMLDivElement>) {
         setLoad.off();
@@ -110,9 +112,31 @@ export const Mint = () => {
             if (!wallet.publicKey) {
                 return;
             }
-
-            // const walletStatus = getWalletStatus(wallet.wallet.);
-            console.log(wallet.publicKey);
+            if (mintStatus === 'OG' && userStageInfo.mintStage !== 'OG') {
+                if (!toast.isActive("walletStageCheck")) {
+                    toast({
+                        id: "walletStageCheck",
+                        title: 'Your stage has not yet reached the turn',
+                        status: 'info',
+                        position: 'top',
+                        isClosable: true,
+                    });
+                }
+                return;
+            }
+            if (mintStatus === 'WL' && userStageInfo.mintStage !== 'OG' && userStageInfo.mintStage !== 'WL')
+            {
+                if (!toast.isActive("walletStageCheck")) {
+                    toast({
+                        id: "walletStageCheck",
+                        title: 'Your stage has not yet reached the turn',
+                        status: 'info',
+                        position: 'top',
+                        isClosable: true,
+                    });
+                }
+                return;
+            }
 
             const userData = await getUserData(wallet.publicKey, connection);
             const tx = new Transaction();
@@ -168,9 +192,19 @@ export const Mint = () => {
         catch (e) {
 
         } finally {
+            setVersion(version+1);
             setLoad.on()
         }
     }
+
+    useEffect(() => {
+        async function load() {
+            const newUserStageInfo : UserStageInfo = await getWalletStatus(wallet.publicKey.toBase58());
+            setUserStageInfo(_ => newUserStageInfo);
+        }
+
+        load();
+    }, [wallet.publicKey]);
 
     useEffect(() => {
         async function load() {
