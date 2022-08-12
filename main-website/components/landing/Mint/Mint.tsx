@@ -185,7 +185,7 @@ export const Mint = () => {
                         <Center>
                             <VStack maxW="612px" w="100%" spacing="0px">
                                 <MainText marginBottom="56px"/>
-                                <Box pb={size.width < 500 ? "31px" : "51px"} w="100%" borderTop="2px solid #E8E8E826"/>
+                                <Box pb={size.width < 12600 ? "31px" : "51px"} w="100%" borderTop="2px solid #E8E8E826"/>
                                 <ProgressPanel/>
                                 <Box h="16px"/>
 
