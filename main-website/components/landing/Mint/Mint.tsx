@@ -31,7 +31,7 @@ const MainText = ({marginBottom}) => {
     const size = useWindowSize();
     return <Box marginBottom={marginBottom} w="100%" fontFamily="Njord" fontWeight="400" textAlign={size.width < 500 ? "center" : "left"}>
         <Text fontSize={size.width < 500 ? "40px" : "61px"} color="#E8E8E8" lineHeight={size.width < 500 ? "39px" : "58px"}>Card&apos;s mint</Text>
-        <Text fontSize={size.width < 500 ? "64px" : "100px"} color="#71CFC3" lineHeight={size.width < 500 ? "60px" : "95px"}>now Live!</Text>
+        <Text fontSize={size.width < 500 ? "64px" : "100px"} color="#71CFC3" lineHeight={size.width < 500 ? "60px" : "95px"}>Sold Out!</Text>
     </Box>
 }
 
