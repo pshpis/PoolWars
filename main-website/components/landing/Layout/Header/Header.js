@@ -38,7 +38,16 @@ const FakeLink = ({children, href}) => {
                 });
             }
     }
-    return <Box cursor="pointer" as="span" onClick={onClick}>{children}</Box>;
+    return <Box cursor="pointer" as="span" onClick={onClick}
+                color={window.location.host+href === window.location.href.split("//")[1] ? "#B8C3E6" : "inherit"}
+                fontSize={window.location.host+href === window.location.href.split("//")[1] ? "1.2em" : "inherit"}>{children}</Box>;
+}
+
+const RealLink = ({children, href}) => {
+    const onClick = () => window.location.replace(href);
+    return <Box cursor="pointer" as="span" onClick={onClick}
+                color={window.location.host+href === window.location.href.split("//")[1] ? "#B8C3E6" : "inherit"}
+                fontSize={window.location.host+href === window.location.href.split("//")[1] ? "1.2em" : "inherit"}>{children}</Box>;
 }
 
 const HeaderNavSpacer = () => {
@@ -50,16 +59,16 @@ const HeaderNavSpacerMobile = () => {
 }
 
 const HeaderNavEl = ({children}) => {
-    return <Box _hover={{color: "#B8C3E6"}} transition="0.3s ease" ml={0}>{children}</Box>
+    return <Box _hover={{color: "#B8C3E6"}} transition="0.3s ease" ml={0} lineHeight="1.2em">{children}</Box>
 }
 
 const HeaderNavElMobile = ({children}) => {
-    return <Box _hover={{color: "#B8C3E6"}} transition="0.3s ease" ml={0} w="100%" pl="20px">{children}</Box>
+    return <Box _hover={{color: "#B8C3E6"}} transition="0.3s ease" ml={0} w="100%" pl="20px" lineHeight="1.2em">{children}</Box>
 }
 
 const HeaderNav = () => {
     return <HStack fontStyle="light" color="#B2B2B2" fontFamily="Roboto Flex" fontWeight="300" spacing={0}>
-        <HeaderNavEl><Link href="/profile" style={{textDecoration: 'none'}}>profile</Link></HeaderNavEl>
+        <HeaderNavEl><RealLink href="/profile">profile</RealLink></HeaderNavEl>
         <HeaderNavSpacer/>
         <HeaderNavEl><FakeLink href="/mint">mint</FakeLink></HeaderNavEl>
         <HeaderNavSpacer/>
@@ -67,9 +76,9 @@ const HeaderNav = () => {
         <HeaderNavSpacer/>
         <HeaderNavEl><FakeLink href="/pool-wars">events</FakeLink></HeaderNavEl>
         <HeaderNavSpacer/>
-        <HeaderNavEl><Link href="/beta" style={{textDecoration: 'none'}}>beta</Link></HeaderNavEl>
+        <HeaderNavEl><RealLink href="/beta">beta</RealLink></HeaderNavEl>
         <HeaderNavSpacer/>
-        <HeaderNavEl><Link href="/whitepaper/" style={{textDecoration: 'none'}}>whitepaper</Link></HeaderNavEl>
+        <HeaderNavEl><RealLink href="/whitepaper/">whitepaper</RealLink></HeaderNavEl>
     </HStack>
 }
 
@@ -96,9 +105,7 @@ export const Header = () => {
     const {isOpen, onOpen, onClose} = useDisclosure();
 
     let sidePadding = "6.6%";
-    if (size.width < 1100) sidePadding = "20px";
-
-
+    if (size.width < 1100) sidePadding = "15px";
 
     return <>
         {
