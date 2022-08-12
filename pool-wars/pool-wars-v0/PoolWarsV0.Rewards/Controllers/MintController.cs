@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PoolWarsV0.Rewards.Core.Exceptions;
+using PoolWarsV0.Rewards.Core.Models;
 using PoolWarsV0.Rewards.Core.Services;
 using PoolWarsV0.Rewards.Models;
 using Solnet.Rpc.Models;
@@ -12,10 +13,12 @@ namespace PoolWarsV0.Rewards.Controllers;
 public class MintController : ControllerBase
 {
     private readonly IMintService _mintService;
+    private readonly IStageService _stageService;
 
-    public MintController(IMintService mintService)
+    public MintController(IMintService mintService, IStageService stageService)
     {
         _mintService = mintService;
+        _stageService = stageService;
     }
 
     [HttpPost]
@@ -65,6 +68,47 @@ public class MintController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<string>> GetWalletStage([FromQuery] string wallet)
     {
-        return wallet == "4yPHTi9whraHaRvQNH2e1AJezDJvPUTjehyrjKHzPLj5" ? "OG" : "PUBLIC";
+        PublicKey user;
+
+        try
+        {
+            user = new(wallet);
+        }
+        catch (Exception)
+        {
+            return BadRequest(new
+            {
+                Message = "BAD_REQUEST_FIELDS"
+            });
+        }
+
+        MintStage stage = await _stageService.GetWalletStage(user);
+
+        return stage switch
+        {
+            MintStage.Whitelist => "WL",
+            MintStage.Og => "OG",
+            MintStage.Public => "PUBLIC",
+            MintStage.None => "NONE",
+            _ => throw new ArgumentOutOfRangeException(wallet)
+        };
+    }
+
+    [HttpGet]
+    [Route("mintStage")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<string>> GetMintStage()
+    {
+        MintStage stage = await _stageService.GetCurrentStage();
+
+        return stage switch
+        {
+            MintStage.Whitelist => "WL",
+            MintStage.Og => "OG",
+            MintStage.Public => "PUBLIC",
+            MintStage.None => "NONE",
+            _ => throw new("BAD_ENUM_STATE")
+        };
     }
 }

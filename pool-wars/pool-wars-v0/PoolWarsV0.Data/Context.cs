@@ -38,4 +38,6 @@ public class Context : DbContext
     public DbSet<PoolWarEventDao> PoolWarsEvents { get; set; } = null!;
 
     public DbSet<SwapEventDao> SwapEvent { get; set; } = null!;
+
+    public DbSet<MintStageDao> MintStages { get; set; } = null!;
 }
