@@ -60,7 +60,7 @@ public partial class DevnetTests
         PublicKey tokenAcc4 = AssociatedTokenAccountProgram.DeriveAssociatedTokenAccount(_swapper, tokenMint4);
         PublicKey tokenAcc5 = AssociatedTokenAccountProgram.DeriveAssociatedTokenAccount(_swapper, tokenMint5);
         PublicKey tokenAcc6 = AssociatedTokenAccountProgram.DeriveAssociatedTokenAccount(_swapper, tokenMint6);
-        
+
         var instructionData = id.Concat(tokenAmountBytes)
             .ToArray();
 

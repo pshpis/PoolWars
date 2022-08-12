@@ -18,9 +18,13 @@ public partial class DevnetTests
             1
         };
 
-        const long supply = 2000L;
-        var metadataPrefix = Encoding.UTF8.GetBytes("https://elderkatts.com/legend/");
-        var symbol = Encoding.UTF8.GetBytes("LEGEND");
+        // 2000 rare
+        // 2500 epic
+        // 2333 legendary
+
+        const long supply = 2500L;
+        var metadataPrefix = Encoding.UTF8.GetBytes("https://elderkatts.com/points6/");
+        var symbol = Encoding.UTF8.GetBytes("POINTS6");
 
         var metadataPrefixPadded = new byte[32];
         Array.Fill<byte>(metadataPrefixPadded, value: 0);
@@ -95,7 +99,7 @@ public partial class DevnetTests
         };
 
         tx.Add(init).Add(ix);
-        var response = _client.SimulateTransaction(tx.Build(new[] {_feePayer, swapConfig}), sigVerify: true);
+        var response = _client.SendTransaction(tx.Build(new[] {_feePayer, swapConfig}));// _client.SimulateTransaction(tx.Build(new[] {_feePayer, swapConfig}), sigVerify: true);
         Assert.That(response.WasSuccessful, Is.True);
     }
 }

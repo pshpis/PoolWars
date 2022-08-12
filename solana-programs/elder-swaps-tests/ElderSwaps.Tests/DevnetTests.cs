@@ -18,14 +18,21 @@ public partial class DevnetTests
     [SetUp]
     public void Setup()
     {
-        _feePayer = Util.ReadFromJson("feePayer.json");
+        _feePayer = new("ZyomNTsWGc1Z2gkagc8f6cFLzi41U8VGf4qzyfnAmyUY5ABe6BbCP6UrMydX5VTHsNpBgSXvqgWhz5DvJiXLozT",
+            "4yPHTi9whraHaRvQNH2e1AJezDJvPUTjehyrjKHzPLj5");
+
         _mainSwapConfig = Util.ReadFromJson("mainSwapConfig.json");
         _swapAuthority = Util.ReadFromJson("swapAuthority.json");
-        _royaltyWallet = Util.ReadFromJson("royaltyWallet.json");
-        _adminAccount = Util.ReadFromJson("adminAccount.json");
+
+        _royaltyWallet = new("ZyomNTsWGc1Z2gkagc8f6cFLzi41U8VGf4qzyfnAmyUY5ABe6BbCP6UrMydX5VTHsNpBgSXvqgWhz5DvJiXLozT",
+            "4yPHTi9whraHaRvQNH2e1AJezDJvPUTjehyrjKHzPLj5");
+
+        _adminAccount = new("ZyomNTsWGc1Z2gkagc8f6cFLzi41U8VGf4qzyfnAmyUY5ABe6BbCP6UrMydX5VTHsNpBgSXvqgWhz5DvJiXLozT",
+            "4yPHTi9whraHaRvQNH2e1AJezDJvPUTjehyrjKHzPLj5");
+
         _swapper = Util.ReadFromJson("swapper.json");
 
         _programId = new("HWeQ1ntizxmbMwVHemf9zncf2h6RTTfLiuzbjD9wAN9e");
-        _client = ClientFactory.GetClient(Cluster.TestNet);
+        _client = ClientFactory.GetClient(Cluster.MainNet);
     }
 }
