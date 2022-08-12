@@ -55,7 +55,7 @@ const nextConfig = {
       }
     ]
   },
-  crossOrigin: 'anonymous'
+  crossOrigin: 'anonymous',
 }
 
 module.exports = withBundleAnalyzer(nextConfig);
