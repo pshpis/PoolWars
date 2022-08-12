@@ -6,5 +6,5 @@ namespace PoolWarsV0.Rewards.Core.Services;
 public interface IStageService
 {
     Task<MintStage> GetCurrentStage();
-    Task<MintStage> GetWalletStage(PublicKey wallet);
+    Task<UserStageDto> GetWalletStage(PublicKey wallet);
 }

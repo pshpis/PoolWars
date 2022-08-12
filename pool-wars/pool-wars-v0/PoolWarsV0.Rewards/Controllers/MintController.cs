@@ -24,7 +24,7 @@ public class MintController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> Index([FromBody] MintRequest mintRequest)
+    public async Task<ActionResult<string>> Index([FromBody] MintRequest mintRequest)
     {
         Message message;
         byte[] signature;
@@ -50,8 +50,14 @@ public class MintController : ControllerBase
 
         try
         {
-            await _mintService.MintOne(message, signature, mintSignature, user, cardMint);
-            return Ok();
+            var authoritySignature = await _mintService.MintOne(
+                message,
+                signature,
+                mintSignature,
+                user,
+                cardMint);
+
+            return Ok(Convert.ToBase64String(authoritySignature));
         }
         catch (MintException e)
         {
@@ -66,7 +72,7 @@ public class MintController : ControllerBase
     [Route("walletStage")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<string>> GetWalletStage([FromQuery] string wallet)
+    public async Task<ActionResult<UserStageDto>> GetWalletStage([FromQuery] string wallet)
     {
         PublicKey user;
 
@@ -82,16 +88,7 @@ public class MintController : ControllerBase
             });
         }
 
-        MintStage stage = await _stageService.GetWalletStage(user);
-
-        return stage switch
-        {
-            MintStage.Whitelist => "WL",
-            MintStage.Og => "OG",
-            MintStage.Public => "PUBLIC",
-            MintStage.None => "NONE",
-            _ => throw new ArgumentOutOfRangeException(wallet)
-        };
+        return await _stageService.GetWalletStage(user);
     }
 
     [HttpGet]

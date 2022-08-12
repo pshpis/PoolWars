@@ -34,8 +34,29 @@ public class StageService : IStageService
         };
     }
 
-    public Task<MintStage> GetWalletStage(PublicKey wallet)
+    public async Task<UserStageDto> GetWalletStage(PublicKey wallet)
     {
-        return Task.FromResult(wallet.Key == "4yPHTi9whraHaRvQNH2e1AJezDJvPUTjehyrjKHzPLj5" ? MintStage.Og : MintStage.Public);
+        var key = wallet.Key;
+
+        WhitelistedUserDao? user = await _context.WhitelistedUsers
+            .AsNoTracking()
+            .Include(u => u.Stage)
+            .Include(u => u.User)
+            .FirstOrDefaultAsync(u => u.User.Address == key);
+
+        if (user is null)
+        {
+            return new()
+            {
+                RemainingMints = int.MaxValue,
+                MintStage = "PUBLIC"
+            };
+        }
+
+        return new()
+        {
+            MintStage = user.Stage.Stage,
+            RemainingMints = user.RemainingMints
+        };
     }
 }

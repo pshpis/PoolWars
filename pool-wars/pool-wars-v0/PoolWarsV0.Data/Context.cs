@@ -40,4 +40,6 @@ public class Context : DbContext
     public DbSet<SwapEventDao> SwapEvent { get; set; } = null!;
 
     public DbSet<MintStageDao> MintStages { get; set; } = null!;
+
+    public DbSet<WhitelistedUserDao> WhitelistedUsers { get; set; } = null!;
 }
