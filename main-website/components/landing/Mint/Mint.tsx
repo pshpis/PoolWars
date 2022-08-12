@@ -13,11 +13,19 @@ import { useWindowSize } from "../../../hooks/useWindowSize";
 import { useWalletAuth } from "../../../hooks/useWalletAuth";
 import { Keypair, Transaction } from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { createUserData, decodeMintData, getMintData, getUserData, MintData, mintOne, MINT_CONFIG_ADDRESS } from "../../../lib/mint-instructions";
+import {
+    createUserData,
+    decodeMintData,
+    getMintData,
+    getUserData,
+    MintData,
+    mintOne,
+    MINT_CONFIG_ADDRESS,
+    sendMintTransaction,
+    getWalletStatus, getMintStatus
+} from "../../../lib/mint-instructions";
 import {useCookies} from "../../../hooks/useCookies";
 import styles from "../../../styles/mint.module.scss"
-
-const airdropAuthority = Keypair.fromSecretKey(new Uint8Array([87, 63, 47, 245, 211, 198, 55, 243, 138, 201, 237, 198, 57, 34, 88, 224, 234, 49, 51, 191, 224, 89, 45, 31, 199, 95, 209, 129, 178, 203, 158, 88, 135, 41, 24, 119, 139, 239, 142, 50, 14, 223, 31, 244, 177, 196, 221, 109, 149, 38, 54, 24, 206, 7, 176, 72, 52, 175, 40, 209, 211, 239, 86, 51]))
 
 const MainText = ({marginBottom}) => {
     const size = useWindowSize();
@@ -94,6 +102,10 @@ export const Mint = () => {
     const { connection } = useConnection();
     const {verify} = useCookies();
     const [load, setLoad] = useBoolean(true);
+    const [mintStatus, setMintStatus] = useState<string>('NONE');
+    let ogBoxStyle = styles.stageBox;
+    let wlBoxStyle = styles.stageBox;
+    let publicBoxStyle = styles.stageBox;
 
     async function mintClick(e: MouseEvent<HTMLDivElement>) {
         setLoad.off();
@@ -103,10 +115,13 @@ export const Mint = () => {
                 return;
             }
 
+            // const walletStatus = getWalletStatus(wallet.wallet.);
+            console.log(wallet.publicKey);
+
             const userData = await getUserData(wallet.publicKey, connection);
             const tx = new Transaction();
             tx.feePayer = wallet.publicKey;
-            tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+            tx.recentBlockhash = (await connection.getLatestBlockhash('finalized')).blockhash;
 
             if (!userData) {
                 tx.add(await createUserData(wallet.publicKey));
@@ -114,8 +129,6 @@ export const Mint = () => {
 
             const mint = new Keypair();
             tx.add(await mintOne(wallet.publicKey, mint));
-
-            tx.partialSign(mint, airdropAuthority);
             let signedTransaction: Transaction | null = undefined;
 
             try {
@@ -134,14 +147,15 @@ export const Mint = () => {
             }
 
             try {
-                const result = await connection.sendRawTransaction(signedTransaction.serialize());
+                tx.partialSign(mint);
+                await sendMintTransaction(signedTransaction, wallet.publicKey, mint.publicKey);
             }
             catch (e) {
-                if (!toast.isActive("userCancellation"))
+                if (!toast.isActive("blockchainCancellation"))
                     toast({
                         id: "blockchainCancellation",
                         title: 'Transaction canceled by blockchain',
-                        status: 'info',
+                        status: 'error',
                         position: 'top',
                         isClosable: true,
                     });
@@ -160,6 +174,33 @@ export const Mint = () => {
             window.location.replace('/');
     }, [size.width]);
 
+    useEffect(() => {
+        async function load() {
+            const newMintStatus = await getMintStatus();
+            setMintStatus(_ => newMintStatus);
+            if (mintStatus === 'NONE')
+            {
+                ogBoxStyle = styles.stageBox;
+                wlBoxStyle = styles.stageBox;
+                publicBoxStyle = styles.stageBox;
+            } else if (mintStatus === 'OG') {
+                ogBoxStyle = styles.currentStageBox;
+                wlBoxStyle = styles.stageBox;
+                publicBoxStyle = styles.stageBox;
+            } else if (mintStatus === 'WL') {
+                ogBoxStyle = styles.stageBox;
+                wlBoxStyle = styles.currentStageBox;
+                publicBoxStyle = styles.stageBox;
+            } else if (mintStatus === 'PUBLIC') {
+                ogBoxStyle = styles.stageBox;
+                wlBoxStyle = styles.stageBox;
+                publicBoxStyle = styles.currentStageBox;
+            }
+        }
+
+        load();
+    }, []);
+
     return <Layout>
         {!connected ?
             <Flex h={size.height - 64 + "px"} w={size.width} alignItems="center" justifyContent="center">Connect wallet
@@ -175,9 +216,9 @@ export const Mint = () => {
                                 <ProgressPanel/>
                                 <Box h="16px"/>
                                 <Stack direction={size.width < 670 ? "column" : "row"} spacing="23px">
-                                    <Box className={styles.currentStageBox}>OG stage</Box>
-                                    <Box className={styles.stageBox}>WL stage</Box>
-                                    <Box className={styles.stageBox}>Public stage</Box>
+                                    <Box className={ogBoxStyle}>OG stage</Box>
+                                    <Box className={wlBoxStyle}>WL stage</Box>
+                                    <Box className={publicBoxStyle}>Public stage</Box>
                                 </Stack>
                             </VStack>
                         </Center>

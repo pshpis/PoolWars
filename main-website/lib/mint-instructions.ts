@@ -1,11 +1,16 @@
-import { Connection, Keypair, PublicKey, SystemProgram, SYSVAR_CLOCK_PUBKEY, SYSVAR_RENT_PUBKEY, TransactionInstruction } from "@solana/web3.js";
+import { Connection, Keypair, PublicKey, SystemProgram, SYSVAR_CLOCK_PUBKEY, SYSVAR_RENT_PUBKEY, Transaction, TransactionInstruction } from "@solana/web3.js";
 import { getAssociatedTokenAddress, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID } from "@solana/spl-token"
 import BN from "bn.js"
+import axios from "axios";
+
+export const MINT_API_URL = 'https://elderkatts.com'
 
 export type UserMintData = {
     mintAmount: number,
     lockTill: number
 }
+
+export type WhitelistStatus = 'NONE' | 'OG' | 'WL' | 'PUBLIC'
 
 export type MintData = {
     supply: number,
@@ -18,6 +23,38 @@ export const MINT_AIRDROP_AUTHORITY = new PublicKey('A6cPHtm1AQUvYjBUBMMsVgLiRgZ
 export const MINT_ADMIN_ACCOUNT = new PublicKey('Gc2J1WxU2EpFfj2U3rbQkdd3WfVz7qVUXjNnS8ETvpsL');
 export const MINT_REVENUES_WALLET = new PublicKey('DRLCySRyuKxgPTeiJVoKgPqK5SCMwtJDBLtNPQrwUoXL');
 
+export async function sendMintTransaction(signedTransaction: Transaction, walletAddress: PublicKey, mint: PublicKey) {
+
+    await axios.post(`${MINT_API_URL}/api/v1/mint`, {
+        transactionMessage: signedTransaction.serializeMessage().toString('base64'),
+        messageSignature: signedTransaction.signatures[0].signature.toString('base64'),
+        mintAccountSignature: signedTransaction.signatures[1].signature.toString('base64'),
+        walletAddress: walletAddress.toBase58(),
+        cardMint: mint.toBase58()
+    })
+}
+
+export async function getWalletStatus(wallet: string): Promise<WhitelistStatus> {
+    
+    try {
+        const response = await axios.get<WhitelistStatus>(`${MINT_API_URL}/api/v1/mint/walletStage?wallet=${wallet}`)
+        return response.data;
+    }
+    catch (e) {
+        return 'PUBLIC';
+    }
+}
+
+export async function getMintStatus(): Promise<WhitelistStatus> {
+    
+    try {
+        const response = await axios.get<WhitelistStatus>(`${MINT_API_URL}/api/v1/mint/mintStage`)
+        return response.data;
+    }
+    catch (e) {
+        return 'NONE';
+    }
+}
 
 export async function getMintData(connection: Connection): Promise<Buffer | undefined> {
 

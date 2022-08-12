@@ -26,12 +26,7 @@ const FakeLink = ({children, href}) => {
             if (!toast.isActive(toastId)){
                 toast({
                     id: toastId,
-                    title: `This page in beta test now`,
-                    description: (
-                        <div>
-                            You can get access <Link cursor="pointer" href="/beta"><b><i><u>here</u></i></b></Link>
-                        </div>
-                    ),
+                    title: `This page will be available after mint opening`,
                     status: 'info',
                     position: 'top',
                     isClosable: true,
@@ -76,8 +71,6 @@ const HeaderNav = () => {
         <HeaderNavSpacer/>
         <HeaderNavEl><FakeLink href="/pool-wars">events</FakeLink></HeaderNavEl>
         <HeaderNavSpacer/>
-        <HeaderNavEl><RealLink href="/beta">beta</RealLink></HeaderNavEl>
-        <HeaderNavSpacer/>
         <HeaderNavEl><RealLink href="/whitepaper/">whitepaper</RealLink></HeaderNavEl>
     </HStack>
 }
@@ -91,8 +84,6 @@ const HeaderNavMobile = ({onClose}) => {
         <HeaderNavElMobile><FakeLink href="/swaps">swaps</FakeLink></HeaderNavElMobile>
         <HeaderNavSpacerMobile/>
         <HeaderNavElMobile><FakeLink href="/pool-wars">events</FakeLink></HeaderNavElMobile>
-        <HeaderNavSpacerMobile/>
-        <HeaderNavElMobile><Link href="/beta" style={{textDecoration: 'none'}}>beta</Link></HeaderNavElMobile>
         <HeaderNavSpacerMobile/>
         <HeaderNavElMobile><Link href="/whitepaper/" style={{textDecoration: 'none'}}>whitepaper</Link></HeaderNavElMobile>
         <Spacer/>
