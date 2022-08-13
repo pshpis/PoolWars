@@ -9,7 +9,7 @@ import {
     ModalContent, ModalOverlay,
     Spacer,
     Stack,
-    Text,
+    Text, useBoolean,
     useDisclosure,
     useToast,
     VStack
@@ -122,65 +122,74 @@ const NFT = ({src, mint, result, taken} : {src: string, mint: string, result: Po
 
     const wallet = useWallet();
     const { connection } = useConnection();
+    const [takenNft, setTakenNFT] = useBoolean(taken);
 
     async function take() {
-        
-        const destinationAddress = await getAssociatedTokenAddress(new PublicKey(mint), wallet.publicKey, false, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID);
-        let needsInitialize = true;
-
         try {
-            const account = await connection.getAccountInfo(destinationAddress);
-            
-            if (account.lamports > 0) {
-                needsInitialize = false;
+
+
+            const destinationAddress = await getAssociatedTokenAddress(new PublicKey(mint), wallet.publicKey, false, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID);
+            let needsInitialize = true;
+
+            try {
+                const account = await connection.getAccountInfo(destinationAddress);
+
+                if (account.lamports > 0) {
+                    needsInitialize = false;
+                }
+            } catch (e) {
+
             }
+
+            let sourceAddress: PublicKey = undefined;
+            let pool: PublicKey = undefined;
+
+            try {
+                const largest = await connection.getTokenLargestAccounts(new PublicKey(mint), 'finalized')
+                sourceAddress = largest.value[0].address;
+                const tokenAccInfo = await connection.getParsedAccountInfo(sourceAddress, 'finalized');
+
+                pool = new PublicKey((tokenAccInfo.value.data as any).parsed.info.owner);
+
+            } catch (e) {
+                return;
+            }
+
+            const tx = new Transaction();
+            tx.feePayer = wallet.publicKey;
+            tx.recentBlockhash = (await connection.getLatestBlockhash('finalized')).blockhash
+
+            if (needsInitialize) {
+                tx.add(createAssociatedTokenAccountInstruction(
+                    wallet.publicKey,
+                    destinationAddress,
+                    wallet.publicKey,
+                    new PublicKey(mint),
+                    TOKEN_PROGRAM_ID,
+                    ASSOCIATED_TOKEN_PROGRAM_ID
+                ))
+            }
+
+            tx.add(createTransferCheckedInstruction(
+                sourceAddress,
+                new PublicKey(mint),
+                destinationAddress,
+                pool,
+                1,
+                0,
+                [],
+                TOKEN_PROGRAM_ID
+            ))
+
+            const signed = await wallet.signTransaction(tx);
+            await takeCard(signed, mint, pool.toBase58())
         }
         catch (e) {
 
         }
-
-        let sourceAddress: PublicKey = undefined;
-        let pool: PublicKey = undefined;
-
-        try {
-            const largest = await connection.getTokenLargestAccounts(new PublicKey(mint), 'finalized')
-            sourceAddress = largest.value[0].address;
-            const tokenAccInfo = await connection.getParsedAccountInfo(sourceAddress, 'finalized');
-            
-            pool = new PublicKey((tokenAccInfo.value.data as any).parsed.info.owner);
-
-        } catch(e) {
-            return;
+        finally {
+            setTakenNFT.on();
         }
-
-        const tx = new Transaction();
-        tx.feePayer = wallet.publicKey;
-        tx.recentBlockhash = (await connection.getLatestBlockhash('finalized')).blockhash
-
-        if (needsInitialize) {
-            tx.add(createAssociatedTokenAccountInstruction(
-                wallet.publicKey,
-                destinationAddress,
-                wallet.publicKey,
-                new PublicKey(mint),
-                TOKEN_PROGRAM_ID,
-                ASSOCIATED_TOKEN_PROGRAM_ID
-            ))
-        }
-
-        tx.add(createTransferCheckedInstruction(
-            sourceAddress,
-            new PublicKey(mint),
-            destinationAddress,
-            pool,
-            1,
-            0,
-            [],
-            TOKEN_PROGRAM_ID
-        ))
-
-        const signed = await wallet.signTransaction(tx);
-        await takeCard(signed, mint, pool.toBase58())
     }
 
     return <GridItem w="188px">
@@ -191,7 +200,7 @@ const NFT = ({src, mint, result, taken} : {src: string, mint: string, result: Po
                     <Center>
                         <Box onClick={taken ? void(0) : take} w="80%" h="32px" mt="10px" fontWeight="600" fontSize="18px" lineHeight="32px" textAlign="center"
                              color="#202020" backgroundColor={taken ? "#71CFC3" : "#B8C3E6"} borderRadius="16px" _hover={{boxShadow: "0px 0px 16px 0px #B8C3E6D9"}} cursor="pointer">
-                            {taken ? "TAKEN" : "TAKE NOW"}
+                            {takenNft ? "TAKEN" : "TAKE NOW"}
                         </Box>
                     </Center>
                 </>
