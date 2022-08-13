@@ -63,7 +63,7 @@ const HeaderNav = () => {
         <HeaderNavSpacer/>
         <HeaderNavEl><RealLink href="/swaps">swaps</RealLink></HeaderNavEl>
         <HeaderNavSpacer/>
-        <HeaderNavEl><FakeLink href="/pool-wars">events</FakeLink></HeaderNavEl>
+        <HeaderNavEl><RealLink href="/pool-wars">events</RealLink></HeaderNavEl>
         <HeaderNavSpacer/>
         <HeaderNavEl><RealLink href="/whitepaper/">whitepaper</RealLink></HeaderNavEl>
     </HStack>
@@ -77,7 +77,7 @@ const HeaderNavMobile = ({onClose}) => {
         <HeaderNavSpacerMobile/>
         <HeaderNavElMobile><RealLink href="/swaps">swaps</RealLink></HeaderNavElMobile>
         <HeaderNavSpacerMobile/>
-        <HeaderNavElMobile><FakeLink href="/pool-wars">events</FakeLink></HeaderNavElMobile>
+        <HeaderNavElMobile><RealLink href="/pool-wars">events</RealLink></HeaderNavElMobile>
         <HeaderNavSpacerMobile/>
         <HeaderNavElMobile><RealLink href="/whitepaper/" style={{textDecoration: 'none'}}>whitepaper</RealLink></HeaderNavElMobile>
         <Spacer/>
