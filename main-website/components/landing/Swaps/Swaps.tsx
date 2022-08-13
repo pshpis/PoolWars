@@ -104,7 +104,7 @@ const WillTakePointsPanel = ({ pointsPanelsHeight, swapState, onClick, cardsChoo
     </ElderKattsBox>
 }
 
-const SelectedPointsPanel = ({ sumPoints }) => {
+const SelectedPointsPanel = ({ chooseState } : { chooseState: ChooseState }) => {
     return <ElderKattsBox width="294px" mb="24px">
         <HStack spacing="auto">
             <Text pt="24px" pl="32px" pb="48px" pr="82px"
@@ -113,7 +113,7 @@ const SelectedPointsPanel = ({ sumPoints }) => {
             </Text>
             <Text pt="32px" pr="16px" pb="4px" mr="auto" textAlign="right"
                 fontFamily="Njord Alternate" fontWeight="400" fontSize="80px" lineHeight="92px" color="#71CFC3">
-                {sumPoints}
+                {chooseState.sumPoints}
             </Text>
         </HStack>
     </ElderKattsBox>
@@ -162,7 +162,7 @@ const PointsPanels = ({ chooseState, swapState, onClick, cardsChooseNumber, load
     return <Box>
         <HStack>
             <VStack ref={pointsPanelsRef} mr={size.width < 640 ? "" : "24px"}>
-                <SelectedPointsPanel sumPoints={chooseState.sumPoints} />
+                <SelectedPointsPanel chooseState={chooseState} />
                 <NeedPointsPanel needPointsPerOne={swapState.currentMod.needPoints} />
             </VStack>
             {size.width >= 640 ? <WillTakePointsPanel onClick={onClick} pointsPanelsHeight={pointsPanelsHeight} swapState={swapState} cardsChooseNumber={cardsChooseNumber} loadClick={loadClick}/> : ""}
