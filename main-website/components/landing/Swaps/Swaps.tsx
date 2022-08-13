@@ -38,6 +38,39 @@ const MainText = () => {
 }
 
 const WillTakePointsPanel = ({ pointsPanelsHeight, swapState, onClick, cardsChooseNumber, loadClick }: { pointsPanelsHeight: number, swapState: SwapState, onClick: React.MouseEventHandler<HTMLDivElement>, cardsChooseNumber: number, loadClick: boolean }) => {
+    const toast = useToast();
+
+    function moteThan4CardsToast() {
+        if (cardsChooseNumber > 4 && !toast.isActive("moreThan4Cards")) {
+
+        }
+        return void(0);
+    }
+
+    function swapClick(e : MouseEvent<HTMLDivElement>) {
+        if (cardsChooseNumber > 4 && !toast.isActive("moreThan4Cards")) {
+            toast({
+                id: "moreThan4Cards",
+                title: 'Impossible to swap more than 4 NFTs',
+                status: 'info',
+                position: 'top',
+                isClosable: true,
+            });
+            return;
+        }
+        if (cardsChooseNumber === 0 && !toast.isActive("0Cards")) {
+            toast({
+                id: "0Cards",
+                title: 'It is necessary to select cards for swap',
+                status: 'info',
+                position: 'top',
+                isClosable: true,
+            });
+            return;
+        }
+        onClick(e);
+    }
+
     return <ElderKattsBox mt="24px" pb="32px" width="294px" height={pointsPanelsHeight + "px"}>
 
         <Text pt="24px" pb="28px"
@@ -57,7 +90,7 @@ const WillTakePointsPanel = ({ pointsPanelsHeight, swapState, onClick, cardsChoo
         {
             loadClick
                 ?
-                <Box onClick={cardsChooseNumber > 4 || cardsChooseNumber === 0 ? void(0) : onClick} ml="24px" mr="24px" maxWidth="246px" height="48px" backgroundColor="#B8C3E6" borderRadius="24px" textAlign="center"
+                <Box onClick={swapClick} ml="24px" mr="24px" maxWidth="246px" height="48px" backgroundColor="#B8C3E6" borderRadius="24px" textAlign="center"
                      fontWeight="600" fontSize="24px" lineHeight="48px" color="#202020"
                      transition="0.3s ease" _hover={{ boxShadow: "0px 0px 8px rgba(184, 195, 230, 0.75);" }} cursor="pointer">
                     SWAP
@@ -116,7 +149,7 @@ const PointsPanels = ({ chooseState, swapState, onClick, cardsChooseNumber, load
                 isClosable: true,
             });
         }
-    }, [cardsChooseNumber])
+    }, [cardsChooseNumber]);
 
 
 
@@ -257,6 +290,7 @@ export const Swaps = () => {
         }
         finally {
             setLoadClick.on();
+            versionInc();
         }
     }
 
