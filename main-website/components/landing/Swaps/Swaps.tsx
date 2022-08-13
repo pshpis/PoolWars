@@ -246,7 +246,10 @@ export const Swaps = () => {
             tx.partialSign(mint);
             tx.addSignature(SWAP_AUTHORITY, signature);
 
-            const result = await connection.sendRawTransaction(tx.serialize())
+            const result = await connection.simulateTransaction(tx);
+            console.log(result.value.logs);
+            
+            await connection.sendRawTransaction(tx.serialize())
 
             versionInc();
         }
