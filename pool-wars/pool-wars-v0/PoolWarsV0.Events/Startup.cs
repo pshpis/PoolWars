@@ -1,5 +1,7 @@
 using System.Text.Json.Serialization;
 using PoolWarsV0.Core.Tools;
+using PoolWarsV0.Events.Core.Services;
+using PoolWarsV0.Events.Core.Services.Implementations;
 using PoolWarsV0.Events.Core.Tools;
 using StartupBase = PoolWarsV0.Core.StartupBase;
 
@@ -17,6 +19,7 @@ internal class Startup : StartupBase
         services.AddDatabase(connectionString);
 
         services.AddEvents();
+        services.AddTransient<ISubmissionsService, SubmissionsService>();
         services.AddHttpClient();
         services.AddSwaggerGen();
 

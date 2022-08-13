@@ -42,4 +42,6 @@ public class Context : DbContext
     public DbSet<MintStageDao> MintStages { get; set; } = null!;
 
     public DbSet<WhitelistedUserDao> WhitelistedUsers { get; set; } = null!;
+
+    public DbSet<WalletSubmission> Submissions { get; set; } = null!;
 }

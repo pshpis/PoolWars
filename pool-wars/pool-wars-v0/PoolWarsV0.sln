@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoolWarsV0.Events.Core", "P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserAdder", "UserAdder\UserAdder.csproj", "{CCA35F96-F076-4A9C-ACA2-179B230BACD6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoolWarStarter", "PoolWarStarter\PoolWarStarter.csproj", "{0C6EA78A-6BFB-4F64-A693-AAE16D227515}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,5 +74,9 @@ Global
 		{CCA35F96-F076-4A9C-ACA2-179B230BACD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCA35F96-F076-4A9C-ACA2-179B230BACD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CCA35F96-F076-4A9C-ACA2-179B230BACD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C6EA78A-6BFB-4F64-A693-AAE16D227515}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C6EA78A-6BFB-4F64-A693-AAE16D227515}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C6EA78A-6BFB-4F64-A693-AAE16D227515}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C6EA78A-6BFB-4F64-A693-AAE16D227515}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
