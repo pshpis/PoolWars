@@ -1,9 +1,9 @@
 import axios from "axios";
 import {MINT_API_URL} from "./mint-instructions";
 
-export async function submitWallet(wallet: string): Promise<boolean> {
+export async function submitWallet(wallet: string, userId: string): Promise<boolean> {
     try {
-        await axios.post<void>(`${MINT_API_URL}/api/v1/submissions/submit?wallet=${wallet}`)
+        await axios.post<void>(`${MINT_API_URL}/api/v1/submissions/submit?wallet=${wallet}&dsId=${userId}`)
         return true;
     }
     catch (e) {
