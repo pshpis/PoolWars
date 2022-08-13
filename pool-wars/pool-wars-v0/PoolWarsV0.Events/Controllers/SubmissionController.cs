@@ -20,7 +20,7 @@ public class SubmissionController : ControllerBase
     [Route("submit")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> SubmitWallet([FromQuery] string wallet, [FromQuery] string dsId)
+    public async Task<ActionResult> SubmitWallet([FromQuery] string wallet, [FromQuery] string? dsId)
     {
         PublicKey userWallet;
 
@@ -31,13 +31,18 @@ public class SubmissionController : ControllerBase
                 throw new ArgumentException(string.Empty, nameof(wallet));
             }
 
+            if (dsId is null)
+            {
+                throw new ArgumentNullException(nameof(dsId));
+            }
+
             userWallet = new(wallet);
         }
         catch (Exception)
         {
             return BadRequest(new
             {
-                Message = "BAD_WALLET_ADDRESS"
+                Message = "BAD_ARGS"
             });
         }
 
