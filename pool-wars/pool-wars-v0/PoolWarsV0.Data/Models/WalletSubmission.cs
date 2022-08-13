@@ -18,4 +18,7 @@ public class WalletSubmission
 
     [Required]
     public DateTime SubmissionDateTime { get; set; }
+
+    [Required]
+    public string DiscordId { get; set; } = string.Empty;
 }

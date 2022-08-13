@@ -20,7 +20,7 @@ public class SubmissionController : ControllerBase
     [Route("submit")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> SubmitWallet([FromQuery] string wallet)
+    public async Task<ActionResult> SubmitWallet([FromQuery] string wallet, [FromQuery] string dsId)
     {
         PublicKey userWallet;
 
@@ -43,7 +43,7 @@ public class SubmissionController : ControllerBase
 
         try
         {
-            await _submissionsService.SubmitWallet(userWallet);
+            await _submissionsService.SubmitWallet(userWallet, dsId);
             return NoContent();
         }
         catch (SubmissionException e)

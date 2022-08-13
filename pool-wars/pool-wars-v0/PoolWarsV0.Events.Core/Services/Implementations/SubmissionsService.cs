@@ -20,7 +20,7 @@ public class SubmissionsService : ISubmissionsService
         _logger = logger;
     }
 
-    public async Task SubmitWallet(PublicKey wallet)
+    public async Task SubmitWallet(PublicKey wallet, string discordId)
     {
         await using IDbContextTransaction dbTransaction = await _context.Database.BeginTransactionAsync(IsolationLevel.Snapshot);
 
@@ -35,7 +35,8 @@ public class SubmissionsService : ISubmissionsService
 
         user.WalletSubmission ??= new()
         {
-            SubmissionDateTime = DateTime.UtcNow
+            SubmissionDateTime = DateTime.UtcNow,
+            DiscordId = discordId
         };
 
         try
