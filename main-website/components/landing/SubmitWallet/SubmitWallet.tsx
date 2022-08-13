@@ -29,6 +29,18 @@ export const SubmitWallet = () => {
             if (!wallet.publicKey) {
                 return;
             }
+            if (walletStatus) {
+                if (!toast.isActive("userCancellation")) {
+                    toast({
+                        id: "userCancellation",
+                        title: 'Your wallet already submitted',
+                        status: 'info',
+                        position: 'top',
+                        isClosable: true,
+                    });
+                }
+                return;
+            }
 
             const newWalletStatus = await submitWallet(wallet.publicKey.toBase58());
             setWalletStatus(_ => newWalletStatus);
@@ -51,8 +63,8 @@ export const SubmitWallet = () => {
 
     return <Layout>
         <Flex h={size.height - 128 + "px"} w={size.width} alignItems="center" justifyContent="center">
-            <Box w={size.width < 680 ? "290px" : ""} className={styles.mintButton} onClick={walletStatus ? void(0) : SubmitWallet}>
-                {walletStatus ? "Wallet Submited" : "Submit Wallet"}
+            <Box w={size.width < 680 ? "290px" : ""} className={styles.mintButton} onClick={SubmitWallet}>
+                {walletStatus ? "Wallet Submitted" : "Submit Wallet"}
             </Box>
         </Flex>
     </Layout>
