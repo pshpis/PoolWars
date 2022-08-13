@@ -21,7 +21,6 @@ import { Transaction } from "@solana/web3.js";
 import { getSwapAuthoritySignature } from "../../../lib/swap-message-checker";
 import { ChooseState, mapChooseStateToMints } from "../../../lib/shared";
 import { useKattsCardsChoose } from "../../../hooks/useKattsCardsChoose";
-import {useCookies} from "../../../hooks/useCookies";
 
 const MainText = () => {
     const size = useWindowSize();
@@ -108,7 +107,7 @@ const PointsPanels = ({ chooseState, swapState, onClick, cardsChooseNumber, load
     const toast = useToast();
 
     useEffect(() => {
-        if (cardsChooseNumber >= 4 && !toast.isActive("moreThan4Cards")) {
+        if (cardsChooseNumber > 4 && !toast.isActive("moreThan4Cards")) {
             toast({
                 id: "moreThan4Cards",
                 title: 'Impossible to swap more than 4 NFTs',
