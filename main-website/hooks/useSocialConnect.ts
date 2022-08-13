@@ -1,4 +1,3 @@
-import {useWalletAuth} from "./useWalletAuth";
 import {useToast} from "@chakra-ui/react";
 import {useCallback, useEffect, useState} from "react";
 
@@ -32,8 +31,9 @@ export const useSocialConnect = (walletAuthObj) => {
     }, [isSigned, user?.discord_auth_token, toast, user, checkedFetch, authToken]);
 
     const [discordButtonText, setDiscordButtonText] = useState('Connect');
+    const [discordUserId, setDiscordUserId] = useState<string | undefined>(undefined);
     useEffect(() => {
-        const updateDiscordButtonText = async () => {
+        const loadDiscordInfo = async () => {
             if (isSigned && user) {
                 if (user.discord_auth_token !== "null" && user.discord_auth_token) {
                     console.log(user.discord_auth_token);
@@ -43,11 +43,12 @@ export const useSocialConnect = (walletAuthObj) => {
                         }
                     });
                     await userReq.json().then(response => {
-                        let {username, discriminator} = response;
+                        let {username, discriminator, id} = response;
                         console.log(`${username}#${discriminator}`);
                         if (username.length > 7)
                             username = username.slice(0, 2) + '...' + username.slice(-2);
                         setDiscordButtonText(`${username}#${discriminator}`);
+                        setDiscordUserId(_ => id);
                     });
                 }
                 else {
@@ -58,7 +59,7 @@ export const useSocialConnect = (walletAuthObj) => {
                 setDiscordButtonText("Connect");
             }
         }
-        updateDiscordButtonText();
+        loadDiscordInfo();
     }, [isSigned, user, user?.discord_auth_token]);
 
     const [discordButtonBuffer, setDiscordButtonBuffer] = useState("");
@@ -97,5 +98,6 @@ export const useSocialConnect = (walletAuthObj) => {
         onDiscordButtonClick,
         onDiscordButtonEnter,
         onDiscordButtonLeave,
+        discordUserId,
     }
 }
