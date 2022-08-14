@@ -31,6 +31,8 @@ internal class Startup : StartupBase
         services.AddTransient<ICardTaker, CardTaker>();
         services.AddTransient<IMintService, MintService>();
         services.AddTransient<IStageService, StageService>();
+        services.AddTransient<ICardParser, CardParser>();
+        services.AddTransient<IWhitelistGiver, WhitelistGiver>();
         services.AddHttpClient();
         services.AddSwaggerGen();
         services.AddControllers();

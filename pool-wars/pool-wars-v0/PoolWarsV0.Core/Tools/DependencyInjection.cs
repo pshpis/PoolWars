@@ -29,7 +29,7 @@ public static class DependencyInjection
         services.AddSingleton<IRateLimiter>(factory =>
         {
             var logger = factory.GetRequiredService<ILogger<RateLimiter>>();
-            return new RateLimiter(TimeSpan.FromSeconds(10), maxPerWaitTime: 40, logger);
+            return new RateLimiter(TimeSpan.FromSeconds(10), maxPerWaitTime: 2777, logger);
         });
 
         services.AddScoped<IRpcClient>(factory =>

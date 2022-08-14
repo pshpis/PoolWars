@@ -26,5 +26,8 @@ public class WhitelistedUserDao
     public PoolUserDao User { get; set; } = null!;
 
     [Required]
-    public int RemainingMints { get; set; }
+    public int MintedAmount { get; set; }
+
+    [Required]
+    public int CanMintTotal { get; set; }
 }

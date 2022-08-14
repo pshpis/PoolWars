@@ -44,7 +44,7 @@ foreach (UserData user in userData)
     {
         wlStage.WhitelistedUsers.Add(new()
         {
-            RemainingMints = 1,
+            MintedAmount = 1,
             User = new()
             {
                 Address = user.Wallet
@@ -55,7 +55,7 @@ foreach (UserData user in userData)
     {
         ogStage.WhitelistedUsers.Add(new()
         {
-            RemainingMints = 3,
+            MintedAmount = 3,
             User = new()
             {
                 Address = user.Wallet
@@ -66,7 +66,7 @@ foreach (UserData user in userData)
     {
         ogStage.WhitelistedUsers.Add(new()
         {
-            RemainingMints = 3,
+            MintedAmount = 3,
             User = new()
             {
                 Address = user.Wallet

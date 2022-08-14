@@ -56,7 +56,7 @@ public class StageService : IStageService
         return new()
         {
             MintStage = user.Stage.Stage,
-            RemainingMints = user.RemainingMints
+            RemainingMints = user.CanMintTotal - user.MintedAmount
         };
     }
 }

@@ -14,11 +14,13 @@ public class MintController : ControllerBase
 {
     private readonly IMintService _mintService;
     private readonly IStageService _stageService;
+    private readonly IWhitelistGiver _whitelistGiver;
 
-    public MintController(IMintService mintService, IStageService stageService)
+    public MintController(IMintService mintService, IStageService stageService, IWhitelistGiver whitelistGiver)
     {
         _mintService = mintService;
         _stageService = stageService;
+        _whitelistGiver = whitelistGiver;
     }
 
     [HttpPost]
@@ -107,5 +109,43 @@ public class MintController : ControllerBase
             MintStage.None => "NONE",
             _ => throw new("BAD_ENUM_STATE")
         };
+    }
+
+    [HttpPost]
+    [Route("parseCards")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> ParseCards([FromQuery(Name = "wallet")] string address)
+    {
+        PublicKey wallet;
+
+        try
+        {
+            if (!PublicKey.IsValid(address))
+            {
+            }
+
+            wallet = new(address);
+        }
+        catch (Exception)
+        {
+            return BadRequest(new
+            {
+                Message = "BAD_REQUEST_FIELDS"
+            });
+        }
+
+        try
+        {
+            await _whitelistGiver.GiveSpotsToWallet(wallet);
+            return NoContent();
+        }
+        catch (WhitelistGiverException e)
+        {
+            return BadRequest(new
+            {
+                e.Message
+            });
+        }
     }
 }

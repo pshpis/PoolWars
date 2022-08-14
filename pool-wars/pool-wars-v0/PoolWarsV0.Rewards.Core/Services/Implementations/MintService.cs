@@ -7,6 +7,7 @@ using PoolWarsV0.Data;
 using PoolWarsV0.Data.Models;
 using PoolWarsV0.Rewards.Core.Exceptions;
 using PoolWarsV0.Rewards.Core.Models;
+using Solnet.Programs;
 using Solnet.Rpc.Models;
 using Solnet.Wallet;
 
@@ -14,6 +15,7 @@ namespace PoolWarsV0.Rewards.Core.Services.Implementations;
 
 public class MintService : IMintService
 {
+    private readonly PublicKey _adminAccount;
     private readonly Account _authority;
     private readonly Context _context;
     private readonly IStageService _stageService;
@@ -23,6 +25,7 @@ public class MintService : IMintService
         _context = context;
         _stageService = stageService;
         var privateKey = configuration["Mint:Authority"];
+        _adminAccount = new(configuration["Mint:AdminAccount"]);
 
         _authority = new Wallet(JsonSerializer.Deserialize<int[]>(privateKey)!.Select(i => (byte) i).ToArray(),
             seedMode: SeedMode.Bip39).Account;
@@ -37,18 +40,62 @@ public class MintService : IMintService
     {
         Transaction solanaTransaction = Transaction.Populate(message);
 
+        DecodedInstruction? decoded = InstructionDecoder.Decode(
+            message.AccountKeys[message.Instructions[0].ProgramIdIndex],
+            message.Instructions[0].Data,
+            message.AccountKeys.ToList(),
+            message.Instructions[0].KeyIndices
+        );
+
+        // Check fee payer
         if (solanaTransaction.FeePayer.Key != userAddress.Key)
         {
             throw new MintException("WRONG_FEE_PAYER");
         }
 
-        await using IDbContextTransaction dbTransaction = await _context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
+        // Check decoded instruction
+        if (decoded is null)
+        {
+            throw new MintException("BAD_TRANSFER_IX");
+        }
 
+        // Verify program
+        if (decoded.PublicKey != SystemProgram.ProgramIdKey)
+        {
+            throw new MintException("BAD_TRANSFER_IX");
+        }
+
+        // Verify instruction
+        if (decoded.InstructionName != "Transfer")
+        {
+            throw new MintException("BAD_TRANSFER_IX");
+        }
+
+        // Verify destination
+        if (decoded.Values["To Account"] as PublicKey != _adminAccount)
+        {
+            throw new MintException("BAD_TRANSFER_IX");
+        }
+        
+        await using IDbContextTransaction dbTransaction = await _context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
+        var lamports = (ulong) decoded.Values["Amount"];
         MintStage stage = await _stageService.GetCurrentStage();
 
         if (stage == MintStage.None)
         {
             throw new MintException("MINT_NOT_STARTED");
+        }
+
+        // Amount for OG
+        if (stage == MintStage.Og && lamports < 150_000_000L)
+        {
+            throw new MintException("BAD_TRANSFER_IX");
+        }
+
+        // Amount for WL
+        if (lamports < 200_000_000L)
+        {
+            throw new MintException("BAD_TRANSFER_IX");
         }
 
         if (stage != MintStage.Public)
@@ -65,12 +112,12 @@ public class MintService : IMintService
                 throw new MintException("USER_STAGE_NOT_STARTED");
             }
 
-            if (user.RemainingMints <= 0)
+            if (user.MintedAmount > user.CanMintTotal)
             {
                 throw new MintException("NOT_ALLOWED_TO_MINT");
             }
 
-            user.RemainingMints -= 1;
+            user.MintedAmount += 1;
 
             try
             {
