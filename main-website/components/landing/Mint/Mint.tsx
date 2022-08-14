@@ -24,14 +24,13 @@ import {
     getAuthorityMintSig,
     getWalletStatus, getMintStatus, WhitelistStatus, MINT_AIRDROP_AUTHORITY, UserStageInfo
 } from "../../../lib/mint-instructions";
-import {useCookies} from "../../../hooks/useCookies";
 import styles from "../../../styles/mint.module.scss"
 
 const MainText = ({marginBottom}) => {
     const size = useWindowSize();
     return <Box marginBottom={marginBottom} w="100%" fontFamily="Njord" fontWeight="400" textAlign={size.width < 500 ? "center" : "left"}>
         <Text fontSize={size.width < 500 ? "40px" : "61px"} color="#E8E8E8" lineHeight={size.width < 500 ? "39px" : "58px"}>Card&apos;s mint</Text>
-        <Text fontSize={size.width < 500 ? "64px" : "100px"} color="#71CFC3" lineHeight={size.width < 500 ? "60px" : "95px"}>Sold Out!</Text>
+        <Text fontSize={size.width < 500 ? "64px" : "100px"} color="#71CFC3" lineHeight={size.width < 500 ? "60px" : "95px"}>now Live!</Text>
     </Box>
 }
 
@@ -84,7 +83,7 @@ const ProgressPanel = () => {
                     ?
                     <></>
                     :
-                    <Box ref={loadedBarRef} w="100%" h="52px" backgroundColor="#E8E8E8" borderRadius="20px" boxShadow="0px 0px 4px 0px #20202040"></Box>
+                    <Box ref={loadedBarRef} w={mintState.mintedAmount/mintState.supply} h="52px" backgroundColor="#E8E8E8" borderLeftRadius="20px" boxShadow="0px 0px 4px 0px #20202040"></Box>
             }
         </Box>
         <Text mt="7px" pr="20px" fontWeight="600" fontSize="24px" lineHeight="28.13px" color="#B8C3E6" textAlign="right">Total: 10 000</Text>
@@ -189,7 +188,7 @@ export const Mint = () => {
                     if (!toast.isActive("serverCancellation"))
                         toast({
                             id: "serverCancellation",
-                            title: 'You are not authorized to take a mint now',
+                            title: 'Ooops, it seems like Solana Error. Please try again',
                             status: 'error',
                             position: 'top',
                             isClosable: true,
@@ -258,15 +257,15 @@ export const Mint = () => {
                                     {
                                         size.width < 640
                                             ?<HStack spacing="10px">
-                                                <Box className={styles.stageBox_small}>OG</Box>
-                                                <Box className={styles.stageBox_small}>WL</Box>
-                                                <Box className={styles.stageBox_small}>Public</Box>
+                                                <Box className={mintStatus === 'OG' ? styles.currentStageBox_small : styles.stageBox_small}>OG</Box>
+                                                <Box className={mintStatus === 'WL' ? styles.currentStageBox_small : styles.stageBox_small}>WL</Box>
+                                                <Box className={mintStatus === 'PUBLIC' ? styles.currentStageBox_small : styles.stageBox_small}>Public</Box>
                                             </HStack>
                                             :
                                             <HStack spacing="23px">
-                                                <Box className={styles.stageBox}>OG stage</Box>
-                                                <Box className={styles.stageBox}>WL stage</Box>
-                                                <Box className={styles.stageBox}>Public stage</Box>
+                                                <Box className={mintStatus === 'OG' ? styles.currentStageBox : styles.stageBox}>OG stage</Box>
+                                                <Box className={mintStatus === 'WL' ? styles.currentStageBox : styles.stageBox}>WL stage</Box>
+                                                <Box className={mintStatus === 'PUBLIC' ? styles.currentStageBox : styles.stageBox}>Public stage</Box>
                                             </HStack>
                                     }
 
@@ -288,7 +287,7 @@ export const Mint = () => {
                                         <div className={styles.smallDonut}/>
                                     </Flex>
                                     :
-                                    <Box w={size.width < 680 ? "290px" : ""} className={styles.mintButton} onClick={void(0)}>SOLD OUT!!!</Box>
+                                    <Box w={size.width < 680 ? "290px" : ""} className={styles.mintButton} onClick={mintClick}>MINT</Box>
                             }
                         </VStack>
                     </Stack>
