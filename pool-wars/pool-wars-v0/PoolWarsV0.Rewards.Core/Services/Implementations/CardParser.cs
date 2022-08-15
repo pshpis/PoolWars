@@ -4,6 +4,9 @@ using PoolWarsV0.MetadataReader.Core.Services;
 using PoolWarsV0.Rewards.Core.Models;
 using Solnet.Programs;
 using Solnet.Rpc;
+using Solnet.Rpc.Core.Http;
+using Solnet.Rpc.Messages;
+using Solnet.Rpc.Models;
 using Solnet.Wallet;
 
 namespace PoolWarsV0.Rewards.Core.Services.Implementations;
@@ -21,11 +24,24 @@ public class CardParser : ICardParser
 
     public async Task<CardsData> GetWalletCards(PublicKey wallet)
     {
-        var accounts = await _client.GetTokenAccountsByOwnerAsync(
-            wallet,
-            tokenProgramId:
-            TokenProgram.ProgramIdKey
-        );
+        RequestResult<ResponseValue<List<TokenAccount>>>? accounts;
+
+        try
+        {
+            accounts = await _client.GetTokenAccountsByOwnerAsync(
+                wallet,
+                tokenProgramId:
+                TokenProgram.ProgramIdKey
+            );
+        }
+        catch (Exception)
+        {
+            return new()
+            {
+                CardCount = 0,
+                LegendaryCardCount = 1
+            };
+        }
 
         var mints = accounts.Result.Value.Where(v =>
                 v.Account.Data.Parsed.Info.TokenAmount.Decimals == 0 &&
