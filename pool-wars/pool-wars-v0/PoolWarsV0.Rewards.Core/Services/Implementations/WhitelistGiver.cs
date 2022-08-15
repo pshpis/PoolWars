@@ -22,7 +22,7 @@ public class WhitelistGiver : IWhitelistGiver
 
     public async Task GiveSpotsToWallet(PublicKey wallet)
     {
-        await using IDbContextTransaction dbTransaction = await _context.Database.BeginTransactionAsync(IsolationLevel.Snapshot);
+        await using IDbContextTransaction dbTransaction = await _context.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead);
         DateTime date = DateTime.UtcNow;
 
         MintStageDao stageDao = await _context.MintStages
