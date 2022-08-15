@@ -295,6 +295,8 @@ export const Mint = () => {
                     localStorage.setItem("timeoutEndTime", (new Date().getTime() + 30000).toString());
                     setCanMint.on();
                 }
+            } else {
+                setCanMint.on();
             }
         }
 
