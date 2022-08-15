@@ -23,7 +23,7 @@ export type MintData = {
 }
 
 export const MINT_PROGRAM_ID = new PublicKey('9fHdkidrwJJamCk2EmFb45MzUoy4scoGRz1XJqqGZmGN');
-export const MINT_CONFIG_ADDRESS = new PublicKey('7GpvkSRqxHvCwNMWcmHv3pWKo2qyk4ZSpBdamnDDaDW4');
+export const MINT_CONFIG_ADDRESS = new PublicKey('4reYBQo2C7kanQqMkZUyzUtbSGNbh7CAEcbM7U2XKghr');
 export const MINT_AIRDROP_AUTHORITY = new PublicKey('EQHnc5jJTnVsTxEDSpzYMn73TW9swcHgZcgzSJ8yZxHj');
 export const MINT_ADMIN_ACCOUNT = new PublicKey('4yPHTi9whraHaRvQNH2e1AJezDJvPUTjehyrjKHzPLj5');
 export const MINT_REVENUES_WALLET = new PublicKey('4yPHTi9whraHaRvQNH2e1AJezDJvPUTjehyrjKHzPLj5');
