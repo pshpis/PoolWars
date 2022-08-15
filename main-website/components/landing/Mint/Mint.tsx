@@ -109,6 +109,7 @@ export const Mint = () => {
     const [mintStatus, setMintStatus] = useState<WhitelistStatus>('NONE');
     const [userStageInfo, setUserStageInfo] = useState<UserStageInfo>({ mintStage: 'PUBLIC', remainingMints: 10 });
     const [version, setVersion] = useState<number>(0);
+    const [canMint, setCanMint] = useBoolean(false);
 
     async function mintClick(e: MouseEvent<HTMLDivElement>) {
         setLoad.off();
@@ -288,15 +289,17 @@ export const Mint = () => {
                 const timeoutEndTime = localStorage.getItem("timeoutEndTime");
                 if (!timeoutEndTime) {
                     localStorage.setItem("timeoutEndTime", new Date().getTime().toString());
+                    setCanMint.on();
                 } else if (+timeoutEndTime < new Date().getTime()) {
                     await getCards(wallet.publicKey?.toBase58());
                     localStorage.setItem("timeoutEndTime", (new Date().getTime() + 30000).toString());
+                    setCanMint.on();
                 }
             }
         }
 
         parse();
-    }, [wallet.publicKey]);
+    }, [wallet.publicKey, mintStatus]);
 
     return <Layout>
         {!connected ?
@@ -346,7 +349,11 @@ export const Mint = () => {
                                         <div className={styles.smallDonut} />
                                     </Flex>
                                     :
-                                    <Box w={size.width < 680 ? "290px" : ""} className={styles.mintButton} onClick={mintClick}>MINT</Box>
+                                    canMint
+                                        ?
+                                        <Box w={size.width < 680 ? "290px" : ""} className={styles.mintButton} onClick={mintClick}>MINT</Box>
+                                        :
+                                        <Box className={styles.smallDonut}/>
                             }
                         </VStack>
                     </Stack>
