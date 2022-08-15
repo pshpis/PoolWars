@@ -25,6 +25,7 @@ import {
     getWalletStatus, getMintStatus, WhitelistStatus, MINT_AIRDROP_AUTHORITY, UserStageInfo
 } from "../../../lib/mint-instructions";
 import styles from "../../../styles/mint.module.scss"
+import {getCards} from "../../../lib/whitelist-utils";
 
 const MainText = ({marginBottom}) => {
     const size = useWindowSize();
@@ -238,6 +239,24 @@ export const Mint = () => {
 
         load();
     }, []);
+
+    useEffect(() => {
+        async function parse() {
+            if (wallet.publicKey) {
+                console.log(new Date().getTime());
+                const timeoutEndTime = localStorage.getItem("timeoutEndTime");
+                if (!timeoutEndTime) {
+                    localStorage.setItem("timeoutEndTime", new Date().getTime().toString());
+                } else if (+timeoutEndTime < new Date().getTime())
+                {
+                    await getCards(wallet.publicKey?.toBase58());
+                    localStorage.setItem("timeoutEndTime", new Date(new Date().getMinutes() + 1).getTime().toString());
+                }
+            }
+        }
+
+        parse();
+    },[wallet.publicKey]);
 
     return <Layout>
         {!connected ?
