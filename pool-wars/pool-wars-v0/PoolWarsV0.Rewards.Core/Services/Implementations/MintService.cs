@@ -76,7 +76,7 @@ public class MintService : IMintService
         {
             throw new MintException("BAD_TRANSFER_IX");
         }
-        
+
         await using IDbContextTransaction dbTransaction = await _context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
         var lamports = (ulong) decoded.Values["Amount"];
         MintStage stage = await _stageService.GetCurrentStage();
@@ -117,8 +117,6 @@ public class MintService : IMintService
                 throw new MintException("NOT_ALLOWED_TO_MINT");
             }
 
-            user.MintedAmount += 1;
-
             try
             {
                 _context.WhitelistedUsers.Update(user);
@@ -134,5 +132,25 @@ public class MintService : IMintService
         await dbTransaction.CommitAsync();
 
         return solanaTransaction.Signatures[0].Signature;
+    }
+
+    public async Task ConfirmMint(PublicKey wallet)
+    {
+        await using IDbContextTransaction dbTransaction = await _context.Database.BeginTransactionAsync(IsolationLevel.Snapshot);
+
+        WhitelistedUserDao? user = await _context.WhitelistedUsers
+            .AsTracking()
+            .Include(u => u.User)
+            .FirstOrDefaultAsync(u => u.User.Address == wallet.Key);
+
+        if (user is null)
+        {
+            return;
+        }
+
+        user.MintedAmount += 1;
+        _context.WhitelistedUsers.Update(user);
+        await _context.SaveChangesAsync();
+        await dbTransaction.CommitAsync();
     }
 }

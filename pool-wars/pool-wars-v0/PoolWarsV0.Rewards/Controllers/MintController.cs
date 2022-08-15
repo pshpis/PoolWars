@@ -148,4 +148,33 @@ public class MintController : ControllerBase
             });
         }
     }
+
+    [HttpPost]
+    [Route("confirm")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> Confirm([FromQuery(Name = "wallet")] string user)
+    {
+        PublicKey wallet;
+
+        try
+        {
+            if (!PublicKey.IsValid(user))
+            {
+                throw new ArgumentException(string.Empty, nameof(user));
+            }
+
+            wallet = new(user);
+        }
+        catch (Exception)
+        {
+            return BadRequest(new
+            {
+                Message = "BAD_FIELDS"
+            });
+        }
+
+        await _mintService.ConfirmMint(wallet);
+        return Ok();
+    }
 }
