@@ -320,7 +320,7 @@ export const Mint = () => {
                                     ?
                                     <Img w="290px" h="290px" src='/combat-cards-mint.gif' borderRadius="40px" boxShadow="0px 4px 4px 0px #00000040" />
                                     :
-                                    <Img src='/combat-cards-mint.gif' borderRadius="40px" boxShadow="0px 4px 4px 0px #00000040" />
+                                    <Img w="424px" h="424px" src='/combat-cards-mint.gif' borderRadius="40px" boxShadow="0px 4px 4px 0px #00000040" />
                             }
                             {
                                 !load
