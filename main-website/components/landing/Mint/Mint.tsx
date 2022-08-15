@@ -25,7 +25,6 @@ import {
     getWalletStatus, getMintStatus, WhitelistStatus, MINT_AIRDROP_AUTHORITY, UserStageInfo
 } from "../../../lib/mint-instructions";
 import styles from "../../../styles/mint.module.scss"
-import {useCookies} from "../../../hooks/useCookies";
 
 const MainText = ({marginBottom}) => {
     const size = useWindowSize();
@@ -240,11 +239,6 @@ export const Mint = () => {
 
         load();
     }, []);
-
-    useEffect(() => {
-        if (size.width !== undefined && !verify)
-            window.location.replace('/');
-    }, [size.width]);
 
     return <Layout>
         {!connected ?
