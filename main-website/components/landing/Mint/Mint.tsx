@@ -11,7 +11,7 @@ import {
 import React, { MouseEvent, useEffect, useRef, useState } from "react";
 import { useWindowSize } from "../../../hooks/useWindowSize";
 import { useWalletAuth } from "../../../hooks/useWalletAuth";
-import { Keypair, SystemInstruction, SystemProgram, Transaction } from "@solana/web3.js";
+import { Connection, Keypair, SystemInstruction, SystemProgram, Transaction } from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import {
     createUserData,
@@ -222,8 +222,8 @@ export const Mint = () => {
 
                 console.log(logs.value.logs);
 
-                const result = await connection.sendRawTransaction(signedTransaction.serialize());
-
+                const solConnection = new Connection('https://api.mainnet-beta.solana.com');
+                const result = await solConnection.sendRawTransaction(signedTransaction.serialize());
                 const success = await waitForConfirmation(connection, result, 30);
 
                 if (!success) {

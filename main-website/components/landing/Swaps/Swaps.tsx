@@ -15,7 +15,7 @@ import clsx from "clsx";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { NFTStatWithMints, parseCards } from "../../../lib/nft-helper";
 import { useWalletAuth } from "../../../hooks/useWalletAuth";
-import { ComputeBudgetProgram, Keypair} from "@solana/web3.js";
+import { ComputeBudgetProgram, Connection, Keypair} from "@solana/web3.js";
 import { swapCards, swapType, SWAP_AUTHORITY } from "../../../lib/swap-instructions";
 import { Transaction } from "@solana/web3.js";
 import { getSwapAuthoritySignature } from "../../../lib/swap-message-checker";
@@ -263,7 +263,7 @@ export const Swaps = () => {
             }));
 
             tx.add(ix);
-            tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+            tx.recentBlockhash = (await connection.getLatestBlockhash('finalized')).blockhash;
             tx.feePayer = wallet.publicKey;
 
             const signedTransaction = await wallet.signTransaction(tx);
@@ -281,7 +281,8 @@ export const Swaps = () => {
             const result = await connection.simulateTransaction(tx);
             console.log(result.value.logs);
             
-            await connection.sendRawTransaction(tx.serialize())
+            const solConnection = new Connection('https://api.mainnet-beta.solana.com');
+            await solConnection.sendRawTransaction(tx.serialize())
 
             versionInc();
         }
