@@ -22,7 +22,7 @@ public class WhitelistGiver : IWhitelistGiver
 
     public async Task GiveSpotsToWallet(PublicKey wallet)
     {
-        await using IDbContextTransaction dbTransaction = await _context.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead);
+        await using IDbContextTransaction dbTransaction = await _context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
         DateTime date = DateTime.UtcNow;
 
         MintStageDao stageDao = await _context.MintStages
@@ -49,6 +49,13 @@ public class WhitelistGiver : IWhitelistGiver
             stageDao = await _context.MintStages
                            .AsNoTracking()
                            .FirstOrDefaultAsync(s => s.Stage == "WL") ??
+                       throw new WhitelistGiverException("STAGE_NOT_FOUND");
+        }
+        else
+        {
+            stageDao = await _context.MintStages
+                           .AsNoTracking()
+                           .FirstOrDefaultAsync(s => s.Stage == "OG") ??
                        throw new WhitelistGiverException("STAGE_NOT_FOUND");
         }
 
