@@ -25,6 +25,7 @@ import {
     getWalletStatus, getMintStatus, WhitelistStatus, MINT_AIRDROP_AUTHORITY, UserStageInfo
 } from "../../../lib/mint-instructions";
 import styles from "../../../styles/mint.module.scss"
+import {useCookies} from "../../../hooks/useCookies";
 
 const MainText = ({marginBottom}) => {
     const size = useWindowSize();
@@ -103,6 +104,7 @@ export const Mint = () => {
     const [mintStatus, setMintStatus] = useState<WhitelistStatus>('NONE');
     const [userStageInfo, setUserStageInfo] = useState<UserStageInfo>({mintStage: 'PUBLIC', remainingMints: 10});
     const [version, setVersion] = useState<number>(0);
+    const {verify} = useCookies();
 
     async function mintClick(e: MouseEvent<HTMLDivElement>) {
         setLoad.off();
@@ -238,6 +240,11 @@ export const Mint = () => {
 
         load();
     }, []);
+
+    useEffect(() => {
+        if (size.width !== undefined && !verify)
+            window.location.replace('/');
+    }, [size.width]);
 
     return <Layout>
         {!connected ?
