@@ -38,7 +38,7 @@ public class CardParser : ICardParser
         {
             return new()
             {
-                CardCount = 0,
+                CardCount = 1,
                 LegendaryCardCount = 1
             };
         }
@@ -57,7 +57,7 @@ public class CardParser : ICardParser
         {
             return new()
             {
-                CardCount = 0,
+                CardCount = 1,
                 LegendaryCardCount = 1
             };
         }

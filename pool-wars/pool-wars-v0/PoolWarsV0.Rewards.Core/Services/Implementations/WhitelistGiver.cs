@@ -67,7 +67,7 @@ public class WhitelistGiver : IWhitelistGiver
         };
 
         userDao.WhitelistData.StageId = stageDao.Id;
-        userDao.WhitelistData.CanMintTotal = cards.LegendaryCardCount * 5 + cards.CardCount;
+        userDao.WhitelistData.CanMintTotal = cards.LegendaryCardCount * 5 + cards.CardCount * 2;
 
         _context.PoolUsers.Update(userDao);
         await _context.SaveChangesAsync();
