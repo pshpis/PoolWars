@@ -59,7 +59,7 @@ const HeaderNav = () => {
     return <HStack fontStyle="light" color="#B2B2B2" fontFamily="Roboto Flex" fontWeight="300" spacing={0}>
         <HeaderNavEl><RealLink href="/profile">profile</RealLink></HeaderNavEl>
         <HeaderNavSpacer/>
-        <HeaderNavEl><FakeLink href="/mint">mint</FakeLink></HeaderNavEl>
+        <HeaderNavEl><RealLink href="/mint">mint</RealLink></HeaderNavEl>
         <HeaderNavSpacer/>
         <HeaderNavEl><RealLink href="/swaps">swaps</RealLink></HeaderNavEl>
         <HeaderNavSpacer/>
@@ -73,7 +73,7 @@ const HeaderNavMobile = ({onClose}) => {
     return <VStack fontStyle="light" color="#B2B2B2" fontFamily="Roboto Flex" fontWeight="300" spacing={0} fontSize="24px" height="100%" pb="20px">
         <HeaderNavElMobile><RealLink href="/profile" style={{textDecoration: 'none'}}>profile</RealLink></HeaderNavElMobile>
         <HeaderNavSpacerMobile/>
-        <HeaderNavElMobile><FakeLink href="/mint">mint</FakeLink></HeaderNavElMobile>
+        <HeaderNavElMobile><RealLink href="/mint">mint</RealLink></HeaderNavElMobile>
         <HeaderNavSpacerMobile/>
         <HeaderNavElMobile><RealLink href="/swaps">swaps</RealLink></HeaderNavElMobile>
         <HeaderNavSpacerMobile/>
