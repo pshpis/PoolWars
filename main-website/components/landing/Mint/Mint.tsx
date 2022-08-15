@@ -103,7 +103,6 @@ export const Mint = () => {
     const [mintStatus, setMintStatus] = useState<WhitelistStatus>('NONE');
     const [userStageInfo, setUserStageInfo] = useState<UserStageInfo>({mintStage: 'PUBLIC', remainingMints: 10});
     const [version, setVersion] = useState<number>(0);
-    const {verify} = useCookies();
 
     async function mintClick(e: MouseEvent<HTMLDivElement>) {
         setLoad.off();
