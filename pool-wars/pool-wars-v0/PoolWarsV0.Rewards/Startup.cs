@@ -1,5 +1,6 @@
 using PoolWarsV0.Core.Tools;
 using PoolWarsV0.Events.Core.Tools;
+using PoolWarsV0.MetadataReader.Core.Tools;
 using PoolWarsV0.Pools.Core.Services.Implementations;
 using PoolWarsV0.Pools.Core.Tools;
 using PoolWarsV0.Rewards.Core.Services;
@@ -23,6 +24,7 @@ internal class Startup : StartupBase
         var connectionString = GetConnectionString();
         services.AddDatabase(connectionString);
 
+        services.AddMetadataReader();
         services.AddPools();
         services.AddEvents();
         services.AddTransient<PoolService>();

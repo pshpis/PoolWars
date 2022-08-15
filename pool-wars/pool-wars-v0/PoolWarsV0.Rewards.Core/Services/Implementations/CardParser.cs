@@ -1,6 +1,7 @@
-using System.Text;
+using PoolWarsV0.MetadataReader.Core.Exceptions;
+using PoolWarsV0.MetadataReader.Core.Models;
+using PoolWarsV0.MetadataReader.Core.Services;
 using PoolWarsV0.Rewards.Core.Models;
-using Solana.Metaplex;
 using Solnet.Programs;
 using Solnet.Rpc;
 using Solnet.Wallet;
@@ -10,10 +11,12 @@ namespace PoolWarsV0.Rewards.Core.Services.Implementations;
 public class CardParser : ICardParser
 {
     private readonly IRpcClient _client;
+    private readonly IMetadataReader _metadataReader;
 
-    public CardParser(IRpcClient client)
+    public CardParser(IRpcClient client, IMetadataReader metadataReader)
     {
         _client = client;
+        _metadataReader = metadataReader;
     }
 
     public async Task<CardsData> GetWalletCards(PublicKey wallet)
@@ -24,68 +27,35 @@ public class CardParser : ICardParser
             TokenProgram.ProgramIdKey
         );
 
-        var metadatas = accounts.Result.Value.Where(v =>
+        var mints = accounts.Result.Value.Where(v =>
                 v.Account.Data.Parsed.Info.TokenAmount.Decimals == 0 &&
                 v.Account.Data.Parsed.Info.TokenAmount.AmountUlong == 1)
             .Select(v => v.Account.Data.Parsed.Info.Mint)
-            .Select(MintToMetadata)
             .ToList();
 
-        var cardCount =
-            await GetAmountByCreator(metadatas, new("HQqpHR1DE7o8qorjDanWFedxi5bH9rmyQksfLKYkZfZq")) +
-            await GetAmountByCreator(metadatas, new("CSLxsmLw7ncjUEQuKJ5nU3wZDzcLToz58kFRa4ksXP3y")) +
-            await GetAmountByCreator(metadatas, new("DKWyMS4WHUXL1ybtWAZ6wyJbCqV6fDyTBsfN1b3vVVTo"));
+        CardsData data = new();
 
-        var legendaryCount = await GetAmountByCreator(metadatas, new("G2QdN1QPdGRk1DPmjufrjLsgBpBNzyRSfPAr8dEC3DB4"));
-
-        return new()
-        {
-            CardCount = cardCount,
-            LegendaryCardCount = legendaryCount
-        };
-    }
-
-    private async Task<int> GetAmountByCreator(IEnumerable<PublicKey> metadatas, PublicKey creator)
-    {
-        var amount = 0;
-
-        foreach (PublicKey metadata in metadatas)
+        foreach (var mint in mints)
         {
             try
             {
-                MetadataAccount? account = await MetadataAccount.GetAccount(_client, metadata);
+                CardMetadata metadata = await _metadataReader.ReadMetadata(mint);
 
-                if (account != null &&
-                    account.data.creators[0].verified &&
-                    account.data.creators[0].key == creator)
+                if (metadata.Strength >= 12)
                 {
-                    amount += 1;
+                    data.LegendaryCardCount += 1;
+                }
+                else
+                {
+                    data.CardCount += 1;
                 }
             }
-            catch (Exception)
+            catch (MetadataNotFoundException)
             {
                 //
             }
         }
 
-        return amount;
-    }
-
-    private static PublicKey MintToMetadata(string mint)
-    {
-        PublicKey mintAddress = new(mint);
-
-        PublicKey.TryFindProgramAddress(new[]
-            {
-                Encoding.UTF8.GetBytes("metadata"),
-                MetadataProgram.ProgramIdKey.KeyBytes,
-                mintAddress.KeyBytes
-            },
-            MetadataProgram.ProgramIdKey,
-            out PublicKey address,
-            out _
-        );
-
-        return address;
+        return data;
     }
 }
