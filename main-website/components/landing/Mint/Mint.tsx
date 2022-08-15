@@ -162,7 +162,7 @@ export const Mint = () => {
 
             let sendLamports = 0;
 
-            switch (mintStatus) {
+            switch (userStageInfo.mintStage) {
                 case 'OG':
                     sendLamports = 150_000_000;
                     break;
