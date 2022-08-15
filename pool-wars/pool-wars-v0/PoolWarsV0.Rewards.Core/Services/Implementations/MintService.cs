@@ -92,8 +92,7 @@ public class MintService : IMintService
             throw new MintException("BAD_TRANSFER_IX");
         }
 
-        // Amount for WL
-        if (lamports < 200_000_000L)
+        if (stage != MintStage.Og && lamports < 200_000_000L)
         {
             throw new MintException("BAD_TRANSFER_IX");
         }

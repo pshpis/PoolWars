@@ -54,6 +54,10 @@ public class CardParser : ICardParser
             {
                 //
             }
+            catch (CreatorAssertionException)
+            {
+                //
+            }
         }
 
         return data;

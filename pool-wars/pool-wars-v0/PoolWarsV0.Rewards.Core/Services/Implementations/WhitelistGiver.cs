@@ -44,6 +44,14 @@ public class WhitelistGiver : IWhitelistGiver
             return;
         }
 
+        if (cards.LegendaryCardCount == 0)
+        {
+            stageDao = await _context.MintStages
+                           .AsNoTracking()
+                           .FirstOrDefaultAsync(s => s.Stage == "WL") ??
+                       throw new WhitelistGiverException("STAGE_NOT_FOUND");
+        }
+
         PoolUserDao userDao = await _context.PoolUsers
                                   .AsTracking()
                                   .Include(u => u.WhitelistData)

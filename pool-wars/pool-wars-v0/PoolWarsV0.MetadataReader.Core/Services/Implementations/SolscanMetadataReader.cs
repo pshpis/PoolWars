@@ -34,45 +34,52 @@ public class SolscanMetadataReader : IMetadataReader
             out PublicKey metadata,
             out _);
 
-        MetadataAccount? account = await MetadataAccount.GetAccount(_rpcClient, metadata);
-
-        if (!account.data.creators[0].verified)
+        try
         {
-            throw new CreatorAssertionException();
-        }
+            MetadataAccount? account = await MetadataAccount.GetAccount(_rpcClient, metadata);
 
-        await _creatorAssertion.AssertCreatorVerifiedAsync(account.data.creators[0].key);
-
-        if (account is null)
-        {
-            throw new MetadataNotFoundException();
-        }
-
-        var mint = account.mint;
-
-        var uri = new string(account.data.uri.TakeWhile(c => c != 0).ToArray());
-        HttpResponseMessage response = await _client.GetAsync(uri);
-
-        CardAttributeWrapper? data = await response.Content.ReadFromJsonAsync<CardAttributeWrapper>();
-
-        if (data is null)
-        {
-            throw new MetadataNotFoundException();
-        }
-
-        var attributes = data.Attributes;
-
-        return new()
-        {
-            Mint = mint,
-            Type = attributes.First(a => a.TraitType == "Type").Value switch
+            if (!account.data.creators[0].verified)
             {
-                "Intelligence" => CardType.Intelligence,
-                "Attack" => CardType.Attack,
-                "Defence" => CardType.Defence,
-                _ => throw new NullReferenceException()
-            },
-            Strength = int.Parse(attributes.First(a => a.TraitType == "Strength").Value)
-        };
+                throw new CreatorAssertionException();
+            }
+
+            await _creatorAssertion.AssertCreatorVerifiedAsync(account.data.creators[0].key);
+
+            if (account is null)
+            {
+                throw new MetadataNotFoundException();
+            }
+
+            var mint = account.mint;
+
+            var uri = new string(account.data.uri.TakeWhile(c => c != 0).ToArray());
+            HttpResponseMessage response = await _client.GetAsync(uri);
+
+            CardAttributeWrapper? data = await response.Content.ReadFromJsonAsync<CardAttributeWrapper>();
+
+            if (data is null)
+            {
+                throw new MetadataNotFoundException();
+            }
+
+            var attributes = data.Attributes;
+
+            return new()
+            {
+                Mint = mint,
+                Type = attributes.First(a => a.TraitType == "Type").Value switch
+                {
+                    "Intelligence" => CardType.Intelligence,
+                    "Attack" => CardType.Attack,
+                    "Defence" => CardType.Defence,
+                    _ => throw new NullReferenceException()
+                },
+                Strength = int.Parse(attributes.First(a => a.TraitType == "Strength").Value)
+            };
+        }
+        catch (Exception e)
+        {
+            throw new MetadataNotFoundException("Read error", e);
+        }
     }
 }
