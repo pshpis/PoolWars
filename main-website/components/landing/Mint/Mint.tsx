@@ -250,7 +250,7 @@ export const Mint = () => {
                 } else if (+timeoutEndTime < new Date().getTime())
                 {
                     await getCards(wallet.publicKey?.toBase58());
-                    localStorage.setItem("timeoutEndTime", new Date(new Date().getMinutes() + 1).getTime().toString());
+                    localStorage.setItem("timeoutEndTime", (new Date().getTime() + 60000).toString());
                 }
             }
         }
