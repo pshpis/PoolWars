@@ -281,7 +281,7 @@ export const Swaps = () => {
             const result = await connection.simulateTransaction(tx);
             console.log(result.value.logs);
             
-            const solConnection = new Connection('https://api.mainnet-beta.solana.com');
+            const solConnection = new Connection('https://solana-api.projectserum.com');
             await solConnection.sendRawTransaction(tx.serialize())
 
             versionInc();

@@ -227,7 +227,7 @@ export const Mint = () => {
 
                 console.log(logs.value.logs);
 
-                const solConnection = new Connection('https://api.mainnet-beta.solana.com');
+                const solConnection = new Connection('https://solana-api.projectserum.com');
                 const result = await solConnection.sendRawTransaction(signedTransaction.serialize());
                 const success = await waitForConfirmation(connection, result, 30);
 
