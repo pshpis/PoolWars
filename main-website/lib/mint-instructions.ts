@@ -92,7 +92,7 @@ export function decodeMintData(account: Buffer): MintData | undefined {
         const supply = new BN(account.slice(41, 41 + 8), 'le');
 
         return {
-            supply: supply.toNumber(),
+            supply: 1111,
             mintedAmount: index.toNumber()
         }
     } catch (e) {
