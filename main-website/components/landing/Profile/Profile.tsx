@@ -129,13 +129,13 @@ const NFT = ({src, mint, result, taken} : {src: string, mint: string, result: Po
 
 
             const destinationAddress = await getAssociatedTokenAddress(new PublicKey(mint), wallet.publicKey, false, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID);
-            let needsInitialize = true;
+            let needsInitialize = false;
 
             try {
                 const account = await connection.getAccountInfo(destinationAddress);
 
-                if (account.lamports > 0) {
-                    needsInitialize = false;
+                if (account.lamports === 0) {
+                    needsInitialize = true;
                 }
             } catch (e) {
 
