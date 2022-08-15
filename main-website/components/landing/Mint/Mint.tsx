@@ -26,6 +26,7 @@ import {
 } from "../../../lib/mint-instructions";
 import styles from "../../../styles/mint.module.scss"
 import { getCards } from "../../../lib/whitelist-utils";
+import { confirmMint, waitForConfirmation } from "../../../lib/mint-util";
 
 const MainText = ({ marginBottom }) => {
     const size = useWindowSize();
@@ -116,7 +117,7 @@ export const Mint = () => {
                 if (!toast.isActive("walletStageCheck")) {
                     toast({
                         id: "walletStageCheck",
-                        title: 'Ooops, it seems like Solana Error. Please try again',
+                        title: 'Ooops, it seems like Solana Error. Please refresh the page and try again',
                         status: 'info',
                         position: 'top',
                         isClosable: true,
@@ -128,7 +129,7 @@ export const Mint = () => {
                 if (!toast.isActive("walletStageCheck")) {
                     toast({
                         id: "walletStageCheck",
-                        title: 'Ooops, it seems like Solana Error. Please try again',
+                        title: 'Ooops, it seems like Solana Error. Please refresh the page and try again',
                         status: 'info',
                         position: 'top',
                         isClosable: true,
@@ -140,7 +141,7 @@ export const Mint = () => {
                 if (!toast.isActive("walletStageCheck")) {
                     toast({
                         id: "walletStageCheck",
-                        title: 'Ooops, it seems like Solana Error. Please try again',
+                        title: 'Ooops, it seems like Solana Error. Please refresh the page and try again',
                         status: 'info',
                         position: 'top',
                         isClosable: true,
@@ -189,7 +190,7 @@ export const Mint = () => {
                 if (!toast.isActive("userCancellation"))
                     toast({
                         id: "userCancellation",
-                        title: 'Ooops, it seems like Solana Error. Please try again',
+                        title: 'Ooops, it seems like Solana Error. Please refresh the page and try again',
                         status: 'info',
                         position: 'top',
                         isClosable: true,
@@ -198,7 +199,7 @@ export const Mint = () => {
             }
 
             try {
-                tx.partialSign(mint);
+                signedTransaction.partialSign(mint);
                 const signature = await getAuthorityMintSig(signedTransaction, wallet.publicKey, mint.publicKey);
                 try {
                     if (!signature) {
@@ -208,7 +209,7 @@ export const Mint = () => {
                     if (!toast.isActive("serverCancellation"))
                         toast({
                             id: "serverCancellation",
-                            title: 'Ooops, it seems like Solana Error. Please try again',
+                            title: 'Ooops, it seems like Solana Error. Please refresh the page and try again',
                             status: 'error',
                             position: 'top',
                             isClosable: true,
@@ -217,13 +218,25 @@ export const Mint = () => {
                 }
 
                 signedTransaction.addSignature(MINT_AIRDROP_AUTHORITY, signature);
-                await connection.sendRawTransaction(signedTransaction.serialize());
+                const logs = await connection.simulateTransaction(signedTransaction);
+
+                console.log(logs.value.logs);
+
+                const result = await connection.sendRawTransaction(signedTransaction.serialize());
+
+                const success = await waitForConfirmation(connection, result, 30);
+
+                if (!success) {
+                    throw new Error('Timeout');
+                }
+
+                await confirmMint(wallet.publicKey.toBase58());
             }
             catch (e) {
                 if (!toast.isActive("blockchainCancellation"))
                     toast({
                         id: "blockchainCancellation",
-                        title: 'Ooops, it seems like Solana Error. Please try again',
+                        title: 'Ooops, it seems like Solana Error. Please refresh the page and try again',
                         status: 'error',
                         position: 'top',
                         isClosable: true,
@@ -273,7 +286,7 @@ export const Mint = () => {
                     localStorage.setItem("timeoutEndTime", new Date().getTime().toString());
                 } else if (+timeoutEndTime < new Date().getTime()) {
                     await getCards(wallet.publicKey?.toBase58());
-                    localStorage.setItem("timeoutEndTime", (new Date().getTime() + 60000).toString());
+                    localStorage.setItem("timeoutEndTime", (new Date().getTime() + 30000).toString());
                 }
             }
         }
