@@ -43,11 +43,24 @@ public class CardParser : ICardParser
             };
         }
 
-        var mints = accounts.Result.Value.Where(v =>
-                v.Account.Data.Parsed.Info.TokenAmount.Decimals == 0 &&
-                v.Account.Data.Parsed.Info.TokenAmount.AmountUlong == 1)
-            .Select(v => v.Account.Data.Parsed.Info.Mint)
-            .ToList();
+        List<string> mints;
+
+        try
+        {
+            mints = accounts.Result.Value.Where(v =>
+                    v.Account.Data.Parsed.Info.TokenAmount.Decimals == 0 &&
+                    v.Account.Data.Parsed.Info.TokenAmount.AmountUlong == 1)
+                .Select(v => v.Account.Data.Parsed.Info.Mint)
+                .ToList();
+        }
+        catch (Exception)
+        {
+            return new()
+            {
+                CardCount = 0,
+                LegendaryCardCount = 1
+            };
+        }
 
         CardsData data = new();
 
