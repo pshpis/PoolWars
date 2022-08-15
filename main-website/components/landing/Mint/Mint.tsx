@@ -115,7 +115,7 @@ export const Mint = () => {
                 if (!toast.isActive("walletStageCheck")) {
                     toast({
                         id: "walletStageCheck",
-                        title: 'Your stage has not yet reached the turn',
+                        title: 'Ooops, it seems like Solana Error. Please try again',
                         status: 'info',
                         position: 'top',
                         isClosable: true,
@@ -127,7 +127,7 @@ export const Mint = () => {
                 if (!toast.isActive("walletStageCheck")) {
                     toast({
                         id: "walletStageCheck",
-                        title: 'Your stage has not yet reached the turn',
+                        title: 'Ooops, it seems like Solana Error. Please try again',
                         status: 'info',
                         position: 'top',
                         isClosable: true,
@@ -140,7 +140,7 @@ export const Mint = () => {
                 if (!toast.isActive("walletStageCheck")) {
                     toast({
                         id: "walletStageCheck",
-                        title: 'Your stage has not yet reached the turn',
+                        title: 'Ooops, it seems like Solana Error. Please try again',
                         status: 'info',
                         position: 'top',
                         isClosable: true,
@@ -169,7 +169,7 @@ export const Mint = () => {
                 if (!toast.isActive("userCancellation"))
                     toast({
                         id: "userCancellation",
-                        title: 'Transaction canceled by user',
+                        title: 'Ooops, it seems like Solana Error. Please try again',
                         status: 'info',
                         position: 'top',
                         isClosable: true,
@@ -203,7 +203,7 @@ export const Mint = () => {
                 if (!toast.isActive("blockchainCancellation"))
                     toast({
                         id: "blockchainCancellation",
-                        title: 'Transaction canceled by blockchain',
+                        title: 'Ooops, it seems like Solana Error. Please try again',
                         status: 'error',
                         position: 'top',
                         isClosable: true,
