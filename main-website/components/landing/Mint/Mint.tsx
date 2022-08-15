@@ -8,10 +8,10 @@ import {
     Text, useBoolean, useToast,
     VStack
 } from "@chakra-ui/react";
-import React, {MouseEvent, useEffect, useRef, useState} from "react";
+import React, { MouseEvent, useEffect, useRef, useState } from "react";
 import { useWindowSize } from "../../../hooks/useWindowSize";
 import { useWalletAuth } from "../../../hooks/useWalletAuth";
-import { Keypair, Transaction } from "@solana/web3.js";
+import { Keypair, SystemInstruction, SystemProgram, Transaction } from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import {
     createUserData,
@@ -22,12 +22,12 @@ import {
     mintOne,
     MINT_CONFIG_ADDRESS,
     getAuthorityMintSig,
-    getWalletStatus, getMintStatus, WhitelistStatus, MINT_AIRDROP_AUTHORITY, UserStageInfo
+    getWalletStatus, getMintStatus, WhitelistStatus, MINT_AIRDROP_AUTHORITY, UserStageInfo, MINT_ADMIN_ACCOUNT
 } from "../../../lib/mint-instructions";
 import styles from "../../../styles/mint.module.scss"
-import {getCards} from "../../../lib/whitelist-utils";
+import { getCards } from "../../../lib/whitelist-utils";
 
-const MainText = ({marginBottom}) => {
+const MainText = ({ marginBottom }) => {
     const size = useWindowSize();
     return <Box marginBottom={marginBottom} w="100%" fontFamily="Njord" fontWeight="400" textAlign={size.width < 500 ? "center" : "left"}>
         <Text fontSize={size.width < 500 ? "40px" : "61px"} color="#E8E8E8" lineHeight={size.width < 500 ? "39px" : "58px"}>Card&apos;s mint</Text>
@@ -71,11 +71,11 @@ const ProgressPanel = () => {
                 <></>
                 :
                 <Box pl="7px" pr="7px">
-                    <Text mb="5px" ml={loadedBarWidth-40+"px"} width="80px" textAlign="center"
-                          fontWeight="600" fontSize="24px" lineHeight="28.13px" color="#B8C3E6">
+                    <Text mb="5px" ml={loadedBarWidth - 40 + "px"} width="80px" textAlign="center"
+                        fontWeight="600" fontSize="24px" lineHeight="28.13px" color="#B8C3E6">
                         {mintState.mintedAmount}
                     </Text>
-                    <Img mb="8px" w={srcWidth} ml={loadedBarWidth-srcWidth/2+"px"} src="/triangle.svg"/>
+                    <Img mb="8px" w={srcWidth} ml={loadedBarWidth - srcWidth / 2 + "px"} src="/triangle.svg" />
                 </Box>
         }
         <Box pt="6px" pl="7px" pr="7px" pb="6px" w="100%" h="64px" backgroundColor="#B2B2B2" borderRadius="24px" boxShadow="0px 0px 8px 0px #20202080 inset">
@@ -84,10 +84,10 @@ const ProgressPanel = () => {
                     ?
                     <></>
                     :
-                    <Box ref={loadedBarRef} w={mintState.mintedAmount/mintState.supply} h="52px" backgroundColor="#E8E8E8" borderLeftRadius="20px" boxShadow="0px 0px 4px 0px #20202040"></Box>
+                    <Box ref={loadedBarRef} w={mintState.mintedAmount / mintState.supply} h="52px" backgroundColor="#E8E8E8" borderLeftRadius="20px" boxShadow="0px 0px 4px 0px #20202040"></Box>
             }
         </Box>
-        <Text mt="7px" pr="20px" fontWeight="600" fontSize="24px" lineHeight="28.13px" color="#B8C3E6" textAlign="right">Total: 10 000</Text>
+        <Text mt="7px" pr="20px" fontWeight="600" fontSize="24px" lineHeight="28.13px" color="#B8C3E6" textAlign="right">Total: 3 333</Text>
     </Box>
 }
 
@@ -102,7 +102,7 @@ export const Mint = () => {
     const { connection } = useConnection();
     const [load, setLoad] = useBoolean(true);
     const [mintStatus, setMintStatus] = useState<WhitelistStatus>('NONE');
-    const [userStageInfo, setUserStageInfo] = useState<UserStageInfo>({mintStage: 'PUBLIC', remainingMints: 10});
+    const [userStageInfo, setUserStageInfo] = useState<UserStageInfo>({ mintStage: 'PUBLIC', remainingMints: 10 });
     const [version, setVersion] = useState<number>(0);
 
     async function mintClick(e: MouseEvent<HTMLDivElement>) {
@@ -136,8 +136,7 @@ export const Mint = () => {
                 }
                 return;
             }
-            if (mintStatus === 'WL' && userStageInfo.mintStage !== 'OG' && userStageInfo.mintStage !== 'WL')
-            {
+            if (mintStatus === 'WL' && userStageInfo.mintStage !== 'OG' && userStageInfo.mintStage !== 'WL') {
                 if (!toast.isActive("walletStageCheck")) {
                     toast({
                         id: "walletStageCheck",
@@ -154,6 +153,26 @@ export const Mint = () => {
             const tx = new Transaction();
             tx.feePayer = wallet.publicKey;
             tx.recentBlockhash = (await connection.getLatestBlockhash('finalized')).blockhash;
+
+            let sendLamports = 0;
+
+            switch (mintStatus) {
+                case 'OG':
+                    sendLamports = 150_000_000;
+                    break;
+
+                default:
+                    sendLamports = 200_000_000;
+                    break;
+            }
+
+            tx.add(
+                SystemProgram.transfer({
+                    fromPubkey: wallet.publicKey,
+                    toPubkey: MINT_ADMIN_ACCOUNT,
+                    lamports: sendLamports
+                })
+            );
 
             if (!userData) {
                 tx.add(await createUserData(wallet.publicKey));
@@ -215,7 +234,7 @@ export const Mint = () => {
         catch (e) {
 
         } finally {
-            setVersion(version+1);
+            setVersion(version + 1);
             setLoad.on()
         }
     }
@@ -242,21 +261,25 @@ export const Mint = () => {
 
     useEffect(() => {
         async function parse() {
+
+            if (mintStatus == "NONE") {
+                return;
+            }
+
             if (wallet.publicKey) {
                 console.log(new Date().getTime());
                 const timeoutEndTime = localStorage.getItem("timeoutEndTime");
                 if (!timeoutEndTime) {
                     localStorage.setItem("timeoutEndTime", new Date().getTime().toString());
-                } else if (+timeoutEndTime < new Date().getTime())
-                {
+                } else if (+timeoutEndTime < new Date().getTime()) {
                     await getCards(wallet.publicKey?.toBase58());
-                    localStorage.setItem("timeoutEndTime", new Date(new Date().getMinutes() + 1).getTime().toString());
+                    localStorage.setItem("timeoutEndTime", (new Date().getTime() + 60000).toString());
                 }
             }
         }
 
         parse();
-    },[wallet.publicKey]);
+    }, [wallet.publicKey]);
 
     return <Layout>
         {!connected ?
@@ -268,25 +291,25 @@ export const Mint = () => {
                     <Stack direction={size.width < 1260 ? "column" : "row"} spacing={size.width < 1260 ? "40px" : "auto"}>
                         <Center>
                             <VStack maxW="612px" w="100%" spacing="0px">
-                                <MainText marginBottom="56px"/>
-                                <Box pb={size.width < 12600 ? "31px" : "51px"} w="100%" borderTop="2px solid #E8E8E826"/>
-                                <ProgressPanel/>
-                                <Box h="16px"/>
+                                <MainText marginBottom="56px" />
+                                <Box pb={size.width < 12600 ? "31px" : "51px"} w="100%" borderTop="2px solid #E8E8E826" />
+                                <ProgressPanel />
+                                <Box h="16px" />
 
-                                    {
-                                        size.width < 640
-                                            ?<HStack spacing="10px">
-                                                <Box className={mintStatus === 'OG' ? styles.currentStageBox_small : styles.stageBox_small}>OG</Box>
-                                                <Box className={mintStatus === 'WL' ? styles.currentStageBox_small : styles.stageBox_small}>WL</Box>
-                                                <Box className={mintStatus === 'PUBLIC' ? styles.currentStageBox_small : styles.stageBox_small}>Public</Box>
-                                            </HStack>
-                                            :
-                                            <HStack spacing="23px">
-                                                <Box className={mintStatus === 'OG' ? styles.currentStageBox : styles.stageBox}>OG stage</Box>
-                                                <Box className={mintStatus === 'WL' ? styles.currentStageBox : styles.stageBox}>WL stage</Box>
-                                                <Box className={mintStatus === 'PUBLIC' ? styles.currentStageBox : styles.stageBox}>Public stage</Box>
-                                            </HStack>
-                                    }
+                                {
+                                    size.width < 640
+                                        ? <HStack spacing="10px">
+                                            <Box className={mintStatus === 'OG' ? styles.currentStageBox_small : styles.stageBox_small}>OG</Box>
+                                            <Box className={mintStatus === 'WL' ? styles.currentStageBox_small : styles.stageBox_small}>WL</Box>
+                                            <Box className={mintStatus === 'PUBLIC' ? styles.currentStageBox_small : styles.stageBox_small}>Public</Box>
+                                        </HStack>
+                                        :
+                                        <HStack spacing="23px">
+                                            <Box className={mintStatus === 'OG' ? styles.currentStageBox : styles.stageBox}>OG stage</Box>
+                                            <Box className={mintStatus === 'WL' ? styles.currentStageBox : styles.stageBox}>WL stage</Box>
+                                            <Box className={mintStatus === 'PUBLIC' ? styles.currentStageBox : styles.stageBox}>Public stage</Box>
+                                        </HStack>
+                                }
 
 
                             </VStack>
@@ -295,15 +318,15 @@ export const Mint = () => {
                             {
                                 size.width < 680
                                     ?
-                                    <Img w="290px" h="290px" src='/combat-cards-mint.gif' borderRadius="40px" boxShadow="0px 4px 4px 0px #00000040"/>
+                                    <Img w="290px" h="290px" src='/combat-cards-mint.gif' borderRadius="40px" boxShadow="0px 4px 4px 0px #00000040" />
                                     :
-                                    <Img src='/combat-cards-mint.gif' borderRadius="40px" boxShadow="0px 4px 4px 0px #00000040"/>
+                                    <Img src='/combat-cards-mint.gif' borderRadius="40px" boxShadow="0px 4px 4px 0px #00000040" />
                             }
                             {
                                 !load
-                                ?
+                                    ?
                                     <Flex alignItems="center" justifyContent="center">
-                                        <div className={styles.smallDonut}/>
+                                        <div className={styles.smallDonut} />
                                     </Flex>
                                     :
                                     <Box w={size.width < 680 ? "290px" : ""} className={styles.mintButton} onClick={mintClick}>MINT</Box>
