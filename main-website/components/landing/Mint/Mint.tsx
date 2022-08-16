@@ -92,7 +92,7 @@ const ProgressPanel = () => {
                         <Box ref={loadedBarRef} w="100%" h="52px" backgroundColor="#E8E8E8" borderRadius="20px" boxShadow="0px 0px 4px 0px #20202040"></Box>
             }
         </Box>
-        <Text mt="7px" pr="20px" fontWeight="600" fontSize="24px" lineHeight="28.13px" color="#B8C3E6" textAlign="right">Total: 3 333</Text>
+        <Text mt="7px" pr="20px" fontWeight="600" fontSize="24px" lineHeight="28.13px" color="#B8C3E6" textAlign="right">Total: 1 111</Text>
     </Box>
 }
 
