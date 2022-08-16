@@ -56,10 +56,10 @@ const ProgressPanel = () => {
             setMintState(state);
         };
 
-        connection.onAccountChange(MINT_CONFIG_ADDRESS, (accountInfo, _) => {
-            const state = decodeMintData(accountInfo.data);
-            setMintState(state);
-        });
+        // connection.onAccountChange(MINT_CONFIG_ADDRESS, (accountInfo, _) => {
+        //     const state = decodeMintData(accountInfo.data);
+        //     setMintState(state);
+        // });
 
         load();
     },
@@ -111,151 +111,151 @@ export const Mint = () => {
     const [version, setVersion] = useState<number>(0);
     const [canMint, setCanMint] = useBoolean(false);
 
-    async function mintClick(e: MouseEvent<HTMLDivElement>) {
-        setLoad.off();
+    // async function mintClick(e: MouseEvent<HTMLDivElement>) {
+    //     setLoad.off();
 
-        try {
-            if (!wallet.publicKey) {
-                return;
-            }
-            if (mintStatus === 'NONE') {
-                if (!toast.isActive("walletStageCheck")) {
-                    toast({
-                        id: "walletStageCheck",
-                        title: 'Ooops, it seems like Solana Error. Please refresh the page and try again',
-                        status: 'info',
-                        position: 'top',
-                        isClosable: true,
-                    });
-                }
-                return;
-            }
-            if (mintStatus === 'OG' && userStageInfo.mintStage !== 'OG') {
-                if (!toast.isActive("walletStageCheck")) {
-                    toast({
-                        id: "walletStageCheck",
-                        title: 'Ooops, it seems like Solana Error. Please refresh the page and try again',
-                        status: 'info',
-                        position: 'top',
-                        isClosable: true,
-                    });
-                }
-                return;
-            }
-            if (mintStatus === 'WL' && userStageInfo.mintStage !== 'OG' && userStageInfo.mintStage !== 'WL') {
-                if (!toast.isActive("walletStageCheck")) {
-                    toast({
-                        id: "walletStageCheck",
-                        title: 'Ooops, it seems like Solana Error. Please refresh the page and try again',
-                        status: 'info',
-                        position: 'top',
-                        isClosable: true,
-                    });
-                }
-                return;
-            }
+    //     try {
+    //         if (!wallet.publicKey) {
+    //             return;
+    //         }
+    //         if (mintStatus === 'NONE') {
+    //             if (!toast.isActive("walletStageCheck")) {
+    //                 toast({
+    //                     id: "walletStageCheck",
+    //                     title: 'Ooops, it seems like Solana Error. Please refresh the page and try again',
+    //                     status: 'info',
+    //                     position: 'top',
+    //                     isClosable: true,
+    //                 });
+    //             }
+    //             return;
+    //         }
+    //         if (mintStatus === 'OG' && userStageInfo.mintStage !== 'OG') {
+    //             if (!toast.isActive("walletStageCheck")) {
+    //                 toast({
+    //                     id: "walletStageCheck",
+    //                     title: 'Ooops, it seems like Solana Error. Please refresh the page and try again',
+    //                     status: 'info',
+    //                     position: 'top',
+    //                     isClosable: true,
+    //                 });
+    //             }
+    //             return;
+    //         }
+    //         if (mintStatus === 'WL' && userStageInfo.mintStage !== 'OG' && userStageInfo.mintStage !== 'WL') {
+    //             if (!toast.isActive("walletStageCheck")) {
+    //                 toast({
+    //                     id: "walletStageCheck",
+    //                     title: 'Ooops, it seems like Solana Error. Please refresh the page and try again',
+    //                     status: 'info',
+    //                     position: 'top',
+    //                     isClosable: true,
+    //                 });
+    //             }
+    //             return;
+    //         }
 
-            const userData = await getUserData(wallet.publicKey, connection);
-            const tx = new Transaction();
-            tx.feePayer = wallet.publicKey;
-            tx.recentBlockhash = (await connection.getLatestBlockhash('finalized')).blockhash;
+    //         const userData = await getUserData(wallet.publicKey, connection);
+    //         const tx = new Transaction();
+    //         tx.feePayer = wallet.publicKey;
+    //         tx.recentBlockhash = (await connection.getLatestBlockhash('finalized')).blockhash;
 
-            let sendLamports = 0;
+    //         let sendLamports = 0;
 
-            switch (userStageInfo.mintStage) {
-                case 'OG':
-                    sendLamports = 150_000_000;
-                    break;
+    //         switch (userStageInfo.mintStage) {
+    //             case 'OG':
+    //                 sendLamports = 150_000_000;
+    //                 break;
 
-                default:
-                    sendLamports = 200_000_000;
-                    break;
-            }
+    //             default:
+    //                 sendLamports = 200_000_000;
+    //                 break;
+    //         }
 
-            tx.add(
-                SystemProgram.transfer({
-                    fromPubkey: wallet.publicKey,
-                    toPubkey: MINT_ADMIN_ACCOUNT,
-                    lamports: sendLamports
-                })
-            );
+    //         tx.add(
+    //             SystemProgram.transfer({
+    //                 fromPubkey: wallet.publicKey,
+    //                 toPubkey: MINT_ADMIN_ACCOUNT,
+    //                 lamports: sendLamports
+    //             })
+    //         );
 
-            if (!userData) {
-                tx.add(await createUserData(wallet.publicKey));
-            }
+    //         if (!userData) {
+    //             tx.add(await createUserData(wallet.publicKey));
+    //         }
 
-            const mint = new Keypair();
-            tx.add(await mintOne(wallet.publicKey, mint));
-            let signedTransaction: Transaction | null = undefined;
+    //         const mint = new Keypair();
+    //         tx.add(await mintOne(wallet.publicKey, mint));
+    //         let signedTransaction: Transaction | null = undefined;
 
-            try {
-                signedTransaction = await wallet.signTransaction(tx);
-            }
-            catch (e) {
-                if (!toast.isActive("userCancellation"))
-                    toast({
-                        id: "userCancellation",
-                        title: 'Ooops, it seems like Solana Error. Please refresh the page and try again',
-                        status: 'info',
-                        position: 'top',
-                        isClosable: true,
-                    });
-                return;
-            }
+    //         try {
+    //             signedTransaction = await wallet.signTransaction(tx);
+    //         }
+    //         catch (e) {
+    //             if (!toast.isActive("userCancellation"))
+    //                 toast({
+    //                     id: "userCancellation",
+    //                     title: 'Ooops, it seems like Solana Error. Please refresh the page and try again',
+    //                     status: 'info',
+    //                     position: 'top',
+    //                     isClosable: true,
+    //                 });
+    //             return;
+    //         }
 
-            try {
-                signedTransaction.partialSign(mint);
-                const signature = await getAuthorityMintSig(signedTransaction, wallet.publicKey, mint.publicKey);
-                try {
-                    if (!signature) {
-                        throw 'No signature from server';
-                    }
-                } catch (e) {
-                    if (!toast.isActive("serverCancellation"))
-                        toast({
-                            id: "serverCancellation",
-                            title: 'Ooops, it seems like Solana Error. Please refresh the page and try again',
-                            status: 'error',
-                            position: 'top',
-                            isClosable: true,
-                        });
-                    return;
-                }
+    //         try {
+    //             signedTransaction.partialSign(mint);
+    //             const signature = await getAuthorityMintSig(signedTransaction, wallet.publicKey, mint.publicKey);
+    //             try {
+    //                 if (!signature) {
+    //                     throw 'No signature from server';
+    //                 }
+    //             } catch (e) {
+    //                 if (!toast.isActive("serverCancellation"))
+    //                     toast({
+    //                         id: "serverCancellation",
+    //                         title: 'Ooops, it seems like Solana Error. Please refresh the page and try again',
+    //                         status: 'error',
+    //                         position: 'top',
+    //                         isClosable: true,
+    //                     });
+    //                 return;
+    //             }
 
-                signedTransaction.addSignature(MINT_AIRDROP_AUTHORITY, signature);
-                const logs = await connection.simulateTransaction(signedTransaction);
+    //             signedTransaction.addSignature(MINT_AIRDROP_AUTHORITY, signature);
+    //             const logs = await connection.simulateTransaction(signedTransaction);
 
-                console.log(logs.value.logs);
+    //             console.log(logs.value.logs);
 
-                const solConnection = new Connection('https://solana-api.projectserum.com');
-                const result = await solConnection.sendRawTransaction(signedTransaction.serialize());
-                const success = await waitForConfirmation(connection, result, 30);
+    //             const solConnection = new Connection('https://solana-api.projectserum.com');
+    //             const result = await solConnection.sendRawTransaction(signedTransaction.serialize());
+    //             const success = await waitForConfirmation(connection, result, 30);
 
-                if (!success) {
-                    throw new Error('Timeout');
-                }
+    //             if (!success) {
+    //                 throw new Error('Timeout');
+    //             }
 
-                await confirmMint(wallet.publicKey.toBase58());
-            }
-            catch (e) {
-                if (!toast.isActive("blockchainCancellation"))
-                    toast({
-                        id: "blockchainCancellation",
-                        title: 'Ooops, it seems like Solana Error. Please refresh the page and try again',
-                        status: 'error',
-                        position: 'top',
-                        isClosable: true,
-                    });
-                console.error(e)
-            }
-        }
-        catch (e) {
+    //             await confirmMint(wallet.publicKey.toBase58());
+    //         }
+    //         catch (e) {
+    //             if (!toast.isActive("blockchainCancellation"))
+    //                 toast({
+    //                     id: "blockchainCancellation",
+    //                     title: 'Ooops, it seems like Solana Error. Please refresh the page and try again',
+    //                     status: 'error',
+    //                     position: 'top',
+    //                     isClosable: true,
+    //                 });
+    //             console.error(e)
+    //         }
+    //     }
+    //     catch (e) {
 
-        } finally {
-            setVersion(version + 1);
-            setLoad.on()
-        }
-    }
+    //     } finally {
+    //         setVersion(version + 1);
+    //         setLoad.on()
+    //     }
+    // }
 
     useEffect(() => {
         async function load() {
@@ -353,7 +353,7 @@ export const Mint = () => {
                                     :
                                     canMint
                                         ?
-                                        <Box w={size.width < 680 ? "290px" : ""} className={styles.mintButton} onClick={mintClick}>MINT</Box>
+                                        <Box w={size.width < 680 ? "290px" : ""} className={styles.mintButton}>MINT</Box>
                                         :
                                         <Box className={styles.smallDonut}/>
                             }
